@@ -11,10 +11,13 @@ screen), so every game is offline and unverified.
 
 ![Ghostline mid-hack: tool running, trace closing in](docs/screenshot.png)
 
-> **Private project. Do not publish or distribute.**
-> Written by someone who had read the Introversion *Uplink* developer source, so it is **not** a true
-> clean room. No code, data or assets are carried over, but the licensing question with Introversion is
-> unresolved. Never use the Uplink name, art, audio, fonts or `.dat` files here.
+> **Private project. Do not publish or distribute anything built from it.**
+> This is a derivative of Uplink, not a clean-room project, and should never be described as one: the author
+> read the Introversion developer source, and the client reads Uplink's original art and fonts from the
+> player's own Uplink installation (or the developer CD). Until Introversion agrees in writing, do not share
+> builds, host the web version or the sync server for other people, or put their assets anywhere except the
+> original developer-CD tree. The assets are read at runtime and are never copied into `ghostline/`
+> (`.gitignore` blocks `*.dat`, `*.tif`, `*.ttf`, `*.wav`, `*.mp3` here as a safety net).
 
 ## Layout
 
@@ -22,6 +25,7 @@ screen), so every game is offline and unverified.
 |---|---|
 | `crates/gl-sim` | Headless, deterministic game simulation. Same seed and commands give identical state on every platform. |
 | `crates/gl-save` | Encrypted save container, desktop file store, optional OS keychain, sync decision logic. |
+| `crates/gl-assets` | Reads Uplink's `.dat` archives at runtime (REDSHIRT wrapper, ZIP, TIFF sprites, fonts, WAV). Never bundles or copies them. |
 | `crates/gl-client` | egui client, one codebase for desktop and browser (wasm). Game logic is in `game.rs`, free of UI code, so it is unit-tested. |
 | `crates/gl-server` | Axum + Postgres sync API. Stores client-encrypted blobs it cannot read. |
 
@@ -57,6 +61,26 @@ ends the career.
 - `GHOSTLINE_SEED=42` starts a reproducible world (desktop only), handy for bug reports.
 - Release size: the wasm bundle is about 6 MB (2 MB gzipped). `WASM_OPT=1` runs `wasm-opt`, but only use binaryen 117 or newer;
   older versions (Ubuntu ships 108) produce a module browsers reject.
+
+## Original Uplink assets
+
+The client uses Uplink's own artwork when it can find it, and falls back to its plain vector look when it can't.
+With assets it shows: the world map (servers sit on land, placed by a stable hash of their name), the HUD icons,
+the original fonts, and the Access Granted / Access Denied banners.
+
+It looks for `graphics.dat` and `fonts.dat` in, in order: `$UPLINK_DIR`, the usual Steam/GOG/Applications
+locations, and a few Linux paths. For the developer CD in this repo:
+
+```sh
+UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p gl-client --release
+```
+
+- Decoded in memory only. Patch archives (`patch*.dat`) override the base graphics, as in the game.
+- **Browser:** no assets yet. The plan is a file picker that reads your own `.dat` files locally in the page and
+  never uploads them; hosting their assets from our server is a distribution and is off the table for now.
+- **Not used yet:** sounds (`sounds.dat`, 48 WAVs), music (`music.dat`, `world.dat`), gateway artwork, the game's
+  text tables (`data.dat`). Audio needs a platform audio backend.
+- `cargo test -p gl-assets` decodes every sprite in the real archives (set `UPLINK_DIR`, or it uses the dev CD in this repo).
 
 ## Build and test
 
@@ -162,6 +186,8 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 - [x] OAuth login (Google, GitHub, Discord), sessions, account linking, hacker handles, account deletion
 - [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
 - [x] `egui` client (native + wasm): world map, connect, tasks, trace bar, contracts, tools, desktop autosave
+- [x] Original Uplink art, fonts and world map loaded at runtime from the player's own install (desktop)
+- [ ] Sounds and music; gateway/hardware screens; browser file picker for assets
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
 - [ ] Browser saves
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native

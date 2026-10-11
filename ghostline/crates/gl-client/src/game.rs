@@ -45,8 +45,18 @@ pub struct HopView {
     pub log_erased: bool,
 }
 
+/// A brief full-screen-style flourish for big moments.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Banner {
+    Granted,
+    Denied,
+}
+
+const BANNER_TICKS: u64 = 25;
+
 pub struct Game {
     pub run: Run,
+    banner: Option<(Banner, u64)>,
     pub log: VecDeque<LogLine>,
     pub paused: bool,
     /// Relays chosen for the next connection, in order from the player's side.
@@ -72,6 +82,7 @@ impl Game {
     pub fn from_run(run: Run, verified: bool) -> Game {
         Game {
             run,
+            banner: None,
             log: VecDeque::new(),
             paused: false,
             chain: Vec::new(),
@@ -81,6 +92,17 @@ impl Game {
             accum: 0.0,
             scratch: Vec::new(),
         }
+    }
+
+    /// The banner to show right now, if one is still within its time on screen.
+    pub fn banner(&self) -> Option<Banner> {
+        self.banner
+            .filter(|(_, until)| self.run.world.tick_no < *until)
+            .map(|(b, _)| b)
+    }
+
+    fn flash(&mut self, b: Banner) {
+        self.banner = Some((b, self.run.world.tick_no + BANNER_TICKS));
     }
 
     pub fn world(&self) -> &World {
@@ -163,6 +185,15 @@ impl Game {
             Event::TaskStarted(_) => return,
             Event::TaskCancelled(_) => (Level::Info, "Task cancelled.".into()),
             Event::LayerDefeated { server, layer } => {
+                // Only the last layer is a real "access granted"; inner ones are progress.
+                if self
+                    .world()
+                    .servers
+                    .get(*server)
+                    .is_some_and(|s| !s.locked())
+                {
+                    self.flash(Banner::Granted);
+                }
                 let kind = self
                     .world()
                     .servers
@@ -205,6 +236,7 @@ impl Game {
             }
             Event::TraceLost => (Level::Good, "Trace lost: it hit a hop with no log.".into()),
             Event::Caught { fine } => {
+                self.flash(Banner::Denied);
                 (Level::Bad, format!("TRACED. Fined {fine}. Connection cut."))
             }
             Event::MissionAccepted(id) => (Level::Info, format!("Mission {id} accepted.")),
@@ -483,6 +515,52 @@ mod tests {
             names,
             vec![g.name_of(r1), g.name_of(r2), "corp-test".to_string()]
         );
+    }
+
+    #[test]
+    fn banners_fire_on_unlock_and_on_capture_and_expire() {
+        let mut g = Game::new(3);
+        let t = weak_corp(&mut g);
+        g.select_target(t);
+        g.connect();
+        assert_eq!(g.banner(), None);
+        g.exec(Command::Run {
+            tool: Tool::PasswordBreaker,
+            server: t,
+            file: None,
+        });
+        for _ in 0..200 {
+            g.advance(0.1);
+            if g.banner().is_some() {
+                break;
+            }
+        }
+        assert_eq!(g.banner(), Some(Banner::Granted));
+        for _ in 0..BANNER_TICKS + 2 {
+            g.advance(0.1);
+        }
+        assert_eq!(g.banner(), None, "it goes away by itself");
+
+        // A trace that completes shows the denied banner.
+        let mut g = Game::new(3);
+        let t = weak_corp(&mut g);
+        g.run.world.servers[t].layers[0].strength = 1_000_000;
+        g.run.world.servers[t].trace_ticks = 3;
+        g.select_target(t);
+        g.connect();
+        g.exec(Command::Run {
+            tool: Tool::PasswordBreaker,
+            server: t,
+            file: None,
+        });
+        for _ in 0..50 {
+            g.advance(0.1);
+            if g.banner().is_some() {
+                break;
+            }
+        }
+        assert_eq!(g.world().player.heat, 1);
+        assert_eq!(g.banner(), Some(Banner::Denied));
     }
 
     #[test]

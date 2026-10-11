@@ -2,10 +2,10 @@
 
 Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the browser (wasm32).
 
-> **Provenance warning.** Written by someone who had read the Introversion *Uplink* developer
-> source, so it is not a true clean room. Mechanics are generic (layers, bounce chains, traces);
-> no code, data or assets are carried over. Keep private until the licensing path is settled.
-> Do not use the Uplink name, art, audio, fonts or `.dat` files.
+> **Provenance warning.** This is a derivative of Introversion's *Uplink*, not a clean room. The author read the
+> developer source, and the client reads Uplink's original art and fonts from the player's own installation.
+> Keep it private and do not distribute builds, the web version or the sync server until Introversion agrees
+> in writing. Assets are loaded at runtime and never copied into this tree.
 
 ## Crates
 
@@ -14,6 +14,7 @@ Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the brows
 | `gl-sim` | Headless deterministic simulation. No I/O, floats, wall-clock or `HashMap` iteration. | native + wasm |
 | `gl-save` | Sealed save container, desktop store, sync protocol/decision logic. | native + wasm (`store`, `keychain` native only) |
 | `gl-server` | Axum + Postgres sync API. Stores opaque blobs. | server |
+| `gl-assets` | Runtime loader for Uplink's `.dat` archives: REDSHIRT wrapper (marker, then every byte +128) around a ZIP, 8-bit and 1-bit TIFF sprites, TTF fonts, WAV. Patch archives override base graphics. Memory-backed mode for a future browser file picker. | native + wasm (`locate` native only) |
 | `gl-client` | egui/eframe UI over `gl-sim`. One codebase, native + wasm. `game.rs` is the UI-free controller (fixed-step pacing, selection, narration, trace view); `app.rs` only draws and emits actions. | native + wasm |
 
 ## Simulation rules

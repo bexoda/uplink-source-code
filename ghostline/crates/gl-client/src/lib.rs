@@ -1,6 +1,7 @@
 //! Ghostline client: one egui codebase for desktop and the browser.
 
 mod app;
+mod assets;
 pub mod game;
 pub mod persist;
 
