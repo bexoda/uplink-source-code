@@ -84,6 +84,8 @@ pub struct Menu {
     focus: Field,
     /// Agent waiting for the "Retire" yes/no box.
     confirm_retire: Option<String>,
+    /// Proceed with a name nobody has: agent waiting for the "create it?" yes/no box.
+    confirm_create: Option<String>,
     t: f32,
     /// Images listed in `loading/filenames.txt`, minus the one the original skips.
     loading_images: Vec<String>,
@@ -118,6 +120,7 @@ impl Menu {
             code: String::new(),
             focus: Field::Name,
             confirm_retire: None,
+            confirm_create: None,
             t: 0.0,
             loading_images,
             pick: seed,
@@ -131,6 +134,15 @@ impl Menu {
             self.name = a.to_string();
             self.code = "PASSWORD".into();
         }
+    }
+
+    /// Starts the new-user sequence for `agent`; signed in, the account creates it meanwhile.
+    fn begin_new(&mut self, agent: String, signed_in: bool, out: &mut Vec<MenuAct>) {
+        if signed_in {
+            out.push(MenuAct::Starting(agent.clone()));
+        }
+        self.last_t = -1.0;
+        self.screen = Screen::FirstLoad { agent, t0: self.t };
     }
 
     fn start_loading(&mut self, agent: String) {
@@ -235,7 +247,8 @@ fn login(
 
     // Typing goes to the focused box; Return is the Proceed button (ReturnKeyPressed).
     let mut proceed = false;
-    if st.msg.is_none() && m.confirm_retire.is_none() {
+    let box_open = st.msg.is_some() || m.confirm_retire.is_some() || m.confirm_create.is_some();
+    if !box_open {
         ui.input(|i| {
             for e in &i.events {
                 match e {
@@ -348,13 +361,7 @@ fn login(
                         "New User",
                         "Choose your handle first: type it in the Name box and click Proceed.",
                     ),
-                    Some(a) => {
-                        if signed_in {
-                            out.push(MenuAct::Starting(a.clone()));
-                        }
-                        m.last_t = -1.0;
-                        m.screen = Screen::FirstLoad { agent: a, t0: m.t };
-                    }
+                    Some(a) => m.begin_new(a, signed_in, out),
                 },
                 1 => match crate::persist::agent_name(&m.name) {
                     Some(a) if has(&a) => m.confirm_retire = Some(a),
@@ -430,9 +437,11 @@ fn login(
                 st.cues.push(Cue::Login);
                 m.start_loading(a);
             }
-            _ => st.say(
+            // A name nobody has yet: offer to create it instead of sending the player to New User.
+            Some(a) => m.confirm_create = Some(a),
+            None => st.say(
                 "Log in",
-                "No agent by that name. Pick one from the list, or create a New User.",
+                "Type your agent's name in the Name box, or pick one from the list.",
             ),
         }
     }
@@ -451,7 +460,10 @@ fn login(
             "Otherwise, click on the New User button.",
         ]
     };
-    text_lines(c, res, ux, sy(200.0), help);
+    // A message box sits over this text and is narrower than it.
+    if !box_open {
+        text_lines(c, res, ux, sy(200.0), help);
+    }
 
     account_panel(c, res, ux, uy + 150.0, account, out);
 
@@ -522,6 +534,21 @@ fn login(
                 m.code.clear();
             }
             Some(false) => m.confirm_retire = None,
+            None => {}
+        }
+    }
+    if let Some(a) = m.confirm_create.clone() {
+        match yes_no(
+            c,
+            res,
+            "New User",
+            &format!("There is no agent called '{a}'. Create a new agent with that name?"),
+        ) {
+            Some(true) => {
+                m.confirm_create = None;
+                m.begin_new(a, signed_in, out);
+            }
+            Some(false) => m.confirm_create = None,
             None => {}
         }
     }

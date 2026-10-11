@@ -11,7 +11,7 @@ use eframe::egui::{self, vec2, Event, Modifiers, PointerButton, Pos2, RawInput, 
 use ur_assets::Store;
 use ur_client::audio::Cue;
 use ur_client::game::Game;
-use ur_client::{Act, UplinkUi};
+use ur_client::{AccountView, Act, MenuAct, UplinkUi};
 use ur_sim::{Command, Tool};
 
 fn data_dir() -> Option<PathBuf> {
@@ -226,4 +226,81 @@ fn every_toolbar_panel_draws_without_a_connection() {
         r.frame(vec![]);
         r.click(x, 738.0); // toggles it closed again
     }
+}
+
+// ---------------------------------------------------------------- the login screen
+
+/// Runs the login screen for `seconds` after `events`, returning every menu action.
+fn menu_frames(
+    ctx: &egui::Context,
+    ui: &mut UplinkUi,
+    t: &mut f64,
+    events: Vec<Event>,
+    seconds: f32,
+) -> Vec<MenuAct> {
+    let account = AccountView {
+        status: ur_client::account::Status::Off,
+        providers: vec![],
+    };
+    let mut out = Vec::new();
+    let mut events = Some(events);
+    for _ in 0..((seconds * 10.0) as u32).max(1) {
+        *t += 0.1;
+        let mut raw = RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, vec2(1024.0, 768.0))),
+            time: Some(*t),
+            events: events.take().unwrap_or_default(),
+            ..Default::default()
+        };
+        raw.viewport_id = egui::ViewportId::ROOT;
+        let o = ctx.run_ui(raw, |u| {
+            egui::CentralPanel::default()
+                .frame(egui::Frame::NONE)
+                .show(u, |u| ui.show_menu(u, &[], &account, 0.1, &mut out));
+        });
+        o.drop_without_applying_deltas();
+    }
+    out
+}
+
+fn press(pos: Pos2, pressed: bool) -> Event {
+    Event::PointerButton {
+        pos,
+        button: PointerButton::Primary,
+        pressed,
+        modifiers: Modifiers::NONE,
+    }
+}
+
+#[test]
+fn proceed_with_a_new_name_offers_to_create_the_agent() {
+    let Some(dir) = data_dir() else { return };
+    let ctx = egui::Context::default();
+    let mut ui = UplinkUi::new(&ctx, Store::from_dir(dir).unwrap()).unwrap();
+    let mut t = 0.0;
+    menu_frames(&ctx, &mut ui, &mut t, vec![], 0.3);
+
+    // Type a name nobody has and press Return (the Proceed button): a yes/no box, no dead end.
+    let enter = Event::Key {
+        key: egui::Key::Enter,
+        physical_key: None,
+        pressed: true,
+        repeat: false,
+        modifiers: Modifiers::NONE,
+    };
+    let acts = menu_frames(
+        &ctx,
+        &mut ui,
+        &mut t,
+        vec![Event::Text("Bennet".into()), enter],
+        0.3,
+    );
+    assert!(acts.is_empty(), "{acts:?}");
+
+    // "Yes" starts the new-user sequence, which ends by creating the agent.
+    let yes = Pos2::new(467.0, 373.0);
+    menu_frames(&ctx, &mut ui, &mut t, vec![Event::PointerMoved(yes)], 0.2);
+    menu_frames(&ctx, &mut ui, &mut t, vec![press(yes, true)], 0.1);
+    let acts = menu_frames(&ctx, &mut ui, &mut t, vec![press(yes, false)], 7.0);
+    assert_eq!(acts, vec![MenuAct::NewAgent("bennet".into())]);
 }

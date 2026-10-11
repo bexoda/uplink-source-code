@@ -13,7 +13,7 @@ mod webassets;
 
 pub use act::Act;
 pub use app::UplinkRustApp;
-pub use uplink::UplinkUi;
+pub use uplink::{AccountView, MenuAct, RosterEntry, UplinkUi};
 
 #[cfg(not(target_arch = "wasm32"))]
 pub fn run_native() -> eframe::Result {
