@@ -58,6 +58,32 @@ impl LocalStore {
         fs::read(self.path(slot_name, "glsave.bak")?)
     }
 
+    /// Deletes a slot's save, backup and sync state. Missing files are not an error.
+    pub fn remove(&self, slot_name: &str) -> io::Result<()> {
+        for ext in ["glsave", "glsave.bak", "glsave.tmp", "sync"] {
+            match fs::remove_file(self.path(slot_name, ext)?) {
+                Ok(()) => {}
+                Err(e) if e.kind() == io::ErrorKind::NotFound => {}
+                Err(e) => return Err(e),
+            }
+        }
+        Ok(())
+    }
+
+    /// Renames a slot (all its files). Fails if the new name is taken.
+    pub fn rename(&self, from: &str, to: &str) -> io::Result<()> {
+        if self.path(to, "glsave")?.exists() {
+            return Err(io::Error::new(io::ErrorKind::AlreadyExists, "slot exists"));
+        }
+        for ext in ["glsave", "glsave.bak", "sync"] {
+            let src = self.path(from, ext)?;
+            if src.exists() {
+                fs::rename(src, self.path(to, ext)?)?;
+            }
+        }
+        Ok(())
+    }
+
     pub fn slots(&self) -> io::Result<Vec<String>> {
         let mut v: Vec<String> = fs::read_dir(&self.dir)?
             .filter_map(|e| e.ok())

@@ -65,9 +65,19 @@ How to play (with Uplink data present, you get the original interface):
    **Log Deleter** (Security) and click your log on a machine: a trace cannot cross a machine whose log you erased.
 6. Three times traced ends the career.
 
-uplink_rust has no interface of its own: without your Uplink data it shows only a request for the files. A new game starts connected to Uplink's own server, as the original does.
+uplink_rust has no interface of its own: without your Uplink data it shows only a request for the files.
 
-- **Desktop saves** autosave to your data directory (`~/.local/share/uplink_rust`, `~/Library/Application Support/uplink_rust`, `%APPDATA%\uplink_rust`),
+It opens on the original login screen (`login_interface.cpp`): the Uplink logo, the User ID box, the roster of agents and
+the New User / Retire / Options / Exit buttons.
+- **New User:** type a name in the User ID box, then click New User. The original start sequence plays (the caption, your
+  machine, Uplink's public access server), then the game starts connected to Uplink's server, as the original does.
+  The original then registers you on that server; that registration and the phone dialler are not built, so the name you
+  typed is your agent.
+- **Log in:** click a name in the list (or type it) and Proceed. The loading screen shows one of the `loading.dat` pictures.
+- **Retire** removes the agent in the User ID box, after a yes/no box. **Options** are not built yet.
+- The HUD's close button (top left) logs off to the login screen, saving first. Three strikes retires the agent.
+
+- **Saves:** one per agent. **Desktop** saves autosave to your data directory (`~/.local/share/uplink_rust`, `~/Library/Application Support/uplink_rust`, `%APPDATA%\uplink_rust`),
   sealed and tamper-evident. The key is in the OS keychain when built with `--features os-keyring`, otherwise a key file
   next to the save. That protects against casual edits only; it is not anti-cheat.
 - **Browser saves** use the same sealed format as desktop, kept in the browser's localStorage and written every second (a save is under 1 KB). The previous save is kept as a fallback. The key sits next to the save, so like the desktop key file this only catches casual edits; the server's replay check is the anti-cheat. Clearing site data deletes the save.
@@ -91,11 +101,11 @@ UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p ur-client --relea
 ```
 
 - Everything is decoded in memory at runtime. Patch archives (`patch*.dat`) override the base graphics, as in the game.
-- **Browser:** the page asks for your own `graphics.dat`, `fonts.dat`, `patch*.dat`, `sounds.dat` and `music.dat` with a file
+- **Browser:** the page asks for your own `graphics.dat`, `fonts.dat`, `loading.dat`, `patch*.dat`, `sounds.dat` and `music.dat` with a file
   picker. They are read inside the page, kept in that browser's IndexedDB so a reload doesn't ask again, and never uploaded.
   Open the page with `?forget-assets` to drop them. Until you pick them, the page shows only the file request. We never host their files,
   because that would be distributing them.
-- **Not built yet:** the main menu and loading screens, gateway artwork,
+- **Not built yet:** the options screens, the in-game registration, gateway artwork,
   the awards, the LAN and IRC screens, e-mail, the phone dialler, world-map zoom, and the game's own text tables (`data.dat`).
   Faster-than-real-time speeds are shown but disabled, because online runs are checked against real time.
 - `cargo test -p ur-audio` plays all six songs to the end and checks each length against libmikmod; it also decodes every
@@ -241,7 +251,8 @@ With the original interface, the client plays the original sounds and music. It 
 - [x] The original Uplink interface rebuilt from the source (HUD, world map, software menu, task manager, security, password, cypher, file, log, shop and contract screens, local panels), desktop
 - [x] Original sounds and music
 - [x] Browser: the player's own `.dat` files through a file picker, cached in the browser, never uploaded
-- [ ] Main menu, phone dialler, map zoom, e-mail
+- [x] Login screen, agent roster, new-user start sequence, loading screen
+- [ ] Options screens, in-game registration, phone dialler, map zoom, e-mail
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
 - [x] Browser saves (localStorage, sealed, with a backup)
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native

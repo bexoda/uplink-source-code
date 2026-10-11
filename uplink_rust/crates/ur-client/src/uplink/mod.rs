@@ -1,6 +1,6 @@
 //! The Uplink interface, rebuilt from the original source: a 1024x768 screen of absolutely
 //! positioned buttons in the "Uplink Blue" theme, using the game's own sprites and font.
-//! Only used when the player's Uplink data is found; otherwise the plain vector UI runs.
+//! Built from the player's own Uplink data; there is no other interface.
 //!
 //! Drawing helpers take `(x, y, w, h, ...)` like the original's button registration, hence the long signatures.
 #![allow(clippy::too_many_arguments)]
@@ -9,11 +9,14 @@ mod canvas;
 mod hud;
 mod local;
 mod map;
+mod menu;
 mod remote;
 mod sprites;
 mod swmenu;
 mod theme;
 mod widgets;
+
+pub use menu::MenuAct;
 
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -106,6 +109,7 @@ pub struct UplinkUi {
     ecl: Ecl,
     res: Res,
     st: State,
+    menu: menu::Menu,
 }
 
 impl UplinkUi {
@@ -148,8 +152,18 @@ impl UplinkUi {
         ctx.set_fonts(fonts);
 
         let bg = theme.c("Background").to_array();
+        let loading_list = store
+            .read("loading.dat", "graphics/loading/filenames.txt")
+            .ok()
+            .map(|b| String::from_utf8_lossy(&b).into_owned());
+        let seed = web_time::SystemTime::now()
+            .duration_since(web_time::UNIX_EPOCH)
+            .map(|d| d.subsec_nanos())
+            .unwrap_or(1);
+        let menu = menu::Menu::new(loading_list.as_deref(), seed);
         let sprites = Sprites::new(ctx.clone(), store, [bg[0], bg[1], bg[2]]);
         Ok(UplinkUi {
+            menu,
             ecl: Ecl::default(),
             res: Res {
                 theme,
@@ -208,6 +222,59 @@ impl UplinkUi {
     /// Sounds the interface asked for since the last call.
     pub fn take_cues(&mut self) -> Vec<Cue> {
         std::mem::take(&mut self.st.cues)
+    }
+
+    /// The main menu (login, new-user start sequence, loading screen).
+    pub fn show_menu(
+        &mut self,
+        ui: &mut egui::Ui,
+        agents: &[String],
+        dt: f32,
+        out: &mut Vec<MenuAct>,
+    ) {
+        let area: Rect = ui.max_rect();
+        ui.allocate_rect(area, egui::Sense::hover());
+        let painter = ui.painter_at(area);
+        painter.rect_filled(area, 0.0, Color32::BLACK);
+        let (res, st, ecl, m) = (&self.res, &mut self.st, &mut self.ecl, &mut self.menu);
+        if st.msg.is_none() && !st.queued.is_empty() {
+            let next = st.queued.remove(0);
+            st.say("Message", &next);
+        }
+        let mut c = ecl.begin(ui, painter, area);
+        if c.just_pressed() {
+            st.cues.push(Cue::MouseClick);
+        }
+        c.fill(0.0, 0.0, W, H, res.theme.c("Background"));
+        menu::draw(&mut c, ui, res, st, m, agents, dt, out);
+        msgbox(&mut c, res, st);
+        if matches!(m.screen, menu::Screen::Login) {
+            let tip = c.tooltip_text();
+            c.text(
+                10.0,
+                H - 15.0 + 10.0,
+                &tip,
+                Size::Small,
+                res.theme.c("DefaultText"),
+            );
+        }
+    }
+
+    /// Back to the login screen (log off, game over, or a save that would not load), with the
+    /// agent's name filled in. The in-game screens start fresh next time.
+    pub fn show_login(&mut self, agent: Option<&str>) {
+        self.menu.show_login(agent);
+        let st = &mut self.st;
+        st.map_large = false;
+        st.local = Local::None;
+        st.sw_open = false;
+        st.sw_cat = None;
+        st.armed = None;
+        st.remote = remote::Remote::default();
+        st.names.clear();
+        st.help.clear();
+        st.msg = None;
+        st.tracker = true;
     }
 
     pub fn show(&mut self, ui: &mut egui::Ui, g: &Game, dt: f32, acts: &mut Vec<Act>) {

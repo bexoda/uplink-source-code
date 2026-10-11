@@ -35,6 +35,8 @@ pub enum Cue {
     NewMail,
     /// Trace Tracker pulse while a trace is running.
     TraceBleep,
+    /// The call to Uplink connecting when a new agent starts (Script32).
+    PhonePickup,
 }
 
 impl Cue {
@@ -51,6 +53,7 @@ impl Cue {
             Cue::Failure => "sounds/failure.wav",
             Cue::NewMail => "sounds/newmail.wav",
             Cue::TraceBleep => "sounds/tracebleep.wav",
+            Cue::PhonePickup => "sounds/phonepickup.wav",
         }
     }
 }
@@ -275,6 +278,7 @@ mod tests {
             Cue::Failure,
             Cue::NewMail,
             Cue::TraceBleep,
+            Cue::PhonePickup,
         ] {
             assert!(c.file().starts_with("sounds/") && c.file().ends_with(".wav"));
         }

@@ -47,7 +47,13 @@ pub fn locate() -> Option<PathBuf> {
 }
 
 /// Order the game itself applies: later patches override earlier files.
-const IMAGE_SOURCES: [&str; 4] = ["patch3.dat", "patch2.dat", "patch.dat", "graphics.dat"];
+const IMAGE_SOURCES: [&str; 5] = [
+    "patch3.dat",
+    "patch2.dat",
+    "patch.dat",
+    "graphics.dat",
+    "loading.dat",
+];
 
 enum Source {
     #[cfg(not(target_arch = "wasm32"))]

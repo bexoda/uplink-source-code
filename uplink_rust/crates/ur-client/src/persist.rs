@@ -1,11 +1,85 @@
-//! Local save storage.
+//! Local saves: one sealed save per agent, like the original's one `.usr` file per agent.
 //!
-//! Native: sealed file in the user's data directory. The key comes from the OS keychain when the
-//! `os-keyring` feature is on and works, otherwise from a key file next to the save.
-//! Either way this only makes casual edits of the file detectable. It is NOT anti-cheat: anyone
-//! who can run the game can read the key. Cheating is stopped by server-side replay.
-//!
-//! Web: the same sealed container in localStorage (`browser`), with the same backup fallback.
+//! Desktop: files in the user's data directory. The key comes from the OS keychain when the
+//! `os-keyring` feature is on and works, otherwise from a key file next to the saves.
+//! Browser: the same sealed container in localStorage.
+//! Either way the key sits with the saves, so this only makes casual edits detectable. It is NOT
+//! anti-cheat: cheating is stopped by the server replaying the run.
+
+use ur_save::{open_run, seal_run, Key, Unlock};
+use ur_sim::replay::Run;
+
+/// The name a single pre-roster save is listed under after the upgrade.
+pub const MIGRATED_AGENT: &str = "agent";
+
+/// Turns what the player typed into an agent (save slot) name: lower case, letters, digits,
+/// `_` and `-`, at most 32 characters. `None` when nothing usable is left.
+pub fn agent_name(typed: &str) -> Option<String> {
+    let s: String = typed
+        .trim()
+        .chars()
+        .map(|c| c.to_ascii_lowercase())
+        .map(|c| if c == ' ' { '_' } else { c })
+        .filter(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '_' || *c == '-')
+        .take(32)
+        .collect();
+    (!s.is_empty()).then_some(s)
+}
+
+/// Raw storage for sealed saves, by agent name.
+pub trait Backend {
+    fn list(&self) -> Result<Vec<String>, String>;
+    fn read(&self, agent: &str) -> Result<Option<Vec<u8>>, String>;
+    fn read_backup(&self, agent: &str) -> Result<Option<Vec<u8>>, String>;
+    /// Writes a save, keeping the previous one as the backup.
+    fn write(&self, agent: &str, sealed: &[u8]) -> Result<(), String>;
+    fn remove(&self, agent: &str) -> Result<(), String>;
+}
+
+pub struct Saves<B: Backend> {
+    backend: B,
+    key: Key,
+}
+
+impl<B: Backend> Saves<B> {
+    pub fn new(backend: B, key: Key) -> Self {
+        Saves { backend, key }
+    }
+
+    /// The roster, sorted.
+    pub fn agents(&self) -> Vec<String> {
+        let mut v = self.backend.list().unwrap_or_default();
+        v.sort();
+        v
+    }
+
+    fn open(&self, bytes: Option<Vec<u8>>) -> Result<Option<Run>, String> {
+        bytes
+            .map(|b| open_run(&b, Unlock::Key(&self.key)).map_err(|e| e.to_string()))
+            .transpose()
+    }
+
+    /// `Ok(None)`: no such agent. A damaged save falls back to the previous one.
+    pub fn load(&self, agent: &str) -> Result<Option<Run>, String> {
+        match self.backend.read(agent).and_then(|b| self.open(b)) {
+            Ok(r) => Ok(r),
+            Err(e) => match self.backend.read_backup(agent).and_then(|b| self.open(b)) {
+                Ok(Some(run)) => Ok(Some(run)),
+                _ => Err(format!("the save is unreadable or was modified ({e})")),
+            },
+        }
+    }
+
+    pub fn save(&self, agent: &str, run: &Run) -> Result<(), String> {
+        let sealed = seal_run(run, Unlock::Key(&self.key)).map_err(|e| e.to_string())?;
+        self.backend.write(agent, &sealed)
+    }
+
+    /// Removes the agent from the roster ("Retire" on the login screen).
+    pub fn retire(&self, agent: &str) -> Result<(), String> {
+        self.backend.remove(agent)
+    }
+}
 
 #[cfg(not(target_arch = "wasm32"))]
 mod native {
@@ -13,17 +87,9 @@ mod native {
     use std::path::{Path, PathBuf};
 
     use ur_save::store::LocalStore;
-    use ur_save::{open_run, seal_run, Key, Unlock};
-    use ur_sim::replay::Run;
+    use ur_save::Key;
 
-    const SLOT: &str = "autosave";
-
-    pub struct Persist {
-        store: LocalStore,
-        key: Key,
-        pub dir: PathBuf,
-        pub key_source: &'static str,
-    }
+    use super::{Backend, Saves};
 
     pub fn data_dir() -> Option<PathBuf> {
         let home = std::env::var_os("HOME").map(PathBuf::from);
@@ -45,7 +111,7 @@ mod native {
         Some(dir)
     }
 
-    fn key_from_file(dir: &Path) -> Result<Key, String> {
+    pub(super) fn key_from_file(dir: &Path) -> Result<Key, String> {
         let path = dir.join("local.key");
         match fs::read(&path) {
             Ok(b) => <[u8; 32]>::try_from(b.as_slice())
@@ -65,138 +131,83 @@ mod native {
         }
     }
 
-    impl Persist {
-        pub fn open() -> Result<Persist, String> {
-            let dir = data_dir().ok_or("no data directory (HOME is not set)")?;
-            fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
-            #[cfg(feature = "os-keyring")]
-            if let Ok(key) = ur_save::keychain::get_or_create("default") {
-                return Persist::with_key(&dir, key, "OS keychain");
-            }
-            let key = key_from_file(&dir)?;
-            Persist::with_key(&dir, key, "key file")
-        }
+    pub struct Files(pub LocalStore);
 
-        pub fn with_key(dir: &Path, key: Key, key_source: &'static str) -> Result<Persist, String> {
-            let store = LocalStore::new(dir).map_err(|e| e.to_string())?;
-            Ok(Persist {
-                store,
-                key,
-                dir: dir.to_path_buf(),
-                key_source,
-            })
-        }
-
-        /// `Ok(None)` means no save exists yet. A damaged save falls back to the previous one.
-        pub fn load(&self) -> Result<Option<Run>, String> {
-            let read = |bytes: Vec<u8>| {
-                open_run(&bytes, Unlock::Key(&self.key)).map_err(|e| e.to_string())
-            };
-            match self.store.read(SLOT) {
-                Ok(b) => match read(b) {
-                    Ok(run) => Ok(Some(run)),
-                    Err(e) => match self
-                        .store
-                        .read_backup(SLOT)
-                        .map_err(|e| e.to_string())
-                        .and_then(read)
-                    {
-                        Ok(run) => Ok(Some(run)),
-                        Err(_) => Err(format!("save is unreadable or was modified ({e})")),
-                    },
-                },
-                Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
-                Err(e) => Err(e.to_string()),
-            }
-        }
-
-        pub fn save(&self, run: &Run) -> Result<(), String> {
-            let bytes = seal_run(run, Unlock::Key(&self.key)).map_err(|e| e.to_string())?;
-            self.store.write(SLOT, &bytes).map_err(|e| e.to_string())
-        }
-
-        pub fn clear(&self) {
-            let _ = fs::remove_file(self.dir.join(format!("{SLOT}.glsave")));
-            let _ = fs::remove_file(self.dir.join(format!("{SLOT}.glsave.bak")));
+    fn opt(r: std::io::Result<Vec<u8>>) -> Result<Option<Vec<u8>>, String> {
+        match r {
+            Ok(b) => Ok(Some(b)),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
+            Err(e) => Err(e.to_string()),
         }
     }
 
+    impl Backend for Files {
+        fn list(&self) -> Result<Vec<String>, String> {
+            self.0.slots().map_err(|e| e.to_string())
+        }
+        fn read(&self, agent: &str) -> Result<Option<Vec<u8>>, String> {
+            opt(self.0.read(agent))
+        }
+        fn read_backup(&self, agent: &str) -> Result<Option<Vec<u8>>, String> {
+            opt(self.0.read_backup(agent))
+        }
+        fn write(&self, agent: &str, sealed: &[u8]) -> Result<(), String> {
+            self.0.write(agent, sealed).map_err(|e| e.to_string())
+        }
+        fn remove(&self, agent: &str) -> Result<(), String> {
+            self.0.remove(agent).map_err(|e| e.to_string())
+        }
+    }
+
+    pub type Persist = Saves<Files>;
+
+    /// Opens the saves in `dir` (the data directory by default).
+    pub fn open_in(dir: &Path) -> Result<Persist, String> {
+        fs::create_dir_all(dir).map_err(|e| e.to_string())?;
+        let store = LocalStore::new(dir).map_err(|e| e.to_string())?;
+        // Before the roster there was one save called "autosave".
+        let _ = store.rename("autosave", super::MIGRATED_AGENT);
+        #[cfg(feature = "os-keyring")]
+        if let Ok(key) = ur_save::keychain::get_or_create("default") {
+            return Ok(Saves::new(Files(store), key));
+        }
+        let key = key_from_file(dir)?;
+        Ok(Saves::new(Files(store), key))
+    }
+
     #[cfg(test)]
-    mod tests {
-        use super::*;
+    pub(super) fn key_from_file_for_test(dir: &Path) -> Key {
+        fs::create_dir_all(dir).unwrap();
+        key_from_file(dir).unwrap()
+    }
 
-        #[test]
-        fn save_load_roundtrip_and_tamper_falls_back_to_backup() {
-            let dir = tempdir();
-            let p = Persist::with_key(&dir, Key::generate(), "test").unwrap();
-            assert!(p.load().unwrap().is_none());
-
-            let mut run = Run::new(9);
-            p.save(&run).unwrap();
-            run.apply(ur_sim::Command::AcceptMission(1), &mut vec![])
-                .unwrap();
-            p.save(&run).unwrap();
-            let back = p.load().unwrap().unwrap();
-            assert_eq!((back.seed, back.unsynced()), (9, 1));
-
-            // Flip a byte in the live save: the previous save is used instead of losing everything.
-            let path = dir.join("autosave.glsave");
-            let mut b = fs::read(&path).unwrap();
-            let n = b.len() / 2;
-            b[n] ^= 0xFF;
-            fs::write(&path, b).unwrap();
-            let back = p.load().unwrap().unwrap();
-            assert_eq!(back.unsynced(), 0, "fell back to the older, intact save");
-
-            // Both damaged: an error the UI can show, not a silent new game.
-            let bak = dir.join("autosave.glsave.bak");
-            fs::write(&bak, b"garbage").unwrap();
-            assert!(p.load().is_err());
-            let _ = fs::remove_dir_all(&dir);
-        }
-
-        #[test]
-        fn key_file_is_stable_across_opens() {
-            let dir = tempdir();
-            let a = key_from_file(&dir).unwrap();
-            let b = key_from_file(&dir).unwrap();
-            assert_eq!(a.as_bytes(), b.as_bytes());
-            let _ = fs::remove_dir_all(&dir);
-        }
-
-        fn tempdir() -> PathBuf {
-            let d = std::env::temp_dir().join(format!(
-                "ur-client-test-{}-{:?}",
-                std::process::id(),
-                std::thread::current().id()
-            ));
-            let _ = fs::remove_dir_all(&d);
-            fs::create_dir_all(&d).unwrap();
-            d
-        }
+    pub fn open() -> Result<Persist, String> {
+        let dir = data_dir().ok_or("no data directory (HOME is not set)")?;
+        open_in(&dir)
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-pub use native::{data_dir, Persist};
+pub use native::{data_dir, open, Persist};
 
-/// Browser saves: the same sealed container, kept in a key-value store (localStorage on the web).
-/// The key sits in the same store, so as on desktop this only detects casual edits; the server's
-/// replay check is what stops cheating.
+/// Browser saves over a string key-value store (localStorage on the web), base64.
 pub mod browser {
     use base64::engine::general_purpose::STANDARD as B64;
     use base64::Engine;
-    use ur_save::{open_run, seal_run, Key, Unlock};
-    use ur_sim::replay::Run;
+    use ur_save::Key;
+
+    use super::{Backend, Saves};
 
     pub const KEY: &str = "uplink_rust.key";
-    pub const SLOT: &str = "uplink_rust.autosave";
-    pub const BACKUP: &str = "uplink_rust.autosave.bak";
-    /// Keys from when the project was called Ghostline, moved over on first open.
-    const OLD: [(&str, &str); 3] = [
+    const PREFIX: &str = "uplink_rust.agent.";
+    const BAK: &str = ".bak";
+    /// Single-save keys from before the roster, and from when the project was called Ghostline.
+    const OLD: [(&str, &str); 5] = [
         ("ghostline.key", KEY),
-        ("ghostline.autosave", SLOT),
-        ("ghostline.autosave.bak", BACKUP),
+        ("ghostline.autosave", "uplink_rust.agent.agent"),
+        ("ghostline.autosave.bak", "uplink_rust.agent.agent.bak"),
+        ("uplink_rust.autosave", "uplink_rust.agent.agent"),
+        ("uplink_rust.autosave.bak", "uplink_rust.agent.agent.bak"),
     ];
 
     /// String key-value storage, like `window.localStorage`.
@@ -204,170 +215,76 @@ pub mod browser {
         fn get(&self, k: &str) -> Result<Option<String>, String>;
         fn set(&self, k: &str, v: &str) -> Result<(), String>;
         fn remove(&self, k: &str);
+        fn keys(&self) -> Vec<String>;
     }
 
-    pub struct Persist<S: Kv> {
-        kv: S,
-        key: Key,
+    pub struct KvBackend<S: Kv>(pub S);
+
+    fn decode(t: Option<String>) -> Result<Option<Vec<u8>>, String> {
+        t.map(|t| B64.decode(t.trim()).map_err(|e| e.to_string()))
+            .transpose()
     }
 
-    impl<S: Kv> Persist<S> {
-        pub fn open(kv: S) -> Result<Self, String> {
-            for (old, new) in OLD {
-                if kv.get(new)?.is_none() {
-                    if let Some(v) = kv.get(old)? {
-                        kv.set(new, &v)?;
-                        kv.remove(old);
-                    }
-                }
+    impl<S: Kv> Backend for KvBackend<S> {
+        fn list(&self) -> Result<Vec<String>, String> {
+            Ok(self
+                .0
+                .keys()
+                .into_iter()
+                .filter_map(|k| k.strip_prefix(PREFIX).map(str::to_string))
+                .filter(|a| !a.ends_with(BAK))
+                .collect())
+        }
+        fn read(&self, agent: &str) -> Result<Option<Vec<u8>>, String> {
+            decode(self.0.get(&format!("{PREFIX}{agent}"))?)
+        }
+        fn read_backup(&self, agent: &str) -> Result<Option<Vec<u8>>, String> {
+            decode(self.0.get(&format!("{PREFIX}{agent}{BAK}"))?)
+        }
+        fn write(&self, agent: &str, sealed: &[u8]) -> Result<(), String> {
+            let k = format!("{PREFIX}{agent}");
+            if let Some(prev) = self.0.get(&k)? {
+                self.0.set(&format!("{k}{BAK}"), &prev)?;
             }
-            let key = match kv.get(KEY)? {
-                Some(t) => {
-                    let b = B64
-                        .decode(t.trim())
-                        .map_err(|_| "save key is corrupt".to_string())?;
-                    Key::from_bytes(
-                        <[u8; 32]>::try_from(b.as_slice())
-                            .map_err(|_| "save key is corrupt".to_string())?,
-                    )
-                }
-                None => {
-                    // Never replace a key that sealed an existing save: it would orphan the save.
-                    if kv.get(SLOT)?.is_some() {
-                        return Err("the save key is missing, so the save can't be opened".into());
-                    }
-                    let k = Key::generate();
-                    kv.set(KEY, &B64.encode(k.as_bytes()))?;
-                    k
-                }
-            };
-            Ok(Persist { kv, key })
+            self.0.set(&k, &B64.encode(sealed))
         }
-
-        fn read(&self, slot: &str) -> Result<Option<Run>, String> {
-            let Some(t) = self.kv.get(slot)? else {
-                return Ok(None);
-            };
-            let bytes = B64.decode(t.trim()).map_err(|e| e.to_string())?;
-            open_run(&bytes, Unlock::Key(&self.key))
-                .map(Some)
-                .map_err(|e| e.to_string())
-        }
-
-        /// `Ok(None)` means no save yet. A damaged save falls back to the previous one.
-        pub fn load(&self) -> Result<Option<Run>, String> {
-            match self.read(SLOT) {
-                Ok(r) => Ok(r),
-                Err(e) => match self.read(BACKUP) {
-                    Ok(Some(run)) => Ok(Some(run)),
-                    _ => Err(format!("save is unreadable or was modified ({e})")),
-                },
-            }
-        }
-
-        pub fn save(&self, run: &Run) -> Result<(), String> {
-            let sealed = seal_run(run, Unlock::Key(&self.key)).map_err(|e| e.to_string())?;
-            let text = B64.encode(sealed);
-            if let Some(prev) = self.kv.get(SLOT)? {
-                self.kv.set(BACKUP, &prev)?;
-            }
-            self.kv.set(SLOT, &text)
-        }
-
-        pub fn clear(&self) {
-            self.kv.remove(SLOT);
-            self.kv.remove(BACKUP);
+        fn remove(&self, agent: &str) -> Result<(), String> {
+            self.0.remove(&format!("{PREFIX}{agent}"));
+            self.0.remove(&format!("{PREFIX}{agent}{BAK}"));
+            Ok(())
         }
     }
 
-    #[cfg(test)]
-    mod tests {
-        use super::*;
-        use std::cell::RefCell;
-        use std::collections::HashMap;
-
-        #[derive(Default)]
-        struct Mem(RefCell<HashMap<String, String>>, RefCell<Option<usize>>);
-        impl Kv for &Mem {
-            fn get(&self, k: &str) -> Result<Option<String>, String> {
-                Ok(self.0.borrow().get(k).cloned())
-            }
-            fn set(&self, k: &str, v: &str) -> Result<(), String> {
-                if self.1.borrow().is_some_and(|max| v.len() > max) {
-                    return Err("QuotaExceededError".into());
+    pub fn open<S: Kv>(kv: S) -> Result<Saves<KvBackend<S>>, String> {
+        for (old, new) in OLD.iter() {
+            if kv.get(new)?.is_none() {
+                if let Some(v) = kv.get(old)? {
+                    kv.set(new, &v)?;
+                    kv.remove(old);
                 }
-                self.0.borrow_mut().insert(k.into(), v.into());
-                Ok(())
-            }
-            fn remove(&self, k: &str) {
-                self.0.borrow_mut().remove(k);
             }
         }
-
-        #[test]
-        fn roundtrip_backup_and_tamper() {
-            let mem = Mem::default();
-            let p = Persist::open(&mem).unwrap();
-            assert!(p.load().unwrap().is_none());
-            let mut run = Run::new(5);
-            p.save(&run).unwrap();
-            run.apply(ur_sim::Command::AcceptMission(1), &mut vec![])
-                .unwrap();
-            p.save(&run).unwrap();
-
-            // A new session with the same storage reads it back.
-            let p2 = Persist::open(&mem).unwrap();
-            let back = p2.load().unwrap().unwrap();
-            assert_eq!((back.seed, back.unsynced()), (5, 1));
-
-            // Edit the live save: the older backup is used.
-            let mut t = mem.0.borrow()[SLOT].clone().into_bytes();
-            let n = t.len() / 2;
-            t[n] = if t[n] == b'A' { b'B' } else { b'A' };
-            mem.0
-                .borrow_mut()
-                .insert(SLOT.into(), String::from_utf8(t).unwrap());
-            assert_eq!(p2.load().unwrap().unwrap().unsynced(), 0);
-
-            // Both broken: an error, never a silent new game.
-            mem.0.borrow_mut().insert(BACKUP.into(), "garbage".into());
-            assert!(p2.load().is_err());
-
-            p2.clear();
-            assert!(p2.load().unwrap().is_none());
-        }
-
-        #[test]
-        fn a_lost_key_is_not_silently_replaced() {
-            let mem = Mem::default();
-            Persist::open(&mem).unwrap().save(&Run::new(1)).unwrap();
-            mem.0.borrow_mut().remove(KEY);
-            assert!(Persist::open(&mem).is_err());
-            assert!(mem.0.borrow().contains_key(SLOT), "the save is kept");
-        }
-
-        #[test]
-        fn saves_from_the_old_name_carry_over() {
-            let mem = Mem::default();
-            let p = Persist::open(&mem).unwrap();
-            p.save(&Run::new(7)).unwrap();
-            p.save(&Run::new(7)).unwrap(); // the second save leaves a backup too
-            for (old, new) in OLD {
-                let v = mem.0.borrow_mut().remove(new).unwrap();
-                mem.0.borrow_mut().insert(old.into(), v);
+        let key = match kv.get(KEY)? {
+            Some(t) => {
+                let b = B64
+                    .decode(t.trim())
+                    .map_err(|_| "save key is corrupt".to_string())?;
+                Key::from_bytes(
+                    <[u8; 32]>::try_from(b.as_slice())
+                        .map_err(|_| "save key is corrupt".to_string())?,
+                )
             }
-            let back = Persist::open(&mem).unwrap().load().unwrap().unwrap();
-            assert_eq!(back.seed, 7);
-            assert!(OLD.iter().all(|(o, _)| !mem.0.borrow().contains_key(*o)));
-        }
-
-        #[test]
-        fn quota_errors_surface() {
-            let mem = Mem::default();
-            let p = Persist::open(&mem).unwrap();
-            *mem.1.borrow_mut() = Some(10);
-            assert!(p.save(&Run::new(1)).is_err());
-        }
+            None => {
+                // Never replace a key that sealed existing saves: they could not be opened.
+                if kv.keys().iter().any(|k| k.starts_with(PREFIX)) {
+                    return Err("the save key is missing, so the saves can't be opened".into());
+                }
+                let k = Key::generate();
+                kv.set(KEY, &B64.encode(k.as_bytes()))?;
+                k
+            }
+        };
+        Ok(Saves::new(KvBackend(kv), key))
     }
 }
 
@@ -387,26 +304,165 @@ impl browser::Kv for LocalStorage {
     fn remove(&self, k: &str) {
         let _ = self.0.remove_item(k);
     }
+    fn keys(&self) -> Vec<String> {
+        let n = self.0.length().unwrap_or(0);
+        (0..n)
+            .filter_map(|i| self.0.key(i).ok().flatten())
+            .collect()
+    }
 }
 
 #[cfg(target_arch = "wasm32")]
-pub struct Persist(browser::Persist<LocalStorage>);
+pub type Persist = Saves<browser::KvBackend<LocalStorage>>;
 
 #[cfg(target_arch = "wasm32")]
-impl Persist {
-    pub fn open() -> Result<Persist, String> {
-        let storage = web_sys::window()
-            .and_then(|w| w.local_storage().ok().flatten())
-            .ok_or("this browser blocks local storage, so progress is lost on reload")?;
-        browser::Persist::open(LocalStorage(storage)).map(Persist)
+pub fn open() -> Result<Persist, String> {
+    let storage = web_sys::window()
+        .and_then(|w| w.local_storage().ok().flatten())
+        .ok_or("this browser blocks local storage, so progress is lost on reload")?;
+    browser::open(LocalStorage(storage))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::browser::{self, Kv, KEY};
+    use super::*;
+    use std::cell::RefCell;
+    use std::collections::HashMap;
+
+    #[derive(Default)]
+    struct Mem(RefCell<HashMap<String, String>>, RefCell<Option<usize>>);
+    impl Kv for &Mem {
+        fn get(&self, k: &str) -> Result<Option<String>, String> {
+            Ok(self.0.borrow().get(k).cloned())
+        }
+        fn set(&self, k: &str, v: &str) -> Result<(), String> {
+            if self.1.borrow().is_some_and(|max| v.len() > max) {
+                return Err("QuotaExceededError".into());
+            }
+            self.0.borrow_mut().insert(k.into(), v.into());
+            Ok(())
+        }
+        fn remove(&self, k: &str) {
+            self.0.borrow_mut().remove(k);
+        }
+        fn keys(&self) -> Vec<String> {
+            self.0.borrow().keys().cloned().collect()
+        }
     }
-    pub fn load(&self) -> Result<Option<ur_sim::replay::Run>, String> {
-        self.0.load()
+
+    #[test]
+    fn agent_names_are_sanitised() {
+        assert_eq!(
+            agent_name(" Neo Anderson! ").as_deref(),
+            Some("neo_anderson")
+        );
+        assert_eq!(agent_name("***"), None);
+        assert_eq!(agent_name(&"x".repeat(50)).unwrap().len(), 32);
+        assert!(ur_save::slot::is_valid(&agent_name("Ab-c_9").unwrap()));
     }
-    pub fn save(&self, run: &ur_sim::replay::Run) -> Result<(), String> {
-        self.0.save(run)
+
+    #[test]
+    fn roster_save_load_retire_and_tamper() {
+        let mem = Mem::default();
+        let p = browser::open(&mem).unwrap();
+        assert!(p.agents().is_empty());
+        assert!(p.load("neo").unwrap().is_none());
+
+        let mut run = Run::new(5);
+        p.save("neo", &run).unwrap();
+        p.save("trinity", &Run::new(6)).unwrap();
+        run.apply(ur_sim::Command::AcceptMission(1), &mut vec![])
+            .unwrap();
+        p.save("neo", &run).unwrap();
+        assert_eq!(p.agents(), vec!["neo", "trinity"]);
+
+        let p2 = browser::open(&mem).unwrap();
+        let back = p2.load("neo").unwrap().unwrap();
+        assert_eq!((back.seed, back.unsynced()), (5, 1));
+
+        // Edit the live save: the backup is used.
+        let k = "uplink_rust.agent.neo".to_string();
+        let mut t = mem.0.borrow()[&k].clone().into_bytes();
+        let n = t.len() / 2;
+        t[n] = if t[n] == b'A' { b'B' } else { b'A' };
+        mem.0
+            .borrow_mut()
+            .insert(k.clone(), String::from_utf8(t).unwrap());
+        assert_eq!(p2.load("neo").unwrap().unwrap().unsynced(), 0);
+        mem.0
+            .borrow_mut()
+            .insert(format!("{k}.bak"), "garbage".into());
+        assert!(
+            p2.load("neo").is_err(),
+            "both broken: an error, not a new game"
+        );
+
+        p2.retire("neo").unwrap();
+        assert_eq!(p2.agents(), vec!["trinity"]);
     }
-    pub fn clear(&self) {
-        self.0.clear()
+
+    #[test]
+    fn old_single_saves_become_an_agent() {
+        let mem = Mem::default();
+        let first = browser::open(&mem).unwrap();
+        first.save("x", &Run::new(7)).unwrap();
+        // Recreate the pre-roster layout under the old project name.
+        let save = mem.0.borrow_mut().remove("uplink_rust.agent.x").unwrap();
+        let key = mem.0.borrow_mut().remove(KEY).unwrap();
+        mem.0.borrow_mut().insert("ghostline.autosave".into(), save);
+        mem.0.borrow_mut().insert("ghostline.key".into(), key);
+
+        let p = browser::open(&mem).unwrap();
+        assert_eq!(p.agents(), vec![MIGRATED_AGENT]);
+        assert_eq!(p.load(MIGRATED_AGENT).unwrap().unwrap().seed, 7);
+        assert!(!mem.0.borrow().keys().any(|k| k.starts_with("ghostline")));
+    }
+
+    #[test]
+    fn a_lost_key_is_not_silently_replaced() {
+        let mem = Mem::default();
+        browser::open(&mem)
+            .unwrap()
+            .save("a", &Run::new(1))
+            .unwrap();
+        mem.0.borrow_mut().remove(KEY);
+        assert!(browser::open(&mem).is_err());
+        assert!(mem.0.borrow().contains_key("uplink_rust.agent.a"));
+    }
+
+    #[test]
+    fn quota_errors_surface() {
+        let mem = Mem::default();
+        let p = browser::open(&mem).unwrap();
+        *mem.1.borrow_mut() = Some(10);
+        assert!(p.save("a", &Run::new(1)).is_err());
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    #[test]
+    fn desktop_roster_and_autosave_migration() {
+        use ur_save::store::LocalStore;
+        let dir = std::env::temp_dir().join(format!("ur-persist-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        // A pre-roster save.
+        {
+            let key = native::key_from_file_for_test(&dir);
+            let sealed = seal_run(&Run::new(3), Unlock::Key(&key)).unwrap();
+            LocalStore::new(&dir)
+                .unwrap()
+                .write("autosave", &sealed)
+                .unwrap();
+        }
+        let p = native::open_in(&dir).unwrap();
+        assert_eq!(p.agents(), vec![MIGRATED_AGENT]);
+        assert_eq!(p.load(MIGRATED_AGENT).unwrap().unwrap().seed, 3);
+        p.save("neo", &Run::new(4)).unwrap();
+        p.save("neo", &Run::new(4)).unwrap();
+        assert_eq!(p.agents(), vec![MIGRATED_AGENT, "neo"]);
+        p.retire("neo").unwrap();
+        assert_eq!(p.agents(), vec![MIGRATED_AGENT]);
+        assert!(!dir.join("neo.glsave.bak").exists());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }

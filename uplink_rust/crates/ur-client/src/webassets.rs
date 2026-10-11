@@ -8,8 +8,9 @@ use eframe::egui;
 use wasm_bindgen::prelude::*;
 
 /// Archives the client reads. Anything else the player picks is ignored.
-pub const WANTED: [&str; 7] = [
+pub const WANTED: [&str; 8] = [
     "graphics.dat",
+    "loading.dat",
     "fonts.dat",
     "patch.dat",
     "patch2.dat",

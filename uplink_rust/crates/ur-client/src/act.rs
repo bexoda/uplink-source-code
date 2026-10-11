@@ -15,7 +15,10 @@ pub enum Act {
     Disconnect,
     TogglePause,
     SaveNow,
+    /// Game over: the agent is finished; back to the main menu.
     NewGame,
+    /// The HUD's close button: "Close any connections and log off" to the main menu.
+    LogOff,
 }
 
 impl crate::game::Game {
@@ -32,7 +35,7 @@ impl crate::game::Game {
             Act::Connect => self.connect(),
             Act::Disconnect => self.disconnect(),
             Act::TogglePause => self.paused = !self.paused,
-            other @ (Act::SaveNow | Act::NewGame) => return Some(other),
+            other @ (Act::SaveNow | Act::NewGame | Act::LogOff) => return Some(other),
         }
         None
     }

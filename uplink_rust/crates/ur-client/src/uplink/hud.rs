@@ -88,11 +88,7 @@ pub fn draw(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec<
     );
     image_button(c, res, 3.0, 4.0, "close.tif", hit, false);
     if hit.clicked {
-        if g.connected() {
-            acts.push(Act::Disconnect);
-        }
-        acts.push(Act::SaveNow);
-        st.say("Message", "Progress saved.");
+        acts.push(Act::LogOff);
     }
 
     button_box_state(

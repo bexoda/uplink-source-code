@@ -9,7 +9,7 @@ use crate::act::Act;
 use crate::audio::Audio;
 use crate::game::{Game, Level};
 use crate::persist::Persist;
-use crate::uplink::UplinkUi;
+use crate::uplink::{MenuAct, UplinkUi};
 
 /// A save is under a kilobyte and seals in well under a millisecond. The browser saves more often
 /// because a closed tab gives no chance to save on the way out.
@@ -49,7 +49,8 @@ fn new_game() -> Game {
 }
 
 pub struct UplinkRustApp {
-    game: Game,
+    /// The agent being played and their game; `None` while in the main menu.
+    playing: Option<(String, Game)>,
     persist: Option<Persist>,
     /// Problems to show the player in the original message box once the interface is up.
     notices: Vec<String>,
@@ -70,25 +71,15 @@ impl UplinkRustApp {
         let mut notice = None;
         let (uplink, audio) = load_uplink_ui(&cc.egui_ctx, &mut notice);
         let mut notices: Vec<String> = notice.map(|(_, t)| t).into_iter().collect();
-        let persist = match Persist::open() {
+        let persist = match crate::persist::open() {
             Ok(p) => Some(p),
             Err(e) => {
                 notices.push(e);
                 None
             }
         };
-        let mut game = None;
-        if let Some(p) = &persist {
-            match p.load() {
-                Ok(Some(run)) => game = Some(Game::from_run(run, false)),
-                Ok(None) => {}
-                Err(e) => notices.push(format!(
-                    "{e}. Starting a new game; the damaged save was left in place."
-                )),
-            }
-        }
         UplinkRustApp {
-            game: game.unwrap_or_else(new_game),
+            playing: None,
             persist,
             notices,
             last_save: 0.0,
@@ -100,26 +91,97 @@ impl UplinkRustApp {
         }
     }
 
+    fn agents(&self) -> Vec<String> {
+        self.persist
+            .as_ref()
+            .map(|p| p.agents())
+            .unwrap_or_default()
+    }
+
     fn save(&mut self) {
-        if let Some(p) = &self.persist {
-            match p.save(&self.game.run) {
-                Ok(()) => self.game.dirty = false,
-                Err(e) => self.notices.push(format!("Save failed: {e}")),
-            }
+        let (Some(p), Some((agent, game))) = (&self.persist, &mut self.playing) else {
+            return;
+        };
+        match p.save(agent, &game.run) {
+            Ok(()) => game.dirty = false,
+            Err(e) => self.notices.push(format!("Save failed: {e}")),
+        }
+    }
+
+    /// Leaves the game for the login screen, saving first.
+    fn log_off(&mut self) {
+        self.save();
+        let agent = self.playing.take().map(|(a, _)| a);
+        if let Some(u) = &mut self.uplink {
+            u.show_login(agent.as_deref());
         }
     }
 
     fn apply(&mut self, act: Act) {
-        match self.game.apply_act(act) {
+        let Some((_, game)) = &mut self.playing else {
+            return;
+        };
+        match game.apply_act(act) {
             Some(Act::SaveNow) => self.save(),
+            Some(Act::LogOff) => self.log_off(),
             Some(Act::NewGame) => {
-                if let Some(p) = &self.persist {
-                    p.clear();
+                // Three strikes: the agent's career is over, so they leave the roster.
+                if let (Some(p), Some((agent, _))) = (&self.persist, &self.playing) {
+                    let _ = p.retire(agent);
                 }
-                self.game = new_game();
+                self.playing = None;
+                if let Some(u) = &mut self.uplink {
+                    u.show_login(None);
+                }
             }
             _ => {}
         }
+    }
+
+    fn menu_act(&mut self, act: MenuAct, ctx: &egui::Context) {
+        match act {
+            MenuAct::NewAgent(agent) => {
+                let game = new_game();
+                self.playing = Some((agent, game));
+                self.save();
+            }
+            MenuAct::Enter(agent) => {
+                let loaded = match &self.persist {
+                    Some(p) => p.load(&agent),
+                    None => Err("saving is unavailable in this browser".into()),
+                };
+                match loaded {
+                    Ok(Some(run)) => self.playing = Some((agent, Game::from_run(run, false))),
+                    Ok(None) => self.back_with(&agent, "That agent has no save."),
+                    Err(e) => self.back_with(&agent, &format!("Could not load '{agent}': {e}.")),
+                }
+            }
+            MenuAct::Retire(agent) => {
+                if let Some(p) = &self.persist {
+                    if let Err(e) = p.retire(&agent) {
+                        self.notices
+                            .push(format!("Could not retire '{agent}': {e}"));
+                    }
+                }
+            }
+            MenuAct::Exit => {
+                #[cfg(not(target_arch = "wasm32"))]
+                ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                #[cfg(target_arch = "wasm32")]
+                {
+                    let _ = ctx;
+                    self.notices
+                        .push("Close the browser tab to exit. Your agents are saved.".into());
+                }
+            }
+        }
+    }
+
+    fn back_with(&mut self, agent: &str, msg: &str) {
+        if let Some(u) = &mut self.uplink {
+            u.show_login(Some(agent));
+        }
+        self.notices.push(msg.to_string());
     }
 }
 
@@ -220,37 +282,61 @@ impl eframe::App for UplinkRustApp {
             }
         }
 
-        let Some(u) = &mut self.uplink else {
+        if self.uplink.is_none() {
             egui::CentralPanel::default()
                 .frame(egui::Frame::NONE)
                 .show(ui, |ui| needs_data(ui, &self.notices));
             return;
-        };
+        }
 
         // Real elapsed time, not egui's smoothed `stable_dt` (which under-reports on slow frames and
         // made the game clock run slow). `Game::advance` still caps one frame at half a second.
         let now = ctx.input(|i| i.time);
         let dt = self.last_frame.map_or(0.0, |t| (now - t).max(0.0) as f32);
         self.last_frame = Some(now);
-        self.game.advance(dt);
 
-        for n in self.notices.drain(..) {
-            u.message(&n);
+        let agents = self.agents();
+        let notices: Vec<String> = self.notices.drain(..).collect();
+        let u = self.uplink.as_mut().expect("checked above");
+        for n in &notices {
+            u.message(n);
         }
+
         let mut acts: Vec<Act> = Vec::new();
-        egui::CentralPanel::default()
-            .frame(egui::Frame::NONE)
-            .show(ui, |ui| u.show(ui, &self.game, dt, &mut acts));
+        let mut menu_acts: Vec<MenuAct> = Vec::new();
+        match &mut self.playing {
+            Some((_, game)) => {
+                game.advance(dt);
+                egui::CentralPanel::default()
+                    .frame(egui::Frame::NONE)
+                    .show(ui, |ui| u.show(ui, game, dt, &mut acts));
+            }
+            None => {
+                egui::CentralPanel::default()
+                    .frame(egui::Frame::NONE)
+                    .show(ui, |ui| u.show_menu(ui, &agents, dt, &mut menu_acts));
+            }
+        }
         let ui_cues = u.take_cues();
         for a in acts {
             self.apply(a);
         }
-        if self.game.dirty && now - self.last_save > AUTOSAVE_SECS {
+        for a in menu_acts {
+            self.menu_act(a, &ctx);
+        }
+        if self.playing.as_ref().is_some_and(|(_, g)| g.dirty)
+            && now - self.last_save > AUTOSAVE_SECS
+        {
             self.last_save = now;
             self.save();
         }
+        let game_cues = self
+            .playing
+            .as_ref()
+            .map(|(_, g)| g.take_cues())
+            .unwrap_or_default();
         if let Some(audio) = &mut self.audio {
-            for c in ui_cues.into_iter().chain(self.game.take_cues()) {
+            for c in ui_cues.into_iter().chain(game_cues) {
                 audio.play(c);
             }
             audio.update();
@@ -259,7 +345,11 @@ impl eframe::App for UplinkRustApp {
                 ctx.request_repaint_after(std::time::Duration::from_millis(500));
             }
         }
-        if !self.game.paused && !self.game.world().game_over {
+        let running = match &self.playing {
+            Some((_, g)) => !g.paused && !g.world().game_over,
+            None => true, // the menu animates (cursor, start sequence, loading)
+        };
+        if running {
             ctx.request_repaint_after(std::time::Duration::from_millis(16));
         }
     }
