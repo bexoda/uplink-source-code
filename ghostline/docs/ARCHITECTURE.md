@@ -14,7 +14,7 @@ Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the brows
 | `gl-sim` | Headless deterministic simulation. No I/O, floats, wall-clock or `HashMap` iteration. | native + wasm |
 | `gl-save` | Sealed save container, desktop store, sync protocol/decision logic. | native + wasm (`store`, `keychain` native only) |
 | `gl-server` | Axum + Postgres sync API. Stores opaque blobs. | server |
-| *(next)* `gl-client` | egui/eframe UI over `gl-sim`. One codebase, native + wasm. | native + wasm |
+| `gl-client` | egui/eframe UI over `gl-sim`. One codebase, native + wasm. `game.rs` is the UI-free controller (fixed-step pacing, selection, narration, trace view); `app.rs` only draws and emits actions. | native + wasm |
 
 ## Simulation rules
 
@@ -128,7 +128,9 @@ Tests: `TEST_DATABASE_URL=postgres://... cargo test -p gl-server` (**silently sk
 
 ## Known gaps
 
-- No client/UI yet; no HTTP sync client; no account recovery (token is the account).
+- The client has no login or sync screen and no HTTP client yet; no browser saves; no account recovery.
+- Not yet checked: that the sim produces identical digests in wasm and native (it compiles for both; nobody has compared output).
+- The client clock uses real elapsed time per frame, capped at 0.5 s: on a very slow device the game runs slower than real time (safe for the server's wall-clock budget) rather than jumping ahead.
 - OAuth is built but unverified against real providers; no email login, no rate limiting.
 - Server state is unreadable after a `SCHEMA_VERSION` change; no migrations yet.
 - No rate limiting or TLS termination on the server (put it behind a reverse proxy).

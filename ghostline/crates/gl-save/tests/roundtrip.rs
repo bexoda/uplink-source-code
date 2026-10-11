@@ -142,3 +142,31 @@ fn wire_roundtrips_and_bounds_hostile_input() {
     assert!(decode_segment(&bomb).is_err());
     assert!(decode_segment(b"junk").is_err());
 }
+
+#[test]
+fn run_save_keeps_world_seed_and_unsynced_log() {
+    use gl_sim::replay::Run;
+    let mut run = Run::new(77);
+    run.apply(gl_sim::Command::AcceptMission(1), &mut vec![])
+        .unwrap();
+    for _ in 0..30 {
+        run.tick(&mut vec![]);
+    }
+    let key = Key::generate();
+    let sealed = seal_run(&run, Unlock::Key(&key)).unwrap();
+    assert_eq!(peek(&sealed).unwrap().format, RUN_FORMAT_VERSION);
+    let back = open_run(&sealed, Unlock::Key(&key)).unwrap();
+    assert_eq!((back.seed, back.unsynced()), (77, 1));
+    assert_eq!(back.segment(), run.segment());
+    assert_eq!(bytes_of(&back.world), bytes_of(&run.world));
+    // The two payload kinds can't be confused for each other.
+    assert_eq!(
+        open(&sealed, Unlock::Key(&key)).unwrap_err(),
+        SaveError::UnsupportedFormat(RUN_FORMAT_VERSION)
+    );
+    let world_save = seal(&run.world, Unlock::Key(&key)).unwrap();
+    assert_eq!(
+        open_run(&world_save, Unlock::Key(&key)).unwrap_err(),
+        SaveError::UnsupportedFormat(FORMAT_VERSION)
+    );
+}

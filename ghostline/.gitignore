@@ -1,3 +1,4 @@
 target/
 *.glsave
 .env
+crates/gl-client/web/pkg/

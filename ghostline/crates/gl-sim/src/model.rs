@@ -38,6 +38,11 @@ impl Tool {
         }
     }
 
+    /// Cost to go from `current_level` (0 = not owned) to the next level.
+    pub fn upgrade_price(self, current_level: u32) -> i64 {
+        self.base_price() * (current_level as i64 + 1)
+    }
+
     pub fn base_price(self) -> i64 {
         match self {
             Tool::PasswordBreaker => 300,

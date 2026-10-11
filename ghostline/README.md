@@ -5,8 +5,11 @@ A hacker-career simulation written in Rust, targeting Windows, macOS, Linux and 
 You take contracts, bounce your connection through relays, break layered server security, steal or
 erase data, and wipe your logs before a trace walks back to you. Three strikes and the run is over.
 
-**Status: early foundation.** The simulation, encrypted saves and sync server work and are tested.
-There is no UI yet.
+**Status: playable local prototype.** The simulation, desktop and browser client, encrypted local saves, login and
+verified-run sync server all work and are tested. The client does not talk to the server yet (no login or sync
+screen), so every game is offline and unverified.
+
+![Ghostline mid-hack: tool running, trace closing in](docs/screenshot.png)
 
 > **Private project. Do not publish or distribute.**
 > Written by someone who had read the Introversion *Uplink* developer source, so it is **not** a true
@@ -19,6 +22,7 @@ There is no UI yet.
 |---|---|
 | `crates/gl-sim` | Headless, deterministic game simulation. Same seed and commands give identical state on every platform. |
 | `crates/gl-save` | Encrypted save container, desktop file store, optional OS keychain, sync decision logic. |
+| `crates/gl-client` | egui client, one codebase for desktop and browser (wasm). Game logic is in `game.rs`, free of UI code, so it is unit-tested. |
 | `crates/gl-server` | Axum + Postgres sync API. Stores client-encrypted blobs it cannot read. |
 
 Design details, save format, sync model and known gaps: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
@@ -28,6 +32,31 @@ Design details, save format, sync model and known gaps: [`docs/ARCHITECTURE.md`]
 - Rust 1.80+ (developed on 1.97)
 - For the web target: `rustup target add wasm32-unknown-unknown`
 - For server tests: a PostgreSQL 13+ instance
+
+## Play it
+
+```sh
+# Desktop (Windows, macOS, Linux). Linux needs libGL and libxkbcommon-x11 installed.
+cargo run -p gl-client --release
+
+# Browser. Needs `rustup target add wasm32-unknown-unknown` and `cargo install wasm-bindgen-cli`
+# at the SAME version as the wasm-bindgen crate in Cargo.lock.
+crates/gl-client/build-web.sh
+cd crates/gl-client/web && python3 -m http.server 8000   # then open http://localhost:8000
+```
+
+How to play: click relays to build a chain (order matters), click a target, accept a contract, connect.
+Your first attack starts a trace that walks back from the target hop by hop. Break layers in order, copy
+the file, and erase your log at a hop before the tracer reaches it and the trace dies. Three times traced
+ends the career.
+
+- **Desktop saves** autosave to your data directory (`~/.local/share/ghostline`, `~/Library/Application Support/ghostline`, `%APPDATA%\ghostline`),
+  sealed and tamper-evident. The key is in the OS keychain when built with `--features os-keyring`, otherwise a key file
+  next to the save. That protects against casual edits only; it is not anti-cheat.
+- **Browser saves are not built yet**: progress is lost on reload. A banner says so.
+- `GHOSTLINE_SEED=42` starts a reproducible world (desktop only), handy for bug reports.
+- Release size: the wasm bundle is about 6 MB (2 MB gzipped). `WASM_OPT=1` runs `wasm-opt`, but only use binaryen 117 or newer;
+  older versions (Ubuntu ships 108) produce a module browsers reject.
 
 ## Build and test
 
@@ -132,7 +161,11 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 - [x] Run recording, server-side replay verification, server-issued seeds
 - [x] OAuth login (Google, GitHub, Discord), sessions, account linking, hacker handles, account deletion
 - [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
-- [ ] `egui` client (native + wasm): world map, connect screen, task manager, trace bar
+- [x] `egui` client (native + wasm): world map, connect, tasks, trace bar, contracts, tools, desktop autosave
+- [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
+- [ ] Browser saves
+- [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native
+- [ ] Contests with per-player variants and a leaderboard (needs a deeper sim first)
 - [ ] HTTP sync client and conflict-resolution UI
 - [ ] Save schema migrations
 - [ ] More tools, missions, economy, and new hacking mechanics

@@ -11,7 +11,7 @@ use crate::world::{CmdError, Command, Event, World};
 
 /// Version of the *rules*. Bump on any change that alters simulation outcomes
 /// (balance, mechanics), since old logs would no longer replay identically.
-pub const SIM_VERSION: u32 = 1;
+pub const SIM_VERSION: u32 = 2;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CommandEntry {
@@ -117,7 +117,10 @@ pub fn replay(world: &mut World, seg: &Segment, limits: Limits) -> Result<(), Re
 
 /// A live game plus the log needed to prove it. Only successful commands are
 /// recorded: failed ones never mutate state, so replay doesn't need them.
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Run {
+    /// The seed this run's world was generated from. The server needs it to replay.
+    pub seed: u64,
     pub world: World,
     start_tick: u64,
     log: Vec<CommandEntry>,
@@ -126,6 +129,7 @@ pub struct Run {
 impl Run {
     pub fn new(seed: u64) -> Run {
         Run {
+            seed,
             world: World::new(seed),
             start_tick: 0,
             log: Vec::new(),
@@ -133,13 +137,19 @@ impl Run {
     }
 
     /// Continue from a verified state fetched from the server.
-    pub fn resume(world: World) -> Run {
+    pub fn resume(seed: u64, world: World) -> Run {
         let start_tick = world.tick_no;
         Run {
+            seed,
             world,
             start_tick,
             log: Vec::new(),
         }
+    }
+
+    /// Commands played since the last acknowledged sync.
+    pub fn unsynced(&self) -> usize {
+        self.log.len()
     }
 
     pub fn apply(&mut self, cmd: Command, out: &mut Vec<Event>) -> Result<(), CmdError> {

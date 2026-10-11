@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/gl-sim", "crates/gl-save", "crates/gl-server"]
+members = ["crates/gl-sim", "crates/gl-save", "crates/gl-server", "crates/gl-client"]
 
 [workspace.package]
 version = "0.1.0"

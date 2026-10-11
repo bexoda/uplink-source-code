@@ -408,3 +408,16 @@ fn state_round_trips_through_postcard() {
     let back: World = postcard::from_bytes(&bytes).unwrap();
     assert_eq!(bytes, postcard::to_allocvec(&back).unwrap());
 }
+
+#[test]
+fn contracts_are_never_duplicated() {
+    for seed in 0..500 {
+        let w = World::new(seed);
+        assert_eq!(w.missions.len(), 3);
+        let keys: Vec<_> = w.missions.iter().map(|m| m.title.clone()).collect();
+        let mut dedup = keys.clone();
+        dedup.sort();
+        dedup.dedup();
+        assert_eq!(dedup.len(), 3, "seed {seed}: {keys:?}");
+    }
+}

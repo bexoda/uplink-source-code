@@ -178,11 +178,15 @@ impl World {
             targets.push(id);
         }
         for m in 0..3u32 {
-            let sid = targets[w.rng.index(targets.len())];
-            let (file, value, name) = {
+            // Never offer the same file twice. There are always at least 12 distinct (server, file) pairs.
+            let (sid, file, value, name) = loop {
+                let sid = targets[w.rng.index(targets.len())];
                 let s = &w.servers[sid];
                 let f = &s.files[w.rng.index(s.files.len())];
-                (f.name.clone(), f.value, s.name.clone())
+                let dup = w.missions.iter().any(|x| matches!(&x.kind, MissionKind::StealFile { server, file } if *server == sid && *file == f.name));
+                if !dup {
+                    break (sid, f.name.clone(), f.value, s.name.clone());
+                }
             };
             w.missions.push(Mission {
                 id: m + 1,
@@ -359,7 +363,7 @@ impl World {
         if level >= MAX_TOOL_LEVEL {
             return Err(CmdError::MaxLevel);
         }
-        let price = tool.base_price() * (level as i64 + 1);
+        let price = tool.upgrade_price(level);
         if self.player.credits < price {
             return Err(CmdError::NotEnoughCredits);
         }

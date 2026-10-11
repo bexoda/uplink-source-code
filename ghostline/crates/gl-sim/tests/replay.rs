@@ -108,7 +108,7 @@ fn resume_from_server_state_continues_the_chain() {
     let mut server = World::new(5);
     replay(&mut server, &run.segment(), Limits::default()).unwrap();
     // Second device downloads the verified state and keeps going.
-    let mut dev2 = Run::resume(server.clone());
+    let mut dev2 = Run::resume(5, server.clone());
     dev2.apply(Command::Disconnect, &mut vec![]).unwrap();
     dev2.tick(&mut vec![]);
     replay(&mut server, &dev2.segment(), Limits::default()).unwrap();

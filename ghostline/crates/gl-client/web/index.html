@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghostline</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #070b09; overflow: hidden; }
+    canvas { display: block; width: 100%; height: 100%; }
+    #status { position: fixed; inset: 0; display: grid; place-items: center; color: #70a08a;
+              font: 14px ui-monospace, Menlo, Consolas, monospace; }
+    #status.hidden { display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="gl_canvas"></canvas>
+  <div id="status">loading ghostline…</div>
+  <script type="module">
+    import init, { start } from './pkg/gl_client.js';
+    const status = document.getElementById('status');
+    try {
+      await init();
+      await start('gl_canvas');
+      status.classList.add('hidden');
+    } catch (e) {
+      status.textContent = 'Could not start: ' + e + ' (WebGL2 is required)';
+      console.error(e);
+    }
+  </script>
+</body>
+</html>

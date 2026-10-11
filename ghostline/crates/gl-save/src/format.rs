@@ -1,10 +1,14 @@
 use argon2::{Algorithm, Argon2, Params, Version};
 use chacha20poly1305::aead::{Aead, KeyInit, Payload};
 use chacha20poly1305::{XChaCha20Poly1305, XNonce};
+use gl_sim::replay::Run;
 use gl_sim::{World, SCHEMA_VERSION};
 use rand_core::{OsRng, RngCore};
+use serde::{de::DeserializeOwned, Serialize};
 
+/// Format 1: payload is a bare `World` (server-held state). Format 2: payload is a `Run` (client saves).
 pub const FORMAT_VERSION: u16 = 1;
+pub const RUN_FORMAT_VERSION: u16 = 2;
 const MAGIC: &[u8; 4] = b"GLSV";
 // magic | format u16 | schema u32 | key_mode u8 | salt[16] | nonce[24]
 const HEADER_LEN: usize = 4 + 2 + 4 + 1 + 16 + 24;
@@ -93,7 +97,21 @@ fn derive(pass: &str, salt: &[u8; 16]) -> Result<Key, SaveError> {
 }
 
 pub fn seal(world: &World, unlock: Unlock<'_>) -> Result<Vec<u8>, SaveError> {
-    let raw = postcard::to_allocvec(world).map_err(|_| SaveError::Encode)?;
+    seal_payload(FORMAT_VERSION, world.schema, world, unlock)
+}
+
+/// Seal a whole `Run` (world + unsynced command log + seed) for local storage.
+pub fn seal_run(run: &Run, unlock: Unlock<'_>) -> Result<Vec<u8>, SaveError> {
+    seal_payload(RUN_FORMAT_VERSION, run.world.schema, run, unlock)
+}
+
+fn seal_payload<T: Serialize>(
+    format: u16,
+    schema: u32,
+    value: &T,
+    unlock: Unlock<'_>,
+) -> Result<Vec<u8>, SaveError> {
+    let raw = postcard::to_allocvec(value).map_err(|_| SaveError::Encode)?;
     let packed = lz4_flex::compress_prepend_size(&raw);
 
     let mut salt = [0u8; 16];
@@ -115,8 +133,8 @@ pub fn seal(world: &World, unlock: Unlock<'_>) -> Result<Vec<u8>, SaveError> {
 
     let mut out = Vec::with_capacity(HEADER_LEN + packed.len() + 16);
     out.extend_from_slice(MAGIC);
-    out.extend_from_slice(&FORMAT_VERSION.to_le_bytes());
-    out.extend_from_slice(&world.schema.to_le_bytes());
+    out.extend_from_slice(&format.to_le_bytes());
+    out.extend_from_slice(&schema.to_le_bytes());
     out.push(mode);
     out.extend_from_slice(&salt);
     out.extend_from_slice(&nonce);
@@ -151,8 +169,20 @@ pub fn peek(bytes: &[u8]) -> Result<Header, SaveError> {
 }
 
 pub fn open(bytes: &[u8], unlock: Unlock<'_>) -> Result<World, SaveError> {
+    open_payload(FORMAT_VERSION, bytes, unlock)
+}
+
+pub fn open_run(bytes: &[u8], unlock: Unlock<'_>) -> Result<Run, SaveError> {
+    open_payload(RUN_FORMAT_VERSION, bytes, unlock)
+}
+
+fn open_payload<T: DeserializeOwned>(
+    format: u16,
+    bytes: &[u8],
+    unlock: Unlock<'_>,
+) -> Result<T, SaveError> {
     let h = peek(bytes)?;
-    if h.format != FORMAT_VERSION {
+    if h.format != format {
         return Err(SaveError::UnsupportedFormat(h.format));
     }
     if h.schema != SCHEMA_VERSION {
