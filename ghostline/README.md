@@ -65,7 +65,7 @@ How to play (with Uplink data present, you get the original interface):
    **Log Deleter** (Security) and click your log on a machine: a trace cannot cross a machine whose log you erased.
 6. Three times traced ends the career.
 
-Without Uplink data the client falls back to a plain vector interface with the same game underneath.
+Ghostline has no interface of its own: without your Uplink data it shows only a request for the files. A new game starts connected to Uplink's own server, as the original does.
 
 - **Desktop saves** autosave to your data directory (`~/.local/share/ghostline`, `~/Library/Application Support/ghostline`, `%APPDATA%\ghostline`),
   sealed and tamper-evident. The key is in the OS keychain when built with `--features os-keyring`, otherwise a key file
@@ -93,7 +93,7 @@ UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p gl-client --relea
 - Everything is decoded in memory at runtime. Patch archives (`patch*.dat`) override the base graphics, as in the game.
 - **Browser:** the page asks for your own `graphics.dat`, `fonts.dat`, `patch*.dat`, `sounds.dat` and `music.dat` with a file
   picker. They are read inside the page, kept in that browser's IndexedDB so a reload doesn't ask again, and never uploaded.
-  Open the page with `?forget-assets` to drop them. Until you pick them, the plain vector UI runs. We never host their files,
+  Open the page with `?forget-assets` to drop them. Until you pick them, the page shows only the file request. We never host their files,
   because that would be distributing them.
 - **Not built yet:** the main menu and loading screens, gateway artwork,
   the awards, the LAN and IRC screens, e-mail, the phone dialler, world-map zoom, and the game's own text tables (`data.dat`).

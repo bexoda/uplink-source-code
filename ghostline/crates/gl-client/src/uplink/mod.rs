@@ -64,6 +64,8 @@ pub struct State {
     pub armed: Option<Tool>,
     pub help: String,
     pub msg: Option<(String, String)>,
+    /// Messages waiting for the box to close.
+    pub queued: Vec<String>,
     /// Whether the Trace Tracker window is open.
     pub tracker: bool,
     /// Sounds to play this frame, in the order their originals would have fired.
@@ -167,6 +169,7 @@ impl UplinkUi {
                 armed: None,
                 help: String::new(),
                 msg: None,
+                queued: Vec::new(),
                 tracker: true,
                 cues: Vec::new(),
                 next_beep: 0.0,
@@ -193,6 +196,15 @@ impl UplinkUi {
         self.st.names = names;
     }
 
+    /// Shows `text` in the original message box (queued behind any box already open).
+    pub fn message(&mut self, text: &str) {
+        if self.st.msg.is_none() {
+            self.st.say("Message", text);
+        } else {
+            self.st.queued.push(text.to_string());
+        }
+    }
+
     /// Sounds the interface asked for since the last call.
     pub fn take_cues(&mut self) -> Vec<Cue> {
         std::mem::take(&mut self.st.cues)
@@ -208,7 +220,15 @@ impl UplinkUi {
         let (res, st, ecl) = (&self.res, &mut self.st, &mut self.ecl);
         // Refusals and big moments become message boxes, as in the original.
         if st.msg.is_none() {
-            if let Some(m) = g.take_refusal().or_else(|| g.take_notice()) {
+            let next = if st.queued.is_empty() {
+                None
+            } else {
+                Some(st.queued.remove(0))
+            };
+            if let Some(m) = next
+                .or_else(|| g.take_refusal())
+                .or_else(|| g.take_notice())
+            {
                 st.say("Message", &m);
             }
         }

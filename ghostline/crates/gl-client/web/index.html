@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ghostline</title>
   <style>
-    html, body { margin: 0; height: 100%; background: #070b09; overflow: hidden; }
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
     canvas { display: block; width: 100%; height: 100%; }
-    #status { position: fixed; inset: 0; display: grid; place-items: center; color: #70a08a;
+    #status { position: fixed; inset: 0; display: grid; place-items: center; color: #6080d0;
               font: 14px ui-monospace, Menlo, Consolas, monospace; }
     #status.hidden, #assets.hidden { display: none; }
-    #assets { position: fixed; right: 16px; bottom: 16px; max-width: min(420px, calc(100vw - 32px));
-              box-sizing: border-box; padding: 12px 14px; background: #0d1a14; border: 1px solid #2b5a44;
-              color: #9fd0b8; font: 13px/1.45 ui-monospace, Menlo, Consolas, monospace; }
+    #assets { position: fixed; left: 50%; top: 58%; transform: translateX(-50%); width: min(420px, calc(100vw - 32px));
+              box-sizing: border-box; padding: 12px 14px; background: #00003a; border: 1px solid #3050c0;
+              color: #b0c0f0; font: 13px/1.45 ui-monospace, Menlo, Consolas, monospace; }
     #assets p { margin: 0 0 8px; }
-    #assets code { color: #d8f0e4; }
-    #assets button { font: inherit; color: #d8f0e4; background: #1c3a2c; border: 1px solid #3f7a5e;
+    #assets code { color: #ffffff; }
+    #assets button { font: inherit; color: #ffffff; background: #10208a; border: 1px solid #5070e0;
                      padding: 4px 10px; cursor: pointer; }
-    #assets button:hover { background: #24503b; }
+    #assets button:hover { background: #2038b0; }
     #assets .msg { margin-top: 8px; color: #e0c070; min-height: 1em; }
   </style>
 </head>
