@@ -147,6 +147,11 @@ impl Run {
         }
     }
 
+    /// The tick the server has verified up to (where the next upload starts).
+    pub fn synced_tick(&self) -> u64 {
+        self.start_tick
+    }
+
     /// Commands played since the last acknowledged sync.
     pub fn unsynced(&self) -> usize {
         self.log.len()

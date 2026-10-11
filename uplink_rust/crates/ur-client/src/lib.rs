@@ -1,5 +1,6 @@
 //! uplink_rust client: one egui codebase for desktop and the browser.
 
+pub mod account;
 mod act;
 mod app;
 mod assets;

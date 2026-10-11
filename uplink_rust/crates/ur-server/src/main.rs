@@ -28,12 +28,31 @@ async fn main() {
                 .collect()
         })
         .unwrap_or_default();
-    let providers = providers_from_env();
+    let mut providers = providers_from_env();
+    let dev_login = std::env::var("UPLINK_RUST_DEV_LOGIN").is_ok_and(|v| v == "1");
+    if dev_login {
+        if ur_server::devidp::allowed(&public_url) {
+            tracing::warn!(
+                "development sign-in is ON: anyone who can reach this server can sign in as anyone"
+            );
+            providers.insert(
+                ur_server::devidp::NAME.into(),
+                ur_server::devidp::config(&public_url),
+            );
+        } else {
+            panic!(
+                "UPLINK_RUST_DEV_LOGIN=1 is only allowed when UPLINK_RUST_PUBLIC_URL is loopback"
+            );
+        }
+    }
     if providers.is_empty() {
         tracing::warn!("no OAuth providers configured; nobody can log in");
     }
     let state = AppState::new(db, server_key, providers, public_url, web_origins);
-    let app = router(state, std::env::var("UPLINK_RUST_ALLOWED_ORIGIN").ok());
+    let mut app = router(state, std::env::var("UPLINK_RUST_ALLOWED_ORIGIN").ok());
+    if dev_login {
+        app = app.merge(ur_server::devidp::routes());
+    }
     let listener = tokio::net::TcpListener::bind(&bind).await.expect("bind");
     tracing::info!("listening on {bind}");
     axum::serve(listener, app)

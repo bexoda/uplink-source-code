@@ -41,11 +41,12 @@ pub async fn issue_seeds(
     Query(q): Query<SeedQuery>,
 ) -> Result<Json<SeedList>, ApiError> {
     let n = q.n.unwrap_or(1).clamp(1, 5) as i64;
-    let unused: i64 =
-        sqlx::query_scalar("SELECT count(*) FROM seeds WHERE account_id = $1 AND NOT used")
-            .bind(acct)
-            .fetch_one(&s.db)
-            .await?;
+    let unused: i64 = sqlx::query_scalar(
+        "SELECT count(*) FROM seeds WHERE account_id = $1 AND NOT used AND agent_name IS NULL",
+    )
+    .bind(acct)
+    .fetch_one(&s.db)
+    .await?;
     if unused + n > MAX_UNUSED_SEEDS {
         return Err(ApiError::Rejected("too many unused seeds".into()));
     }

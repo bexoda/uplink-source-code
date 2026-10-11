@@ -13,7 +13,9 @@ use tower_http::cors::{AllowOrigin, CorsLayer};
 use ur_save::{slot, Key};
 use uuid::Uuid;
 
+pub mod agents;
 pub mod auth;
+pub mod devidp;
 pub mod runs;
 
 pub const MAX_BLOB: usize = 2 * 1024 * 1024;
@@ -73,7 +75,10 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
                 header::CONTENT_TYPE,
                 HeaderName::from_static(IF_REVISION),
             ])
-            .expose_headers([HeaderName::from_static(REVISION)]),
+            .expose_headers([
+                HeaderName::from_static(REVISION),
+                HeaderName::from_static("x-verified-tick"),
+            ]),
         // No origin configured: same-origin only.
         None => CorsLayer::new(),
     };
@@ -101,6 +106,8 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
             axum::routing::put(runs::sync_segment),
         )
         .route("/v1/runs/{seed}/state", get(runs::get_state))
+        .route("/v1/agents", get(agents::list).post(agents::create))
+        .route("/v1/agents/{name}", axum::routing::delete(agents::retire))
         .layer(DefaultBodyLimit::max(MAX_BLOB))
         .layer(cors)
         .with_state(state)

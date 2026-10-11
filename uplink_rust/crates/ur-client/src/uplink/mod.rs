@@ -16,7 +16,7 @@ mod swmenu;
 mod theme;
 mod widgets;
 
-pub use menu::MenuAct;
+pub use menu::{AccountView, MenuAct, RosterEntry};
 
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -228,7 +228,8 @@ impl UplinkUi {
     pub fn show_menu(
         &mut self,
         ui: &mut egui::Ui,
-        agents: &[String],
+        agents: &[RosterEntry],
+        account: &AccountView,
         dt: f32,
         out: &mut Vec<MenuAct>,
     ) {
@@ -246,7 +247,7 @@ impl UplinkUi {
             st.cues.push(Cue::MouseClick);
         }
         c.fill(0.0, 0.0, W, H, res.theme.c("Background"));
-        menu::draw(&mut c, ui, res, st, m, agents, dt, out);
+        menu::draw(&mut c, ui, res, st, m, agents, account, dt, out);
         msgbox(&mut c, res, st);
         if matches!(m.screen, menu::Screen::Login) {
             let tip = c.tooltip_text();

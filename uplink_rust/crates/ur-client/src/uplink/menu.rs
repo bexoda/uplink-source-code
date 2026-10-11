@@ -8,6 +8,7 @@ use eframe::egui::{self, Color32, Key};
 use super::canvas::{Canvas, Size, H, W};
 use super::widgets::{image_button, picture, picture_scaled};
 use super::{Res, State};
+use crate::account::{provider_label, Status};
 use crate::audio::Cue;
 
 fn sx(x: f32) -> f32 {
@@ -26,6 +27,31 @@ pub enum MenuAct {
     Enter(String),
     Retire(String),
     Exit,
+    /// New User while signed in: create the agent on the account now, so its seed is ready
+    /// when the start sequence ends.
+    Starting(String),
+    SignIn(String),
+    CancelSignIn,
+    SignOut,
+    SetHandle(String),
+}
+
+/// One name in the "Valid User Names" list.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RosterEntry {
+    pub name: String,
+    /// Saved on this device.
+    pub local: bool,
+    /// Held by the signed-in Uplink account.
+    pub online: bool,
+}
+
+/// What the login screen shows about the Uplink account.
+#[derive(Debug, Clone)]
+pub struct AccountView {
+    pub status: Status,
+    /// Sign-in providers the server offers (empty when it can't be reached).
+    pub providers: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -40,6 +66,8 @@ pub enum Screen {
         agent: String,
         t0: f32,
         image: String,
+        /// `Enter` was sent; the picture stays up until the game is ready.
+        sent: bool,
     },
 }
 
@@ -116,6 +144,7 @@ impl Menu {
             agent,
             t0: self.t,
             image,
+            sent: false,
         };
     }
 }
@@ -126,18 +155,30 @@ pub fn draw(
     res: &Res,
     st: &mut State,
     m: &mut Menu,
-    agents: &[String],
+    agents: &[RosterEntry],
+    account: &AccountView,
     dt: f32,
     out: &mut Vec<MenuAct>,
 ) {
     m.t += dt;
     match m.screen.clone() {
-        Screen::Login => login(c, ui, res, st, m, agents, out),
+        Screen::Login => login(c, ui, res, st, m, agents, account, out),
         Screen::FirstLoad { agent, t0 } => first_load(c, res, st, m, agent, m.t - t0, out),
-        Screen::Loading { agent, t0, image } => {
+        Screen::Loading {
+            agent,
+            t0,
+            image,
+            sent,
+        } => {
             loading(c, res, &image);
-            if m.t - t0 >= LOADING_SECS {
-                out.push(MenuAct::Enter(agent));
+            if !sent && m.t - t0 >= LOADING_SECS {
+                out.push(MenuAct::Enter(agent.clone()));
+                m.screen = Screen::Loading {
+                    agent,
+                    t0,
+                    image,
+                    sent: true,
+                };
             }
         }
     }
@@ -173,9 +214,14 @@ fn login(
     res: &Res,
     st: &mut State,
     m: &mut Menu,
-    agents: &[String],
+    agents: &[RosterEntry],
+    account: &AccountView,
     out: &mut Vec<MenuAct>,
 ) {
+    let has = |a: &str| agents.iter().any(|e| e.name == a);
+    let signed_in = matches!(account.status, Status::SignedIn { .. });
+    // A new account first picks the handle other players see; the User ID box asks for it.
+    let choosing_handle = matches!(account.status, Status::SignedIn { handle: None });
     // MainMenuScreen: the logo.
     picture_scaled(
         c,
@@ -294,17 +340,24 @@ fn login(
                         "New User",
                         "Type the user name you want in the User ID box, then click New User.",
                     ),
-                    Some(a) if agents.contains(&a) => st.say(
+                    Some(a) if has(&a) => st.say(
                         "New User",
                         &format!("An agent called '{a}' already exists. Choose another name."),
                     ),
+                    Some(_) if choosing_handle => st.say(
+                        "New User",
+                        "Choose your handle first: type it in the Name box and click Proceed.",
+                    ),
                     Some(a) => {
+                        if signed_in {
+                            out.push(MenuAct::Starting(a.clone()));
+                        }
                         m.last_t = -1.0;
                         m.screen = Screen::FirstLoad { agent: a, t0: m.t };
                     }
                 },
                 1 => match crate::persist::agent_name(&m.name) {
-                    Some(a) if agents.contains(&a) => m.confirm_retire = Some(a),
+                    Some(a) if has(&a) => m.confirm_retire = Some(a),
                     _ => st.say(
                         "Retire",
                         &format!("Impossible to remove '{}' from the roster.", m.name),
@@ -362,9 +415,18 @@ fn login(
         "Click here when done",
     );
     image_button(c, res, ux + 140.0, uy + 125.0, "proceed.tif", p, false);
-    if p.clicked || proceed {
+    if (p.clicked || proceed) && choosing_handle {
+        let h = m.name.trim().to_string();
+        if h.is_empty() {
+            st.say("Handle", "Type the handle you want in the Name box first.");
+        } else {
+            out.push(MenuAct::SetHandle(h));
+            m.name.clear();
+            m.code.clear();
+        }
+    } else if p.clicked || proceed {
         match crate::persist::agent_name(&m.name) {
-            Some(a) if agents.contains(&a) => {
+            Some(a) if has(&a) => {
                 st.cues.push(Cue::Login);
                 m.start_loading(a);
             }
@@ -376,21 +438,27 @@ fn login(
     }
 
     // Help text above the box.
-    text_lines(
-        c,
-        res,
-        ux,
-        sy(200.0),
+    let help: &[&str] = if choosing_handle {
+        &[
+            "Welcome to Uplink. Choose the handle other",
+            "agents will know you by: type it in the Name",
+            "box and click Proceed. It can't be changed.",
+        ]
+    } else {
         &[
             "If you are registered as an Uplink Agent,",
             "enter your username and password below.",
             "Otherwise, click on the New User button.",
-        ],
-    );
+        ]
+    };
+    text_lines(c, res, ux, sy(200.0), help);
+
+    account_panel(c, res, ux, uy + 150.0, account, out);
 
     // The roster.
     large_text(c, res, sx(35.0), sy(270.0), sy(20.0), "Valid User Names");
-    for (i, a) in agents.iter().enumerate() {
+    for (i, e) in agents.iter().enumerate() {
+        let a = &e.name;
         let y = sy(300.0) + i as f32 * 18.0;
         let hit = c.hit(
             "username",
@@ -402,6 +470,18 @@ fn login(
             "Log in as this Agent",
         );
         text_lines(c, res, sx(35.0), y, &[a.as_str()]);
+        // Signed in, each agent says where it lives: on the account, or on this device only.
+        if signed_in {
+            let tag = if e.online { "online" } else { "this device" };
+            let tw = c.text_width(tag, Size::Small);
+            c.text(
+                sx(35.0) + sx(170.0) - tw - 6.0,
+                y + 10.0,
+                tag,
+                Size::Small,
+                res.theme.rgba("DefaultText", 0.55),
+            );
+        }
         if hit.hover {
             c.border(sx(35.0), y, sx(170.0), 15.0, res.theme.c("PanelBorder"));
         }
@@ -427,7 +507,13 @@ fn login(
             c,
             res,
             "Retire",
-            &format!("Are you sure you want to remove '{a}' from the roster?"),
+            &if agents.iter().any(|e| e.name == a && e.online) {
+                format!(
+                    "Remove '{a}' from the roster? It is also deleted from your Uplink account."
+                )
+            } else {
+                format!("Are you sure you want to remove '{a}' from the roster?")
+            },
         ) {
             Some(true) => {
                 out.push(MenuAct::Retire(a));
@@ -437,6 +523,88 @@ fn login(
             }
             Some(false) => m.confirm_retire = None,
             None => {}
+        }
+    }
+}
+
+/// The Uplink account under the User ID box: a heading like "Valid User Names", then
+/// full-width buttons in the original button style.
+fn account_panel(
+    c: &mut Canvas,
+    res: &Res,
+    x: f32,
+    y: f32,
+    account: &AccountView,
+    out: &mut Vec<MenuAct>,
+) {
+    if account.status == Status::Off {
+        return;
+    }
+    large_text(c, res, x, y, 20.0, "Uplink Account");
+    let note = |c: &mut Canvas, line: usize, s: &str| {
+        c.text(
+            x,
+            y + 34.0 + 14.0 * line as f32,
+            s,
+            Size::Small,
+            res.theme.c("DefaultText"),
+        );
+    };
+    let button = |c: &mut Canvas, i: u32, row: f32, caption: &str, tip: &str| -> bool {
+        let by = y + 52.0 + row * 20.0;
+        let hit = c.hit("account_button", i, x, by, 220.0, 15.0, tip);
+        super::widgets::button_box(c, res, x, by, 220.0, 15.0, caption, hit);
+        hit.clicked
+    };
+    match &account.status {
+        Status::Off => {}
+        Status::SignedOut => {
+            if account.providers.is_empty() {
+                note(c, 0, "The Uplink account server can't be reached.");
+                note(c, 1, "Your agents are saved on this device.");
+                return;
+            }
+            note(c, 0, "Sign in to keep your agents on every device.");
+            for (i, p) in account.providers.iter().enumerate() {
+                let caption = format!("Sign in with {}", provider_label(p));
+                if button(
+                    c,
+                    i as u32,
+                    i as f32,
+                    &caption,
+                    "Opens the sign-in page in your web browser",
+                ) {
+                    out.push(MenuAct::SignIn(p.clone()));
+                }
+            }
+        }
+        Status::Waiting { provider } => {
+            note(
+                c,
+                0,
+                &format!(
+                    "Finish signing in with {} in your browser...",
+                    provider_label(provider)
+                ),
+            );
+            if button(c, 100, 0.0, "Cancel", "Stop waiting for the sign-in") {
+                out.push(MenuAct::CancelSignIn);
+            }
+        }
+        Status::Connecting => note(c, 0, "Connecting to your Uplink account..."),
+        Status::SignedIn { handle } => {
+            let who = handle.as_deref().unwrap_or("a new agent");
+            note(c, 0, &format!("Signed in as {who}. Agents marked online"));
+            note(c, 1, "follow you to every device.");
+            if button(
+                c,
+                101,
+                0.5,
+                "Sign out",
+                "Sign out of your Uplink account on this device",
+            ) {
+                out.push(MenuAct::SignOut);
+            }
         }
     }
 }
@@ -539,9 +707,19 @@ fn first_load(
             st.cues.push(Cue::NewMail);
         }
     }
-    if t >= START_AT {
+    if t >= START_AT && m.last_t < START_AT {
         st.cues.push(Cue::PhonePickup);
         out.push(MenuAct::NewAgent(agent));
+    }
+    if t >= START_AT + 1.0 {
+        // Still here: the account server is slow to hand out the agent's seed.
+        text_lines(
+            c,
+            res,
+            W - 370.0,
+            H - 50.0,
+            &["Registering with Uplink Corporation..."],
+        );
     }
     m.last_t = t;
 }

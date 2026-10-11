@@ -148,6 +148,34 @@ cargo run -p ur-server --release
 Migrations run on startup. Put it behind a TLS-terminating reverse proxy; it does no TLS or rate limiting itself.
 With no provider configured the server starts but nobody can log in.
 
+**Trying it without Google keys:** `UPLINK_RUST_DEV_LOGIN=1` adds a built-in "Test account" sign-in. It is a
+real (tiny) OAuth provider, so the whole flow runs, but anyone who reaches it can sign in as anyone; the server
+refuses to start with it unless `UPLINK_RUST_PUBLIC_URL` is `127.0.0.1`/`localhost`.
+
+**Google:** in Google Cloud Console create an OAuth client ("Web application"), add the authorised redirect URI
+`$UPLINK_RUST_PUBLIC_URL/v1/auth/google/callback`, and set the two `UPLINK_RUST_OAUTH_GOOGLE_*` variables.
+
+## Uplink accounts in the game
+
+The login screen has an **Uplink Account** section under the User ID box when the client knows a server:
+- Desktop: `UPLINK_RUST_SERVER=https://api.example.com cargo run -p ur-client --release`
+- Web: set `<meta name="uplink-rust-server" content="https://api.example.com">` in `index.html`; the page's origin
+  must be in the server's `UPLINK_RUST_WEB_ORIGINS` and `UPLINK_RUST_ALLOWED_ORIGIN`.
+
+What it does:
+- **Sign in with Google / GitHub / Discord** (whichever the server offers). Desktop opens your normal browser and
+  catches the answer on a one-shot `127.0.0.1` port; the web page goes to the provider and comes back. New accounts
+  first choose a hacker handle in the User ID box.
+- Signed in, **"Valid User Names"** lists your account's agents (tagged *online*) next to this device's (*this
+  device*). **New User** creates the agent on the account with a server-issued seed, so its play can be verified.
+- While you play an online agent its command log uploads every 20 s and when you log off; the server replays it.
+  On another device (or browser) sign in and click the agent: it continues from the server's verified state.
+- If a device uploads after another one played further, its upload is refused and you're told to log off and back in.
+  If the server refuses the play itself, the agent continues on that device only.
+- Without a server, or signed out, nothing changes: agents live on the device, as before.
+- The session's refresh token is kept in `account.json` next to the saves (desktop, owner-only permissions) or in
+  localStorage (web). It is a bearer secret for that device; **Sign out** deletes it and revokes the session.
+
 ### API
 
 Everything except `/healthz` and the `/v1/auth/...` login routes needs `Authorization: Bearer <access_token>`.
@@ -179,6 +207,9 @@ Everything except `/healthz` and the `/v1/auth/...` login routes needs `Authoriz
 | `PUT` | `/v1/runs/{seed}/segment` | Upload a command-log segment. `200` with the server's computed credits/digest; `409` + `x-verified-tick` if it doesn't follow; `422` if illegal or implausible; `426` if the rules version differs. |
 | `GET` | `/v1/runs/{seed}/state` | The server-verified world, for resuming on another device. |
 | `GET` | `/v1/runs` | List your verified runs. |
+| `GET` | `/v1/agents` | Your agents: name, seed, verified tick, credits, game over. |
+| `POST` | `/v1/agents` | `{name}` (save-slot rules): a named, server-issued seed. `409` if you already have that name. Max 20. |
+| `DELETE` | `/v1/agents/{name}` | Retire: deletes the agent's seed and verified run. |
 
 ### Client login flow (web and desktop)
 
@@ -187,7 +218,8 @@ Everything except `/healthz` and the `/v1/auth/...` login routes needs `Authoriz
    Desktop: `return_to` is a loopback listener such as `http://127.0.0.1:41234/cb`. Web: your page.
 3. After login the browser lands on `return_to?login_code=...`. The client `POST`s `/v1/auth/exchange` with the code and its `client_verifier`.
    A code intercepted without the verifier is useless, and it is single-use with a 60 s life.
-4. Keep the refresh token in the OS keychain (desktop) or an `HttpOnly` cookie set by your own backend (web). Don't put it in `localStorage`.
+4. Keep the refresh token safe. The bundled client keeps it in a user-only file (desktop) or localStorage (web);
+   an `HttpOnly` cookie from your own backend would be stronger on the web.
 5. If `needs_handle`, ask for a hacker name and `PUT /v1/me/handle`.
 
 **Local-first:** a player with no account just plays; progress lives in their local profile. When they choose
@@ -253,7 +285,8 @@ With the original interface, the client plays the original sounds and music. It 
 - [x] Browser: the player's own `.dat` files through a file picker, cached in the browser, never uploaded
 - [x] Login screen, agent roster, new-user start sequence, loading screen
 - [ ] Options screens, in-game registration, phone dialler, map zoom, e-mail
-- [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
+- [x] Sign-in on the login screen (Google, GitHub, Discord, dev), account agents, upload and resume across devices
+- [ ] Link several providers to one account from the game; account deletion from the game
 - [x] Browser saves (localStorage, sealed, with a backup)
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native
 - [ ] Contests with per-player variants and a leaderboard (needs a deeper sim first)

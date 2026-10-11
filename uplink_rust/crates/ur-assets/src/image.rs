@@ -37,6 +37,19 @@ pub fn decode_tiff(bytes: &[u8]) -> Result<Rgba, AssetError> {
             "unreasonable size {width}x{height}"
         )));
     }
+    // 8-bit palette images (most of the loading screens): the `tiff` crate refuses the colour
+    // type before decoding, so read uncompressed ones directly.
+    let photometric = d
+        .find_tag_unsigned::<u16>(Tag::PhotometricInterpretation)
+        .map_err(bad)?;
+    let palette8 = photometric == Some(3)
+        && d.find_tag_unsigned::<u16>(Tag::BitsPerSample)
+            .ok()
+            .flatten()
+            == Some(8);
+    if palette8 {
+        return decode_palette8(&mut d, bytes, width, height);
+    }
     let color = d.colortype().map_err(bad)?;
     if matches!(color, ColorType::Gray(1)) {
         return decode_bilevel(&mut d, bytes, width, height);
@@ -101,6 +114,63 @@ pub fn decode_tiff(bytes: &[u8]) -> Result<Rgba, AssetError> {
                 "unsupported colour type {other:?}"
             )))
         }
+    }
+    Ok(Rgba {
+        width,
+        height,
+        pixels,
+    })
+}
+
+/// Uncompressed 8-bit palette images, read strip by strip.
+fn decode_palette8(
+    d: &mut Decoder<Cursor<&[u8]>>,
+    bytes: &[u8],
+    width: u32,
+    height: u32,
+) -> Result<Rgba, AssetError> {
+    let bad = |e: tiff::TiffError| AssetError::BadImage(e.to_string());
+    if d.find_tag_unsigned::<u32>(Tag::Compression)
+        .map_err(bad)?
+        .unwrap_or(1)
+        != 1
+    {
+        return Err(AssetError::BadImage(
+            "compressed palette images are not supported".into(),
+        ));
+    }
+    let map = d.get_tag_u16_vec(Tag::ColorMap).map_err(bad)?;
+    let entries = map.len() / 3;
+    let offsets = d.get_tag_u32_vec(Tag::StripOffsets).map_err(bad)?;
+    let counts = d.get_tag_u32_vec(Tag::StripByteCounts).map_err(bad)?;
+    let n = (width * height) as usize;
+    let mut idx = Vec::with_capacity(n);
+    for (&off, &cnt) in offsets.iter().zip(&counts) {
+        let strip = bytes
+            .get(off as usize..off as usize + cnt as usize)
+            .ok_or_else(|| AssetError::BadImage("strip outside the file".into()))?;
+        idx.extend_from_slice(strip);
+        if idx.len() >= n {
+            break;
+        }
+    }
+    if idx.len() < n {
+        return Err(AssetError::BadImage(
+            "pixel data shorter than the header claims".into(),
+        ));
+    }
+    let mut pixels = Vec::with_capacity(n * 4);
+    for &i in &idx[..n] {
+        let i = i as usize;
+        if i >= entries {
+            return Err(AssetError::BadImage("palette index out of range".into()));
+        }
+        pixels.extend_from_slice(&[
+            (map[i] >> 8) as u8,
+            (map[entries + i] >> 8) as u8,
+            (map[2 * entries + i] >> 8) as u8,
+            255,
+        ]);
     }
     Ok(Rgba {
         width,

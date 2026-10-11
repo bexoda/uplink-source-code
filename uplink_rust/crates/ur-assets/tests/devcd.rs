@@ -137,3 +137,22 @@ fn hostile_inputs_do_not_panic() {
     let _ = decode_wrapper(b"REDSHRT2\0");
     assert!(Archive::from_bytes(b"PK\x03\x04truncated").is_err());
 }
+
+#[test]
+fn every_loading_screen_picture_decodes() {
+    let Some(d) = dir() else { return };
+    let mut s = Store::from_dir(&d).unwrap();
+    let list = s
+        .read("loading.dat", "graphics/loading/filenames.txt")
+        .unwrap();
+    let list = String::from_utf8_lossy(&list).to_string();
+    let names: Vec<&str> = list.split_whitespace().collect();
+    assert!(names.len() >= 4, "{names:?}");
+    for n in names {
+        let img = s.image(n).unwrap_or_else(|e| panic!("{n}: {e}"));
+        assert!(img.width >= 256 && img.height >= 256, "{n}");
+        // Not a blank decode: the pictures are mostly blue.
+        let blue = img.pixels.chunks_exact(4).filter(|p| p[2] > p[0]).count();
+        assert!(blue > img.pixels.len() / 16, "{n}");
+    }
+}
