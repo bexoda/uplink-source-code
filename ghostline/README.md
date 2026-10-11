@@ -49,29 +49,66 @@ TEST_DATABASE_URL=postgres://user:pass@localhost/gl_test cargo test -p gl-server
 
 ```sh
 export DATABASE_URL=postgres://user:pass@localhost/ghostline
-export GL_SERVER_KEY=$(openssl rand -hex 32)          # seals stored runs. BACK THIS UP: losing it loses every run
-export GL_REGISTRATION_KEY=$(openssl rand -hex 16)    # without this, anyone can create accounts
-export GL_ALLOWED_ORIGIN=https://your-web-client.example   # CORS; omit for same-origin only
+export GL_SERVER_KEY=$(openssl rand -hex 32)      # seals stored runs. BACK THIS UP: losing it loses every run
+export GL_PUBLIC_URL=https://api.example.com      # where providers send users back; no trailing slash
+export GL_WEB_ORIGINS=https://play.example.com    # comma-separated web client origins allowed as login return targets
+export GL_ALLOWED_ORIGIN=https://play.example.com # CORS; omit for same-origin only
+# Enable each login provider by setting both vars (register the callback
+# $GL_PUBLIC_URL/v1/auth/<provider>/callback with the provider):
+export GL_OAUTH_GOOGLE_CLIENT_ID=...   GL_OAUTH_GOOGLE_CLIENT_SECRET=...
+export GL_OAUTH_GITHUB_CLIENT_ID=...   GL_OAUTH_GITHUB_CLIENT_SECRET=...
+export GL_OAUTH_DISCORD_CLIENT_ID=...  GL_OAUTH_DISCORD_CLIENT_SECRET=...
 export BIND=127.0.0.1:8080
 cargo run -p gl-server --release
 ```
 
 Migrations run on startup. Put it behind a TLS-terminating reverse proxy; it does no TLS or rate limiting itself.
+With no provider configured the server starts but nobody can log in.
 
 ### API
 
-All routes except `/healthz` and account creation need `Authorization: Bearer <token>`.
+Everything except `/healthz` and the `/v1/auth/...` login routes needs `Authorization: Bearer <access_token>`.
+
+**Login and accounts**
 
 | method | path | notes |
 |---|---|---|
-| `POST` | `/v1/accounts` | Needs `x-registration-key`. Returns `{ "token": "..." }` once; only its hash is stored. |
-| `GET` | `/v1/saves` | List slots: name, revision, size, updated time. |
+| `GET` | `/v1/auth/providers` | Names of enabled providers. |
+| `GET` | `/v1/auth/{provider}/start?return_to=&client_challenge=` | Open in a browser. Redirects to the provider. `return_to` must be an allowed web origin or `http://127.0.0.1`/`localhost` (desktop). |
+| `GET` | `/v1/auth/{provider}/callback` | Provider redirects here. Server redirects on to `return_to?login_code=...` (or `?error=...`). |
+| `POST` | `/v1/auth/exchange` | `{login_code, client_verifier}` -> `{access_token, refresh_token, expires_in, account_id, handle, needs_handle}`. |
+| `POST` | `/v1/auth/refresh` | `{refresh_token}` -> new pair. Refresh tokens rotate; reusing an old one revokes the session. |
+| `POST` | `/v1/auth/logout` | Revokes the current session. |
+| `POST` | `/v1/auth/link/{provider}` | Logged in. `{return_to, client_challenge}` -> `{url}` to open. Adds a login to this account. |
+| `GET` | `/v1/me` | Account id, handle, linked providers. |
+| `PUT` | `/v1/me/handle` | `{handle}`: 3-20 letters/digits/underscore, unique case-insensitively, **set once**. |
+| `DELETE` | `/v1/me/identities/{provider}` | Unlink. Refused for your last login. |
+| `DELETE` | `/v1/me` | `{confirm}` = your handle (or `DELETE`). Erases the account and all its data. |
+
+**Saves and runs**
+
+| method | path | notes |
+|---|---|---|
+| `GET` | `/v1/saves` | List backup slots: name, revision, size, updated time. |
 | `GET` | `/v1/saves/{slot}` | Returns the blob; `x-revision` header has its revision. |
 | `PUT` | `/v1/saves/{slot}` | Needs `x-if-revision` (0 to create). `409` with the current `x-revision` on conflict. Max 2 MiB, 8 slots. **Unverified backup only.** |
 | `POST` | `/v1/seeds?n=1` | Issue seeds (decimal strings) to start verified runs. Max 10 unused. |
 | `PUT` | `/v1/runs/{seed}/segment` | Upload a command-log segment. `200` with the server's computed credits/digest; `409` + `x-verified-tick` if it doesn't follow; `422` if illegal or implausible; `426` if the rules version differs. |
 | `GET` | `/v1/runs/{seed}/state` | The server-verified world, for resuming on another device. |
 | `GET` | `/v1/runs` | List your verified runs. |
+
+### Client login flow (web and desktop)
+
+1. Client makes a random secret `client_verifier` and computes `client_challenge = base64url(SHA256(verifier))` (no padding, 43 chars).
+2. Client opens `GET /v1/auth/google/start?return_to=<url>&client_challenge=<c>` in the **system browser** (never an embedded webview; Google blocks them).
+   Desktop: `return_to` is a loopback listener such as `http://127.0.0.1:41234/cb`. Web: your page.
+3. After login the browser lands on `return_to?login_code=...`. The client `POST`s `/v1/auth/exchange` with the code and its `client_verifier`.
+   A code intercepted without the verifier is useless, and it is single-use with a 60 s life.
+4. Keep the refresh token in the OS keychain (desktop) or an `HttpOnly` cookie set by your own backend (web). Don't put it in `localStorage`.
+5. If `needs_handle`, ask for a hacker name and `PUT /v1/me/handle`.
+
+**Local-first:** a player with no account just plays; progress lives in their local profile. When they choose
+"sync", they log in, fetch seeds, and upload their command log as segments. Nothing about login changes local play.
 
 ## Cheating
 
@@ -93,7 +130,8 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 ## Roadmap
 
 - [x] Run recording, server-side replay verification, server-issued seeds
-- [ ] OAuth login (Google, GitHub, Discord, email magic link) and local-to-online account linking
+- [x] OAuth login (Google, GitHub, Discord), sessions, account linking, hacker handles, account deletion
+- [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
 - [ ] `egui` client (native + wasm): world map, connect screen, task manager, trace bar
 - [ ] HTTP sync client and conflict-resolution UI
 - [ ] Save schema migrations

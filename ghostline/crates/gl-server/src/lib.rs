@@ -6,14 +6,14 @@ use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use gl_save::{slot, Key};
-use rand_core::{OsRng, RngCore};
 use serde::Serialize;
-use sha2::{Digest, Sha256};
 use sqlx::PgPool;
+use std::collections::BTreeMap;
 use std::sync::Arc;
 use tower_http::cors::{AllowOrigin, CorsLayer};
 use uuid::Uuid;
 
+pub mod auth;
 pub mod runs;
 
 pub const MAX_BLOB: usize = 2 * 1024 * 1024;
@@ -24,10 +24,39 @@ const REVISION: &str = "x-revision";
 #[derive(Clone)]
 pub struct AppState {
     pub db: PgPool,
-    /// If set, `POST /v1/accounts` requires this in `x-registration-key`.
-    pub registration_key: Option<String>,
     /// Seals verified run state at rest. Losing it makes stored runs unreadable.
     pub server_key: Arc<Key>,
+    pub providers: Arc<BTreeMap<String, auth::ProviderConfig>>,
+    /// Public base URL of this server; provider redirect URIs are built from it.
+    pub public_url: String,
+    /// Exact origins (scheme://host[:port]) the web client may be sent back to after login.
+    pub web_origins: Arc<Vec<String>>,
+    pub http: reqwest::Client,
+}
+
+impl AppState {
+    pub fn new(
+        db: PgPool,
+        server_key: Key,
+        providers: BTreeMap<String, auth::ProviderConfig>,
+        public_url: String,
+        web_origins: Vec<String>,
+    ) -> Self {
+        let http = reqwest::Client::builder()
+            .timeout(std::time::Duration::from_secs(10))
+            .redirect(reqwest::redirect::Policy::none())
+            .user_agent("ghostline-server")
+            .build()
+            .expect("http client");
+        AppState {
+            db,
+            server_key: Arc::new(server_key),
+            providers: Arc::new(providers),
+            public_url,
+            web_origins: Arc::new(web_origins),
+            http,
+        }
+    }
 }
 
 pub async fn migrate(db: &PgPool) -> Result<(), sqlx::migrate::MigrateError> {
@@ -38,12 +67,11 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
     let cors = match allowed_origin.and_then(|o| HeaderValue::from_str(&o).ok()) {
         Some(o) => CorsLayer::new()
             .allow_origin(AllowOrigin::exact(o))
-            .allow_methods([Method::GET, Method::PUT, Method::POST])
+            .allow_methods([Method::GET, Method::PUT, Method::POST, Method::DELETE])
             .allow_headers([
                 header::AUTHORIZATION,
                 header::CONTENT_TYPE,
                 HeaderName::from_static(IF_REVISION),
-                HeaderName::from_static("x-registration-key"),
             ])
             .expose_headers([HeaderName::from_static(REVISION)]),
         // No origin configured: same-origin only.
@@ -51,7 +79,19 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
     };
     Router::new()
         .route("/healthz", get(|| async { "ok" }))
-        .route("/v1/accounts", post(create_account))
+        .route("/v1/auth/providers", get(auth::list_providers))
+        .route("/v1/auth/{provider}/start", get(auth::start))
+        .route("/v1/auth/{provider}/callback", get(auth::callback))
+        .route("/v1/auth/exchange", post(auth::exchange))
+        .route("/v1/auth/refresh", post(auth::refresh))
+        .route("/v1/auth/logout", post(auth::logout))
+        .route("/v1/auth/link/{provider}", post(auth::start_link))
+        .route("/v1/me", get(auth::me).delete(auth::delete_account))
+        .route("/v1/me/handle", axum::routing::put(auth::set_handle))
+        .route(
+            "/v1/me/identities/{provider}",
+            axum::routing::delete(auth::unlink),
+        )
         .route("/v1/saves", get(list_saves))
         .route("/v1/saves/{slot}", get(get_save).put(put_save))
         .route("/v1/seeds", post(runs::issue_seeds))
@@ -69,9 +109,10 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
 #[derive(Debug)]
 pub enum ApiError {
     Unauthorized,
-    Forbidden,
     BadRequest(&'static str),
     NotFound,
+    /// A uniqueness or policy conflict, with a short reason.
+    Taken(&'static str),
     Limit,
     Conflict {
         current: i64,
@@ -98,7 +139,7 @@ impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
         match self {
             ApiError::Unauthorized => (StatusCode::UNAUTHORIZED, "unauthorized").into_response(),
-            ApiError::Forbidden => (StatusCode::FORBIDDEN, "forbidden").into_response(),
+            ApiError::Taken(m) => (StatusCode::CONFLICT, m).into_response(),
             ApiError::BadRequest(m) => (StatusCode::BAD_REQUEST, m).into_response(),
             ApiError::NotFound => (StatusCode::NOT_FOUND, "not found").into_response(),
             ApiError::Limit => {
@@ -148,44 +189,11 @@ impl FromRequestParts<AppState> for Account {
             .and_then(|v| v.to_str().ok())
             .and_then(|v| v.strip_prefix("Bearer "))
             .ok_or(ApiError::Unauthorized)?;
-        let hash = Sha256::digest(token.as_bytes()).to_vec();
-        sqlx::query_scalar::<_, Uuid>("SELECT id FROM accounts WHERE token_hash = $1")
-            .bind(hash)
-            .fetch_optional(&state.db)
+        auth::account_for_token(&state.db, token)
             .await?
             .map(Account)
             .ok_or(ApiError::Unauthorized)
     }
-}
-
-#[derive(Serialize)]
-struct NewAccount {
-    token: String,
-}
-
-async fn create_account(
-    State(s): State<AppState>,
-    headers: HeaderMap,
-) -> Result<Json<NewAccount>, ApiError> {
-    if let Some(want) = &s.registration_key {
-        let ok = headers
-            .get("x-registration-key")
-            .and_then(|v| v.to_str().ok())
-            == Some(want.as_str());
-        if !ok {
-            return Err(ApiError::Forbidden);
-        }
-    }
-    let mut raw = [0u8; 32];
-    OsRng.fill_bytes(&mut raw);
-    let token: String = raw.iter().map(|b| format!("{b:02x}")).collect();
-    let hash = Sha256::digest(token.as_bytes()).to_vec();
-    sqlx::query("INSERT INTO accounts (token_hash) VALUES ($1)")
-        .bind(hash)
-        .execute(&s.db)
-        .await?;
-    // Shown once; only the hash is stored.
-    Ok(Json(NewAccount { token }))
 }
 
 #[derive(Serialize, sqlx::FromRow)]

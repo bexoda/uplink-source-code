@@ -44,6 +44,33 @@ verification (next section), never by anything the client does.
   bumped and the old structs frozen for a migration. Today a mismatch is a hard error. Do this
   *before* shipping to anyone, or the first schema change strands their saves.
 
+## Accounts and login
+
+The server is a backend-for-frontend: it runs the OAuth code flow itself (PKCE, single-use `state`) and
+clients never see provider tokens. Identity is read from the provider's userinfo endpoint using the access
+token received directly from the token endpoint over TLS (OIDC Core 3.1.3.7 permits this instead of
+verifying ID-token signatures), which keeps OIDC (Google) and plain OAuth2 (GitHub, Discord) on one path.
+
+- **Keyed on the provider's stable subject id, never email.** Matching email across providers is an
+  account-takeover vector, so accounts are never merged automatically. Linking another login is an explicit,
+  authenticated action whose intent is stored server-side against the session. An identity that already
+  belongs to another account is refused, not stolen.
+- **Our own tokens.** Opaque 15 min access token + 60 day refresh token, stored hashed. Refresh rotates every
+  use and keeps the previous hash: if an already-rotated token reappears, the whole session is revoked.
+  Cost: a client that retries a refresh after a lost response gets logged out. Accepted.
+- **Login codes** are single-use, last 60 s, and bound to a secret only the initiating client holds, so a
+  code leaked via browser history, a redirect or another local app can't be redeemed.
+- **`return_to` is an exact-origin allowlist** (`GL_WEB_ORIGINS`) plus `http` loopback for desktop. An open
+  redirect here would hand login codes to an attacker.
+- **Hacker handle** is separate from any provider name, unique case-insensitively and set once.
+- **Deleting an account** cascades through identities, sessions, backups, seeds and runs.
+- `POST /v1/accounts` (bearer-token-is-the-account) no longer exists.
+
+Not built: email magic link (needs SMTP), Steam (OpenID 2.0, separate flow), Microsoft, rate limiting,
+account recovery beyond "log in with another linked provider", handle changes, age gating.
+Not tested against the real providers: tests use a fake provider that enforces PKCE and the client secret.
+A manual run with real Google/GitHub/Discord credentials is still needed.
+
 ## Anti-cheat: the server replays, the client never reports state
 
 Credits only come from events the sim emits, and the sim is deterministic, so:
@@ -95,14 +122,14 @@ Nothing/Push/Pull/Conflict. Conflicts are never auto-merged; the player chooses 
 
 ## Server config
 
-`DATABASE_URL` (required), `GL_SERVER_KEY` (required, 64 hex chars, seals stored runs; **back it up**), `BIND`, `GL_REGISTRATION_KEY` (strongly recommended: otherwise anyone can
-create accounts), `GL_ALLOWED_ORIGIN` (the web client's origin for CORS).
+`DATABASE_URL`, `GL_SERVER_KEY` (64 hex chars, seals stored runs; **back it up**), `GL_PUBLIC_URL` (all required);
+`GL_WEB_ORIGINS`, `GL_ALLOWED_ORIGIN`, `BIND`, and `GL_OAUTH_{GOOGLE,GITHUB,DISCORD}_CLIENT_{ID,SECRET}`. See the README.
 Tests: `TEST_DATABASE_URL=postgres://... cargo test -p gl-server` (**silently skipped when unset**).
 
 ## Known gaps
 
 - No client/UI yet; no HTTP sync client; no account recovery (token is the account).
-- OAuth login is designed but not built (Google, GitHub, Discord, email magic link). Auth is still a bearer token.
+- OAuth is built but unverified against real providers; no email login, no rate limiting.
 - Server state is unreadable after a `SCHEMA_VERSION` change; no migrations yet.
 - No rate limiting or TLS termination on the server (put it behind a reverse proxy).
 - Account tokens are bearer secrets with no expiry/rotation.

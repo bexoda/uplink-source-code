@@ -1,7 +1,7 @@
 use gl_save::Key;
+use gl_server::auth::providers_from_env;
 use gl_server::{migrate, router, AppState};
 use sqlx::postgres::PgPoolOptions;
-use std::sync::Arc;
 
 #[tokio::main]
 async fn main() {
@@ -17,11 +17,21 @@ async fn main() {
     let server_key = parse_key(
         &std::env::var("GL_SERVER_KEY").expect("GL_SERVER_KEY is required (64 hex chars)"),
     );
-    let state = AppState {
-        db,
-        registration_key: std::env::var("GL_REGISTRATION_KEY").ok(),
-        server_key: Arc::new(server_key),
-    };
+    let public_url = std::env::var("GL_PUBLIC_URL")
+        .expect("GL_PUBLIC_URL is required, e.g. https://api.example.com");
+    let web_origins = std::env::var("GL_WEB_ORIGINS")
+        .map(|v| {
+            v.split(',')
+                .map(|o| o.trim().trim_end_matches('/').to_string())
+                .filter(|o| !o.is_empty())
+                .collect()
+        })
+        .unwrap_or_default();
+    let providers = providers_from_env();
+    if providers.is_empty() {
+        tracing::warn!("no OAuth providers configured; nobody can log in");
+    }
+    let state = AppState::new(db, server_key, providers, public_url, web_origins);
     let app = router(state, std::env::var("GL_ALLOWED_ORIGIN").ok());
     let listener = tokio::net::TcpListener::bind(&bind).await.expect("bind");
     tracing::info!("listening on {bind}");

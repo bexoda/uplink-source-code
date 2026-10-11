@@ -4,17 +4,6 @@ use axum::http::{Request, StatusCode};
 use common::*;
 
 #[tokio::test]
-async fn registration_requires_key() {
-    let Some(app) = app().await else { return };
-    let (st, ..) = call(
-        &app,
-        Request::post("/v1/accounts").body(Body::empty()).unwrap(),
-    )
-    .await;
-    assert_eq!(st, StatusCode::FORBIDDEN);
-}
-
-#[tokio::test]
 async fn auth_required_and_isolated_between_accounts() {
     let Some(app) = app().await else { return };
     let (a, b) = (register(&app).await, register(&app).await);
