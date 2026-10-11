@@ -121,3 +121,24 @@ fn slot_names() {
         assert!(!slot::is_valid(bad), "{bad}");
     }
 }
+
+#[test]
+fn wire_roundtrips_and_bounds_hostile_input() {
+    use gl_sim::replay::*;
+    let mut run = Run::new(4);
+    run.apply(gl_sim::Command::AcceptMission(1), &mut vec![])
+        .unwrap();
+    let seg = run.segment();
+    assert_eq!(decode_segment(&encode_segment(&seg).unwrap()).unwrap(), seg);
+
+    let w = sample();
+    let back = decode_state(&encode_state(&w).unwrap()).unwrap();
+    assert_eq!(digest(&w).unwrap(), digest(&back).unwrap());
+    assert_ne!(digest(&w).unwrap(), digest(&World::new(1)).unwrap());
+
+    // A "decompression bomb": claims a huge inflated size.
+    let mut bomb = encode_segment(&seg).unwrap();
+    bomb[..4].copy_from_slice(&u32::MAX.to_le_bytes());
+    assert!(decode_segment(&bomb).is_err());
+    assert!(decode_segment(b"junk").is_err());
+}

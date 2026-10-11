@@ -33,6 +33,10 @@ magic "GLSV" | format u16 | schema u32 | key_mode u8 | salt[16] | nonce[24] | XC
 
 The header is the AEAD associated data, so tampering with any byte fails decryption.
 
+**This is not anti-cheat.** The key lives on the player's machine and Cheat Engine edits process memory,
+not the file, so local encryption only stops casual edits of the save file. Cheating is stopped by server
+verification (next section), never by anything the client does.
+
 - **Desktop:** key lives in the OS keychain (`os-keyring` feature), never on disk. Files are written
   temp -> fsync -> rename, with one `.bak` kept.
 - **Web:** no keychain, so the key is Argon2id(passphrase). Lose the passphrase and the save is gone.
@@ -40,16 +44,47 @@ The header is the AEAD associated data, so tampering with any byte fails decrypt
   bumped and the old structs frozen for a migration. Today a mismatch is a hard error. Do this
   *before* shipping to anyone, or the first schema change strands their saves.
 
+## Anti-cheat: the server replays, the client never reports state
+
+Credits only come from events the sim emits, and the sim is deterministic, so:
+
+1. The client records a `Run`: every successful `Command` with its tick.
+2. On sync it uploads a `Segment` (`start_tick`, `end_tick`, commands). It never uploads state.
+3. The server holds its own verified `World` for the run, replays the segment onto it with the same
+   `gl-sim` crate, and stores the result (sealed with `GL_SERVER_KEY`).
+4. Illegal commands, wrong ordering, wrong start tick or a wrong rules version are rejected and nothing is stored.
+
+Hardening in place:
+- **Server-issued seeds** (`/v1/seeds`). A run can only start from a seed the server handed out, so players
+  cannot reroll worlds. Seeds can be fetched ahead of time for offline starts.
+- **Wall-clock budget.** A run may not claim more game time (10 ticks/s) than has elapsed since its seed was
+  issued, plus 60 s of slack. Defeats speed-hacking.
+- **Chain integrity.** Each segment must start exactly at the server's verified tick; replays and gaps get 409.
+  Sync of a run is serialised by a row lock, so concurrent duplicates apply once (tested).
+- **Hostile input.** Replay runs on a blocking thread inside `catch_unwind` (the release profile must not use
+  `panic = "abort"` for the server). Size, tick and entry limits apply. A fuzz test throws 60k random commands
+  with forged ids at the sim and requires zero panics.
+
+What this does **not** stop:
+- **Bots.** A script issuing legal commands is indistinguishable from a skilled player.
+- **Waiting.** A player can bank real time (fetch a seed, wait, play fast). That equals playing slowly.
+- **Offline-only play.** It is unverified until it syncs. Only verified runs should count for leaderboards.
+
+Cost to remember: any change that alters outcomes (balance, mechanics) must bump `SIM_VERSION`. Old logs then
+no longer replay, so the client must sync before updating, or the server must keep old sim versions for a while.
+Likewise `SCHEMA_VERSION` changes make stored server state unreadable until migrations exist.
+
 ## Sync
 
-Encryption is client-side, so Postgres holds `bytea` it cannot read. Per slot the server keeps a
-`revision`; `PUT` is compare-and-swap on `x-if-revision` (409 + current revision on mismatch).
-The client keeps `{base, dirty}` and `gl_save::sync::reconcile` returns Nothing/Push/Pull/Conflict.
-Conflicts are never auto-merged; the player chooses local, remote, or keep both.
+Two tiers:
 
-Trade-off accepted: the server cannot validate saves, so it cannot do anti-cheat or leaderboards from
-saves. If you want those, submit run results as a separate signed/replayable command log
-(the sim is deterministic, so the server can replay it).
+- **Verified runs** (`/v1/seeds`, `/v1/runs/...`): described above. The server can read them.
+- **Unverified backups** (`/v1/saves/{slot}`): opaque client-encrypted blobs with compare-and-swap revisions.
+  Convenient for moving a local game between devices, but the server cannot validate them, so they must never
+  feed leaderboards or any shared economy.
+
+The client keeps `{base, dirty}` per backup slot and `gl_save::sync::reconcile` returns
+Nothing/Push/Pull/Conflict. Conflicts are never auto-merged; the player chooses local, remote, or keep both.
 
 ## Web performance plan
 
@@ -60,12 +95,14 @@ saves. If you want those, submit run results as a separate signed/replayable com
 
 ## Server config
 
-`DATABASE_URL` (required), `BIND`, `GL_REGISTRATION_KEY` (strongly recommended: otherwise anyone can
+`DATABASE_URL` (required), `GL_SERVER_KEY` (required, 64 hex chars, seals stored runs; **back it up**), `BIND`, `GL_REGISTRATION_KEY` (strongly recommended: otherwise anyone can
 create accounts), `GL_ALLOWED_ORIGIN` (the web client's origin for CORS).
 Tests: `TEST_DATABASE_URL=postgres://... cargo test -p gl-server` (**silently skipped when unset**).
 
 ## Known gaps
 
 - No client/UI yet; no HTTP sync client; no account recovery (token is the account).
+- OAuth login is designed but not built (Google, GitHub, Discord, email magic link). Auth is still a bearer token.
+- Server state is unreadable after a `SCHEMA_VERSION` change; no migrations yet.
 - No rate limiting or TLS termination on the server (put it behind a reverse proxy).
 - Account tokens are bearer secrets with no expiry/rotation.

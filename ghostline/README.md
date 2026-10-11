@@ -49,6 +49,7 @@ TEST_DATABASE_URL=postgres://user:pass@localhost/gl_test cargo test -p gl-server
 
 ```sh
 export DATABASE_URL=postgres://user:pass@localhost/ghostline
+export GL_SERVER_KEY=$(openssl rand -hex 32)          # seals stored runs. BACK THIS UP: losing it loses every run
 export GL_REGISTRATION_KEY=$(openssl rand -hex 16)    # without this, anyone can create accounts
 export GL_ALLOWED_ORIGIN=https://your-web-client.example   # CORS; omit for same-origin only
 export BIND=127.0.0.1:8080
@@ -66,19 +67,33 @@ All routes except `/healthz` and account creation need `Authorization: Bearer <t
 | `POST` | `/v1/accounts` | Needs `x-registration-key`. Returns `{ "token": "..." }` once; only its hash is stored. |
 | `GET` | `/v1/saves` | List slots: name, revision, size, updated time. |
 | `GET` | `/v1/saves/{slot}` | Returns the blob; `x-revision` header has its revision. |
-| `PUT` | `/v1/saves/{slot}` | Needs `x-if-revision` (0 to create). `409` with the current `x-revision` on conflict. Max 2 MiB, 8 slots. |
+| `PUT` | `/v1/saves/{slot}` | Needs `x-if-revision` (0 to create). `409` with the current `x-revision` on conflict. Max 2 MiB, 8 slots. **Unverified backup only.** |
+| `POST` | `/v1/seeds?n=1` | Issue seeds (decimal strings) to start verified runs. Max 10 unused. |
+| `PUT` | `/v1/runs/{seed}/segment` | Upload a command-log segment. `200` with the server's computed credits/digest; `409` + `x-verified-tick` if it doesn't follow; `422` if illegal or implausible; `426` if the rules version differs. |
+| `GET` | `/v1/runs/{seed}/state` | The server-verified world, for resuming on another device. |
+| `GET` | `/v1/runs` | List your verified runs. |
+
+## Cheating
+
+The local save is encrypted, but that is **not** anti-cheat: the key is on the player's machine and
+Cheat Engine edits memory, not files. Instead, clients upload the commands they played and the server
+replays them on its own copy of the world, so edited numbers never reach it. Seeds are server-issued,
+game time is capped by real elapsed time, and forged or illegal logs are rejected. Details and limits
+(bots are not stopped) in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Saves
 
 `GLSV | format | schema | key mode | salt | nonce | XChaCha20-Poly1305( lz4( postcard(World) ) )`
 
-- **Desktop:** key in the OS keychain, atomic file writes, one backup.
+- **Desktop:** key in the OS keychain, atomic file writes, one backup. Protects the file from casual edits only.
 - **Web:** key derived from a passphrase (Argon2id). Lose it and the save is unrecoverable.
-- Encryption is client-side, so the server cannot read or validate saves.
+- Backups are encrypted client-side, so the server cannot read or validate them. Verified runs are the opposite: the server holds and seals the state it computed itself.
 - A change to the `World` shape currently makes old saves unreadable; migrations are not built yet.
 
 ## Roadmap
 
+- [x] Run recording, server-side replay verification, server-issued seeds
+- [ ] OAuth login (Google, GitHub, Discord, email magic link) and local-to-online account linking
 - [ ] `egui` client (native + wasm): world map, connect screen, task manager, trace bar
 - [ ] HTTP sync client and conflict-resolution UI
 - [ ] Save schema migrations

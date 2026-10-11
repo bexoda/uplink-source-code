@@ -5,6 +5,7 @@
 //! and wasm, which is what makes saves portable and tests meaningful.
 
 pub mod model;
+pub mod replay;
 pub mod rng;
 pub mod tuning;
 pub mod world;

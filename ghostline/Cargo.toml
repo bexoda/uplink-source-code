@@ -17,13 +17,14 @@ postcard = { version = "1", default-features = false, features = ["alloc"] }
 opt-level = 3
 lto = "fat"
 codegen-units = 1
-panic = "abort"
 
 # Size-optimised profile for the browser build: `cargo build --profile web`
 [profile.web]
 inherits = "release"
 opt-level = "s"
 strip = true
+# Browser build only: the server must keep unwinding so a hostile log is rejected, not fatal.
+panic = "abort"
 
 # Argon2 is unusably slow at opt-level 0; keep it fast in debug/test builds.
 [profile.dev.package.argon2]

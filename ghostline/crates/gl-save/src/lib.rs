@@ -7,6 +7,7 @@
 mod format;
 pub mod slot;
 pub mod sync;
+mod wire;
 
 #[cfg(not(target_arch = "wasm32"))]
 pub mod store;
@@ -15,3 +16,4 @@ pub mod store;
 pub mod keychain;
 
 pub use format::{open, peek, seal, Header, Key, SaveError, Unlock, FORMAT_VERSION};
+pub use wire::{decode_segment, decode_state, digest, encode_segment, encode_state};

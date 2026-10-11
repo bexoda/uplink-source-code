@@ -5,13 +5,16 @@ use axum::http::{header, request::Parts, HeaderMap, HeaderName, HeaderValue, Met
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use gl_save::slot;
+use gl_save::{slot, Key};
 use rand_core::{OsRng, RngCore};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use sqlx::PgPool;
+use std::sync::Arc;
 use tower_http::cors::{AllowOrigin, CorsLayer};
 use uuid::Uuid;
+
+pub mod runs;
 
 pub const MAX_BLOB: usize = 2 * 1024 * 1024;
 pub const MAX_SLOTS: i64 = 8;
@@ -23,6 +26,8 @@ pub struct AppState {
     pub db: PgPool,
     /// If set, `POST /v1/accounts` requires this in `x-registration-key`.
     pub registration_key: Option<String>,
+    /// Seals verified run state at rest. Losing it makes stored runs unreadable.
+    pub server_key: Arc<Key>,
 }
 
 pub async fn migrate(db: &PgPool) -> Result<(), sqlx::migrate::MigrateError> {
@@ -49,6 +54,13 @@ pub fn router(state: AppState, allowed_origin: Option<String>) -> Router {
         .route("/v1/accounts", post(create_account))
         .route("/v1/saves", get(list_saves))
         .route("/v1/saves/{slot}", get(get_save).put(put_save))
+        .route("/v1/seeds", post(runs::issue_seeds))
+        .route("/v1/runs", get(runs::list_runs))
+        .route(
+            "/v1/runs/{seed}/segment",
+            axum::routing::put(runs::sync_segment),
+        )
+        .route("/v1/runs/{seed}/state", get(runs::get_state))
         .layer(DefaultBodyLimit::max(MAX_BLOB))
         .layer(cors)
         .with_state(state)
@@ -61,7 +73,18 @@ pub enum ApiError {
     BadRequest(&'static str),
     NotFound,
     Limit,
-    Conflict { current: i64 },
+    Conflict {
+        current: i64,
+    },
+    /// Run segment does not start where the server's verified state ends.
+    RunConflict {
+        verified_tick: i64,
+    },
+    /// The log was well-formed but is not a legal, plausible play-through.
+    Rejected(String),
+    /// Client was recorded under different game rules.
+    UpgradeRequired,
+    Internal,
     Db(sqlx::Error),
 }
 
@@ -85,6 +108,25 @@ impl IntoResponse for ApiError {
                 let mut h = HeaderMap::new();
                 h.insert(REVISION, HeaderValue::from(current as u64));
                 (StatusCode::CONFLICT, h, "revision conflict").into_response()
+            }
+            ApiError::RunConflict { verified_tick } => {
+                let mut h = HeaderMap::new();
+                h.insert("x-verified-tick", HeaderValue::from(verified_tick as u64));
+                (
+                    StatusCode::CONFLICT,
+                    h,
+                    "segment does not follow verified state",
+                )
+                    .into_response()
+            }
+            ApiError::Rejected(m) => (StatusCode::UNPROCESSABLE_ENTITY, m).into_response(),
+            ApiError::UpgradeRequired => (
+                StatusCode::UPGRADE_REQUIRED,
+                "client rules version not supported",
+            )
+                .into_response(),
+            ApiError::Internal => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "internal error").into_response()
             }
             ApiError::Db(e) => {
                 tracing::error!("db error: {e}");

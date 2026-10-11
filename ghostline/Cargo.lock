@@ -556,6 +556,7 @@ dependencies = [
  "postcard",
  "rand_core",
  "serde",
+ "sha2",
  "tempfile",
 ]
 
