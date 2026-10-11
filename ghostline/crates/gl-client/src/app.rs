@@ -4,9 +4,10 @@ use eframe::egui::{
 };
 use gl_sim::*;
 
-use crate::assets::{self, place_on_land, Assets};
-use crate::game::{Banner, Game, HopState, Level};
+use crate::act::Act;
+use crate::game::{Game, HopState, Level};
 use crate::persist::Persist;
+use crate::uplink::UplinkUi;
 
 // Palette: near-black green terminal.
 const BG: Color32 = Color32::from_rgb(7, 11, 9);
@@ -85,34 +86,6 @@ fn fresh_seed() -> u64 {
     Rng::new(n).next_u64()
 }
 
-/// Optional original artwork. Absent => the built-in vector look.
-pub struct Look {
-    assets: Option<Assets>,
-}
-
-impl Look {
-    fn fonts(&self) -> bool {
-        self.assets.as_ref().is_some_and(|a| a.fonts)
-    }
-
-    fn icon(&self, name: &str) -> Option<&egui::TextureHandle> {
-        self.assets.as_ref()?.icons.get(name)
-    }
-}
-
-/// Everything the UI wants to do is collected here and applied after drawing,
-/// so drawing code only ever needs `&Game`.
-enum Act {
-    Cmd(Command),
-    ToggleRelay(ServerId),
-    SelectTarget(ServerId),
-    Connect,
-    Disconnect,
-    TogglePause,
-    SaveNow,
-    NewGame,
-}
-
 pub struct GhostlineApp {
     game: Game,
     persist: Option<Persist>,
@@ -120,16 +93,15 @@ pub struct GhostlineApp {
     last_save: f64,
     last_frame: Option<f64>,
     confirm_new: bool,
-    look: Look,
+    /// The original Uplink interface, when the player's Uplink data was found.
+    uplink: Option<UplinkUi>,
 }
 
 impl GhostlineApp {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let mut notice = None;
-        // Fonts must be installed before the theme picks a default font.
-        let assets = load_original_assets(&cc.egui_ctx, &mut notice);
-        apply_theme(&cc.egui_ctx, assets.as_ref().is_some_and(|a| a.fonts));
-        let look = Look { assets };
+        let uplink = load_uplink_ui(&cc.egui_ctx, &mut notice);
+        apply_theme(&cc.egui_ctx);
         let persist = match Persist::open() {
             Ok(p) => Some(p),
             Err(e) => {
@@ -165,7 +137,7 @@ impl GhostlineApp {
             last_save: 0.0,
             last_frame: None,
             confirm_new: false,
-            look,
+            uplink,
         }
     }
 
@@ -179,40 +151,30 @@ impl GhostlineApp {
     }
 
     fn apply(&mut self, act: Act) {
-        match act {
-            Act::Cmd(c) => {
-                self.game.exec(c);
-            }
-            Act::ToggleRelay(id) => self.game.toggle_relay(id),
-            Act::SelectTarget(id) => self.game.select_target(id),
-            Act::Connect => self.game.connect(),
-            Act::Disconnect => self.game.disconnect(),
-            Act::TogglePause => self.game.paused = !self.game.paused,
-            Act::SaveNow => self.save(),
-            Act::NewGame => {
+        match self.game.apply_act(act) {
+            Some(Act::SaveNow) => self.save(),
+            Some(Act::NewGame) => {
                 if let Some(p) = &self.persist {
                     p.clear();
                 }
                 self.game = Game::new(fresh_seed());
                 self.confirm_new = false;
             }
+            _ => {}
         }
     }
 }
 
-/// Looks for the player's own Uplink data. Returns None (and, if it was found but unusable, a notice).
-fn load_original_assets(
-    ctx: &egui::Context,
-    notice: &mut Option<(Level, String)>,
-) -> Option<Assets> {
+/// Looks for the player's own Uplink data and builds the original interface from it.
+fn load_uplink_ui(ctx: &egui::Context, notice: &mut Option<(Level, String)>) -> Option<UplinkUi> {
     #[cfg(not(target_arch = "wasm32"))]
     {
         let dir = gl_assets::locate()?;
-        let result = gl_assets::Store::from_dir(&dir)
+        let built = gl_assets::Store::from_dir(&dir)
             .map_err(|e| e.to_string())
-            .and_then(|mut store| assets::load(ctx, &mut store));
-        match result {
-            Ok(a) => Some(a),
+            .and_then(|store| UplinkUi::new(ctx, store));
+        match built {
+            Ok(ui) => Some(ui),
             Err(e) => {
                 *notice = Some((
                     Level::Warn,
@@ -228,11 +190,11 @@ fn load_original_assets(
     #[cfg(target_arch = "wasm32")]
     {
         let _ = (ctx, notice);
-        None // The browser build will take the player's own files via a file picker; not built yet.
+        None // The browser build will take the player's own files through a file picker; not built yet.
     }
 }
 
-fn apply_theme(ctx: &egui::Context, original_fonts: bool) {
+fn apply_theme(ctx: &egui::Context) {
     ctx.set_theme(egui::ThemePreference::Dark);
     let mut v = egui::Visuals::dark();
     v.panel_fill = PANEL;
@@ -248,11 +210,7 @@ fn apply_theme(ctx: &egui::Context, original_fonts: bool) {
     v.widgets.active.weak_bg_fill = Color32::from_rgb(36, 80, 56);
     ctx.set_visuals_of(egui::Theme::Dark, v);
     ctx.all_styles_mut(|s| {
-        s.override_font_id = Some(if original_fonts {
-            FontId::proportional(15.0)
-        } else {
-            FontId::monospace(13.0)
-        });
+        s.override_font_id = Some(FontId::monospace(13.0));
         s.spacing.item_spacing = vec2(8.0, 6.0);
         s.spacing.button_padding = vec2(8.0, 4.0);
     });
@@ -273,8 +231,21 @@ impl eframe::App for GhostlineApp {
         }
 
         let mut acts: Vec<Act> = Vec::new();
+
+        if let Some(u) = &mut self.uplink {
+            egui::CentralPanel::default()
+                .frame(egui::Frame::NONE)
+                .show(ui, |ui| u.show(ui, &self.game, dt, &mut acts));
+            for a in acts {
+                self.apply(a);
+            }
+            if !self.game.paused && !self.game.world().game_over {
+                ctx.request_repaint_after(std::time::Duration::from_millis(16));
+            }
+            return;
+        }
+
         let g = &self.game;
-        let look = &self.look;
 
         egui::Panel::top("top").show(ui, |ui| {
             top_bar(
@@ -289,31 +260,31 @@ impl eframe::App for GhostlineApp {
         egui::Panel::bottom("console")
             .resizable(true)
             .default_size(150.0)
-            .show(ui, |ui| console(ui, look, g));
+            .show(ui, |ui| console(ui, g));
         egui::Panel::left("left")
             .default_size(310.0)
             .resizable(true)
             .show(ui, |ui| {
-                egui::ScrollArea::vertical().show(ui, |ui| network_list(ui, look, g, &mut acts));
+                egui::ScrollArea::vertical().show(ui, |ui| network_list(ui, g, &mut acts));
             });
         egui::Panel::right("right")
             .default_size(340.0)
             .resizable(true)
             .show(ui, |ui| {
                 egui::ScrollArea::vertical().show(ui, |ui| {
-                    trace_panel(ui, look, g);
+                    trace_panel(ui, g);
                     ui.add_space(10.0);
-                    task_manager(ui, look, g, &mut acts);
+                    task_manager(ui, g, &mut acts);
                     ui.add_space(10.0);
-                    missions(ui, look, g, &mut acts);
+                    missions(ui, g, &mut acts);
                     ui.add_space(10.0);
-                    shop(ui, look, g, &mut acts);
+                    shop(ui, g, &mut acts);
                 });
             });
         egui::CentralPanel::default().show(ui, |ui| {
-            network_map(ui, look, g, &mut acts);
+            network_map(ui, g, &mut acts);
             ui.add_space(8.0);
-            egui::ScrollArea::vertical().show(ui, |ui| target_panel(ui, look, g, &mut acts));
+            egui::ScrollArea::vertical().show(ui, |ui| target_panel(ui, g, &mut acts));
         });
 
         if g.world().game_over {
@@ -336,10 +307,6 @@ impl eframe::App for GhostlineApp {
                 });
         }
 
-        if let Some(b) = g.banner() {
-            banner(&ctx, look, b);
-        }
-
         for a in acts {
             self.apply(a);
         }
@@ -353,31 +320,8 @@ impl eframe::App for GhostlineApp {
     }
 }
 
-/// A fixed-width, left-aligned text cell, so rows line up even in the proportional original font.
-fn cell(ui: &mut egui::Ui, width: f32, text: RichText) -> egui::Response {
-    ui.allocate_ui_with_layout(
-        vec2(width, 20.0),
-        egui::Layout::left_to_right(egui::Align::Center),
-        |ui| ui.label(text),
-    )
-    .inner
-}
-
-fn heading(ui: &mut egui::Ui, look: &Look, text: &str, icon: Option<&str>) {
-    ui.horizontal(|ui| {
-        if let Some(tex) = icon.and_then(|i| look.icon(i)) {
-            ui.add(egui::Image::new(egui::load::SizedTexture::new(
-                tex.id(),
-                vec2(18.0, 18.0),
-            )));
-        }
-        let t = RichText::new(text).color(GREEN);
-        ui.label(if look.fonts() {
-            t.font(FontId::new(15.0, assets::heading_family()))
-        } else {
-            t.strong()
-        });
-    });
+fn heading(ui: &mut egui::Ui, text: &str) {
+    ui.label(RichText::new(text).color(GREEN).strong());
     ui.separator();
 }
 
@@ -426,8 +370,8 @@ fn top_bar(
     }
 }
 
-fn console(ui: &mut egui::Ui, look: &Look, g: &Game) {
-    heading(ui, look, "CONSOLE", None);
+fn console(ui: &mut egui::Ui, g: &Game) {
+    heading(ui, "CONSOLE");
     egui::ScrollArea::vertical()
         .stick_to_bottom(true)
         .auto_shrink([false, false])
@@ -447,14 +391,9 @@ fn console(ui: &mut egui::Ui, look: &Look, g: &Game) {
         });
 }
 
-fn network_list(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
+fn network_list(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
     let locked = g.connected();
-    heading(ui, look, "RELAYS", None);
-    ui.label(
-        RichText::new("Click to chain, in order.")
-            .color(DIM)
-            .small(),
-    );
+    heading(ui, "RELAYS  (click to chain, in order)");
     for id in g.relays() {
         let pos = g.chain.iter().position(|r| *r == id);
         let name = g.name_of(id);
@@ -471,7 +410,7 @@ fn network_list(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
         }
     }
     ui.add_space(8.0);
-    heading(ui, look, "TARGETS", None);
+    heading(ui, "TARGETS");
     for id in g.targets() {
         let s = &g.world().servers[id];
         let n = s.layers.len();
@@ -528,8 +467,8 @@ fn network_list(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
     }
 }
 
-fn missions(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
-    heading(ui, look, "CONTRACTS", Some("mission"));
+fn missions(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
+    heading(ui, "CONTRACTS");
     for m in &g.world().missions {
         ui.horizontal_wrapped(|ui| {
             let (mark, color) = if m.done {
@@ -554,15 +493,20 @@ fn missions(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
     }
 }
 
-fn shop(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
-    heading(ui, look, "TOOLS", Some("software"));
+fn shop(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
+    heading(ui, "TOOLS");
     let credits = g.world().player.credits;
     for t in ALL_TOOLS {
         let level = g.world().player.tools.get(&t).copied().unwrap_or(0);
         ui.horizontal(|ui| {
-            let c = if level > 0 { TEXT } else { DIM };
-            cell(ui, 140.0, RichText::new(tool_label(t)).color(c)).on_hover_text(tool_blurb(t));
-            cell(ui, 28.0, RichText::new(format!("L{level}")).color(c));
+            ui.label(
+                RichText::new(format!("{:<17} L{level}", tool_label(t))).color(if level > 0 {
+                    TEXT
+                } else {
+                    DIM
+                }),
+            )
+            .on_hover_text(tool_blurb(t));
             if level >= gl_sim::tuning::MAX_TOOL_LEVEL {
                 ui.label(RichText::new("max").color(DIM));
             } else {
@@ -582,8 +526,8 @@ fn shop(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
     }
 }
 
-fn trace_panel(ui: &mut egui::Ui, look: &Look, g: &Game) {
-    heading(ui, look, "TRACE", Some("analyser"));
+fn trace_panel(ui: &mut egui::Ui, g: &Game) {
+    heading(ui, "TRACE");
     let Some(hops) = g.trace_view() else {
         ui.label(RichText::new("No connection.").color(DIM));
         return;
@@ -620,8 +564,8 @@ fn trace_panel(ui: &mut egui::Ui, look: &Look, g: &Game) {
     }
 }
 
-fn task_manager(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
-    heading(ui, look, "TASKS", Some("cpu"));
+fn task_manager(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
+    heading(ui, "TASKS");
     let w = g.world();
     if w.tasks.is_empty() {
         ui.label(RichText::new("Idle.").color(DIM));
@@ -653,60 +597,36 @@ fn task_manager(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
 }
 
 /// Graph of the gateway, relays and targets. Draws the planned or live connection and the tracer.
-fn network_map(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
-    let art = look.assets.as_ref();
-    let height = if art.is_some() { 340.0 } else { 230.0 };
-    let (resp, painter) = ui.allocate_painter(vec2(ui.available_width(), height), Sense::hover());
+fn network_map(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
+    let size = vec2(ui.available_width(), 230.0);
+    let (resp, painter) = ui.allocate_painter(size, Sense::hover());
     let r = resp.rect;
     painter.rect_filled(r, 4.0, BG);
     painter.rect_stroke(r, 4.0, Stroke::new(1.0, LINE), StrokeKind::Inside);
 
+    let gw = Pos2::new(r.left() + 56.0, r.center().y);
+    let spread = |n: usize, x: f32| -> Vec<Pos2> {
+        (0..n)
+            .map(|i| {
+                Pos2::new(
+                    x,
+                    r.top() + r.height() * (i as f32 + 1.0) / (n as f32 + 1.0),
+                )
+            })
+            .collect()
+    };
     let relays = g.relays();
     let targets = g.targets();
-    let (gw, nodes): (Pos2, Vec<(ServerId, Pos2, bool)>) = if let Some(a) = art {
-        // The game's own world map, with every server on land, in a stable spot per name.
-        let side = height - 8.0;
-        let img = Rect::from_center_size(r.center(), vec2(side, side));
-        let full = Rect::from_min_max(egui::pos2(0.0, 0.0), egui::pos2(1.0, 1.0));
-        painter.image(a.map.id(), img, full, Color32::from_gray(150));
-        let mut names = vec!["gateway".to_string()];
-        names.extend(relays.iter().chain(&targets).map(|id| g.name_of(*id)));
-        let pts = place_on_land(&names, &a.mask, 0.16);
-        let at = |(x, y): (f32, f32)| {
-            Pos2::new(img.left() + x * img.width(), img.top() + y * img.height())
-        };
-        let mut nodes = Vec::new();
-        for (i, id) in relays.iter().enumerate() {
-            nodes.push((*id, at(pts[1 + i]), false));
-        }
-        for (i, id) in targets.iter().enumerate() {
-            nodes.push((*id, at(pts[1 + relays.len() + i]), true));
-        }
-        (at(pts[0]), nodes)
-    } else {
-        let gw = Pos2::new(r.left() + 56.0, r.center().y);
-        let spread = |n: usize, x: f32| -> Vec<Pos2> {
-            (0..n)
-                .map(|i| {
-                    Pos2::new(
-                        x,
-                        r.top() + r.height() * (i as f32 + 1.0) / (n as f32 + 1.0),
-                    )
-                })
-                .collect()
-        };
-        let mut nodes = Vec::new();
-        for (id, p) in relays
-            .iter()
-            .zip(spread(relays.len(), r.left() + r.width() * 0.42))
-        {
-            nodes.push((*id, p, false));
-        }
-        for (id, p) in targets.iter().zip(spread(targets.len(), r.right() - 150.0)) {
-            nodes.push((*id, p, true));
-        }
-        (gw, nodes)
-    };
+    let mut nodes: Vec<(ServerId, Pos2, bool)> = Vec::new();
+    for (id, p) in relays
+        .iter()
+        .zip(spread(relays.len(), r.left() + r.width() * 0.42))
+    {
+        nodes.push((*id, p, false));
+    }
+    for (id, p) in targets.iter().zip(spread(targets.len(), r.right() - 150.0)) {
+        nodes.push((*id, p, true));
+    }
     let pos_of = |id: ServerId| nodes.iter().find(|n| n.0 == id).map(|n| n.1);
 
     // The connection: live if connected, otherwise what you have planned.
@@ -798,22 +718,12 @@ fn network_map(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
         } else {
             (Align2::CENTER_TOP, vec2(0.0, 14.0))
         };
-        if art.is_some() {
-            // Legible over the busy map.
-            painter.text(
-                *p + off + vec2(1.0, 1.0),
-                anchor,
-                &srv.name,
-                FontId::monospace(11.0),
-                Color32::BLACK,
-            );
-        }
         painter.text(
             *p + off,
             anchor,
             &srv.name,
             FontId::monospace(11.0),
-            if hot || art.is_some() { TEXT } else { DIM },
+            if hot { TEXT } else { DIM },
         );
         if resp.clicked() && !live {
             acts.push(if *is_target {
@@ -839,10 +749,10 @@ fn network_map(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
     }
 }
 
-fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
+fn target_panel(ui: &mut egui::Ui, g: &Game, acts: &mut Vec<Act>) {
     let w = g.world();
     let Some(sess) = &w.session else {
-        heading(ui, look, "TARGET", None);
+        heading(ui, "TARGET");
         match g.target {
             Some(t) => {
                 let s = &w.servers[t];
@@ -867,12 +777,7 @@ fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
     };
     let t = sess.target;
     let srv = &w.servers[t];
-    heading(
-        ui,
-        look,
-        &format!("{}  {}", srv.name.to_uppercase(), srv.ip),
-        None,
-    );
+    heading(ui, &format!("{}  {}", srv.name.to_uppercase(), srv.ip));
 
     ui.label(RichText::new("DEFENCES").color(DIM).small());
     let next = srv.next_layer();
@@ -886,11 +791,13 @@ fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
                 ("·", DIM)
             };
             ui.label(RichText::new(mark).color(color));
-            cell(
-                ui,
-                190.0,
-                RichText::new(format!("{}  strength {}", layer_label(l.kind), l.strength))
-                    .color(if l.defeated { DIM } else { TEXT }),
+            ui.label(
+                RichText::new(format!(
+                    "{:<9} strength {}",
+                    layer_label(l.kind),
+                    l.strength
+                ))
+                .color(if l.defeated { DIM } else { TEXT }),
             );
             if Some(i) == next {
                 let tool = match l.kind {
@@ -941,13 +848,12 @@ fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
                 .files
                 .iter()
                 .any(|(s, gf)| *s == t && gf.name == f.name);
-            let c = if have { DIM } else { TEXT };
-            cell(ui, 150.0, RichText::new(&f.name).color(c));
-            cell(ui, 80.0, RichText::new(format!("size {}", f.size)).color(c));
-            cell(
-                ui,
-                90.0,
-                RichText::new(format!("value {}", f.value)).color(c),
+            ui.label(
+                RichText::new(format!(
+                    "{:<18} size {:<4} value {}",
+                    f.name, f.size, f.value
+                ))
+                .color(if have { DIM } else { TEXT }),
             );
             if have {
                 ui.label(RichText::new("copied").color(GREEN));
@@ -978,7 +884,7 @@ fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
             continue;
         };
         ui.horizontal(|ui| {
-            cell(ui, 110.0, RichText::new(&s.name).color(TEXT));
+            ui.label(format!("{:<12}", s.name));
             if entry.erased {
                 ui.label(RichText::new("erased").color(GREEN));
             } else if g.task_running(id, TaskKind::DeleteLog) {
@@ -1002,37 +908,4 @@ fn target_panel(ui: &mut egui::Ui, look: &Look, g: &Game, acts: &mut Vec<Act>) {
             }
         });
     }
-}
-
-/// "Access Granted" / "Access Denied": the game's own banner art, or plain text without it.
-fn banner(ctx: &egui::Context, look: &Look, b: Banner) {
-    let tex = look.assets.as_ref().and_then(|a| match b {
-        Banner::Granted => a.granted.as_ref(),
-        Banner::Denied => a.denied.as_ref(),
-    });
-    egui::Area::new(egui::Id::new("banner"))
-        .anchor(Align2::CENTER_CENTER, vec2(0.0, -40.0))
-        .interactable(false)
-        .order(egui::Order::Foreground)
-        .show(ctx, |ui| match tex {
-            Some(t) => {
-                ui.add(egui::Image::new(egui::load::SizedTexture::new(
-                    t.id(),
-                    vec2(400.0, 80.0),
-                )));
-            }
-            None => {
-                let (text, color) = match b {
-                    Banner::Granted => ("ACCESS GRANTED", GREEN),
-                    Banner::Denied => ("ACCESS DENIED", RED),
-                };
-                egui::Frame::new()
-                    .fill(Color32::BLACK)
-                    .stroke(Stroke::new(2.0, color))
-                    .inner_margin(egui::Margin::symmetric(24, 12))
-                    .show(ui, |ui| {
-                        ui.label(RichText::new(text).color(color).size(28.0).strong());
-                    });
-            }
-        });
 }

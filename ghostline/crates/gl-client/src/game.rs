@@ -1,6 +1,7 @@
 //! Game controller: wraps a recorded `Run` with the state a UI needs (selection, pacing, log).
 //! No egui here, so it is unit-testable and the rules stay in `gl-sim`.
 
+use std::cell::RefCell;
 use std::collections::VecDeque;
 
 use gl_sim::replay::Run;
@@ -45,18 +46,8 @@ pub struct HopView {
     pub log_erased: bool,
 }
 
-/// A brief full-screen-style flourish for big moments.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Banner {
-    Granted,
-    Denied,
-}
-
-const BANNER_TICKS: u64 = 25;
-
 pub struct Game {
     pub run: Run,
-    banner: Option<(Banner, u64)>,
     pub log: VecDeque<LogLine>,
     pub paused: bool,
     /// Relays chosen for the next connection, in order from the player's side.
@@ -67,6 +58,10 @@ pub struct Game {
     pub dirty: bool,
     accum: f32,
     scratch: Vec<Event>,
+    /// Why the last command was refused, for a UI that shows message boxes. Taken by the UI.
+    refusal: RefCell<Option<String>>,
+    /// Big moments (traced, contract done, game over) for a UI that shows message boxes.
+    notices: RefCell<VecDeque<String>>,
 }
 
 impl Game {
@@ -82,7 +77,6 @@ impl Game {
     pub fn from_run(run: Run, verified: bool) -> Game {
         Game {
             run,
-            banner: None,
             log: VecDeque::new(),
             paused: false,
             chain: Vec::new(),
@@ -91,18 +85,25 @@ impl Game {
             dirty: false,
             accum: 0.0,
             scratch: Vec::new(),
+            refusal: RefCell::new(None),
+            notices: RefCell::new(VecDeque::new()),
         }
     }
 
-    /// The banner to show right now, if one is still within its time on screen.
-    pub fn banner(&self) -> Option<Banner> {
-        self.banner
-            .filter(|(_, until)| self.run.world.tick_no < *until)
-            .map(|(b, _)| b)
+    pub fn take_refusal(&self) -> Option<String> {
+        self.refusal.borrow_mut().take()
     }
 
-    fn flash(&mut self, b: Banner) {
-        self.banner = Some((b, self.run.world.tick_no + BANNER_TICKS));
+    pub fn take_notice(&self) -> Option<String> {
+        self.notices.borrow_mut().pop_front()
+    }
+
+    fn notify(&self, text: &str) {
+        let mut n = self.notices.borrow_mut();
+        n.push_back(text.to_string());
+        while n.len() > 20 {
+            n.pop_front();
+        }
     }
 
     pub fn world(&self) -> &World {
@@ -166,6 +167,7 @@ impl Game {
                 true
             }
             Err(e) => {
+                *self.refusal.borrow_mut() = Some(format!("Refused: {}.", explain(e)));
                 self.say(Level::Warn, format!("Refused: {}", explain(e)));
                 false
             }
@@ -185,15 +187,6 @@ impl Game {
             Event::TaskStarted(_) => return,
             Event::TaskCancelled(_) => (Level::Info, "Task cancelled.".into()),
             Event::LayerDefeated { server, layer } => {
-                // Only the last layer is a real "access granted"; inner ones are progress.
-                if self
-                    .world()
-                    .servers
-                    .get(*server)
-                    .is_some_and(|s| !s.locked())
-                {
-                    self.flash(Banner::Granted);
-                }
                 let kind = self
                     .world()
                     .servers
@@ -236,17 +229,25 @@ impl Game {
             }
             Event::TraceLost => (Level::Good, "Trace lost: it hit a hop with no log.".into()),
             Event::Caught { fine } => {
-                self.flash(Banner::Denied);
+                self.notify(&format!(
+                    "You were traced. Your connection was cut and you were fined {fine} credits."
+                ));
                 (Level::Bad, format!("TRACED. Fined {fine}. Connection cut."))
             }
             Event::MissionAccepted(id) => (Level::Info, format!("Mission {id} accepted.")),
             Event::MissionComplete { id, reward } => {
+                self.notify(&format!(
+                    "Contract {id} complete. {reward} credits have been paid into your account."
+                ));
                 (Level::Good, format!("Mission {id} complete: +{reward}."))
             }
             Event::ToolBought { tool, level } => {
                 (Level::Info, format!("{tool:?} is now level {level}."))
             }
-            Event::GameOver => (Level::Bad, "Three strikes. Your career is over.".into()),
+            Event::GameOver => {
+                self.notify("Three strikes. Your career is over.");
+                (Level::Bad, "Three strikes. Your career is over.".into())
+            }
         };
         self.say(level, text);
     }
@@ -283,6 +284,23 @@ impl Game {
         }
     }
 
+    pub fn toggle_target(&mut self, id: ServerId) {
+        if !self.connected() {
+            self.target = if self.target == Some(id) {
+                None
+            } else {
+                Some(id)
+            };
+        }
+    }
+
+    pub fn clear_route(&mut self) {
+        if !self.connected() {
+            self.chain.clear();
+            self.target = None;
+        }
+    }
+
     pub fn connect(&mut self) {
         match self.target {
             Some(target) => {
@@ -305,6 +323,11 @@ impl Game {
 
     pub fn targets(&self) -> Vec<ServerId> {
         self.ids_of(ServerKind::Corp)
+    }
+
+    /// Uplink's own services machine(s).
+    pub fn services(&self) -> Vec<ServerId> {
+        self.ids_of(ServerKind::Service)
     }
 
     fn ids_of(&self, kind: ServerKind) -> Vec<ServerId> {
@@ -515,52 +538,6 @@ mod tests {
             names,
             vec![g.name_of(r1), g.name_of(r2), "corp-test".to_string()]
         );
-    }
-
-    #[test]
-    fn banners_fire_on_unlock_and_on_capture_and_expire() {
-        let mut g = Game::new(3);
-        let t = weak_corp(&mut g);
-        g.select_target(t);
-        g.connect();
-        assert_eq!(g.banner(), None);
-        g.exec(Command::Run {
-            tool: Tool::PasswordBreaker,
-            server: t,
-            file: None,
-        });
-        for _ in 0..200 {
-            g.advance(0.1);
-            if g.banner().is_some() {
-                break;
-            }
-        }
-        assert_eq!(g.banner(), Some(Banner::Granted));
-        for _ in 0..BANNER_TICKS + 2 {
-            g.advance(0.1);
-        }
-        assert_eq!(g.banner(), None, "it goes away by itself");
-
-        // A trace that completes shows the denied banner.
-        let mut g = Game::new(3);
-        let t = weak_corp(&mut g);
-        g.run.world.servers[t].layers[0].strength = 1_000_000;
-        g.run.world.servers[t].trace_ticks = 3;
-        g.select_target(t);
-        g.connect();
-        g.exec(Command::Run {
-            tool: Tool::PasswordBreaker,
-            server: t,
-            file: None,
-        });
-        for _ in 0..50 {
-            g.advance(0.1);
-            if g.banner().is_some() {
-                break;
-            }
-        }
-        assert_eq!(g.world().player.heat, 1);
-        assert_eq!(g.banner(), Some(Banner::Denied));
     }
 
     #[test]

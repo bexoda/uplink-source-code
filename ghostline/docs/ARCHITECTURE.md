@@ -15,7 +15,7 @@ Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the brows
 | `gl-save` | Sealed save container, desktop store, sync protocol/decision logic. | native + wasm (`store`, `keychain` native only) |
 | `gl-server` | Axum + Postgres sync API. Stores opaque blobs. | server |
 | `gl-assets` | Runtime loader for Uplink's `.dat` archives: REDSHIRT wrapper (marker, then every byte +128) around a ZIP, 8-bit and 1-bit TIFF sprites, TTF fonts, WAV. Patch archives override base graphics. Memory-backed mode for a future browser file picker. | native + wasm (`locate` native only) |
-| `gl-client` | egui/eframe UI over `gl-sim`. One codebase, native + wasm. `game.rs` is the UI-free controller (fixed-step pacing, selection, narration, trace view); `app.rs` only draws and emits actions. | native + wasm |
+| `gl-client` | egui/eframe client over `gl-sim`. `uplink/` is the original interface rebuilt from the source on a 1024x768 virtual screen (`canvas.rs`: scaling, gradients, text, one-frame-late hit testing; `theme.rs`, `sprites.rs`, `hud.rs`, `map.rs`, `swmenu.rs`, `remote.rs`, `local.rs`), used when Uplink data is found; `app.rs` is the plain vector fallback. egui/eframe UI over `gl-sim`. One codebase, native + wasm. `game.rs` is the UI-free controller (fixed-step pacing, selection, narration, trace view); `app.rs` only draws and emits actions. | native + wasm |
 
 ## Simulation rules
 
@@ -23,6 +23,7 @@ Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the brows
 - All input is a `Command`; all output is an `Event` pushed into a caller-owned `Vec` (no per-tick allocation in the hot path).
 - Integer "work units" only. Same seed + same commands = byte-identical state on every platform (tested).
 - Entities live in `SlotMap` arenas addressed by `Copy` ids: no `Rc`, no globals, no raw pointers.
+- Machines come in three kinds: relays you bounce through, targets with layered defences, and Uplink's own services machine (software shop, contract board). Each log entry records when the connection was made.
 - Mechanics: layered server security, relay bounce chains, trace walking back hop by hop, log erasure to
   break a trace, CPU shared across concurrent tasks, three strikes ends the run. All numbers in `tuning.rs`.
 
@@ -97,6 +98,8 @@ What this does **not** stop:
 - **Bots.** A script issuing legal commands is indistinguishable from a skilled player.
 - **Waiting.** A player can bank real time (fetch a seed, wait, play fast). That equals playing slowly.
 - **Offline-only play.** It is unverified until it syncs. Only verified runs should count for leaderboards.
+
+Rules version history: 1 initial, 2 no duplicate contracts, 3 adds the services machine. Save schema 2 adds a timestamp to log entries.
 
 Cost to remember: any change that alters outcomes (balance, mechanics) must bump `SIM_VERSION`. Old logs then
 no longer replay, so the client must sync before updating, or the server must keep old sim versions for a while.

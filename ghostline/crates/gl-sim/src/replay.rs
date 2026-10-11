@@ -11,7 +11,7 @@ use crate::world::{CmdError, Command, Event, World};
 
 /// Version of the *rules*. Bump on any change that alters simulation outcomes
 /// (balance, mechanics), since old logs would no longer replay identically.
-pub const SIM_VERSION: u32 = 2;
+pub const SIM_VERSION: u32 = 3;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CommandEntry {

@@ -1,19 +1,23 @@
 //! Ghostline client: one egui codebase for desktop and the browser.
 
+mod act;
 mod app;
 mod assets;
 pub mod game;
 pub mod persist;
+mod uplink;
 
+pub use act::Act;
 pub use app::GhostlineApp;
+pub use uplink::UplinkUi;
 
 #[cfg(not(target_arch = "wasm32"))]
 pub fn run_native() -> eframe::Result {
     let options = eframe::NativeOptions {
         viewport: eframe::egui::ViewportBuilder::default()
             .with_title("Ghostline")
-            .with_inner_size([1280.0, 800.0])
-            .with_min_inner_size([980.0, 620.0]),
+            .with_inner_size([1024.0, 768.0])
+            .with_min_inner_size([800.0, 600.0]),
         ..Default::default()
     };
     eframe::run_native(

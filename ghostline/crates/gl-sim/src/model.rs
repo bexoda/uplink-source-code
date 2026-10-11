@@ -61,6 +61,8 @@ pub enum ServerKind {
     Relay,
     /// Hardened target.
     Corp,
+    /// Uplink's own services machine: sells software and posts contracts. No defences.
+    Service,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -83,6 +85,8 @@ pub struct FileEntry {
 pub struct LogEntry {
     pub session: u64,
     pub erased: bool,
+    /// World tick at which the connection was made, for display.
+    pub tick: u64,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

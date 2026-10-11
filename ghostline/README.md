@@ -49,10 +49,22 @@ crates/gl-client/build-web.sh
 cd crates/gl-client/web && python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-How to play: click relays to build a chain (order matters), click a target, accept a contract, connect.
-Your first attack starts a trace that walks back from the target hop by hop. Break layers in order, copy
-the file, and erase your log at a hop before the tracer reaches it and the trace dies. Three times traced
-ends the career.
+How to play (with Uplink data present, you get the original interface):
+
+1. Click the small world map (top right) to open the big one. Click dots to build a connection: relays first, in order,
+   then the machine you are going after. White dots become orange when they are in your route.
+2. Connect to **Uplink Internal Services** first: **Software Sales** sells and upgrades your programs, and the **Bulletin Board**
+   posts contracts. You start with 1000 credits and three programs.
+3. Connect to a target. Its security systems are listed, each with the original Access Denied / Access Granted image.
+   Click one, then run the matching program from the **software button** (bottom left): Crackers (Password Breaker,
+   Decrypter) wait for you to click the password box or cypher; Bypassers (Firewall, Proxy) run at once.
+4. Your first move against a protected machine starts a **trace**. It crawls back along your connection (red on the map and
+   in the Connection Analyser). The **Trace Tracker** window pulses faster as it closes in.
+5. With every system down, **Proceed** to the server menu. Arm the **File Copier** (File Utilities) and click a file. Arm the
+   **Log Deleter** (Security) and click your log on a machine: a trace cannot cross a machine whose log you erased.
+6. Three times traced ends the career.
+
+Without Uplink data the client falls back to a plain vector interface with the same game underneath.
 
 - **Desktop saves** autosave to your data directory (`~/.local/share/ghostline`, `~/Library/Application Support/ghostline`, `%APPDATA%\ghostline`),
   sealed and tamper-evident. The key is in the OS keychain when built with `--features os-keyring`, otherwise a key file
@@ -64,23 +76,27 @@ ends the career.
 
 ## Original Uplink assets
 
-The client uses Uplink's own artwork when it can find it, and falls back to its plain vector look when it can't.
-With assets it shows: the world map (servers sit on land, placed by a stable hash of their name), the HUD icons,
-the original fonts, and the Access Granted / Access Denied banners.
+When the player's own Uplink data is found, the client rebuilds the game's interface from the original source: the 1024x768
+screen, the "Uplink Blue" theme (read from `patch.dat`), the `dungeon.ttf` font (the only font the game uses in play),
+and the sprites. Layouts and positions come straight from `hud_interface.cpp`, `worldmap_interface.cpp`, `sw_interface.cpp`,
+the remote screens (`highsecurity`, `password`, `cypher`, `menu`, `fileserver`, `log`, `swsales`, `bbs`), the task manager
+(`vanbakel`) and the local panels (hardware, memory, status, finance, analyser, mission).
 
-It looks for `graphics.dat` and `fonts.dat` in, in order: `$UPLINK_DIR`, the usual Steam/GOG/Applications
-locations, and a few Linux paths. For the developer CD in this repo:
+It looks for `graphics.dat` and `fonts.dat` in, in order: `$UPLINK_DIR`, the usual Steam/GOG/Applications locations, and a
+few Linux paths. For the developer CD in this repo:
 
 ```sh
 UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p gl-client --release
 ```
 
-- Decoded in memory only. Patch archives (`patch*.dat`) override the base graphics, as in the game.
-- **Browser:** no assets yet. The plan is a file picker that reads your own `.dat` files locally in the page and
-  never uploads them; hosting their assets from our server is a distribution and is off the table for now.
-- **Not used yet:** sounds (`sounds.dat`, 48 WAVs), music (`music.dat`, `world.dat`), gateway artwork, the game's
-  text tables (`data.dat`). Audio needs a platform audio backend.
-- `cargo test -p gl-assets` decodes every sprite in the real archives (set `UPLINK_DIR`, or it uses the dev CD in this repo).
+- Everything is decoded in memory at runtime. Patch archives (`patch*.dat`) override the base graphics, as in the game.
+- **Browser:** no assets yet; it runs the plain vector UI. The plan is a file picker that reads your own `.dat` files locally
+  in the page and never uploads them. Hosting their assets from our server would be a distribution, so it is off the table.
+- **Not built yet:** sounds and music (`sounds.dat`, `music.dat`, `world.dat`), the main menu and loading screens, gateway artwork,
+  the awards, the LAN and IRC screens, e-mail, the phone dialler, world-map zoom, and the game's own text tables (`data.dat`).
+  Faster-than-real-time speeds are shown but disabled, because online runs are checked against real time.
+- `cargo test -p gl-assets` decodes every sprite in the real archives, and `cargo test -p gl-client --test uplink_ui` plays a whole
+  hack through the interface with synthesised mouse clicks (both use the dev CD in this repo, or `UPLINK_DIR`).
 
 ## Build and test
 
@@ -186,8 +202,8 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 - [x] OAuth login (Google, GitHub, Discord), sessions, account linking, hacker handles, account deletion
 - [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
 - [x] `egui` client (native + wasm): world map, connect, tasks, trace bar, contracts, tools, desktop autosave
-- [x] Original Uplink art, fonts and world map loaded at runtime from the player's own install (desktop)
-- [ ] Sounds and music; gateway/hardware screens; browser file picker for assets
+- [x] The original Uplink interface rebuilt from the source (HUD, world map, software menu, task manager, security, password, cypher, file, log, shop and contract screens, local panels), desktop
+- [ ] Sounds and music, main menu, phone dialler, map zoom, e-mail; browser file picker for assets
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
 - [ ] Browser saves
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native

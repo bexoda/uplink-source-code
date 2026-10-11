@@ -9,7 +9,7 @@ use crate::rng::Rng;
 use crate::tuning::*;
 
 /// Bump when the serialised shape of `World` changes; `gl-save` uses it to migrate.
-pub const SCHEMA_VERSION: u32 = 1;
+pub const SCHEMA_VERSION: u32 = 2;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Command {
@@ -197,6 +197,16 @@ impl World {
                 done: false,
             });
         }
+        // Uplink's own services machine, where software is sold and contracts are posted.
+        w.servers.insert(Server {
+            name: "Uplink Internal Services System".into(),
+            ip: "234.77.13.109".into(),
+            kind: ServerKind::Service,
+            layers: Vec::new(),
+            files: Vec::new(),
+            logs: Vec::new(),
+            trace_ticks: TARGET_TRACE_TICKS,
+        });
         w
     }
 
@@ -261,12 +271,12 @@ impl World {
         if !ok_chain {
             return Err(CmdError::BadChain);
         }
-        if !self
+        if self
             .servers
             .get(target)
             .ok_or(CmdError::UnknownServer)?
             .kind
-            .eq(&ServerKind::Corp)
+            == ServerKind::Relay
         {
             return Err(CmdError::BadChain);
         }
@@ -276,6 +286,7 @@ impl World {
             self.servers[sid].logs.push(LogEntry {
                 session: id,
                 erased: false,
+                tick: self.tick_no,
             });
         }
         self.session = Some(Session { id, chain, target });
