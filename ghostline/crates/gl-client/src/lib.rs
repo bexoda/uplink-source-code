@@ -7,6 +7,8 @@ pub mod audio;
 pub mod game;
 pub mod persist;
 mod uplink;
+#[cfg(target_arch = "wasm32")]
+mod webassets;
 
 pub use act::Act;
 pub use app::GhostlineApp;

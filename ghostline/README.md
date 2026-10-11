@@ -91,8 +91,10 @@ UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p gl-client --relea
 ```
 
 - Everything is decoded in memory at runtime. Patch archives (`patch*.dat`) override the base graphics, as in the game.
-- **Browser:** no assets yet; it runs the plain vector UI. The plan is a file picker that reads your own `.dat` files locally
-  in the page and never uploads them. Hosting their assets from our server would be a distribution, so it is off the table.
+- **Browser:** the page asks for your own `graphics.dat`, `fonts.dat`, `patch*.dat`, `sounds.dat` and `music.dat` with a file
+  picker. They are read inside the page, kept in that browser's IndexedDB so a reload doesn't ask again, and never uploaded.
+  Open the page with `?forget-assets` to drop them. Until you pick them, the plain vector UI runs. We never host their files,
+  because that would be distributing them.
 - **Not built yet:** the main menu and loading screens, gateway artwork,
   the awards, the LAN and IRC screens, e-mail, the phone dialler, world-map zoom, and the game's own text tables (`data.dat`).
   Faster-than-real-time speeds are shown but disabled, because online runs are checked against real time.
@@ -224,8 +226,8 @@ With the original interface, the client plays the original sounds and music. It 
   The trace bleep speeds up as the trace advances. The original timed it from its trace-time estimate, so our gap is an approximation.
 - `world.dat` is a 14 MB MP3 that nothing in the game code references; it is not used.
 - No device, or `GHOSTLINE_AUDIO=off`, means silence. Nothing else changes.
-- **Browser:** the audio code builds for wasm (cpal over Web Audio, resumed after the first click). It stays silent until the
-  browser can read your `.dat` files, which needs the file picker that isn't built yet.
+- **Browser:** same sound through Web Audio, once you have picked your files (the pick is the click browsers require
+  before they allow audio).
 - **Licence:** `crates/gl-audio/src/player.rs` and `uni.rs` port libmikmod (LGPL-2.0-or-later), so `gl-audio` carries that
   licence. That is fine for private builds. Before any public binary, either ship `gl-audio` under the LGPL's terms (keep it
   a separate, replaceable component and offer its source) or replace the port with a clean-room player.
@@ -237,8 +239,9 @@ With the original interface, the client plays the original sounds and music. It 
 - [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
 - [x] `egui` client (native + wasm): world map, connect, tasks, trace bar, contracts, tools, desktop autosave
 - [x] The original Uplink interface rebuilt from the source (HUD, world map, software menu, task manager, security, password, cypher, file, log, shop and contract screens, local panels), desktop
-- [x] Original sounds and music (desktop; the browser needs the asset file picker)
-- [ ] Main menu, phone dialler, map zoom, e-mail; browser file picker for assets
+- [x] Original sounds and music
+- [x] Browser: the player's own `.dat` files through a file picker, cached in the browser, never uploaded
+- [ ] Main menu, phone dialler, map zoom, e-mail
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
 - [ ] Browser saves
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native

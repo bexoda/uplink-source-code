@@ -98,6 +98,10 @@ pub struct GhostlineApp {
     uplink: Option<UplinkUi>,
     /// Original sounds and music; only with the original interface (it needs the same data).
     audio: Option<Audio>,
+    /// Built from files picked in the browser; shown from the next frame, once egui has bound
+    /// the fonts it registered (`set_fonts` applies at the start of a frame).
+    #[cfg(target_arch = "wasm32")]
+    pending: Option<UplinkUi>,
 }
 
 impl GhostlineApp {
@@ -142,6 +146,8 @@ impl GhostlineApp {
             confirm_new: false,
             uplink,
             audio,
+            #[cfg(target_arch = "wasm32")]
+            pending: None,
         }
     }
 
@@ -201,9 +207,22 @@ fn load_uplink_ui(
     }
     #[cfg(target_arch = "wasm32")]
     {
-        let _ = (ctx, notice);
-        (None, None) // The browser build will take the player's own files through a file picker; not built yet.
+        // The page offers a file picker; the files arrive later through `webassets`.
+        let _ = notice;
+        crate::webassets::set_context(ctx);
+        (None, None)
     }
+}
+
+/// Builds the interface and sound from files the player picked in the browser.
+#[cfg(target_arch = "wasm32")]
+fn load_picked(
+    ctx: &egui::Context,
+    files: std::collections::HashMap<String, Vec<u8>>,
+) -> Result<(UplinkUi, Audio), String> {
+    let (ui_files, sound_files) = crate::webassets::split(files);
+    let ui = UplinkUi::new(ctx, gl_assets::Store::from_memory(ui_files))?;
+    Ok((ui, Audio::new(gl_assets::Store::from_memory(sound_files))))
 }
 
 fn apply_theme(ctx: &egui::Context) {
@@ -231,6 +250,25 @@ fn apply_theme(ctx: &egui::Context) {
 impl eframe::App for GhostlineApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
+        #[cfg(target_arch = "wasm32")]
+        if let Some(u) = self.pending.take() {
+            self.uplink = Some(u);
+        }
+        #[cfg(target_arch = "wasm32")]
+        if let Some(files) = crate::webassets::take_ready() {
+            match load_picked(&ctx, files) {
+                Ok((u, a)) => {
+                    self.pending = Some(u);
+                    self.audio = Some(a);
+                    self.notice = None;
+                    ctx.request_repaint();
+                }
+                Err(e) => {
+                    self.notice =
+                        Some((Level::Warn, format!("Couldn't use those Uplink files: {e}")))
+                }
+            }
+        }
         // Real elapsed time, not egui's smoothed `stable_dt` (which under-reports on slow frames and
         // made the game clock run slow). `Game::advance` still caps one frame at half a second.
         let now = ctx.input(|i| i.time);
