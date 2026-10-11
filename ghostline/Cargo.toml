@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = ["crates/gl-sim", "crates/gl-save", "crates/gl-server"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "UNLICENSED"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+slotmap = { version = "1", features = ["serde"] }
+postcard = { version = "1", default-features = false, features = ["alloc"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+# Size-optimised profile for the browser build: `cargo build --profile web`
+[profile.web]
+inherits = "release"
+opt-level = "s"
+strip = true
+
+# Argon2 is unusably slow at opt-level 0; keep it fast in debug/test builds.
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3

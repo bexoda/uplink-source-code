@@ -1,0 +1,123 @@
+use gl_save::store::LocalStore;
+use gl_save::*;
+use gl_sim::World;
+
+fn sample() -> World {
+    let mut w = World::new(99);
+    for _ in 0..50 {
+        w.tick(&mut vec![]);
+    }
+    w
+}
+
+fn bytes_of(w: &World) -> Vec<u8> {
+    postcard::to_allocvec(w).unwrap()
+}
+
+#[test]
+fn key_roundtrip_and_compression() {
+    let w = sample();
+    let key = Key::generate();
+    let sealed = seal(&w, Unlock::Key(&key)).unwrap();
+    assert!(sealed.len() < bytes_of(&w).len() + 100);
+    let back = open(&sealed, Unlock::Key(&key)).unwrap();
+    assert_eq!(bytes_of(&w), bytes_of(&back));
+}
+
+#[test]
+fn passphrase_roundtrip() {
+    let w = sample();
+    let sealed = seal(&w, Unlock::Passphrase("correct horse")).unwrap();
+    assert!(peek(&sealed).unwrap().passphrase);
+    assert!(open(&sealed, Unlock::Passphrase("correct horse")).is_ok());
+    assert_eq!(
+        open(&sealed, Unlock::Passphrase("wrong")).unwrap_err(),
+        SaveError::Decrypt
+    );
+}
+
+#[test]
+fn wrong_key_and_mode_rejected() {
+    let w = sample();
+    let (k1, k2) = (Key::generate(), Key::generate());
+    let sealed = seal(&w, Unlock::Key(&k1)).unwrap();
+    assert_eq!(
+        open(&sealed, Unlock::Key(&k2)).unwrap_err(),
+        SaveError::Decrypt
+    );
+    assert_eq!(
+        open(&sealed, Unlock::Passphrase("x")).unwrap_err(),
+        SaveError::KeyModeMismatch
+    );
+}
+
+#[test]
+fn any_single_bit_flip_is_detected() {
+    let w = World::new(1);
+    let key = Key::generate();
+    let sealed = seal(&w, Unlock::Key(&key)).unwrap();
+    // Header bytes and a spread of ciphertext bytes (incl. the tag at the end).
+    for i in (0..sealed.len()).step_by(7).chain([sealed.len() - 1]) {
+        let mut t = sealed.clone();
+        t[i] ^= 1;
+        assert!(
+            open(&t, Unlock::Key(&key)).is_err(),
+            "flip at byte {i} was accepted"
+        );
+    }
+}
+
+#[test]
+fn garbage_and_truncation_rejected() {
+    let key = Key::generate();
+    assert_eq!(
+        open(b"nope", Unlock::Key(&key)).unwrap_err(),
+        SaveError::Truncated
+    );
+    assert_eq!(
+        open(&[0u8; 100], Unlock::Key(&key)).unwrap_err(),
+        SaveError::BadMagic
+    );
+    let mut sealed = seal(&World::new(1), Unlock::Key(&key)).unwrap();
+    sealed.truncate(sealed.len() - 20);
+    assert!(open(&sealed, Unlock::Key(&key)).is_err());
+}
+
+#[test]
+fn nonce_is_fresh_each_seal() {
+    let (w, key) = (World::new(1), Key::generate());
+    assert_ne!(
+        seal(&w, Unlock::Key(&key)).unwrap(),
+        seal(&w, Unlock::Key(&key)).unwrap()
+    );
+}
+
+#[test]
+fn local_store_is_atomic_keeps_backup_and_validates_names() {
+    let dir = tempfile::tempdir().unwrap();
+    let st = LocalStore::new(dir.path()).unwrap();
+    st.write("main", b"one").unwrap();
+    st.write("main", b"two").unwrap();
+    assert_eq!(st.read("main").unwrap(), b"two");
+    assert_eq!(st.read_backup("main").unwrap(), b"one");
+    assert_eq!(st.slots().unwrap(), vec!["main"]);
+    assert!(st.write("../evil", b"x").is_err());
+    assert!(st.read("a/b").is_err());
+    assert!(!dir.path().join("main.glsave.tmp").exists());
+
+    assert_eq!(st.read_sync_state("main").unwrap(), None);
+    let s = sync::SyncState {
+        base: 4,
+        dirty: true,
+    };
+    st.write_sync_state("main", s).unwrap();
+    assert_eq!(st.read_sync_state("main").unwrap(), Some(s));
+}
+
+#[test]
+fn slot_names() {
+    assert!(slot::is_valid("main-1_a"));
+    for bad in ["", "A", "a b", "../x", "a.b", &"x".repeat(33)] {
+        assert!(!slot::is_valid(bad), "{bad}");
+    }
+}
