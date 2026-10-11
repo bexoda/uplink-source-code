@@ -155,6 +155,10 @@ refuses to start with it unless `UPLINK_RUST_PUBLIC_URL` is `127.0.0.1`/`localho
 **Google:** in Google Cloud Console create an OAuth client ("Web application"), add the authorised redirect URI
 `$UPLINK_RUST_PUBLIC_URL/v1/auth/google/callback`, and set the two `UPLINK_RUST_OAUTH_GOOGLE_*` variables.
 
+**Windows, everything in one go:** `.\dev.ps1` starts this server with the test sign-in and then the desktop game;
+`.\dev.ps1 -Web` opens the browser version at http://127.0.0.1:8765 instead; `.\dev.ps1 -Stop` shuts it down. It needs an
+empty PostgreSQL database whose address is in `.dev\database.url` (git-ignored). Port 8080 is the server and has no page.
+
 ## Uplink accounts in the game
 
 The login screen has an **Uplink Account** section under the User ID box when the client knows a server:

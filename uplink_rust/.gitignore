@@ -10,3 +10,5 @@ crates/ur-client/web/pkg/
 *.wav
 *.mp3
 *.uni
+# Local dev stack state (private database, server key, logs): see dev.ps1
+.dev/
