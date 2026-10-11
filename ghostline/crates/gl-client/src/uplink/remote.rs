@@ -296,6 +296,8 @@ fn systems(
         if srv.locked() {
             st.say("Message", "You have not cleared every system yet.");
         } else {
+            // passwordscreen/useridscreen: login.wav on the way in.
+            st.cues.push(crate::audio::Cue::Login);
             st.remote.go(Screen::Menu, st.anim);
         }
     }
@@ -1373,6 +1375,15 @@ fn trace_tracker(c: &mut Canvas, res: &Res, st: &mut State, g: &Game) {
                 / h.len().max(1) as f32
         })
         .unwrap_or(0.0);
+    // tracetracker.cpp bleeps with a gap of (time left)/20; ours shrinks with trace progress.
+    if tracing {
+        if st.anim >= st.next_beep {
+            st.cues.push(crate::audio::Cue::TraceBleep);
+            st.next_beep = st.anim + (3.0 * (1.0 - progress)).max(0.15);
+        }
+    } else {
+        st.next_beep = 0.0;
+    }
     // The nearer the tracer, the faster it pulses.
     let brightness = if tracing {
         0.35 + 0.45 * (0.5 + 0.5 * (st.anim * (3.0 + 9.0 * progress) * std::f32::consts::TAU).sin())

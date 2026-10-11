@@ -9,6 +9,7 @@ use std::path::PathBuf;
 
 use eframe::egui::{self, vec2, Event, Modifiers, PointerButton, Pos2, RawInput, Rect};
 use gl_assets::Store;
+use gl_client::audio::Cue;
 use gl_client::game::Game;
 use gl_client::{Act, UplinkUi};
 use gl_sim::{Command, Tool};
@@ -30,6 +31,8 @@ struct Rig {
     ui: UplinkUi,
     game: Game,
     t: f64,
+    /// Every sound the interface and the game asked for, in order.
+    cues: Vec<Cue>,
 }
 
 impl Rig {
@@ -43,6 +46,7 @@ impl Rig {
             ui,
             game: Game::new(42),
             t: 0.0,
+            cues: Vec::new(),
         };
         for _ in 0..3 {
             rig.frame(vec![]);
@@ -72,6 +76,8 @@ impl Rig {
         for a in acts {
             self.game.apply_act(a);
         }
+        self.cues.extend(self.ui.take_cues());
+        self.cues.extend(self.game.take_cues());
         names
     }
 
@@ -130,24 +136,43 @@ fn a_whole_hack_through_the_original_interface() {
     assert!(bought.iter().any(|a| a.contains("BuyTool")), "{bought:?}");
     assert!(r.game.owns(Tool::FirewallBypass));
     assert_eq!(r.game.world().player.credits, 400);
+    // Buying the next level costs more than is left: refused, with failure.wav.
+    r.cues.clear();
+    r.click(620.0, 187.0);
+    assert_eq!(r.game.world().player.credits, 400);
+    assert!(r.cues.contains(&Cue::Failure), "{:?}", r.cues);
+    r.click(512.0, 373.0); // the refusal's message box: Close
 
     // Back out, route through two relays to corp-1 and connect.
     r.click(873.0, 171.0);
     assert!(!r.game.connected());
     r.click(870.0, 80.0);
+    r.cues.clear();
     r.click(329.0, 360.0); // relay-1
     r.click(336.0, 482.0); // relay-2
     r.click(363.0, 405.0); // corp-1
     assert_eq!(r.game.chain.len(), 2);
+    // addlink.wav for each bounce added (not for the target), mouseclick.wav for each press.
+    assert_eq!(
+        r.cues.iter().filter(|c| **c == Cue::AddLink).count(),
+        2,
+        "{:?}",
+        r.cues
+    );
+    assert_eq!(r.cues.iter().filter(|c| **c == Cue::MouseClick).count(), 3);
     r.click(565.0, 581.0);
     assert!(r.game.connected());
     let target = r.game.world().session.as_ref().unwrap().target;
 
     // Open the firewall system, run the bypass from the software menu.
     r.click(150.0, 152.0);
+    r.cues.clear();
     r.click(30.0, 742.0); // software button
     r.hover(50.0, 650.0); // "Bypassers"
     let ran = r.click(170.0, 651.0);
+    let menu = r.cues.iter().filter(|c| **c == Cue::SoftwareMenu).count();
+    assert_eq!(menu, 2, "menu and submenu: {:?}", r.cues);
+    assert!(r.cues.contains(&Cue::RunSoftware));
     assert!(ran.iter().any(|a| a.contains("FirewallBypass")), "{ran:?}");
     assert_eq!(r.game.world().tasks.len(), 1);
 
@@ -159,7 +184,9 @@ fn a_whole_hack_through_the_original_interface() {
 
     // Proceed to the server menu, open the file server, arm the file copier, click a file.
     r.wait(2.0); // the screen returns to the systems list by itself
+    r.cues.clear();
     r.click(375.0, 357.0); // Proceed
+    assert!(r.cues.contains(&Cue::Login), "{:?}", r.cues);
     r.wait(1.5);
     r.click(200.0, 135.0); // File Server
     r.click(30.0, 742.0);

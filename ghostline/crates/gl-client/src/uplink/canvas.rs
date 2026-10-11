@@ -57,6 +57,8 @@ pub struct Ecl {
     hover: Option<u64>,
     pressed: Option<u64>,
     clicked: Option<u64>,
+    /// A button went down this frame (the original's `button_click` sound).
+    just_pressed: bool,
     tooltip_now: String,
     tooltip_shown: String,
 }
@@ -80,8 +82,10 @@ impl Ecl {
         let (pressed_now, released_now) =
             ui.input(|i| (i.pointer.primary_pressed(), i.pointer.primary_released()));
         self.clicked = None;
+        self.just_pressed = false;
         if pressed_now {
             self.pressed = self.hover;
+            self.just_pressed = self.hover.is_some();
         }
         if released_now {
             if self.pressed.is_some() && self.pressed == self.hover {
@@ -225,6 +229,11 @@ impl Canvas<'_> {
     pub fn sprite(&self, tex: egui::TextureId, w: f32, h: f32, x: f32, y: f32, tint: Color32) {
         let uv = Rect::from_min_max(Pos2::ZERO, Pos2::new(1.0, 1.0));
         self.painter.image(tex, self.rect(x, y, w, h), uv, tint);
+    }
+
+    /// A button went down this frame.
+    pub fn just_pressed(&self) -> bool {
+        self.ecl.just_pressed
     }
 
     /// Register an interactive region (later calls are on top). Hover/click come from last frame's

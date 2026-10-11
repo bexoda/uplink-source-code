@@ -27,6 +27,7 @@ use self::sprites::Sprites;
 use self::theme::Theme;
 use crate::act::Act;
 use crate::assets::{place_on_land, LandMask};
+use crate::audio::Cue;
 use crate::game::Game;
 
 /// Which panel the toolbar has open on the right-hand side.
@@ -65,6 +66,10 @@ pub struct State {
     pub msg: Option<(String, String)>,
     /// Whether the Trace Tracker window is open.
     pub tracker: bool,
+    /// Sounds to play this frame, in the order their originals would have fired.
+    pub cues: Vec<Cue>,
+    /// `st.anim` time of the next Trace Tracker bleep.
+    pub next_beep: f32,
 }
 
 impl State {
@@ -82,6 +87,8 @@ impl State {
             );
             return;
         };
+        // sw_interface: runsoftware.wav when a program starts.
+        self.cues.push(Cue::RunSoftware);
         match tool {
             Tool::FirewallBypass | Tool::ProxyBypass => acts.push(Act::Cmd(gl_sim::Command::Run {
                 tool,
@@ -161,6 +168,8 @@ impl UplinkUi {
                 help: String::new(),
                 msg: None,
                 tracker: true,
+                cues: Vec::new(),
+                next_beep: 0.0,
             },
         })
     }
@@ -184,6 +193,11 @@ impl UplinkUi {
         self.st.names = names;
     }
 
+    /// Sounds the interface asked for since the last call.
+    pub fn take_cues(&mut self) -> Vec<Cue> {
+        std::mem::take(&mut self.st.cues)
+    }
+
     pub fn show(&mut self, ui: &mut egui::Ui, g: &Game, dt: f32, acts: &mut Vec<Act>) {
         self.layout(g);
         self.st.anim += dt;
@@ -199,6 +213,9 @@ impl UplinkUi {
             }
         }
         let mut c = ecl.begin(ui, painter, area);
+        if c.just_pressed() {
+            st.cues.push(Cue::MouseClick);
+        }
 
         c.fill(0.0, 0.0, W, H, res.theme.c("Background"));
 

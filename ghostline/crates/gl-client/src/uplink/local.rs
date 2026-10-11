@@ -85,6 +85,7 @@ pub fn draw(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec<
     let hit = c.hit("local_title", 0, x0, TOP + 3.0, PANEL_W - 7.0, 15.0, tip);
     button_box(c, res, x0, TOP + 3.0, PANEL_W - 7.0, 15.0, title, hit);
     if hit.clicked {
+        st.cues.push(crate::audio::Cue::Close);
         st.local = Local::None;
         return;
     }
@@ -294,6 +295,7 @@ pub fn draw(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec<
             );
             button_box(c, res, x0, TOP + 120.0, 80.0, 15.0, "Close", close);
             if close.clicked {
+                st.cues.push(crate::audio::Cue::Close);
                 st.local = Local::None;
             }
         }

@@ -249,6 +249,9 @@ pub fn large(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec
             } else if d.target {
                 acts.push(Act::ToggleTarget(d.id));
             } else {
+                if !g.chain.contains(&d.id) {
+                    st.cues.push(crate::audio::Cue::AddLink);
+                }
                 acts.push(Act::ToggleRelay(d.id));
             }
         }
@@ -335,6 +338,7 @@ pub fn large(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec
     );
     image_button(c, res, 605.0, by + 1.0, "close.tif", hit, false);
     if hit.clicked {
+        st.cues.push(crate::audio::Cue::Close);
         st.map_large = false;
         st.help.clear();
     }

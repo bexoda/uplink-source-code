@@ -5,6 +5,7 @@ use eframe::egui::{
 use gl_sim::*;
 
 use crate::act::Act;
+use crate::audio::Audio;
 use crate::game::{Game, HopState, Level};
 use crate::persist::Persist;
 use crate::uplink::UplinkUi;
@@ -95,12 +96,14 @@ pub struct GhostlineApp {
     confirm_new: bool,
     /// The original Uplink interface, when the player's Uplink data was found.
     uplink: Option<UplinkUi>,
+    /// Original sounds and music; only with the original interface (it needs the same data).
+    audio: Option<Audio>,
 }
 
 impl GhostlineApp {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         let mut notice = None;
-        let uplink = load_uplink_ui(&cc.egui_ctx, &mut notice);
+        let (uplink, audio) = load_uplink_ui(&cc.egui_ctx, &mut notice);
         apply_theme(&cc.egui_ctx);
         let persist = match Persist::open() {
             Ok(p) => Some(p),
@@ -138,6 +141,7 @@ impl GhostlineApp {
             last_frame: None,
             confirm_new: false,
             uplink,
+            audio,
         }
     }
 
@@ -165,16 +169,24 @@ impl GhostlineApp {
     }
 }
 
-/// Looks for the player's own Uplink data and builds the original interface from it.
-fn load_uplink_ui(ctx: &egui::Context, notice: &mut Option<(Level, String)>) -> Option<UplinkUi> {
+/// Looks for the player's own Uplink data and builds the original interface and sound from it.
+fn load_uplink_ui(
+    ctx: &egui::Context,
+    notice: &mut Option<(Level, String)>,
+) -> (Option<UplinkUi>, Option<Audio>) {
     #[cfg(not(target_arch = "wasm32"))]
     {
-        let dir = gl_assets::locate()?;
+        let Some(dir) = gl_assets::locate() else {
+            return (None, None);
+        };
         let built = gl_assets::Store::from_dir(&dir)
             .map_err(|e| e.to_string())
             .and_then(|store| UplinkUi::new(ctx, store));
         match built {
-            Ok(ui) => Some(ui),
+            Ok(ui) => {
+                let audio = gl_assets::Store::from_dir(&dir).ok().map(Audio::new);
+                (Some(ui), audio)
+            }
             Err(e) => {
                 *notice = Some((
                     Level::Warn,
@@ -183,14 +195,14 @@ fn load_uplink_ui(ctx: &egui::Context, notice: &mut Option<(Level, String)>) -> 
                         dir.display()
                     ),
                 ));
-                None
+                (None, None)
             }
         }
     }
     #[cfg(target_arch = "wasm32")]
     {
         let _ = (ctx, notice);
-        None // The browser build will take the player's own files through a file picker; not built yet.
+        (None, None) // The browser build will take the player's own files through a file picker; not built yet.
     }
 }
 
@@ -238,6 +250,21 @@ impl eframe::App for GhostlineApp {
                 .show(ui, |ui| u.show(ui, &self.game, dt, &mut acts));
             for a in acts {
                 self.apply(a);
+            }
+            if let Some(audio) = &mut self.audio {
+                let ui_cues = self
+                    .uplink
+                    .as_mut()
+                    .map(|u| u.take_cues())
+                    .unwrap_or_default();
+                for c in ui_cues.into_iter().chain(self.game.take_cues()) {
+                    audio.play(c);
+                }
+                audio.update();
+                if audio.live() {
+                    // Keep the playlist moving while the game sits paused.
+                    ctx.request_repaint_after(std::time::Duration::from_millis(500));
+                }
             }
             if !self.game.paused && !self.game.world().game_over {
                 ctx.request_repaint_after(std::time::Duration::from_millis(16));

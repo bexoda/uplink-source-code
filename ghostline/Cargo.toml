@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/gl-sim", "crates/gl-save", "crates/gl-server", "crates/gl-client", "crates/gl-assets"]
+members = ["crates/gl-sim", "crates/gl-save", "crates/gl-server", "crates/gl-client", "crates/gl-assets", "crates/gl-audio"]
 
 [workspace.package]
 version = "0.1.0"
@@ -30,4 +30,7 @@ panic = "abort"
 [profile.dev.package.argon2]
 opt-level = 3
 [profile.dev.package.blake2]
+opt-level = 3
+# The music player renders minutes of audio in tests; keep it fast in debug builds.
+[profile.dev.package.gl-audio]
 opt-level = 3

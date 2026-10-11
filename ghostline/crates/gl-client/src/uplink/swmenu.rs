@@ -85,6 +85,9 @@ pub fn draw(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec<
         }
     }
     if let Some((id, _)) = hovered_cat {
+        if st.sw_cat != Some(id) {
+            st.cues.push(crate::audio::Cue::SoftwareMenu);
+        }
         st.sw_cat = Some(id);
     }
     if let Some(cat) = st.sw_cat {

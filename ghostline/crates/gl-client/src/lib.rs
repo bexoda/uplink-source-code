@@ -3,6 +3,7 @@
 mod act;
 mod app;
 mod assets;
+pub mod audio;
 pub mod game;
 pub mod persist;
 mod uplink;

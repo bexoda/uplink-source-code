@@ -15,10 +15,13 @@ os-keyring = ["gl-save/os-keyring"]
 gl-sim = { path = "../gl-sim" }
 gl-save = { path = "../gl-save" }
 gl-assets = { path = "../gl-assets" }
+gl-audio = { path = "../gl-audio" }
+cpal = "0.18"
 eframe = { version = "0.36", default-features = false, features = ["glow", "default_fonts", "x11", "wayland"] }
 web-time = "1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
+cpal = { version = "0.18", features = ["wasm-bindgen"] }
 web-sys = { version = "0.3", features = ["Window", "Document", "HtmlCanvasElement"] }

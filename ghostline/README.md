@@ -17,7 +17,7 @@ screen), so every game is offline and unverified.
 > player's own Uplink installation (or the developer CD). Until Introversion agrees in writing, do not share
 > builds, host the web version or the sync server for other people, or put their assets anywhere except the
 > original developer-CD tree. The assets are read at runtime and are never copied into `ghostline/`
-> (`.gitignore` blocks `*.dat`, `*.tif`, `*.ttf`, `*.wav`, `*.mp3` here as a safety net).
+> (`.gitignore` blocks `*.dat`, `*.tif`, `*.ttf`, `*.wav`, `*.mp3`, `*.uni` here as a safety net).
 
 ## Layout
 
@@ -26,6 +26,7 @@ screen), so every game is offline and unverified.
 | `crates/gl-sim` | Headless, deterministic game simulation. Same seed and commands give identical state on every platform. |
 | `crates/gl-save` | Encrypted save container, desktop file store, optional OS keychain, sync decision logic. |
 | `crates/gl-assets` | Reads Uplink's `.dat` archives at runtime (REDSHIRT wrapper, ZIP, TIFF sprites, fonts, WAV). Never bundles or copies them. |
+| `crates/gl-audio` | Pure-Rust sound: a MikMod UniMod (UN04/UN05) loader and replayer ported from libmikmod, a WAV reader, and the final mixer. No I/O, no device. **LGPL-2.0-or-later** (see below). |
 | `crates/gl-client` | egui client, one codebase for desktop and browser (wasm). Game logic is in `game.rs`, free of UI code, so it is unit-tested. |
 | `crates/gl-server` | Axum + Postgres sync API. Stores client-encrypted blobs it cannot read. |
 
@@ -40,7 +41,7 @@ Design details, save format, sync model and known gaps: [`docs/ARCHITECTURE.md`]
 ## Play it
 
 ```sh
-# Desktop (Windows, macOS, Linux). Linux needs libGL and libxkbcommon-x11 installed.
+# Desktop (Windows, macOS, Linux). Linux needs libGL, libxkbcommon-x11 and ALSA (libasound2; libasound2-dev to build).
 cargo run -p gl-client --release
 
 # Browser. Needs `rustup target add wasm32-unknown-unknown` and `cargo install wasm-bindgen-cli`
@@ -92,10 +93,11 @@ UPLINK_DIR=/path/to/uplink-source-code/uplink/bin cargo run -p gl-client --relea
 - Everything is decoded in memory at runtime. Patch archives (`patch*.dat`) override the base graphics, as in the game.
 - **Browser:** no assets yet; it runs the plain vector UI. The plan is a file picker that reads your own `.dat` files locally
   in the page and never uploads them. Hosting their assets from our server would be a distribution, so it is off the table.
-- **Not built yet:** sounds and music (`sounds.dat`, `music.dat`, `world.dat`), the main menu and loading screens, gateway artwork,
+- **Not built yet:** the main menu and loading screens, gateway artwork,
   the awards, the LAN and IRC screens, e-mail, the phone dialler, world-map zoom, and the game's own text tables (`data.dat`).
   Faster-than-real-time speeds are shown but disabled, because online runs are checked against real time.
-- `cargo test -p gl-assets` decodes every sprite in the real archives, and `cargo test -p gl-client --test uplink_ui` plays a whole
+- `cargo test -p gl-audio` plays all six songs to the end and checks each length against libmikmod; it also decodes every
+  effect. `cargo test -p gl-assets` decodes every sprite in the real archives, and `cargo test -p gl-client --test uplink_ui` plays a whole
   hack through the interface with synthesised mouse clicks (both use the dev CD in this repo, or `UPLINK_DIR`).
 
 ## Build and test
@@ -196,6 +198,38 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 - Backups are encrypted client-side, so the server cannot read or validate them. Verified runs are the opposite: the server holds and seals the state it computed itself.
 - A change to the `World` shape currently makes old saves unreadable; migrations are not built yet.
 
+## Sound and music
+
+With the original interface, the client plays the original sounds and music. It decodes them from your own `sounds.dat` and `music.dat`.
+
+- **Music:** the six modules in `music.dat` are MikMod UniMod files (`UN05`). `gl-audio` replays them with a Rust port of
+  libmikmod's player and software mixer, using the settings the original SDL_mixer backend used: volume 85/128, `md_volume`
+  96 and full stereo separation. Checked against libmikmod 3.3.11 on all six songs: same lengths, same loudness, and
+  99.996% or more of the samples are identical. The rest differ by tiny amounts at mixer-buffer boundaries.
+  Songs follow the original "main" playlist: bluevalley, serenity, mystique, a94final, symphonic, myst2. When one ends, the next starts.
+  The original SDL build repeated one song forever; the Windows build moved through the list. We follow the Windows build.
+- **Effects** play at a quarter volume (`MIX_MAX_VOLUME / 4`) on up to 15 channels, at the moments the original played them:
+  - mouseclick on any button press
+  - softwaremenu when the software menu or a category opens
+  - runsoftware when a program starts
+  - addlink when a bounce is added on the world map
+  - close for the world map and local screens
+  - login when getting past a system's security
+  - done when a password breaks
+  - success when a mission completes
+  - failure when a purchase is refused
+  - newmail when a mission or a fine message arrives
+  - tracebleep while a trace runs
+  
+  The trace bleep speeds up as the trace advances. The original timed it from its trace-time estimate, so our gap is an approximation.
+- `world.dat` is a 14 MB MP3 that nothing in the game code references; it is not used.
+- No device, or `GHOSTLINE_AUDIO=off`, means silence. Nothing else changes.
+- **Browser:** the audio code builds for wasm (cpal over Web Audio, resumed after the first click). It stays silent until the
+  browser can read your `.dat` files, which needs the file picker that isn't built yet.
+- **Licence:** `crates/gl-audio/src/player.rs` and `uni.rs` port libmikmod (LGPL-2.0-or-later), so `gl-audio` carries that
+  licence. That is fine for private builds. Before any public binary, either ship `gl-audio` under the LGPL's terms (keep it
+  a separate, replaceable component and offer its source) or replace the port with a clean-room player.
+
 ## Roadmap
 
 - [x] Run recording, server-side replay verification, server-issued seeds
@@ -203,7 +237,8 @@ game time is capped by real elapsed time, and forged or illegal logs are rejecte
 - [ ] Email magic link (needs SMTP), Steam (OpenID 2.0), Microsoft
 - [x] `egui` client (native + wasm): world map, connect, tasks, trace bar, contracts, tools, desktop autosave
 - [x] The original Uplink interface rebuilt from the source (HUD, world map, software menu, task manager, security, password, cypher, file, log, shop and contract screens, local panels), desktop
-- [ ] Sounds and music, main menu, phone dialler, map zoom, e-mail; browser file picker for assets
+- [x] Original sounds and music (desktop; the browser needs the asset file picker)
+- [ ] Main menu, phone dialler, map zoom, e-mail; browser file picker for assets
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
 - [ ] Browser saves
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native

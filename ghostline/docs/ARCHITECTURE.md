@@ -15,6 +15,7 @@ Hacking-career sim. Rust workspace targeting Windows, macOS, Linux and the brows
 | `gl-save` | Sealed save container, desktop store, sync protocol/decision logic. | native + wasm (`store`, `keychain` native only) |
 | `gl-server` | Axum + Postgres sync API. Stores opaque blobs. | server |
 | `gl-assets` | Runtime loader for Uplink's `.dat` archives: REDSHIRT wrapper (marker, then every byte +128) around a ZIP, 8-bit and 1-bit TIFF sprites, TTF fonts, WAV. Patch archives override base graphics. Memory-backed mode for a future browser file picker. | native + wasm (`locate` native only) |
+| `gl-audio` | UniMod (UN04/UN05) loader and replayer ported from libmikmod's `load_uni.c`, `mplayer.c` and `virtch.c` (same 11-bit fixed-point stepping, interpolation and click ramp, so output matches libmikmod), a WAV reader and the final mixer. Pure: bytes in, f32 stereo out. LGPL-2.0-or-later because of the port. | native + wasm |
 | `gl-client` | egui/eframe client over `gl-sim`. `uplink/` is the original interface rebuilt from the source on a 1024x768 virtual screen (`canvas.rs`: scaling, gradients, text, one-frame-late hit testing; `theme.rs`, `sprites.rs`, `hud.rs`, `map.rs`, `swmenu.rs`, `remote.rs`, `local.rs`), used when Uplink data is found; `app.rs` is the plain vector fallback. egui/eframe UI over `gl-sim`. One codebase, native + wasm. `game.rs` is the UI-free controller (fixed-step pacing, selection, narration, trace view); `app.rs` only draws and emits actions. | native + wasm |
 
 ## Simulation rules
@@ -131,6 +132,8 @@ Nothing/Push/Pull/Conflict. Conflicts are never auto-merged; the player chooses 
 Tests: `TEST_DATABASE_URL=postgres://... cargo test -p gl-server` (**silently skipped when unset**).
 
 ## Known gaps
+
+- Audio: one user-facing control only (`GHOSTLINE_AUDIO=off`); no in-game volume or music toggle yet. Effects with no Ghostline counterpart (phone, voice analyser, revelation, nuclear war, LAN sirens) are unused until those features exist.
 
 - The client has no login or sync screen and no HTTP client yet; no browser saves; no account recovery.
 - Not yet checked: that the sim produces identical digests in wasm and native (it compiles for both; nobody has compared output).

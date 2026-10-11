@@ -181,6 +181,9 @@ pub fn draw(c: &mut Canvas, res: &Res, st: &mut State, g: &Game, acts: &mut Vec<
     if hit.clicked {
         st.sw_open = !st.sw_open;
         st.sw_cat = None;
+        if st.sw_open {
+            st.cues.push(crate::audio::Cue::SoftwareMenu);
+        }
     }
 
     // Toolbar.

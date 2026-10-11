@@ -8,6 +8,8 @@ use gl_sim::replay::Run;
 use gl_sim::tuning::TICKS_PER_SECOND;
 use gl_sim::*;
 
+use crate::audio::Cue;
+
 pub const TICK_SECS: f32 = 1.0 / TICKS_PER_SECOND as f32;
 const MAX_LOG: usize = 300;
 /// Never simulate more than this much real time per frame (tab was backgrounded, debugger, etc.).
@@ -62,6 +64,8 @@ pub struct Game {
     refusal: RefCell<Option<String>>,
     /// Big moments (traced, contract done, game over) for a UI that shows message boxes.
     notices: RefCell<VecDeque<String>>,
+    /// Sounds the original played for these events. Taken by the audio layer.
+    cues: RefCell<Vec<Cue>>,
 }
 
 impl Game {
@@ -87,11 +91,23 @@ impl Game {
             scratch: Vec::new(),
             refusal: RefCell::new(None),
             notices: RefCell::new(VecDeque::new()),
+            cues: RefCell::new(Vec::new()),
         }
     }
 
     pub fn take_refusal(&self) -> Option<String> {
         self.refusal.borrow_mut().take()
+    }
+
+    pub fn take_cues(&self) -> Vec<Cue> {
+        std::mem::take(&mut *self.cues.borrow_mut())
+    }
+
+    fn cue(&self, c: Cue) {
+        let mut q = self.cues.borrow_mut();
+        if q.len() < 32 {
+            q.push(c);
+        }
     }
 
     pub fn take_notice(&self) -> Option<String> {
@@ -167,6 +183,10 @@ impl Game {
                 true
             }
             Err(e) => {
+                // swsalesscreen_interface: failure.wav when a purchase is refused.
+                if matches!(e, CmdError::NotEnoughCredits | CmdError::MaxLevel) {
+                    self.cue(Cue::Failure);
+                }
                 *self.refusal.borrow_mut() = Some(format!("Refused: {}.", explain(e)));
                 self.say(Level::Warn, format!("Refused: {}", explain(e)));
                 false
@@ -193,6 +213,10 @@ impl Game {
                     .get(*server)
                     .and_then(|s| s.layers.get(*layer))
                     .map(|l| l.kind);
+                // passwordbreaker.cpp: done.wav when the password is found.
+                if kind == Some(LayerKind::Password) {
+                    self.cue(Cue::Done);
+                }
                 (
                     Level::Good,
                     format!(
@@ -229,13 +253,21 @@ impl Game {
             }
             Event::TraceLost => (Level::Good, "Trace lost: it hit a hop with no log.".into()),
             Event::Caught { fine } => {
+                // The fine arrives as a message.
+                self.cue(Cue::NewMail);
                 self.notify(&format!(
                     "You were traced. Your connection was cut and you were fined {fine} credits."
                 ));
                 (Level::Bad, format!("TRACED. Fined {fine}. Connection cut."))
             }
-            Event::MissionAccepted(id) => (Level::Info, format!("Mission {id} accepted.")),
+            Event::MissionAccepted(id) => {
+                // hud_interface: newmail.wav when a mission or message lands on the HUD.
+                self.cue(Cue::NewMail);
+                (Level::Info, format!("Mission {id} accepted."))
+            }
             Event::MissionComplete { id, reward } => {
+                // MissionGenerator::MissionCompleted: success.wav.
+                self.cue(Cue::Success);
                 self.notify(&format!(
                     "Contract {id} complete. {reward} credits have been paid into your account."
                 ));
