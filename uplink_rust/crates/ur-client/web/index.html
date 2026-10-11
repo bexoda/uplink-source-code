@@ -122,6 +122,22 @@
     } catch (e) {
       console.warn('asset cache unavailable', e);
     }
+    // A site allowed to host the Uplink files puts them in ./dat/ next to this page (dev.ps1 does
+    // this for your own machine). Without them, each player picks their own copy.
+    if (!loaded) {
+      try {
+        for (const name of ['graphics.dat', 'fonts.dat', 'loading.dat', 'patch.dat', 'patch2.dat', 'patch3.dat', 'sounds.dat', 'music.dat']) {
+          const r = await fetch('dat/' + name);
+          // A server that answers every path with its home page is not hosting the file.
+          const hosted = r.ok && !(r.headers.get('content-type') || '').includes('text/html');
+          if (hosted) add_asset(name, new Uint8Array(await r.arrayBuffer()));
+          else if (name === 'graphics.dat') break;
+        }
+        loaded = !assets_done();
+      } catch (e) {
+        console.warn('hosted assets unavailable', e);
+      }
+    }
     if (!loaded) panel.classList.remove('hidden');
   </script>
 </body>

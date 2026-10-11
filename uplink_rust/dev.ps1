@@ -75,10 +75,15 @@ if ($Web) {
     $page = Join-Path $site 'index.html'
     (Get-Content $page -Raw).Replace('name="uplink-rust-server" content=""',
         'name="uplink-rust-server" content="http://127.0.0.1:8080"') | Set-Content $page -NoNewline
+    # Your own copy of the Uplink files, served only to this machine, so the page needn't ask for them.
+    # .dev is git-ignored: they never reach the repository.
+    $dat = if ($env:UPLINK_DIR) { $env:UPLINK_DIR } else { "$root\..\uplink\bin" }
+    New-Item -ItemType Directory -Force "$site\dat" | Out-Null
+    Copy-Item "$dat\*.dat" "$site\dat" -Exclude 'world.dat', 'data.dat' -Force -ErrorAction SilentlyContinue
     if (-not (Listening 8765)) {
         Start-Process python -ArgumentList "`"$root\dev-web.py`" `"$site`"" -WindowStyle Hidden
     }
-    'Browser version: http://127.0.0.1:8765  (pick the .dat files from uplink\bin when asked)'
+    'Browser version: http://127.0.0.1:8765'
     Start-Process 'http://127.0.0.1:8765/'
 } else {
     $env:UPLINK_RUST_SERVER = 'http://127.0.0.1:8080'
