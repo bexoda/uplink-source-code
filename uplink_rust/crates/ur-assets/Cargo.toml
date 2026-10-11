@@ -1,0 +1,10 @@
+[package]
+name = "ur-assets"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description = "Runtime loader for assets from the player's own Uplink installation. Never bundles or copies them."
+
+[dependencies]
+zip = { version = "2", default-features = false, features = ["deflate"] }
+tiff = "0.9"

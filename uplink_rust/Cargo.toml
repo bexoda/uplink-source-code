@@ -1,0 +1,36 @@
+[workspace]
+resolver = "2"
+members = ["crates/ur-sim", "crates/ur-save", "crates/ur-server", "crates/ur-client", "crates/ur-assets", "crates/ur-audio"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "UNLICENSED"
+publish = false
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+slotmap = { version = "1", features = ["serde"] }
+postcard = { version = "1", default-features = false, features = ["alloc"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+
+# Size-optimised profile for the browser build: `cargo build --profile web`
+[profile.web]
+inherits = "release"
+opt-level = "s"
+strip = true
+# Browser build only: the server must keep unwinding so a hostile log is rejected, not fatal.
+panic = "abort"
+
+# Argon2 is unusably slow at opt-level 0; keep it fast in debug/test builds.
+[profile.dev.package.argon2]
+opt-level = 3
+[profile.dev.package.blake2]
+opt-level = 3
+# The music player renders minutes of audio in tests; keep it fast in debug builds.
+[profile.dev.package.ur-audio]
+opt-level = 3

@@ -1,0 +1,13 @@
+[package]
+name = "ur-audio"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+# player.rs and uni.rs are ports of libmikmod, which is LGPL-2.0-or-later.
+license = "LGPL-2.0-or-later"
+description = "Pure-Rust sound for uplink_rust: WAV effects and a UniMod (MikMod UN05) music player, mixed to f32 stereo."
+
+[dependencies]
+
+[dev-dependencies]
+ur-assets = { path = "../ur-assets" }
