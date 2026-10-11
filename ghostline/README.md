@@ -70,7 +70,7 @@ Without Uplink data the client falls back to a plain vector interface with the s
 - **Desktop saves** autosave to your data directory (`~/.local/share/ghostline`, `~/Library/Application Support/ghostline`, `%APPDATA%\ghostline`),
   sealed and tamper-evident. The key is in the OS keychain when built with `--features os-keyring`, otherwise a key file
   next to the save. That protects against casual edits only; it is not anti-cheat.
-- **Browser saves are not built yet**: progress is lost on reload. A banner says so.
+- **Browser saves** use the same sealed format as desktop, kept in the browser's localStorage and written every second (a save is under 1 KB). The previous save is kept as a fallback. The key sits next to the save, so like the desktop key file this only catches casual edits; the server's replay check is the anti-cheat. Clearing site data deletes the save.
 - `GHOSTLINE_SEED=42` starts a reproducible world (desktop only), handy for bug reports.
 - Release size: the wasm bundle is about 6 MB (2 MB gzipped). `WASM_OPT=1` runs `wasm-opt`, but only use binaryen 117 or newer;
   older versions (Ubuntu ships 108) produce a module browsers reject.
@@ -243,7 +243,7 @@ With the original interface, the client plays the original sounds and music. It 
 - [x] Browser: the player's own `.dat` files through a file picker, cached in the browser, never uploaded
 - [ ] Main menu, phone dialler, map zoom, e-mail
 - [ ] Client login screen and sync (seeds, segments, resume from server state, conflict handling)
-- [ ] Browser saves
+- [x] Browser saves (localStorage, sealed, with a backup)
 - [ ] Cross-platform determinism check: run the sim in wasm and compare digests with native
 - [ ] Contests with per-player variants and a leaderboard (needs a deeper sim first)
 - [ ] HTTP sync client and conflict-resolution UI

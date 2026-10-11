@@ -5,7 +5,7 @@
 //! Either way this only makes casual edits of the file detectable. It is NOT anti-cheat: anyone
 //! who can run the game can read the key. Cheating is stopped by server-side replay.
 //!
-//! Web: not implemented yet; saves there will go through the sync server.
+//! Web: the same sealed container in localStorage (`browser`), with the same backup fallback.
 
 #[cfg(not(target_arch = "wasm32"))]
 mod native {
@@ -174,19 +174,204 @@ mod native {
 #[cfg(not(target_arch = "wasm32"))]
 pub use native::{data_dir, Persist};
 
+/// Browser saves: the same sealed container, kept in a key-value store (localStorage on the web).
+/// The key sits in the same store, so as on desktop this only detects casual edits; the server's
+/// replay check is what stops cheating.
+pub mod browser {
+    use base64::engine::general_purpose::STANDARD as B64;
+    use base64::Engine;
+    use gl_save::{open_run, seal_run, Key, Unlock};
+    use gl_sim::replay::Run;
+
+    pub const KEY: &str = "ghostline.key";
+    pub const SLOT: &str = "ghostline.autosave";
+    pub const BACKUP: &str = "ghostline.autosave.bak";
+
+    /// String key-value storage, like `window.localStorage`.
+    pub trait Kv {
+        fn get(&self, k: &str) -> Result<Option<String>, String>;
+        fn set(&self, k: &str, v: &str) -> Result<(), String>;
+        fn remove(&self, k: &str);
+    }
+
+    pub struct Persist<S: Kv> {
+        kv: S,
+        key: Key,
+    }
+
+    impl<S: Kv> Persist<S> {
+        pub fn open(kv: S) -> Result<Self, String> {
+            let key = match kv.get(KEY)? {
+                Some(t) => {
+                    let b = B64
+                        .decode(t.trim())
+                        .map_err(|_| "save key is corrupt".to_string())?;
+                    Key::from_bytes(
+                        <[u8; 32]>::try_from(b.as_slice())
+                            .map_err(|_| "save key is corrupt".to_string())?,
+                    )
+                }
+                None => {
+                    // Never replace a key that sealed an existing save: it would orphan the save.
+                    if kv.get(SLOT)?.is_some() {
+                        return Err("the save key is missing, so the save can't be opened".into());
+                    }
+                    let k = Key::generate();
+                    kv.set(KEY, &B64.encode(k.as_bytes()))?;
+                    k
+                }
+            };
+            Ok(Persist { kv, key })
+        }
+
+        fn read(&self, slot: &str) -> Result<Option<Run>, String> {
+            let Some(t) = self.kv.get(slot)? else {
+                return Ok(None);
+            };
+            let bytes = B64.decode(t.trim()).map_err(|e| e.to_string())?;
+            open_run(&bytes, Unlock::Key(&self.key))
+                .map(Some)
+                .map_err(|e| e.to_string())
+        }
+
+        /// `Ok(None)` means no save yet. A damaged save falls back to the previous one.
+        pub fn load(&self) -> Result<Option<Run>, String> {
+            match self.read(SLOT) {
+                Ok(r) => Ok(r),
+                Err(e) => match self.read(BACKUP) {
+                    Ok(Some(run)) => Ok(Some(run)),
+                    _ => Err(format!("save is unreadable or was modified ({e})")),
+                },
+            }
+        }
+
+        pub fn save(&self, run: &Run) -> Result<(), String> {
+            let sealed = seal_run(run, Unlock::Key(&self.key)).map_err(|e| e.to_string())?;
+            let text = B64.encode(sealed);
+            if let Some(prev) = self.kv.get(SLOT)? {
+                self.kv.set(BACKUP, &prev)?;
+            }
+            self.kv.set(SLOT, &text)
+        }
+
+        pub fn clear(&self) {
+            self.kv.remove(SLOT);
+            self.kv.remove(BACKUP);
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use std::cell::RefCell;
+        use std::collections::HashMap;
+
+        #[derive(Default)]
+        struct Mem(RefCell<HashMap<String, String>>, RefCell<Option<usize>>);
+        impl Kv for &Mem {
+            fn get(&self, k: &str) -> Result<Option<String>, String> {
+                Ok(self.0.borrow().get(k).cloned())
+            }
+            fn set(&self, k: &str, v: &str) -> Result<(), String> {
+                if self.1.borrow().is_some_and(|max| v.len() > max) {
+                    return Err("QuotaExceededError".into());
+                }
+                self.0.borrow_mut().insert(k.into(), v.into());
+                Ok(())
+            }
+            fn remove(&self, k: &str) {
+                self.0.borrow_mut().remove(k);
+            }
+        }
+
+        #[test]
+        fn roundtrip_backup_and_tamper() {
+            let mem = Mem::default();
+            let p = Persist::open(&mem).unwrap();
+            assert!(p.load().unwrap().is_none());
+            let mut run = Run::new(5);
+            p.save(&run).unwrap();
+            run.apply(gl_sim::Command::AcceptMission(1), &mut vec![])
+                .unwrap();
+            p.save(&run).unwrap();
+
+            // A new session with the same storage reads it back.
+            let p2 = Persist::open(&mem).unwrap();
+            let back = p2.load().unwrap().unwrap();
+            assert_eq!((back.seed, back.unsynced()), (5, 1));
+
+            // Edit the live save: the older backup is used.
+            let mut t = mem.0.borrow()[SLOT].clone().into_bytes();
+            let n = t.len() / 2;
+            t[n] = if t[n] == b'A' { b'B' } else { b'A' };
+            mem.0
+                .borrow_mut()
+                .insert(SLOT.into(), String::from_utf8(t).unwrap());
+            assert_eq!(p2.load().unwrap().unwrap().unsynced(), 0);
+
+            // Both broken: an error, never a silent new game.
+            mem.0.borrow_mut().insert(BACKUP.into(), "garbage".into());
+            assert!(p2.load().is_err());
+
+            p2.clear();
+            assert!(p2.load().unwrap().is_none());
+        }
+
+        #[test]
+        fn a_lost_key_is_not_silently_replaced() {
+            let mem = Mem::default();
+            Persist::open(&mem).unwrap().save(&Run::new(1)).unwrap();
+            mem.0.borrow_mut().remove(KEY);
+            assert!(Persist::open(&mem).is_err());
+            assert!(mem.0.borrow().contains_key(SLOT), "the save is kept");
+        }
+
+        #[test]
+        fn quota_errors_surface() {
+            let mem = Mem::default();
+            let p = Persist::open(&mem).unwrap();
+            *mem.1.borrow_mut() = Some(10);
+            assert!(p.save(&Run::new(1)).is_err());
+        }
+    }
+}
+
 #[cfg(target_arch = "wasm32")]
-pub struct Persist;
+pub struct LocalStorage(web_sys::Storage);
+
+#[cfg(target_arch = "wasm32")]
+impl browser::Kv for LocalStorage {
+    fn get(&self, k: &str) -> Result<Option<String>, String> {
+        self.0.get_item(k).map_err(|e| format!("{e:?}"))
+    }
+    fn set(&self, k: &str, v: &str) -> Result<(), String> {
+        self.0
+            .set_item(k, v)
+            .map_err(|_| "the browser refused to store the save (storage full or blocked)".into())
+    }
+    fn remove(&self, k: &str) {
+        let _ = self.0.remove_item(k);
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+pub struct Persist(browser::Persist<LocalStorage>);
 
 #[cfg(target_arch = "wasm32")]
 impl Persist {
     pub fn open() -> Result<Persist, String> {
-        Err("Saving in the browser isn't built yet: progress is lost on reload.".into())
+        let storage = web_sys::window()
+            .and_then(|w| w.local_storage().ok().flatten())
+            .ok_or("this browser blocks local storage, so progress is lost on reload")?;
+        browser::Persist::open(LocalStorage(storage)).map(Persist)
     }
     pub fn load(&self) -> Result<Option<gl_sim::replay::Run>, String> {
-        Ok(None)
+        self.0.load()
     }
-    pub fn save(&self, _: &gl_sim::replay::Run) -> Result<(), String> {
-        Ok(())
+    pub fn save(&self, run: &gl_sim::replay::Run) -> Result<(), String> {
+        self.0.save(run)
     }
-    pub fn clear(&self) {}
+    pub fn clear(&self) {
+        self.0.clear()
+    }
 }

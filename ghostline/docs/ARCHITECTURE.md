@@ -135,7 +135,7 @@ Tests: `TEST_DATABASE_URL=postgres://... cargo test -p gl-server` (**silently sk
 
 - Audio: one user-facing control only (`GHOSTLINE_AUDIO=off`); no in-game volume or music toggle yet. Effects with no Ghostline counterpart (phone, voice analyser, revelation, nuclear war, LAN sirens) are unused until those features exist.
 
-- The client has no login or sync screen and no HTTP client yet; no browser saves; no account recovery.
+- The client has no login or sync screen and no HTTP client yet; no account recovery. Browser saves live only in that browser until sync exists.
 - Not yet checked: that the sim produces identical digests in wasm and native (it compiles for both; nobody has compared output).
 - The client clock uses real elapsed time per frame, capped at 0.5 s: on a very slow device the game runs slower than real time (safe for the server's wall-clock budget) rather than jumping ahead.
 - OAuth is built but unverified against real providers; no email login, no rate limiting.

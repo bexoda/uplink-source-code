@@ -19,9 +19,10 @@ gl-audio = { path = "../gl-audio" }
 cpal = "0.18"
 eframe = { version = "0.36", default-features = false, features = ["glow", "default_fonts", "x11", "wayland"] }
 web-time = "1"
+base64 = "0.22"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2"
 wasm-bindgen-futures = "0.4"
 cpal = { version = "0.18", features = ["wasm-bindgen"] }
-web-sys = { version = "0.3", features = ["Window", "Document", "HtmlCanvasElement"] }
+web-sys = { version = "0.3", features = ["Window", "Document", "HtmlCanvasElement", "Storage"] }

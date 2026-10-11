@@ -20,7 +20,12 @@ const GREEN: Color32 = Color32::from_rgb(61, 220, 132);
 const AMBER: Color32 = Color32::from_rgb(255, 189, 64);
 const RED: Color32 = Color32::from_rgb(255, 84, 96);
 
+/// A save is under a kilobyte and seals in well under a millisecond. The browser saves more often
+/// because a closed tab gives no chance to save on the way out.
+#[cfg(not(target_arch = "wasm32"))]
 const AUTOSAVE_SECS: f64 = 10.0;
+#[cfg(target_arch = "wasm32")]
+const AUTOSAVE_SECS: f64 = 1.0;
 
 fn level_color(l: Level) -> Color32 {
     match l {
