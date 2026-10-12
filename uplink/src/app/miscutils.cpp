@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <execinfo.h>
 #endif
 
 #include <GL/gl.h>
@@ -464,22 +465,14 @@ unsigned *getRetAddress(unsigned *mBP)
 
 void PrintStackTrace()
 {
-
+#ifdef WIN32
 	// Get our frame pointer, chain upwards
 	unsigned *framePtr;
     unsigned *previousFramePtr = NULL;
 
-    
-#ifdef WIN32
 	__asm { 
 		mov [framePtr], ebp
 	}
-#else
-	asm (
-	    "movl %%ebp, %0;"
-	    :"=r"(framePtr)
-	    );
-#endif
 	while(framePtr) {
 		                
 		printf("retAddress = %p\n", getRetAddress(framePtr));
@@ -494,16 +487,18 @@ void PrintStackTrace()
             break;
 
         // Can two DWORDs be read from the supposed frame address?          
-#ifdef WIN32
         if ( IsBadWritePtr(framePtr, sizeof(PVOID)*2) ||
              IsBadReadPtr(framePtr, sizeof(PVOID)*2) )
             break;
-#endif
 
         previousFramePtr = framePtr;
     
     }
-	
-
+#else
+	// Walking %ebp by hand only worked on 32-bit x86 builds that kept frame pointers.
+	void *frames[64];
+	int n = backtrace ( frames, 64 );
+	backtrace_symbols_fd ( frames, n, fileno ( stdout ) );
+#endif
 }
 

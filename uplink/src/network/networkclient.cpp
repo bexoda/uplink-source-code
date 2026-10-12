@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include <strstream>
+#include <string>
 
 #include "eclipse.h"
 #include "gucci.h"
@@ -185,7 +186,10 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 	    int x, y;
 	    char *ip = new char [64];
 
-	    msgstream >> x >> y >> ip ;
+	    // Bounded read: the old `>> ip` wrote as many bytes as the peer sent (removed in C++20).
+	    std::string ipword;
+	    msgstream >> x >> y >> ipword;
+	    UplinkStrncpy ( ip, ipword.c_str (), 64 );
 /*
 	    if ( ! ((ClientCommsInterface *) screen)->locations.LookupTree (ip) ) {
 
