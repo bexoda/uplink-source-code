@@ -149,6 +149,10 @@ void GciDrawText ( int x, int y, char *text, int STYLE )
 		//FTGLPixmapFont *font = fonts[STYLE];
         glRasterPos2i(x, y);
 		font->Render(text);
+		// Mesa batches glBitmap glyphs and draws them later with whatever scissor box is
+		// current then; callers clip text with glScissor and change it right after, which
+		// erased most of the text (e.g. remote-screen titles). Flush while the box is valid.
+		glFlush();
 #endif // USE_FTGL
 
         }
