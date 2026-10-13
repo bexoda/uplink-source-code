@@ -39,7 +39,6 @@
 
 #include "options/options.h"
 
-#include "mmgr.h"
 
 
 static int stippleindex = 0;

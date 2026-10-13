@@ -11,7 +11,6 @@
 #include "eclipse.h"
 #include "button.h"
 
-#include "mmgr.h"
 
 
 Button::Button ()

@@ -22,7 +22,6 @@
 #include "mainmenu/mainmenu.h"
 #include "mainmenu/theme_interface.h"
 
-#include "mmgr.h"
 
 DArray <char *> *ThemeInterface::themes = NULL;
 int ThemeInterface::currentSelect = -1;

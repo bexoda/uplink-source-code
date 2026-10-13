@@ -32,7 +32,6 @@
 #include "world/generator/plotgenerator.h"
 #include "world/scheduler/notificationevent.h"
 
-#include "mmgr.h"
 
 
 Game::Game ()

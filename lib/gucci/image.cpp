@@ -19,7 +19,6 @@
 #include "image.h"
 #include "scale.h"
 
-#include "mmgr.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

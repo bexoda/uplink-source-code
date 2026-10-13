@@ -7,7 +7,6 @@
 
 #include "gucci.h"
 
-#include "mmgr.h"
 
 static int old_screenwidth;    
 static int old_screenheight;

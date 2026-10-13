@@ -8,7 +8,6 @@
 #include "app/serialise.h"
 #include "eclipse.h"
 
-#include "mmgr.h"
 
 InterfaceScreen::InterfaceScreen()
 {

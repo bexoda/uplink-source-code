@@ -21,7 +21,6 @@ using namespace std;
 
 #include <assert.h>
 
-#include "mmgr.h"
 
 
 // Protected members ==========================================================

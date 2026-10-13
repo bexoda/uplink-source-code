@@ -16,7 +16,6 @@
 
 #include "gucci.h"
 
-#include "mmgr.h"
 
 // From ClanLib, LGPL (x11_resolution.cpp)
 // needed by qsort

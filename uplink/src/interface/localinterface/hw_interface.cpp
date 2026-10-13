@@ -31,7 +31,6 @@
 #include "world/world.h"
 #include "world/player.h"
 
-#include "mmgr.h"
 
 
 void HWInterface::TitleClick ( Button *button )

@@ -32,7 +32,6 @@
 #include "world/computer/computer.h"
 #include "world/computer/securitysystem.h"
 
-#include "mmgr.h"
 
 
 char AnalyserInterface::remotehost [SIZE_VLOCATION_IP];

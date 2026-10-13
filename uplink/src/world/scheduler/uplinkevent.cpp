@@ -6,7 +6,6 @@
 
 #include "world/scheduler/uplinkevent.h"
 
-#include "mmgr.h"
 
 
 UplinkEvent::UplinkEvent ()

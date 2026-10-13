@@ -24,7 +24,6 @@
 #include "interface/remoteinterface/cypherscreen_interface.h"
 #include "interface/taskmanager/taskmanager.h"
 
-#include "mmgr.h"
 
 
 CypherScreenInterface::CypherScreenInterface ()

@@ -35,7 +35,6 @@
 #include "world/computer/computer.h"
 #include "world/computer/computerscreen/linksscreen.h"
 
-#include "mmgr.h"
 
 
 int LinksScreenInterface::baseoffset = 0;

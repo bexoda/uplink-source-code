@@ -19,7 +19,6 @@
 #pragma message("automatic link to VERSION.LIB")
 #pragma comment(lib, "version.lib")
 
-#include "mmgr.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ctor

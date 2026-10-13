@@ -35,7 +35,6 @@
 #include "world/computer/computerscreen/useridscreen.h"
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 
 static char alphabet [27] = "abcdefghijklmnopqrstuvwxyz";

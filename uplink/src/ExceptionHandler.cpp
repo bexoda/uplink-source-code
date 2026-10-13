@@ -53,7 +53,6 @@
 	#define XCRASHREPORT_REGISTRY_DUMP_FILE	"REGISTRY.TXT"
 #endif
 
-#include "mmgr.h"
 
 #ifndef _countof
 #define _countof(array) (sizeof(array)/sizeof(array[0]))

@@ -23,7 +23,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/remoteinterfacescreen.h"
 
-#include "mmgr.h"
 
 
 RemoteInterfaceScreen::RemoteInterfaceScreen()

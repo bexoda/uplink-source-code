@@ -21,7 +21,6 @@
 
 using namespace std;
 
-#include "mmgr.h"
 
 #define GciAbs(num) (((num)>0)?(num):-(num))
 

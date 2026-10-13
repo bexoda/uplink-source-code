@@ -17,7 +17,6 @@
 
 #include "view/view.h"
 
-#include "mmgr.h"
 
 View::View()
 {

@@ -25,7 +25,6 @@
 #include "mainmenu/mainmenu.h"
 #include "mainmenu/obituary_interface.h"
 
-#include "mmgr.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

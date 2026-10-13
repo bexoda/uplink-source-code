@@ -27,7 +27,6 @@
 #include "interface/taskmanager/lanspoof.h"
 #include "interface/localinterface/lan_interface.h"
 
-#include "mmgr.h"
 
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))

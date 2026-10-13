@@ -31,7 +31,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/changegatewayscreen_interface.h"
 
-#include "mmgr.h"
 
 
 int ChangeGatewayScreenInterface::baseOffset = 0;

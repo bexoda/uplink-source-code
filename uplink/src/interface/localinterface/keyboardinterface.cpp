@@ -12,7 +12,6 @@
 
 #include "interface/localinterface/keyboardinterface.h"
 
-#include "mmgr.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 

@@ -23,7 +23,6 @@
 #include "world/generator/numbergenerator.h"
 #include "world/generator/consequencegenerator.h"
 
-#include "mmgr.h"
 
 Player::Player () : Agent ()
 {

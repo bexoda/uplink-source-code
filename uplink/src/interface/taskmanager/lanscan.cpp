@@ -29,7 +29,6 @@
 
 #include "interface/taskmanager/lanscan.h"
 
-#include "mmgr.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 

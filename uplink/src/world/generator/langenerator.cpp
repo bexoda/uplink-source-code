@@ -35,7 +35,6 @@
 
 #include "interface/remoteinterface/remoteinterface.h"
 
-#include "mmgr.h"
 
 // The page a LAN modem's login screen leads to. The generator makes PasswordScreens; this used
 // to cast to UserIDScreen, which only worked because both keep nextpage at the same offset.

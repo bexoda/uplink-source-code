@@ -18,7 +18,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/voicephonescreen_interface.h"
 
-#include "mmgr.h"
 
 
 

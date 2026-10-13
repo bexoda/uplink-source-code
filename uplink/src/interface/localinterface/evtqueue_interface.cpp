@@ -23,7 +23,6 @@
 #include "interface/localinterface/localinterface.h"
 #include "interface/localinterface/evtqueue_interface.h"
 
-#include "mmgr.h"
 
 
 int EventQueueInterface::baseoffset = 0;

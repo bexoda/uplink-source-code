@@ -40,7 +40,6 @@
 #include "interface/localinterface/irc_interface.h"
 #include "interface/localinterface/lan_interface.h"
 
-#include "mmgr.h"
 
 
 // ============================================================================

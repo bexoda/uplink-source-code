@@ -16,7 +16,6 @@
 #include "world/computer/gateway.h"
 #include "world/computer/gatewaydef.h"
 
-#include "mmgr.h"
 
 
 Gateway::Gateway ()

@@ -23,7 +23,6 @@
 
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 
 ClosingInterface::ClosingInterface ()

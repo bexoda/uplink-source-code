@@ -48,7 +48,6 @@ static std::map<int, GLTTBitmapFont *> fonts;
 
 using namespace std;
 
-#include "mmgr.h"
 
 static BTree<FTFace *> faces;
 

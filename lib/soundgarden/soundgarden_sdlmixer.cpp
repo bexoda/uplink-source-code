@@ -20,7 +20,6 @@
 #include "tosser.h"
 #include "soundgarden.h"
 
-#include "mmgr.h"
 
 static Mix_Music *currentmod = NULL;
 static BTree <Mix_Chunk *> cache;					// Stores sounds already loaded

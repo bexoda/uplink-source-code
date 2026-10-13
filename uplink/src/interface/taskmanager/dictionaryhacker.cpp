@@ -35,7 +35,6 @@
 #include "world/computer/computerscreen/useridscreen.h"
 #include "world/player.h"
 
-#include "mmgr.h"
 
 
 DictionaryHacker::DictionaryHacker () : UplinkTask ()

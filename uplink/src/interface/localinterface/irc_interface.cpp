@@ -29,7 +29,6 @@
 #include "interface/localinterface/localinterface.h"
 #include "interface/localinterface/irc_interface.h"
 
-#include "mmgr.h"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 

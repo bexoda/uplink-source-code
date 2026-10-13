@@ -21,7 +21,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/sharesviewscreen_interface.h"
 
-#include "mmgr.h"
 
 
 

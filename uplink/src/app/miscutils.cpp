@@ -28,7 +28,6 @@
 
 #include "options/options.h"
 
-#include "mmgr.h"
 
 
 char *GetFilePath ( const char *filename )

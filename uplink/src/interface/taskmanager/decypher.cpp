@@ -33,7 +33,6 @@
 #include "world/computer/computerscreen/cypherscreen.h"
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 
 Decypher::Decypher () : UplinkTask ()

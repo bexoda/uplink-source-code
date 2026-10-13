@@ -24,7 +24,6 @@
 #include "world/vlocation.h"
 #include "world/player.h"
 
-#include "mmgr.h"
 
 void IPLookup::DisplayDraw ( Button *button, bool highlighted, bool clicked )
 {

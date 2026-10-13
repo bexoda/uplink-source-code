@@ -24,7 +24,6 @@
 #include "mainmenu/graphicoptions_interface.h"
 #include "mainmenu/login_interface.h"
 
-#include "mmgr.h"
 
 
 int GraphicOptionsInterface::newScreenWidth = 0;

@@ -19,7 +19,6 @@
 #include "redshirt.h"
 #include "hash.h"
 
-#include "mmgr.h"
 
 
 const char marker  [] = "REDSHIRT\x0";

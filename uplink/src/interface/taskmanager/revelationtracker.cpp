@@ -29,7 +29,6 @@
 #include "interface/taskmanager/taskmanager.h"
 #include "interface/taskmanager/revelationtracker.h"
 
-#include "mmgr.h"
 
 RevelationTracker::RevelationTracker ()
 {

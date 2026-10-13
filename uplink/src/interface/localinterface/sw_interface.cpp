@@ -29,7 +29,6 @@
 #include "interface/localinterface/sw_interface.h"
 #include "interface/taskmanager/taskmanager.h"
 
-#include "mmgr.h"
 
 
 int SWInterface::currentsubmenu = SOFTWARETYPE_NONE;

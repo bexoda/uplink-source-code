@@ -23,7 +23,6 @@
 
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 // Valid characters for teamnames:
 // a - z

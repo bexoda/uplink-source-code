@@ -32,7 +32,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/taskmanager/taskmanager.h"
 
-#include "mmgr.h"
 
 
 LanInterfaceObject LanInterface::lanInterfaceObjects[] = { 

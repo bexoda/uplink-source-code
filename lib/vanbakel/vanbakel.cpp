@@ -6,7 +6,6 @@
 #include "vanbakel.h"
 #include "interface.h"
 
-#include "mmgr.h"
 
 // Local protected variables 
 

@@ -20,7 +20,6 @@
 #include "vanbakel.h"
 #include "gucci.h"
 
-#include "mmgr.h"
 
 
 void Svb_initialise_interface ()

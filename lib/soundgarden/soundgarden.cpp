@@ -12,7 +12,6 @@
 #include "redshirt.h"
 #include "eclipse.h"
 
-#include "mmgr.h"
 
 
 static LList <SgPlaylist *> playlists;

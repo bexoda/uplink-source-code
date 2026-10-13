@@ -34,7 +34,6 @@
 #include "world/company/companyuplink.h"
 #include "world/generator/missiongenerator.h"
 
-#include "mmgr.h"
 
 
 // === Initialise static variables ============================================

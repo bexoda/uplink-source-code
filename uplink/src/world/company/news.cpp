@@ -7,7 +7,6 @@
 
 #include "world/company/news.h"
 
-#include "mmgr.h"
 
 
 News::News ()

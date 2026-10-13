@@ -23,7 +23,6 @@ extern "C"
 #include "mikmod.h"
 }
 
-#include "nommgr.h"
 
 static UNIMOD *currentmod = NULL;
 static int currentwavchannel = 16;

@@ -45,7 +45,6 @@
 #include "world/world.h"
 #include "world/player.h"
 
-#include "mmgr.h"
 
 //#define  DRAWMOUSE
 

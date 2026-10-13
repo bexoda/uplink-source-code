@@ -7,7 +7,6 @@
 #include "gucci.h"
 #include "gucci_internal.h"
 
-#include "mmgr.h"
 
 static void * gucciStyleToGlut(int gucciStyle)
 {

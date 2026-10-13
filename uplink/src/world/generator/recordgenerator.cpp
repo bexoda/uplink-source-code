@@ -20,7 +20,6 @@
 #include "world/generator/namegenerator.h"
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 
 void RecordGenerator::Initialise ()

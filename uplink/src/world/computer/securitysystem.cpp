@@ -3,7 +3,6 @@
 
 #include "world/computer/securitysystem.h"
 
-#include "mmgr.h"
 
 
 static char *names [] = {	"Unknown",

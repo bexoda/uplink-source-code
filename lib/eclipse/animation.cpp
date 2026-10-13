@@ -3,7 +3,6 @@
 
 #include "animation.h"
 
-#include "mmgr.h"
 
 Animation::Animation()
     : buttonname(0), button(0), targetC(0)

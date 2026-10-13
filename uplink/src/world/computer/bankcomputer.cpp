@@ -8,7 +8,6 @@
 #include "world/computer/bankcomputer.h"
 #include "world/generator/numbergenerator.h"
 
-#include "mmgr.h"
 
 
 BankComputer::BankComputer () : Computer ()

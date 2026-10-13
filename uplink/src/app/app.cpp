@@ -43,7 +43,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/localinterface/phonedialler.h"
 
-#include "mmgr.h"
 
 App :: App ()
 {

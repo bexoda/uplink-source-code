@@ -14,7 +14,6 @@
 #include "world/vlocation.h"
 #include "world/generator/missiongenerator.h"
 
-#include "mmgr.h"
 
 
 Mission::Mission ()

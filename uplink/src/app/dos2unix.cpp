@@ -4,7 +4,6 @@
 
 #include "app/dos2unix.h"
 
-#include "mmgr.h"
 
 #define BUFLEN 8192
 

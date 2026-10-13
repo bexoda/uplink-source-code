@@ -25,7 +25,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/voiceanalysisscreen_interface.h"
 
-#include "mmgr.h"
 
 
 VoiceAnalysisScreenInterface::VoiceAnalysisScreenInterface ()

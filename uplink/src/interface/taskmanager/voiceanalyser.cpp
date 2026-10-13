@@ -35,7 +35,6 @@
 #include "interface/taskmanager/taskmanager.h"
 #include "interface/taskmanager/voiceanalyser.h"
 
-#include "mmgr.h"
 
 #define max(a,b) (((a) > (b)) ? (a) : (b)) 
 

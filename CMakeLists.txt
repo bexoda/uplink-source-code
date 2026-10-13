@@ -71,7 +71,7 @@ add_library(irclib STATIC
   ${CONTRIB}/irclib/CrossThreadsMessagingDevice.cpp
   ${CONTRIB}/irclib/linux/windows.cpp ${CONTRIB}/irclib/linux/missing.cpp
   ${CONTRIB}/irclib/linux/winsock.cpp)
-target_include_directories(irclib PUBLIC ${CONTRIB}/irclib ${CONTRIB}/irclib/linux PRIVATE ${LIB}/mmgr)
+target_include_directories(irclib PUBLIC ${CONTRIB}/irclib ${CONTRIB}/irclib/linux)
 target_link_libraries(irclib PRIVATE uplink_flags Threads::Threads)
 
 # FTGL 2.1.2 as shipped (with Introversion's FTSize patch). The game includes it as <ftgl/...>.
@@ -95,34 +95,30 @@ target_compile_options(unrar_sha1 PRIVATE -w)
 add_library(tosser INTERFACE)
 target_include_directories(tosser INTERFACE ${LIB}/tosser)
 
-add_library(mmgr STATIC ${LIB}/mmgr/mmgr.cpp)
-target_include_directories(mmgr PUBLIC ${LIB}/mmgr)
-target_link_libraries(mmgr PRIVATE uplink_flags)
-
 add_library(bungle STATIC ${LIB}/bungle/bungle.cpp)
 target_include_directories(bungle PUBLIC ${LIB}/bungle)
-target_link_libraries(bungle PUBLIC tosser mmgr PRIVATE uplink_flags ZLIB::ZLIB)
+target_link_libraries(bungle PUBLIC tosser PRIVATE uplink_flags ZLIB::ZLIB)
 
 add_library(redshirt STATIC ${LIB}/redshirt/redshirt.cpp ${LIB}/redshirt/hash.cpp)
 target_include_directories(redshirt PUBLIC ${LIB}/redshirt)
-target_link_libraries(redshirt PUBLIC tosser mmgr bungle unrar_sha1 PRIVATE uplink_flags)
+target_link_libraries(redshirt PUBLIC tosser bungle unrar_sha1 PRIVATE uplink_flags)
 
 add_library(eclipse STATIC
   ${LIB}/eclipse/animation.cpp ${LIB}/eclipse/button.cpp ${LIB}/eclipse/eclipse.cpp)
 target_include_directories(eclipse PUBLIC ${LIB}/eclipse)
-target_link_libraries(eclipse PUBLIC tosser mmgr gucci PRIVATE uplink_flags)
+target_link_libraries(eclipse PUBLIC tosser gucci PRIVATE uplink_flags)
 
 add_library(vanbakel STATIC
   ${LIB}/vanbakel/task.cpp ${LIB}/vanbakel/taskwrapper.cpp
   ${LIB}/vanbakel/interface.cpp ${LIB}/vanbakel/vanbakel.cpp)
 target_include_directories(vanbakel PUBLIC ${LIB}/vanbakel)
-target_link_libraries(vanbakel PUBLIC tosser mmgr eclipse PRIVATE uplink_flags)
+target_link_libraries(vanbakel PUBLIC tosser eclipse PRIVATE uplink_flags)
 
 add_library(gucci STATIC
   ${LIB}/gucci/gucci.cpp ${LIB}/gucci/image.cpp ${LIB}/gucci/scale.cpp ${LIB}/gucci/gucci_sdl.cpp)
 target_include_directories(gucci PUBLIC ${LIB}/gucci)
 target_link_libraries(gucci
-  PUBLIC tosser mmgr redshirt PkgConfig::SDL ftgl_uplink Freetype::Freetype OpenGL::GL OpenGL::GLU
+  PUBLIC tosser redshirt PkgConfig::SDL ftgl_uplink Freetype::Freetype OpenGL::GL OpenGL::GLU
          TIFF::TIFF JPEG::JPEG
   PRIVATE uplink_flags)
 
@@ -130,7 +126,7 @@ add_library(soundgarden STATIC
   ${LIB}/soundgarden/soundgarden.cpp ${LIB}/soundgarden/soundgarden_sdlmixer.cpp
   ${LIB}/soundgarden/sgplaylist.cpp)
 target_include_directories(soundgarden PUBLIC ${LIB}/soundgarden)
-target_link_libraries(soundgarden PUBLIC tosser mmgr redshirt eclipse PkgConfig::SDL PkgConfig::SDL_MIXER
+target_link_libraries(soundgarden PUBLIC tosser redshirt eclipse PkgConfig::SDL PkgConfig::SDL_MIXER
   PRIVATE uplink_flags)
 
 # ---------------------------------------------------------------- the game
@@ -143,7 +139,7 @@ list(FILTER GAME_SOURCES EXCLUDE REGEX
 add_library(uplink_game OBJECT ${GAME_SOURCES})
 target_include_directories(uplink_game PUBLIC ${SRC} ${LIB})
 target_link_libraries(uplink_game PUBLIC
-  uplink_flags gucci soundgarden eclipse vanbakel redshirt bungle mmgr tosser
+  uplink_flags gucci soundgarden eclipse vanbakel redshirt bungle tosser
   tcp4u irclib unrar_sha1
   PkgConfig::SDL PkgConfig::SDL_MIXER ftgl_uplink Freetype::Freetype
   OpenGL::GL OpenGL::GLU TIFF::TIFF JPEG::JPEG ZLIB::ZLIB Threads::Threads ${CMAKE_DL_LIBS})

@@ -2,7 +2,6 @@
 #include <unrar/rarbloat.h>
 #include <unrar/sha1.h>
 
-#include "mmgr.h"
 
 void *HashInitial ()
 {

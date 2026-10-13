@@ -31,7 +31,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/taskmanager/gatewaynuke.h"
 
-#include "mmgr.h"
 
 
 void GatewayNuke::TitleDraw ( Button *button, bool highlighted, bool clicked )

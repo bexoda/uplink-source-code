@@ -28,7 +28,6 @@
 #include "interface/localinterface/hud_interface.h"
 #include "interface/localinterface/gateway_interface.h"
 
-#include "mmgr.h"
 
 
 //////////////////////////////////////////////////////////////////////

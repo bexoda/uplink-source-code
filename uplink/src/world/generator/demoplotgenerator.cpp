@@ -35,7 +35,6 @@
 #include "world/scheduler/notificationevent.h"
 #include "world/scheduler/runplotsceneevent.h"
 
-#include "mmgr.h"
 
 
 DemoPlotGenerator::DemoPlotGenerator ()

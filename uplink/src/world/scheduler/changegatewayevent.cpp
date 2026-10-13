@@ -9,7 +9,6 @@
 #include "world/message.h"
 #include "world/scheduler/changegatewayevent.h"
 
-#include "mmgr.h"
 
 
 ChangeGatewayEvent::ChangeGatewayEvent ()

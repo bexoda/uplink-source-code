@@ -20,7 +20,6 @@
 #include "world/scheduler/eventscheduler.h"
 #include "world/scheduler/bankrobberyevent.h"
 
-#include "mmgr.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

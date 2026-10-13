@@ -43,7 +43,6 @@
 #include "world/scheduler/eventscheduler.h"
 #include "world/scheduler/notificationevent.h"
 
-#include "mmgr.h"
 
 
 World::World()

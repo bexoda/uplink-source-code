@@ -26,7 +26,6 @@
 #include "interface/remoteinterface/remoteinterface.h"
 #include "interface/remoteinterface/nearestgatewayscreen_interface.h"
 
-#include "mmgr.h"
 
 
 NearestGatewayScreenInterface::NearestGatewayScreenInterface ()
