@@ -43,11 +43,9 @@ target_compile_definitions(uplink_flags INTERFACE
   _REENTRANT USE_SDL USE_FTGL
   $<IF:$<BOOL:${UPLINK_DEMO}>,DEMOGAME=1,FULLGAME=1>)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  # The 2003 code relies on pre-standard conversions (string literals to char*, etc.).
-  # -fpermissive keeps those as warnings while the code is modernised; the long-term goal
-  # is to drop it.
-  target_compile_options(uplink_flags INTERFACE
-    $<$<COMPILE_LANGUAGE:CXX>:-fpermissive -Wno-write-strings>)
+  # The 2003 code passes string literals to char* parameters throughout (7000+ sites; ill-formed
+  # since C++11). Silenced until those APIs take const char*.
+  target_compile_options(uplink_flags INTERFACE $<$<COMPILE_LANGUAGE:CXX>:-Wno-write-strings>)
 endif()
 if(UPLINK_SANITIZE)
   target_compile_options(uplink_flags INTERFACE -fsanitize=address,undefined -fno-omit-frame-pointer)
