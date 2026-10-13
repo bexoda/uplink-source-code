@@ -71,7 +71,7 @@ void NewsScreenInterface::ClickNewsButton ( Button *button )
         if ( scrollBox ) {
             scrollBox->SetCurrentIndex( 0 );
 
-            char *newDetails = cu->GetNews (index)->GetDetails();
+            const char *newDetails = cu->GetNews (index)->GetDetails();
             Button *detailsButton = EclGetButton ( "news_details box" );
             UplinkAssert (detailsButton);
         	LList <char *> *wrappedtext = wordwraptext ( newDetails, detailsButton->width );
@@ -165,8 +165,8 @@ void NewsScreenInterface::DrawNewsButton ( Button *button, bool highlighted, boo
 
         // Get the first line of the news story
 
-        char *fulldetails = news->GetDetails ();
-        char *firstendline = strchr ( fulldetails, '\n' );
+        const char *fulldetails = news->GetDetails ();
+        const char *firstendline = strchr ( fulldetails, '\n' );
         if ( firstendline && firstendline - fulldetails > 255 )
             firstendline = fulldetails + 255;
         char details [256];

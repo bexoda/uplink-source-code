@@ -24,7 +24,6 @@ News::News ()
 News::~News ()
 {
 
-	if ( details ) delete [] details;
 		
 }
 
@@ -46,17 +45,14 @@ void News::SetHeadline ( const char *newheadline )
 void News::SetDetails ( const char *newdetails )
 {
 
-	if ( details )
-		delete [] details;
-	details = new char [strlen(newdetails)+1];
-	UplinkSafeStrcpy ( details, newdetails );
+	details = newdetails;
 
 }
 
-char *News::GetDetails ()
+const char *News::GetDetails ()
 {
 
-	return details;
+	return details.c_str ();
 
 }
 
@@ -124,7 +120,7 @@ void News::Print ()
 
 	printf ( "News: %s\n", headline.c_str () );
 	date.Print ();
-	printf ( "%s\n", details );
+	printf ( "%s\n", details.c_str () );
 	
 	printf ( "NEWSTYPE:%d\n", NEWSTYPE );
 	printf ( "data1 = %s\n", data1.c_str () );

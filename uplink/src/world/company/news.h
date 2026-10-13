@@ -12,6 +12,8 @@
 #ifndef _included_news_h
 #define _included_news_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -39,7 +41,7 @@ class News : public UplinkObject
 
 protected:
 
-	char *details;
+	OptString details;
 
 public:
 
@@ -59,7 +61,7 @@ public:
 	void SetHeadline ( const char *newheadline );
 	void SetDetails  ( const char *newdetails );
 
-	char *GetDetails ();
+	const char *GetDetails ();
 
 	void SetData ( int newNEWSTYPE, const char *newdata1 = NULL, const char *newdata2 = NULL );
 

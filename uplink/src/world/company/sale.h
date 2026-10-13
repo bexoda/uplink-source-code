@@ -11,6 +11,8 @@
 #ifndef _included_sale_h
 #define _included_sale_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -69,7 +71,7 @@ class SaleVersion : public UplinkObject
 
 protected:
 
-	char *details;
+	OptString details;
 
 public:
 
@@ -83,7 +85,7 @@ public:
 	~SaleVersion ();
 
 	void Set ( const char *newdetails, int newcost, int newsize, int newdata );
-	char *GetDetails ();
+	const char *GetDetails ();
 
 	// Common functions
 

@@ -150,16 +150,13 @@ SaleVersion::SaleVersion ()
 SaleVersion::~SaleVersion ()
 {
 
-	if ( details ) delete [] details;
 
 }
 
 void SaleVersion::Set ( const char *newdetails, int newcost, int newsize, int newdata )
 {
 
-	if ( details ) delete [] details;
-	details = new char [strlen(newdetails)+1];
-	UplinkSafeStrcpy ( details, newdetails );
+	details = newdetails;
 
 	cost = newcost;
 	size = newsize;
@@ -167,10 +164,10 @@ void SaleVersion::Set ( const char *newdetails, int newcost, int newsize, int ne
 
 }
 
-char *SaleVersion::GetDetails ()
+const char *SaleVersion::GetDetails ()
 {
 
-	return details;
+	return details.c_str ();
 
 }
 
@@ -207,7 +204,7 @@ void SaleVersion::Save  ( FILE *file )
 void SaleVersion::Print ()
 {
 
-	printf ( "SaleVersion: %s\n", details );
+	printf ( "SaleVersion: %s\n", details.c_str () );
 	printf ( "Cost: %d, Size: %d, Data: %d\n", cost, size, data );
 
 }

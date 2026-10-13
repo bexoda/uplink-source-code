@@ -12,6 +12,8 @@
 #ifndef _included_mission_h
 #define _included_mission_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -37,13 +39,13 @@ class Mission : public UplinkObject
 
 protected:
 
-	char *details;						// Listed on bbs boards
-	char *fulldetails;					// Listed after acceptance (contains actual target details)
+	OptString details;						// Listed on bbs boards
+	OptString fulldetails;					// Listed after acceptance (contains actual target details)
 	Date *duedate;						// Can be NULL
 
-	char *whysomuchmoney;				// Answer to these questions
-	char *howsecure;					// They can be NULL
-	char *whoisthetarget;				//
+	OptString whysomuchmoney;				// Answer to these questions
+	OptString howsecure;					// They can be NULL
+	OptString whoisthetarget;				//
 
 public:
 
@@ -103,11 +105,11 @@ public:
 	void SetDueDate			( Date *newdate );
 	Date *GetDueDate		();							// Can return NULL
 
-	char *GetDetails		();
-	char *GetFullDetails	();
-	char *GetWhySoMuchMoney ();							// Can return NULL
-	char *GetHowSecure		();							// Can return NULL
-	char *GetWhoIsTheTarget ();							// Can return NULL
+	const char *GetDetails		();
+	const char *GetFullDetails	();
+	const char *GetWhySoMuchMoney ();							// Can return NULL
+	const char *GetHowSecure		();							// Can return NULL
+	const char *GetWhoIsTheTarget ();							// Can return NULL
 
 	// Common functions
 

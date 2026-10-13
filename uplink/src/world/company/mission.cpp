@@ -52,11 +52,6 @@ Mission::Mission ()
 Mission::~Mission ()
 {
 
-	if ( details )			delete [] details;
-	if ( fulldetails )		delete [] fulldetails;
-	if ( whysomuchmoney )	delete [] whysomuchmoney;
-	if ( howsecure )		delete [] howsecure;
-	if ( whoisthetarget )	delete [] whoisthetarget;
 
 	if ( duedate ) delete duedate;
 
@@ -130,33 +125,27 @@ void Mission::SetDescription ( const char *newdescription )
 void Mission::SetDetails ( const char *newdetails )
 {
 
-	if ( details ) delete [] details;
 
-	details = new char [strlen(newdetails)+1];
-	UplinkSafeStrcpy ( details, newdetails );
+	details = newdetails;
 
 }
 
 void Mission::SetFullDetails ( const char *newdetails )
 {
 
-	if ( fulldetails ) delete [] fulldetails;
 
-	fulldetails = new char [strlen(newdetails)+1];
-	UplinkSafeStrcpy ( fulldetails, newdetails );
+	fulldetails = newdetails;
 
 }
 
 void Mission::SetWhySoMuchMoney	( const char *answer )
 {
 
-	if ( whysomuchmoney ) delete [] whysomuchmoney;
 	whysomuchmoney = NULL;
 
 	if ( answer ) {
 
-		whysomuchmoney = new char [strlen(answer)+1];
-		UplinkSafeStrcpy ( whysomuchmoney, answer );
+		whysomuchmoney = answer;
 
 	}
 
@@ -165,13 +154,11 @@ void Mission::SetWhySoMuchMoney	( const char *answer )
 void Mission::SetHowSecure ( const char *answer )
 {
 
-	if ( howsecure ) delete [] howsecure;
 	howsecure = NULL;
 
 	if ( answer ) {
 
-		howsecure = new char [strlen(answer)+1];
-		UplinkSafeStrcpy ( howsecure, answer );
+		howsecure = answer;
 
 	}
 
@@ -180,13 +167,11 @@ void Mission::SetHowSecure ( const char *answer )
 void Mission::SetWhoIsTheTarget ( const char *answer )
 {
 
-	if ( whoisthetarget ) delete [] whoisthetarget;
 	whoisthetarget = NULL;
 
 	if ( answer ) {
 
-		whoisthetarget = new char [strlen(answer)+1];
-		UplinkSafeStrcpy ( whoisthetarget, answer );
+		whoisthetarget = answer;
 
 	}
 
@@ -288,40 +273,40 @@ Date *Mission::GetDueDate ()
 
 }
 
-char *Mission::GetDetails ()
+const char *Mission::GetDetails ()
 {
 
 	UplinkAssert ( details );
-	return details;
+	return details.c_str ();
 
 }
 
-char *Mission::GetFullDetails ()
+const char *Mission::GetFullDetails ()
 {
 
 	UplinkAssert ( fulldetails );
-	return fulldetails;
+	return fulldetails.c_str ();
 
 }
 
-char *Mission::GetWhySoMuchMoney ()
+const char *Mission::GetWhySoMuchMoney ()
 {
 
-	return whysomuchmoney;
+	return whysomuchmoney.c_str ();
 
 }
 
-char *Mission::GetHowSecure	()
+const char *Mission::GetHowSecure	()
 {
 
-	return howsecure;
+	return howsecure.c_str ();
 
 }
 
-char *Mission::GetWhoIsTheTarget ()
+const char *Mission::GetWhoIsTheTarget ()
 {
 
-	return whoisthetarget;
+	return whoisthetarget.c_str ();
 
 }
 
@@ -441,10 +426,10 @@ void Mission::Print ()
 	printf ( "\tCompletionD = %s\n", completionD.c_str () );
 	printf ( "\tCompletionE = %s\n", completionE.c_str () );
 	printf ( "\tContact = %s\n", contact.c_str () );
-	printf ( "\tDetails=%s\n", details );
-	printf ( "\tFullDetails=%s\n", fulldetails );
-	printf ( "\tWhySoMuchMoney=%s\n", whysomuchmoney );
-	printf ( "\tHowSecure=%s\n", howsecure );
+	printf ( "\tDetails=%s\n", details.c_str () );
+	printf ( "\tFullDetails=%s\n", fulldetails.c_str () );
+	printf ( "\tWhySoMuchMoney=%s\n", whysomuchmoney.c_str () );
+	printf ( "\tHowSecure=%s\n", howsecure.c_str () );
 
 	PrintLList ( &links );
 	PrintBTree ( &codes );
