@@ -98,7 +98,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
     printf ( "Loading LAN from %s...", filename );
 
     if ( game->GetWorld ()->GetVLocation (ip) ) {
-        printf ( "[Already Loaded]\n", filename );
+        printf ( "[Already Loaded]\n" );
 		thefile.close ();
 		RsArchiveFileClose ( filename );
         return NULL;

@@ -605,8 +605,7 @@ void SWInterface::Update ()
 			// Get the name of the software item
 
 			char swname [64];
-			int version;
-			sscanf ( currentbutton->caption, "%s v%1.1f", swname, &version );
+			sscanf ( currentbutton->caption, "%63s", swname );		// "<name> v<version>"
 
 			// Create a version menu if neccisary
 

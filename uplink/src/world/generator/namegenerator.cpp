@@ -66,7 +66,7 @@ void NameGenerator::LoadNames ()
 
 		while ( !feof ( file ) ) {
 
-			fscanf ( file, "%s\n", tempName );
+			if ( fscanf ( file, "%127s\n", tempName ) != 1 ) break;
 			char *name = new char [ strlen ( tempName ) + 1 ];
 			UplinkSafeStrcpy ( name, tempName );
 			fornames.PutData ( name );
@@ -92,7 +92,7 @@ void NameGenerator::LoadNames ()
 
 		while ( !feof ( file ) ) {
 
-			fscanf ( file, "%s\n", tempName );
+			if ( fscanf ( file, "%127s\n", tempName ) != 1 ) break;
 			char *name = new char [ strlen ( tempName ) + 1 ];
 			UplinkSafeStrcpy ( name, tempName );
 			surnames.PutData ( name );
@@ -118,7 +118,7 @@ void NameGenerator::LoadNames ()
 
 		while ( !feof ( file ) ) {
 
-			fscanf ( file, "%s\n", tempName );
+			if ( fscanf ( file, "%127s\n", tempName ) != 1 ) break;
 			char *name = new char [ strlen ( tempName ) + 1 ];
 			UplinkSafeStrcpy ( name, tempName );
 			agentaliases.PutData ( name );
@@ -145,7 +145,7 @@ void NameGenerator::LoadNames ()
 
 		while ( !feof ( file ) ) {
 
-			fscanf ( file, "%s\n", tempName );
+			if ( fscanf ( file, "%127s\n", tempName ) != 1 ) break;
 			char *name = new char [ strlen ( tempName ) + 1 ];
 			UplinkSafeStrcpy ( name, tempName );
 			companynamesA.PutData ( name );
@@ -171,7 +171,7 @@ void NameGenerator::LoadNames ()
 
 		while ( !feof ( file ) ) {
 
-			fscanf ( file, "%s\n", tempName );
+			if ( fscanf ( file, "%127s\n", tempName ) != 1 ) break;
 			char *name = new char [ strlen ( tempName ) + 1 ];
 			UplinkSafeStrcpy ( name, tempName );
 			companynamesB.PutData ( name );

@@ -310,7 +310,7 @@ void NuclearWarScreenInterface::Create ( ComputerScreen *newcs )
 			UplinkSnprintf ( bname, sizeof ( bname ), "nuclearwar_location %d", i );
 
 			char tooltip [128];
-			UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Simulate attack on this site", pgl->city );
+			UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Simulate attack on this site" );
 
 			EclRegisterButton ( x1 + SX(pgl->x), y1 + SY(pgl->y), 7, 7, pgl->city, tooltip, bname );
 			EclRegisterButtonCallbacks ( bname, DrawLocation, ClickLocation, button_click, button_highlight );

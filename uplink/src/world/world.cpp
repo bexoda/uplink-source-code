@@ -76,7 +76,7 @@ World::World()
 	while ( !feof (file) ) {
 
 		char line [64];
-		fscanf ( file, "%s\n", line );
+		if ( fscanf ( file, "%63s\n", line ) != 1 ) break;
 		CreatePassword ( line );
 
 	}

@@ -29,7 +29,6 @@ bool BglExtractFile ( char *filename, char *target = NULL );
 
 void BglCloseZipFile ( char *id );
 
-void BglExtractAllFiles ( char *zipfile );
 
 DArray <char *> *BglListFiles ( char *path, char *directory = NULL, char *filter = NULL );
 

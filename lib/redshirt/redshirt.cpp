@@ -304,7 +304,7 @@ bool filterFileInPlace( char *filename, char *ext,
 						filterFunc *filterFunc)
 {
 	char tempfilename [SIZE_RSFILENAME];
-	sprintf ( tempfilename, "%s%s", filename, ext );
+	snprintf ( tempfilename, sizeof ( tempfilename ), "%s%s", filename, ext );
 
 	if (filterFile(filename, tempfilename, readHeader, writeHeader, writeChecksum, filterFunc)) {
 		remove(filename);
@@ -369,7 +369,8 @@ FILE *RsFileOpen ( char *filename, char *mode )
     else {
 
 	    char dfilename [SIZE_RSFILENAME];
-	    sprintf ( dfilename, "%s%s.d", tempdir, RsBasename(filename) );
+	    if ( snprintf ( dfilename, sizeof ( dfilename ), "%s%s.d", tempdir, RsBasename(filename) ) >= (int) sizeof ( dfilename ) )
+			return NULL;																// path too long
 		
 		if (filterFile(filename, dfilename, readRsEncryptedHeader, noHeader, noHeader, decryptBuffer)) {
 			// Open the result and return it
@@ -391,7 +392,7 @@ void RsFileClose ( char *filename, FILE *file )
 	// Delete any decrypted versions
 
 	char dfilename [SIZE_RSFILENAME];
-	sprintf ( dfilename, "%s.d", filename );
+	snprintf ( dfilename, sizeof ( dfilename ), "%s.d", filename );
 
 	int result = remove ( dfilename );
 
@@ -402,7 +403,7 @@ bool RsLoadArchive ( char *filename )
 {
 
 	char fullfilename [SIZE_RSFILENAME];
-	sprintf ( fullfilename, "%s%s", rsapppath, filename );
+	snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", rsapppath, filename );
 
 	FILE *archive = RsFileOpen ( fullfilename, "rb" );
 
@@ -465,7 +466,7 @@ char *RsArchiveFileOpen ( char *filename )
     //
 
 	char fullfilename [SIZE_RSFILENAME];
-	sprintf ( fullfilename, "%s%s", rsapppath, filename );
+	snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", rsapppath, filename );
 
 	//
 	// Look to see if the file exists
@@ -497,8 +498,8 @@ char *RsArchiveFileOpen ( char *filename )
 		char targetfilename [SIZE_RSFILENAME];
 
 		while ( !success && attempt < 3 ) {
-			sprintf ( targetfilename, "%stemp%d%s", tempdir, attempt, extension );
-			success = BglExtractFile ( fullfilename, targetfilename );
+			if ( snprintf ( targetfilename, sizeof ( targetfilename ), "%stemp%d%s", tempdir, attempt, extension ) < (int) sizeof ( targetfilename ) )
+				success = BglExtractFile ( fullfilename, targetfilename );
 			++attempt;
 		}
 		
@@ -527,7 +528,7 @@ bool RsArchiveFileLoaded ( char *filename )
 {
 
 	char fullfilename [SIZE_RSFILENAME];
-	sprintf ( fullfilename, "%s%s", rsapppath, filename );
+	snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", rsapppath, filename );
 
 	if ( RsFileExists ( fullfilename ) ) return true;
 	if ( BglFileLoaded ( fullfilename ) ) return true;
@@ -548,8 +549,8 @@ void RsArchiveFileClose	( char *filename, FILE *file )
 	int attempt = 0;
 
 	while ( attempt < 3 ) {
-		sprintf ( targetfilename, "%stemp%d%s", tempdir, attempt, extension );
-		int result = remove ( targetfilename );
+		if ( snprintf ( targetfilename, sizeof ( targetfilename ), "%stemp%d%s", tempdir, attempt, extension ) < (int) sizeof ( targetfilename ) )
+			remove ( targetfilename );
 		++attempt;
 	}
 
@@ -585,18 +586,18 @@ void RsDeleteDirectory ( const char *dirname )
 
 void RsInitialise ( char *newapppath )
 {
-    sprintf ( rsapppath, "%s", newapppath );
+    snprintf ( rsapppath, sizeof ( rsapppath ), "%s", newapppath );
 
     // create a temp directory
 
 #ifdef WIN32
-    sprintf ( tempdir, "%stemp/", rsapppath );
+    snprintf ( tempdir, sizeof ( tempdir ), "%stemp/", rsapppath );
     RsMakeDirectory ( tempdir );
 #else
 	// Try in the current directory
 
-    sprintf ( tempdir, "%stemp/", rsapppath );
-    if (!RsMakeDirectory ( tempdir )) {
+    if ( snprintf ( tempdir, sizeof ( tempdir ), "%stemp/", rsapppath ) >= (int) sizeof ( tempdir ) ||
+         !RsMakeDirectory ( tempdir ) ) {
 		// Try in /tmp
 
 		strcpy(tempdir, "/tmp/uplink-XXXXXX");
@@ -628,7 +629,7 @@ void RsCleanUp ()
 #ifdef WIN32
 
 	char searchstring [SIZE_RSFILENAME];
-	sprintf ( searchstring, "%s*.*", tempdir );
+	snprintf ( searchstring, sizeof ( searchstring ), "%s*.*", tempdir );
 
 	_finddata_t thisfile;
 	intptr_t fileindex = _findfirst ( searchstring, &thisfile );
@@ -640,8 +641,9 @@ void RsCleanUp ()
         if ( thisfile.attrib & _A_NORMAL || thisfile.attrib & _A_ARCH ) {
 
             char fullfilename [SIZE_RSFILENAME];
-            sprintf ( fullfilename, "%s%s", tempdir, thisfile.name );
-            int result = remove ( fullfilename );
+            // Never remove a truncated path: it could name some other file.
+            if ( snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", tempdir, thisfile.name ) < (int) sizeof ( fullfilename ) )
+                remove ( fullfilename );
 
         }
 
@@ -661,9 +663,9 @@ void RsCleanUp ()
 	    while (entry != NULL) {
                 
 			char fullfilename [SIZE_RSFILENAME];
-			sprintf ( fullfilename, "%s%s", tempdir, entry->d_name );
-                
-			remove ( fullfilename );
+			// Never remove a truncated path: it could name some other file.
+			if ( snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", tempdir, entry->d_name ) < (int) sizeof ( fullfilename ) )
+				remove ( fullfilename );
 
     		entry = readdir ( dir );
 	    

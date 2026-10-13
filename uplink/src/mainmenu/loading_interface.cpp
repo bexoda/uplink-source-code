@@ -66,7 +66,7 @@ void LoadingInterface::Create ()
         LList <char *> filenames;
 		while ( !feof (file) ) {
 			char *thisfile = new char [256];
-			fscanf ( file, "%s\n", thisfile );
+			if ( fscanf ( file, "%255s\n", thisfile ) != 1 ) { delete [] thisfile; break; }
 			// kris.tif have simply not the same level of quality of the other files
 			if ( strcmp ( thisfile, "loading/kris.tif" ) != 0 )
 				filenames.PutData ( thisfile );

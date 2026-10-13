@@ -35,6 +35,12 @@ struct LocalFileHeader
 
 static BTree <LocalFileHeader *> files;
 
+// Reads exactly `size` bytes; false at end of file or on error.
+static bool BglRead ( void *dest, size_t size, FILE *file )
+{
+	return fread ( dest, size, 1, file ) == 1;
+}
+
 
 void BglSlashify ( char *string )
 {
@@ -81,27 +87,31 @@ bool BglOpenZipFile ( FILE *file, char *apppath, char *id )
 
 		LocalFileHeader *fh = new LocalFileHeader ();
 
-		fread ( fh->signature, 4, 1, file );
-
-		if ( fh->signature [0] != 'P' || fh->signature [1] != 'K' )	{				// No longer reading valid data
+		if ( !BglRead ( fh->signature, 4, file ) ||
+			 fh->signature [0] != 'P' || fh->signature [1] != 'K' )	{				// No longer reading valid data
 			delete fh;
 			break;
 		}
 
-		fread ( &fh->version, 2, 1, file );
-		fread ( &fh->bitflag, 2, 1, file );
-		fread ( &fh->compressionmethod, 2, 1, file );
-		fread ( &fh->lastmodfiletime, 2, 1, file );
-		fread ( &fh->lastmodfiledate, 2, 1, file );
-		fread ( &fh->crc32, 4, 1, file );
-		fread ( &fh->compressedsize, 4, 1, file );
-		fread ( &fh->uncompressedsize, 4, 1, file );
-		fread ( &fh->filenamelength, 2, 1, file );
-		fread ( &fh->extrafieldlength, 2, 1, file );
+		if ( !BglRead ( &fh->version, 2, file ) ||
+			 !BglRead ( &fh->bitflag, 2, file ) ||
+			 !BglRead ( &fh->compressionmethod, 2, file ) ||
+			 !BglRead ( &fh->lastmodfiletime, 2, file ) ||
+			 !BglRead ( &fh->lastmodfiledate, 2, file ) ||
+			 !BglRead ( &fh->crc32, 4, file ) ||
+			 !BglRead ( &fh->compressedsize, 4, file ) ||
+			 !BglRead ( &fh->uncompressedsize, 4, file ) ||
+			 !BglRead ( &fh->filenamelength, 2, file ) ||
+			 !BglRead ( &fh->extrafieldlength, 2, file ) ) {
+			delete fh;																	// truncated archive
+			break;
+		}
+
+		bool complete = true;
 
 		if ( fh->filenamelength > 0 ) {
 			fh->filename = new char [fh->filenamelength+1];
-			fread ( fh->filename, fh->filenamelength, 1, file );
+			complete = complete && BglRead ( fh->filename, fh->filenamelength, file );
 			*(fh->filename + fh->filenamelength) = 0;
 		}
 		else 
@@ -109,7 +119,7 @@ bool BglOpenZipFile ( FILE *file, char *apppath, char *id )
 
 		if ( fh->extrafieldlength > 0 ) {
 			fh->extrafield = new char [fh->extrafieldlength+1];
-			fread ( fh->extrafield, fh->extrafieldlength, 1, file );
+			complete = complete && BglRead ( fh->extrafield, fh->extrafieldlength, file );
 			*(fh->extrafield + fh->extrafieldlength) = 0;
 		}
 		else
@@ -117,11 +127,19 @@ bool BglOpenZipFile ( FILE *file, char *apppath, char *id )
 
 		if ( fh->uncompressedsize > 0 ) {
 			fh->data = new char [fh->uncompressedsize+1];
-			fread ( fh->data, fh->uncompressedsize, 1, file );
+			complete = complete && BglRead ( fh->data, fh->uncompressedsize, file );
 			*(fh->data + fh->uncompressedsize) = 0;
 		}
 		else
 			fh->data = NULL;
+
+		if ( !complete ) {																// truncated archive
+			delete [] fh->filename;
+			delete [] fh->extrafield;
+			delete [] fh->data;
+			delete fh;
+			break;
+		}
 
 		if ( id ) {
 			fh->id = new char [strlen(id) + 1];
@@ -135,7 +153,7 @@ bool BglOpenZipFile ( FILE *file, char *apppath, char *id )
 			 fh->filename ) {
 
 			char fullfilename [256];
-			sprintf ( fullfilename, "%s%s", apppath, fh->filename );
+			snprintf ( fullfilename, sizeof ( fullfilename ), "%s%s", apppath, fh->filename );
 
 			BglSlashify ( fullfilename );
 
@@ -283,71 +301,6 @@ bool BglExtractFile ( char *filename, char *target )
 }
 
 
-void BglExtractAllFiles ( char *zipfile )
-{
-
-	FILE *file = fopen ( zipfile, "rb" );
-	assert (file);
-
-	while ( !feof ( file ) ) {
-
-		LocalFileHeader fh;
-
-		fread ( &fh.signature, 4, 1, file );
-		fread ( &fh.version, 2, 1, file );
-		fread ( &fh.bitflag, 2, 1, file );
-		fread ( &fh.compressionmethod, 2, 1, file );
-		fread ( &fh.lastmodfiletime, 2, 1, file );
-		fread ( &fh.lastmodfiledate, 2, 1, file );
-		fread ( &fh.crc32, 4, 1, file );
-		fread ( &fh.compressedsize, 4, 1, file );
-		fread ( &fh.uncompressedsize, 4, 1, file );
-		fread ( &fh.filenamelength, 2, 1, file );
-		fread ( &fh.extrafieldlength, 2, 1, file );
-
-		if ( fh.filenamelength > 0 ) {
-			fh.filename = new char [fh.filenamelength];
-			fread ( fh.filename, fh.filenamelength, 1, file );
-			*(fh.filename + fh.filenamelength) = 0;
-		}
-		else 
-			fh.filename = NULL;
-
-		if ( fh.extrafieldlength > 0 ) {
-			fh.extrafield = new char [fh.extrafieldlength+1];
-			fread ( fh.extrafield, fh.extrafieldlength, 1, file );
-			*(fh.extrafield + fh.extrafieldlength) = 0;
-		}
-		else
-			fh.extrafield = NULL;
-
-		if ( fh.uncompressedsize > 0 ) {
-			fh.data = new char [fh.uncompressedsize];
-			fread ( fh.data, fh.uncompressedsize, 1, file );
-			*(fh.data + fh.uncompressedsize) = 0;
-		}
-		else
-			fh.data = NULL;
-
-
-		if ( fh.compressionmethod == 0 &&
-			 fh.compressedsize == fh.uncompressedsize &&
-			 fh.filename ) {
-
-			FILE *output = fopen ( fh.filename, "wb" );
-			assert (output);
-
-			fwrite ( fh.data, fh.uncompressedsize, 1, output );
-
-			fclose ( output );
-
-		}
-
-	}
-
-	fclose ( file );
-
-}
 
 
 DArray <char *> *BglListFiles ( char *path, char *directory, char *filter )

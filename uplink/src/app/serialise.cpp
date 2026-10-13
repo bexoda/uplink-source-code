@@ -1018,7 +1018,7 @@ bool FileReadDataInt ( char* _file, int _line, void * _DstBuf, size_t _ElementSi
 {
 	size_t sizeRead = fread ( _DstBuf, _ElementSize, _Count, _File );
 	if ( sizeRead != _Count ) {
-		UplinkPrintAbortArgs ( "WARNING: FileReadDataInt, request read count is different then the readed count, request=%d, readed=%d, errno=%d, %s:%d",
+		UplinkPrintAbortArgs ( "WARNING: FileReadDataInt, request read count is different then the readed count, request=%zu, readed=%zu, errno=%d, %s:%d",
 		                       _Count, sizeRead, errno, _file, _line );
 		return false;
 	}

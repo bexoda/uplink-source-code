@@ -755,9 +755,9 @@ bool VerifyLegitAndCodeCardCheck()
 
 		fseek ( file, 128, SEEK_SET );
 		char readbuffer [9];
-		fread ( readbuffer, 8, 1, file );
+		bool readok = fread ( readbuffer, 8, 1, file ) == 1;
 		readbuffer [8] = '\x0';
-		match = ( strcmp ( readbuffer, realbuffer ) == 0 );
+		match = readok && ( strcmp ( readbuffer, realbuffer ) == 0 );
 		fclose ( file );
 
 	}
@@ -802,9 +802,9 @@ bool VerifyLegitAndCodeCardCheck()
 
 			fseek ( file, 256, SEEK_SET );
 			char readbuffer [9];
-			fread ( readbuffer, 8, 1, file );
+			bool readok = fread ( readbuffer, 8, 1, file ) == 1;
 			readbuffer [8] = '\x0';
-			match3 = ( strcmp ( readbuffer, realbuffer ) != 0 );
+			match3 = readok && ( strcmp ( readbuffer, realbuffer ) != 0 );
 			fclose ( file );
 
 		}
@@ -823,9 +823,9 @@ bool VerifyLegitAndCodeCardCheck()
 
 			fseek ( file, 512 + 64, SEEK_SET );
 			char readbuffer [9];
-			fread ( readbuffer, 8, 1, file );
+			bool readok = fread ( readbuffer, 8, 1, file ) == 1;
 			readbuffer [8] = '\x0';
-			match4 = ( strcmp ( readbuffer, realbuffer ) == 0 );
+			match4 = readok && ( strcmp ( readbuffer, realbuffer ) == 0 );
 			fclose ( file );
 
 		}

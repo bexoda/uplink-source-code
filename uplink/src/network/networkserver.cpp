@@ -144,7 +144,7 @@ void NetworkServer::Save ( FILE *file )
 void NetworkServer::Print ()
 {
 
-	printf ( "NetworkServer : listensocket:%d, lastlisten:%d\n", listensocket, lastlisten );
+	printf ( "NetworkServer : listensocket:%d, lastlisten:%ld\n", listensocket, (long) lastlisten );
 
 	PrintDArray ( (DArray <UplinkObject *> *) &clients );
 

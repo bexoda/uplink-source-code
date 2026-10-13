@@ -504,7 +504,7 @@ void ClientConnection::Print  ()
 {
 
 	// TODO: This is not right. Time is of type time_t(_cdecl *)(time_t *)
-	printf ( "ClientConnection : Socket:%d, Type:%d, starttime:%d\n", socket, clienttype, time (NULL) );
+	printf ( "ClientConnection : Socket:%d, Type:%d, starttime:%ld\n", socket, clienttype, (long) time (NULL) );
 
 }
 

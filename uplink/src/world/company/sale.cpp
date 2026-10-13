@@ -108,7 +108,7 @@ void Sale::Print ()
 {
 
 	printf ( "Sale\n" );
-	printf ( "\tTitle:%s, saleTYPE:%d, swhwTYPE:\n", 
+	printf ( "\tTitle:%s, saleTYPE:%d, swhwTYPE:%d\n", 
 				title, saleTYPE, swhwTYPE );
 
 	PrintDArray ( (DArray <UplinkObject *> *) &versions );

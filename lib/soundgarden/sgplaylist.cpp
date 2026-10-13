@@ -37,7 +37,7 @@ void SgPlaylist::AddSong ( char *name )
 {
 
     char *namecopy = new char [strlen(name)+1];
-    sprintf ( namecopy, name );
+    strcpy ( namecopy, name );
     songs.PutData(namecopy);
 
 }

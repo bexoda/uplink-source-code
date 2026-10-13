@@ -122,7 +122,7 @@ void Image::LoadTIF ( char *filename )
 
     TIFFRGBAImageBegin (&img, tif, 0, emsg);
     int npixels = img.width * img.height;    
-	uint32 *raster = new uint32 [npixels * sizeof(uint32)];
+	uint32_t *raster = new uint32_t [npixels * sizeof(uint32_t)];
     
 	TIFFRGBAImageGet(&img, raster, img.width, img.height);
 
@@ -354,10 +354,10 @@ void Image::CreateErrorBitmap ()
 
 	width = 32;
 	height = 32;
-	uint32 *newimage = new uint32 [ width * height * sizeof(uint32) ];
+	uint32_t *newimage = new uint32_t [ width * height * sizeof(uint32_t) ];
 
-	uint32 WHITE = 0xFFFFFFFF;
-	uint32 BLACK = 0xFF000000;
+	uint32_t WHITE = 0xFFFFFFFF;
+	uint32_t BLACK = 0xFF000000;
 
 	for ( int x = 0; x < width; ++x ) {
 		for ( int y = 0; y < height; ++y ) {
