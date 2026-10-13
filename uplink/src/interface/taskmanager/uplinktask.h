@@ -5,6 +5,8 @@
 #ifndef _included_uplinktask_h
 #define _included_uplinktask_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "task.h"
@@ -19,7 +21,7 @@ class UplinkTask : public Task
 protected:
 
 	UplinkObject *targetobject;
-	char		 *targetstring;
+	OptString targetstring;
 	int			  targetint;
 	
 public:

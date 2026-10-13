@@ -44,7 +44,7 @@ PasswordBreaker::PasswordBreaker () : UplinkTask ()
 {
 
 	length = difficulty = currentchar = 0;
-	caption = password = username = NULL;
+	password = username = NULL;
 	found = NULL;
 
 	targetstring = NULL;
@@ -54,23 +54,15 @@ PasswordBreaker::PasswordBreaker () : UplinkTask ()
 PasswordBreaker::~PasswordBreaker()
 {
 
-	if ( caption )  delete [] caption;
-	if ( username ) delete [] username;
-	if ( password ) delete [] password;
 	if ( found )    delete [] found;
 
-	if ( targetstring ) delete [] targetstring;
 
 }
 
 void PasswordBreaker::Initialise ()
 {
 
-	if ( caption )
-		delete [] caption;
-	size_t captionsize = 32;
-	caption = new char [captionsize];
-	UplinkStrncpy ( caption, "Select target", captionsize );
+	caption = "Select target";
 
 }
 
@@ -86,14 +78,7 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 		*/
 
 	targetobject = uo;
-	if ( targetstring ) {
-		delete [] targetstring;
-		targetstring = NULL;
-	}
-	if ( uos ) {
-		targetstring = new char[ strlen( uos ) + 1 ];
-		UplinkSafeStrcpy( targetstring, uos );
-	}
+	targetstring = uos;
 	targetint    = uoi;
 
     Computer *comp = NULL;
@@ -107,14 +92,8 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 		length = (int) strlen ( ps->password.c_str () );
 		difficulty = ps->difficulty;
 		
-		if ( password )
-			delete [] password;
-		size_t passwordsize = length+1;
-		password = new char [passwordsize];
-		UplinkStrncpy ( password, ps->password.c_str (), passwordsize );
+		password = ps->password.c_str ();
 
-		if ( username )
-			delete [] username;
 		username = NULL;
 
 	}
@@ -129,11 +108,8 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 		if ( strcmp ( EclGetButton ( "useridscreen_name" )->caption, "" ) == 0 ) 
 			EclGetButton ( "useridscreen_name" )->SetCaption ( "admin" );
 				
-		if ( username )
-			delete [] username;
 		char *name = EclGetButton ( "useridscreen_name" )->caption;
-		username = new char [strlen(name)+1];
-		UplinkSafeStrcpy ( username, name );
+		username = name;
 
 		// Look up the user name in this computer's records
 				
@@ -159,11 +135,7 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 			length = (int) strlen ( passwd );
 			
-			if ( password )
-				delete [] password;
-			size_t passwordsize = length+1;
-			password = new char [passwordsize];
-			UplinkStrncpy ( password, passwd, passwordsize );
+			password = passwd;
 						
 		}
 		else {
@@ -184,17 +156,12 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 	// Set up the password breaker to work with this new data
 
-	if ( caption )
-		delete [] caption;
-	size_t captionsize = length+1;
-	caption = new char [captionsize];
 	if ( found )
 		delete [] found;
 	found = new bool [length];
 
-	UplinkStrncpy ( caption, "", captionsize );
+	caption.assign ( length, 'x' );
 	for ( int i = 0; i < length; ++i ) {
-		UplinkStrncat ( caption, captionsize, "x" );
 		found [i] = false;
 	}
 
@@ -239,7 +206,7 @@ void PasswordBreaker::Tick ( int n )
 				// First check to make sure we are still looking at this password screen
 				// i.e the player has not logged out / moved / got past it already
 
-				if ( !EclGetButton ( targetstring ) ) {
+				if ( !EclGetButton ( targetstring.c_str () ) ) {
 
 					// Target password box has been removed; Terminate this task
 					SvbRemoveTask ( this );			
@@ -261,7 +228,7 @@ void PasswordBreaker::Tick ( int n )
 					if ( numticksrequired != -1 && progress >= numticksrequired ) {
 
 						// This char has been discovered
-						caption [currentchar] = password [currentchar];
+						caption [currentchar] = password.c_str () [currentchar];
 						found [currentchar] = true;
 						currentchar++;
 
@@ -285,7 +252,7 @@ void PasswordBreaker::Tick ( int n )
 					if ( IsInterfaceVisible () ) {
 						char buttonname [64];
 						UplinkSnprintf ( buttonname, sizeof ( buttonname ), "passwordbreaker %d", SvbLookupPID (this) );
-						EclGetButton ( buttonname )->SetCaption ( caption );
+						EclGetButton ( buttonname )->SetCaption ( caption.c_str () );
 						GciPostRedisplay ();
 					}
 
@@ -295,13 +262,13 @@ void PasswordBreaker::Tick ( int n )
 
 					// The full word has been discovered - enter it into the password screen
 
-					EclRegisterCaptionChange ( targetstring, password );
+					EclRegisterCaptionChange ( targetstring.c_str (), password.c_str () );
 
 					// Give the code to the player
 
 					char newcode [128];
-                    if ( username ) Computer::GenerateAccessCode( username, password, newcode, sizeof ( newcode ) );
-                    else			Computer::GenerateAccessCode( password, newcode, sizeof ( newcode ) );
+                    if ( username ) Computer::GenerateAccessCode( username.c_str (), password.c_str (), newcode, sizeof ( newcode ) );
+                    else			Computer::GenerateAccessCode( password.c_str (), newcode, sizeof ( newcode ) );
 					game->GetWorld ()->GetPlayer ()->GiveCode ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), newcode );				
 
 					// Remove this task
@@ -422,7 +389,7 @@ void PasswordBreaker::CreateInterface ()
 
         char buttonname [64];
 		UplinkSnprintf ( buttonname, sizeof ( buttonname ), "passwordbreaker %d", pid );
-		EclRegisterButton ( 245, 375, 130, 30, caption, "Password Breaker", buttonname );
+		EclRegisterButton ( 245, 375, 130, 30, caption.c_str (), "Password Breaker", buttonname );
 		EclRegisterButtonCallbacks ( buttonname, PasswordDraw, PasswordClick, button_click, button_highlight );
 
         char fillname [64];

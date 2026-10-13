@@ -2,6 +2,8 @@
 #ifndef _included_passwordbreaker_h
 #define _included_passwordbreaker_h
 
+#include "app/optstring.h"
+
 
 #include "vanbakel.h"
 
@@ -15,9 +17,9 @@ class PasswordBreaker : public UplinkTask
 protected:
 
 	int length, difficulty, currentchar;
-	char *caption;
-	char *username;
-	char *password;
+	std::string caption;
+	OptString username;
+	OptString password;
 	bool *found;
 
 	int numticksrequired;						// For next letter

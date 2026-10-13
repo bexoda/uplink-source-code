@@ -129,7 +129,7 @@ public:
 	void UpdateRecentHacks ();						// Call me 4 times a month
 	int  NumRecentHacks ();
 
-    static void GenerateAccessCode( char *code, char *result, size_t resultsize );
+    static void GenerateAccessCode( const char *code, char *result, size_t resultsize );
     static void GenerateAccessCode( const char *name, const char *code, char *result, size_t resultsize );
     static void GenerateAccessCode( int accNo, const char *code, char *result, size_t resultsize );
 

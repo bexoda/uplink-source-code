@@ -2,6 +2,8 @@
 #ifndef _included_dictionaryhacker_h
 #define _included_dictionaryhacker_h
 
+#include "app/optstring.h"
+
 
 #include "vanbakel.h"
 
@@ -19,8 +21,8 @@ protected:
 
 	int status;
 	int currentindex;
-	char *username;
-	char *password;
+	OptString username;
+	OptString password;
 
 	float numticksrequired;
 	int progress;

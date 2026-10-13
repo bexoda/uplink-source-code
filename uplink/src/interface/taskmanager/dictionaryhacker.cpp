@@ -54,10 +54,7 @@ DictionaryHacker::DictionaryHacker () : UplinkTask ()
 DictionaryHacker::~DictionaryHacker()
 {
 
-	if ( password ) delete [] password;
-	if ( username ) delete [] username;
 
-	if ( targetstring ) delete [] targetstring;
 
 }
 
@@ -82,7 +79,7 @@ void DictionaryHacker::Tick ( int n )
 				// First check to make sure we are still looking at the same screen
 				// i.e the player has not logged out / moved / got past it already
 			
-				if ( !EclGetButton ( targetstring ) ) {				
+				if ( !EclGetButton ( targetstring.c_str () ) ) {				
 
 					// Terminate this task
 					SvbRemoveTask ( this );			
@@ -113,25 +110,25 @@ void DictionaryHacker::Tick ( int n )
 						if ( game->GetWorld ()->GetPassword ( currentindex ) ) {
 
 							// Test the current word against the password to see if it is correct
-							if ( strcmp ( game->GetWorld ()->GetPassword ( currentindex ), password ) == 0 ) {
+							if ( strcmp ( game->GetWorld ()->GetPassword ( currentindex ), password.c_str () ) == 0 ) {
 
 								// The full word has been discovered - enter it into the password screen
 
 								if ( targetobject->GetOBJECTID () == OID_PASSWORDSCREEN ) {
 					
-									EclRegisterCaptionChange ( "passwordscreen_password", password );
+									EclRegisterCaptionChange ( "passwordscreen_password", password.c_str () );
 
 								}
 								else if ( targetobject->GetOBJECTID () == OID_USERIDSCREEN ) {
 
-									EclRegisterCaptionChange ( "useridscreen_code", password );
+									EclRegisterCaptionChange ( "useridscreen_code", password.c_str () );
 
 								}
 
 								// Also add it into the player's code list
 								char newcode [128];
-                                if ( username ) Computer::GenerateAccessCode( username, password, newcode, sizeof ( newcode ) );
-                                else			Computer::GenerateAccessCode( password, newcode, sizeof ( newcode ) );
+                                if ( username ) Computer::GenerateAccessCode( username.c_str (), password.c_str (), newcode, sizeof ( newcode ) );
+                                else			Computer::GenerateAccessCode( password.c_str (), newcode, sizeof ( newcode ) );
 
 								game->GetWorld ()->GetPlayer ()->GiveCode ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), newcode );
 
@@ -221,14 +218,7 @@ void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 		*/
 
 	targetobject = uo;
-	if ( targetstring ) {
-		delete [] targetstring;
-		targetstring = NULL;
-	}
-	if ( uos ) {
-		targetstring = new char[ strlen( uos ) + 1 ];
-		UplinkSafeStrcpy( targetstring, uos );
-	}
+	targetstring = uos;
 	targetint    = uoi;
 
 	Computer *comp = NULL;
@@ -239,16 +229,9 @@ void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
         comp = ps->GetComputer ();
 	    UplinkAssert (comp);
 
-		if ( password )
-			delete [] password;
-		size_t length = strlen ( ps->password.c_str () );
-		size_t passwordsize = length+1;
-		password = new char [passwordsize];
-		UplinkStrncpy ( password, ps->password.c_str (), passwordsize );
+		password = ps->password.c_str ();
 		status = DICTIONARYHACKER_INPROGRESS;
 
-		if ( username )
-			delete [] username;
 		username = NULL;
 
 		numticksrequired = TICKSREQUIRED_DICTIONARYHACKER;
@@ -272,10 +255,7 @@ void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 			EclGetButton ( "useridscreen_name" )->SetCaption ( "admin" );
 		char *name = EclGetButton ( "useridscreen_name" )->caption;
 
-		if ( username )
-			delete [] username;
-		username = new char [strlen(name)+1];
-		UplinkSafeStrcpy ( username, name );
+		username = name;
 
 		// Look up this user name in this computer's records
 			
@@ -291,12 +271,7 @@ void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 		if ( rec && passwd ) {
 
-			if ( password )
-				delete [] password;
-			size_t length = strlen ( passwd );
-			size_t passwordsize = length+1;
-			password = new char [passwordsize];
-			UplinkStrncpy ( password, passwd, passwordsize );
+			password = passwd;
 
 			numticksrequired = TICKSREQUIRED_DICTIONARYHACKER;
 			progress = 0;

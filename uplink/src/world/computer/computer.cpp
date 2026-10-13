@@ -696,7 +696,7 @@ void Computer::Update ()
 
 }
 
-void Computer::GenerateAccessCode( char *code, char *result, size_t resultsize )
+void Computer::GenerateAccessCode( const char *code, char *result, size_t resultsize )
 {
     UplinkSnprintf( result, resultsize, "%s:'%s'", "CODE", code );
 }
