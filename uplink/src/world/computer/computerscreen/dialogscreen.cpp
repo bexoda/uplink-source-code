@@ -34,8 +34,6 @@ DialogScreen::~DialogScreen()
 	
 	DeleteLListData ( (LList <UplinkObject *> *) &widgets );
 
-    if ( returnkeybutton ) delete [] returnkeybutton;
-    if ( escapekeybutton ) delete [] escapekeybutton;
 
 }
 
@@ -102,18 +100,14 @@ void DialogScreen::RemoveWidget ( const char *name )
 void DialogScreen::SetReturnKeyButton ( const char *name )
 {
 
-	if ( returnkeybutton ) delete [] returnkeybutton;
-	returnkeybutton = new char [strlen(name)+1];
-	UplinkSafeStrcpy ( returnkeybutton, name );
+	returnkeybutton = name;
 	
 }
 
 void DialogScreen::SetEscapeKeyButton ( const char *name )
 {
 
-    if ( escapekeybutton ) delete [] escapekeybutton;
-    escapekeybutton = new char [strlen(name)+1];
-    UplinkSafeStrcpy ( escapekeybutton, name );
+    escapekeybutton = name;
 
 }
 
@@ -157,8 +151,8 @@ void DialogScreen::Print ()
 	printf ( "DialogScreen\n" );
 	ComputerScreen::Print ();
 	PrintLList ( (LList <UplinkObject *> *) &widgets );
-	printf ( "ReturnKeyButton = %s\n", returnkeybutton );
-    printf ( "EscapeKeyButton = %s\n", escapekeybutton );
+	printf ( "ReturnKeyButton = %s\n", returnkeybutton.c_str () );
+    printf ( "EscapeKeyButton = %s\n", escapekeybutton.c_str () );
 
 }
 	
@@ -196,21 +190,14 @@ DialogScreenWidget::DialogScreenWidget ()
 DialogScreenWidget::~DialogScreenWidget ()
 {
 
-	if ( name )	   delete [] name;
-	if ( caption ) delete [] caption;
-	if ( tooltip ) delete [] tooltip;
 
-	if ( stringdata1 ) delete [] stringdata1;
-	if ( stringdata2 ) delete [] stringdata2;
 
 }
 
 void DialogScreenWidget::SetName ( const char *newname )
 {
 
-	if ( name ) delete [] name;
-	name = new char [strlen(newname)+1];
-	UplinkSafeStrcpy ( name, newname );
+	name = newname;
 
 }
 
@@ -240,39 +227,35 @@ void DialogScreenWidget::SetSize ( int newwidth, int newheight )
 void DialogScreenWidget::SetTooltip ( const char *newtooltip )
 {
 
-	if ( tooltip ) delete [] tooltip;
-	tooltip = new char [strlen(newtooltip) + 1];
-	UplinkSafeStrcpy ( tooltip, newtooltip );
+	tooltip = newtooltip;
 
 }
 
 void DialogScreenWidget::SetCaption ( const char *newcaption )
 {
 
-	if ( caption ) delete [] caption;
-	caption = new char [strlen(newcaption) + 1];
-	UplinkSafeStrcpy ( caption, newcaption );
+	caption = newcaption;
 
 }
 	
-char *DialogScreenWidget::GetName ()
+const char *DialogScreenWidget::GetName ()
 {
 
-	return name;
+	return name.c_str ();
 
 }
 
-char *DialogScreenWidget::GetTooltip ()
+const char *DialogScreenWidget::GetTooltip ()
 {
 
-	return tooltip;
+	return tooltip.c_str ();
 
 }
 
-char *DialogScreenWidget::GetCaption ()
+const char *DialogScreenWidget::GetCaption ()
 {
 
-	return caption;
+	return caption.c_str ();
 
 }
 
@@ -288,35 +271,23 @@ void DialogScreenWidget::SetData ( int newdata1, int newdata2 )
 void DialogScreenWidget::SetStringData ( const char *newstringdata1, const char *newstringdata2 )
 {
 
-	if ( stringdata1 ) delete [] stringdata1;
-	stringdata1 = NULL;
+	stringdata1 = newstringdata1;
 	
-	if ( newstringdata1 ) {
-		stringdata1 = new char [strlen(newstringdata1) + 1];
-		UplinkSafeStrcpy ( stringdata1, newstringdata1 );
-	}
-	
-	if ( stringdata2 ) delete [] stringdata2;
-	stringdata2 = NULL;
-
-	if ( newstringdata2 ) {
-		stringdata2 = new char [strlen(newstringdata2) + 1];
-		UplinkSafeStrcpy ( stringdata2, newstringdata2 );
-	}
+	stringdata2 = newstringdata2;
 
 }
 
-char *DialogScreenWidget::GetStringData1 ()
+const char *DialogScreenWidget::GetStringData1 ()
 {
 
-	return stringdata1;
+	return stringdata1.c_str ();
 
 }
 
-char *DialogScreenWidget::GetStringData2 ()
+const char *DialogScreenWidget::GetStringData2 ()
 {
 
-	return stringdata2;
+	return stringdata2.c_str ();
 
 }
 
@@ -377,10 +348,10 @@ void DialogScreenWidget::Save ( FILE *file )
 void DialogScreenWidget::Print ()
 {
 
-	printf ( "DialogScreenWidget : Name:%s\n", name );
+	printf ( "DialogScreenWidget : Name:%s\n", name.c_str () );
 	printf ( "\tTYPE:%d, x:%d, y:%d, width:%d, height:%d\n", WIDGETTYPE, x, y, width, height );
-	printf ( "\tcaption:%s, tooltip:%s\n", caption, tooltip );
-	printf ( "\tdata1:%d, data2:%d, stringdata1:%s, stringdata2:%s\n", data1, data2, stringdata1, stringdata2 );
+	printf ( "\tcaption:%s, tooltip:%s\n", caption.c_str (), tooltip.c_str () );
+	printf ( "\tdata1:%d, data2:%d, stringdata1:%s, stringdata2:%s\n", data1, data2, stringdata1.c_str (), stringdata2.c_str () );
 
 }
 	

@@ -20,7 +20,6 @@ DisconnectedScreen::DisconnectedScreen()
 DisconnectedScreen::~DisconnectedScreen()
 {
 	
-	if ( textmessage ) delete [] textmessage;
 
 }
 
@@ -34,9 +33,7 @@ void DisconnectedScreen::SetNextPage ( int newnextpage )
 void DisconnectedScreen::SetTextMessage ( const char *newtextmessage )
 {
 
-	if ( textmessage ) delete [] textmessage;
-	textmessage = new char [strlen(newtextmessage)+1];
-	UplinkSafeStrcpy ( textmessage, newtextmessage );
+	textmessage = newtextmessage;
 
 }
 
@@ -94,7 +91,7 @@ void DisconnectedScreen::Print ()
 	printf ( "DisconnectedScreen : \n" );
 	ComputerScreen::Print ();
 	printf ( "NextPage = %d, TextMessage = %s\n", 
-				nextpage, textmessage );
+				nextpage, textmessage.c_str () );
 
 }
 	

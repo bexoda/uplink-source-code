@@ -13,6 +13,8 @@
 #ifndef _included_disconnectedscreen_h
 #define _included_disconnectedscreen_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include <stdio.h>
@@ -30,7 +32,7 @@ class DisconnectedScreen : public ComputerScreen
 public:
 
 	int nextpage;
-	char *textmessage;
+	OptString textmessage;
 
     static DArray <char *> loginslost;
 

@@ -11,6 +11,8 @@
 #ifndef _included_messagescreen_h
 #define _included_messagescreen_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include <stdio.h>
@@ -28,8 +30,8 @@ class MessageScreen : public ComputerScreen
 public:
 
 	int nextpage;
-	char *textmessage;
-	char *buttonmessage;
+	OptString textmessage;
+	OptString buttonmessage;
 	bool mailthistome;	
 
 public:

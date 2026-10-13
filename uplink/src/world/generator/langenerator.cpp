@@ -1916,9 +1916,9 @@ bool LanGenerator::HideData ( LanComputer *comp, LanComputerSystem *system, char
         if ( cs && cs->GetOBJECTID() == OID_MESSAGESCREEN ) {
 
             MessageScreen *ms = (MessageScreen *) cs;
-			size_t newCaptionsize = strlen(ms->textmessage) + strlen(data) + 5;
+			size_t newCaptionsize = strlen(ms->textmessage.c_str ()) + strlen(data) + 5;
             char *newCaption = new char [ newCaptionsize ];
-            UplinkSnprintf ( newCaption, newCaptionsize, "%s\n\n%s", ms->textmessage, data );
+            UplinkSnprintf ( newCaption, newCaptionsize, "%s\n\n%s", ms->textmessage.c_str (), data );
             ms->SetTextMessage ( newCaption );
             delete [] newCaption;
             return true;

@@ -11,6 +11,8 @@
 #ifndef _included_dialog_screen
 #define _included_dialog_screen
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "world/computer/computerscreen/computerscreen.h"
@@ -28,8 +30,8 @@ public:
 
 	LList <DialogScreenWidget *> widgets;
 
-    char *returnkeybutton;							// This is pressed when return key is pressed
-    char *escapekeybutton;                          // This is pressed when escape key is pressed
+    OptString returnkeybutton;							// This is pressed when return key is pressed
+    OptString escapekeybutton;                          // This is pressed when escape key is pressed
 
 public:
 
@@ -77,12 +79,12 @@ class DialogScreenWidget : public UplinkObject
 	
 protected:
 
-	char *name;
-	char *caption;
-	char *tooltip;
+	OptString name;
+	OptString caption;
+	OptString tooltip;
 
-	char *stringdata1;
-	char *stringdata2;
+	OptString stringdata1;
+	OptString stringdata2;
 
 public:
 
@@ -105,17 +107,17 @@ public:
 	void SetTooltip ( const char *newtooltip );
 	void SetCaption ( const char *newcaption );
 	
-	char *GetName ();
-	char *GetTooltip ();
-	char *GetCaption ();
+	const char *GetName ();
+	const char *GetTooltip ();
+	const char *GetCaption ();
 
 	// Data access (data and stringdata is unused)
 
 	void SetData ( int newdata1, int newdata2 );
 	void SetStringData ( const char *newstringdata1, const char *newstringdata2 );
 
-	char *GetStringData1 ();
-	char *GetStringData2 ();
+	const char *GetStringData1 ();
+	const char *GetStringData2 ();
 
 	// Common functions
 

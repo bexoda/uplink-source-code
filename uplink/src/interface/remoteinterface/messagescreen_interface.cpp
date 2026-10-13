@@ -42,7 +42,7 @@ void MessageScreenInterface::MailMeClick ( Button * /*button*/ )
 	m->SetTo ( "PLAYER" );
 	m->SetFrom ( msi->GetComputer ()->name.c_str () );	
 	m->SetSubject ( msi->subtitle.c_str () );
-	m->SetBody ( msi->textmessage );
+	m->SetBody ( msi->textmessage.c_str () );
 	m->Send ();
 
 }
@@ -80,14 +80,14 @@ void MessageScreenInterface::Create ( ComputerScreen *newcs )
 
 		EclRegisterButton ( 50, 120, 400, 245, "", "", "messagescreen_message" );
 		EclRegisterButtonCallbacks ( "messagescreen_message", textbutton_draw, NULL, NULL, NULL );
-		EclRegisterCaptionChange   ( "messagescreen_message", GetComputerScreen ()->textmessage, 2000 );		
+		EclRegisterCaptionChange   ( "messagescreen_message", GetComputerScreen ()->textmessage.c_str (), 2000 );		
 
 		if ( GetComputerScreen ()->buttonmessage ) {
 
-			int width = (int) ( 20 + strlen (GetComputerScreen ()->buttonmessage) * 10 );
+			int width = (int) ( 20 + strlen (GetComputerScreen ()->buttonmessage.c_str ()) * 10 );
 			char name [128 + SIZE_VLOCATION_IP + 1];
 			UplinkSnprintf ( name, sizeof ( name ), "messagescreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
-			EclRegisterButton ( 320 - width/2, 370, width, 20, GetComputerScreen ()->buttonmessage, GetComputerScreen ()->buttonmessage, name );
+			EclRegisterButton ( 320 - width/2, 370, width, 20, GetComputerScreen ()->buttonmessage.c_str (), GetComputerScreen ()->buttonmessage.c_str (), name );
 			EclRegisterButtonCallback ( name, Click );
 
 		}

@@ -114,7 +114,7 @@ bool DialogScreenInterface::ReturnKeyPressed ()
 
 	DialogScreen *ds = GetComputerScreen ();
 	UplinkAssert (ds);
-	char *returnkeybutton = ds->returnkeybutton;
+	const char *returnkeybutton = ds->returnkeybutton.c_str ();
 
 	if ( returnkeybutton ) {
 
@@ -150,7 +150,7 @@ bool DialogScreenInterface::EscapeKeyPressed ()
 
 	DialogScreen *ds = GetComputerScreen ();
 	UplinkAssert (ds);
-	char *escapekeybutton = ds->escapekeybutton;
+	const char *escapekeybutton = ds->escapekeybutton.c_str ();
 
 	if ( escapekeybutton ) {
 

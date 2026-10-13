@@ -70,7 +70,7 @@ void DisconnectedScreenInterface::Create ( ComputerScreen *newcs )
 
 		EclRegisterButton ( 50, 120, 400, 30, "", "", "disconnectedscreen_message" );
 		EclRegisterButtonCallbacks ( "disconnectedscreen_message", textbutton_draw, NULL, NULL, NULL );
-		EclRegisterCaptionChange   ( "disconnectedscreen_message", GetComputerScreen ()->textmessage, 2000 );
+		EclRegisterCaptionChange   ( "disconnectedscreen_message", GetComputerScreen ()->textmessage.c_str (), 2000 );
 
         if ( DisconnectedScreen::loginslost.Size () > 0 ) {
 

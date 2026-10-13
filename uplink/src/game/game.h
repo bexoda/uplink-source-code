@@ -13,6 +13,8 @@
 #ifndef _included_game_h
 #define _included_game_h
 
+#include "app/optstring.h"
+
 #include <stdio.h>
 #include <time.h>
 
@@ -50,13 +52,13 @@ protected:
 	GameObituary *gob;                     // Only used if this is a dead person
 	time_t lastsave;                       // Used in autosaving
 
-	char *loadedSavefileVer;               // The game is/was loaded from a savefile from that version, if NULL assume current
+	OptString loadedSavefileVer;               // The game is/was loaded from a savefile from that version, if NULL assume current
 
-	char *createdSavefileVer;              // The game was created in a savefile from that version
+	OptString createdSavefileVer;              // The game was created in a savefile from that version
 
 	int   winningCodeWon;                  // Does what needed to win the code was done?
-	char *winningCodeDesc;                 // Winning code description
-	char *winningCodeExtra;                // Extra code in front of the winning code
+	OptString winningCodeDesc;                 // Winning code description
+	OptString winningCodeExtra;                // Extra code in front of the winning code
 	unsigned int winningCodeRandom;        // The game winning code random
 
 public:

@@ -66,12 +66,8 @@ Game::~Game ()
 
 	if ( gob )	   delete gob;
 
-	if ( loadedSavefileVer )  delete [] loadedSavefileVer;
 
-	if ( createdSavefileVer ) delete [] createdSavefileVer;
 
-	if ( winningCodeDesc )    delete [] winningCodeDesc;
-	if ( winningCodeExtra )   delete [] winningCodeExtra;
 
 }
 
@@ -83,10 +79,7 @@ void Game::NewGame ()
 	if ( world )   delete world;
 	if ( gob )	   delete gob;
 
-	if ( createdSavefileVer )
-		delete [] createdSavefileVer;
-	createdSavefileVer = new char [ sizeof( SAVEFILE_VERSION ) + 1 ];
-	UplinkSafeStrcpy ( createdSavefileVer, SAVEFILE_VERSION );
+	createdSavefileVer = SAVEFILE_VERSION;
 
 	// Create a unique winning code
 	winningCodeRandom = 0;
@@ -258,16 +251,15 @@ bool Game::LoadGame ( FILE *file )
 
 	// Check the file version is correct
 
-	if ( loadedSavefileVer )
-		delete [] loadedSavefileVer;
-	loadedSavefileVer = new char [sizeof (SAVEFILE_VERSION) + 1];
-	if ( !FileReadData ( loadedSavefileVer, sizeof (SAVEFILE_VERSION), 1, file ) ) {
-		loadedSavefileVer [ 0 ] = '\0';
+	char version [sizeof (SAVEFILE_VERSION) + 1];
+	if ( !FileReadData ( version, sizeof (SAVEFILE_VERSION), 1, file ) ) {
+		version [ 0 ] = '\0';
 	}
 	else {
-		loadedSavefileVer [ sizeof (SAVEFILE_VERSION) ] = '\0';
+		version [ sizeof (SAVEFILE_VERSION) ] = '\0';
 	}
-    if ( loadedSavefileVer [ 0 ] == '\0' || strcmp ( loadedSavefileVer, SAVEFILE_VERSION_MIN ) < 0 || strcmp ( loadedSavefileVer, SAVEFILE_VERSION ) > 0 ) {
+	loadedSavefileVer = version;
+    if ( version [ 0 ] == '\0' || strcmp ( loadedSavefileVer.c_str (), SAVEFILE_VERSION_MIN ) < 0 || strcmp ( loadedSavefileVer.c_str (), SAVEFILE_VERSION ) > 0 ) {
 
         //UplinkAbort ( "This save game file is from an older version of Uplink" );        
 
@@ -279,7 +271,7 @@ bool Game::LoadGame ( FILE *file )
         UplinkSnprintf ( message, sizeof ( message ), "Failed to load user profile\n"
 													   "The save file is not compatible\n\n"
 													   "Save file is Version [%s]\n"
-													   "Required Version is between [%s] and [%s]", loadedSavefileVer, SAVEFILE_VERSION_MIN, SAVEFILE_VERSION );
+													   "Required Version is between [%s] and [%s]", loadedSavefileVer.c_str (), SAVEFILE_VERSION_MIN, SAVEFILE_VERSION );
         create_msgbox ( "Error", message );
 
         return false;
@@ -473,7 +465,7 @@ const char *Game::GetLoadedSavefileVer () const
 {
 
 	if ( loadedSavefileVer )
-		return loadedSavefileVer;
+		return loadedSavefileVer.c_str ();
 	else
 		return SAVEFILE_VERSION;
 
@@ -484,24 +476,13 @@ void Game::WinCode ( const char *desc, const char *codeExtra )
 
 	UplinkAssert ( desc );
 
-	if ( createdSavefileVer && strcmp( createdSavefileVer, "SAV58" ) >= 0 )
+	if ( createdSavefileVer && strcmp( createdSavefileVer.c_str (), "SAV58" ) >= 0 )
 		winningCodeWon = 1;
 
-	if ( winningCodeDesc )
-		delete [] winningCodeDesc;
 
-	winningCodeDesc = new char [ strlen ( desc ) + 1 ];
-	UplinkSafeStrcpy ( winningCodeDesc, desc );
+	winningCodeDesc = desc;
 
-	if ( winningCodeExtra ) {
-		delete [] winningCodeExtra;
-		winningCodeExtra = NULL;
-	}
-
-	if ( codeExtra ) {
-		winningCodeExtra = new char [ strlen ( codeExtra ) + 1 ];
-		UplinkSafeStrcpy ( winningCodeExtra, codeExtra );
-	}
+	winningCodeExtra = codeExtra;
 
 }
 
@@ -517,8 +498,8 @@ char *Game::GetWinningCodeDesc ()
 
 	if ( winningCodeDesc ) {
 
-		char *retDesc = new char [ strlen ( winningCodeDesc ) + 1 ];
-		UplinkSafeStrcpy ( retDesc, winningCodeDesc );
+		char *retDesc = new char [ strlen ( winningCodeDesc.c_str () ) + 1 ];
+		UplinkSafeStrcpy ( retDesc, winningCodeDesc.c_str () );
 		return retDesc;
 
 	}
@@ -543,7 +524,7 @@ char *Game::GetWinningCode ()
 
 	size_t lenExtra = 0;
 	if ( winningCodeExtra )
-		lenExtra = strlen ( winningCodeExtra );
+		lenExtra = strlen ( winningCodeExtra.c_str () );
 
 	size_t lenRandom = sizeof ( winningCodeRandom );
 
@@ -555,7 +536,7 @@ char *Game::GetWinningCode ()
 
 	size_t i;
 	for ( i = 0; i < lenExtra; i++ )
-		final [ i ] = winningCodeExtra [ i ];
+		final [ i ] = winningCodeExtra.c_str () [ i ];
 
 	for ( i = 0; i < lenRandom; i++ )
 		final [ i + lenExtra ] = mask [ i % lenMask ] ^ ( unsigned char ) ( ( winningCodeRandom >> ( i * 8 ) ) & 0xff );

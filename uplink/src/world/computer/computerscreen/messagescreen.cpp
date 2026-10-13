@@ -21,8 +21,6 @@ MessageScreen::MessageScreen()
 MessageScreen::~MessageScreen()
 {
 	
-	if ( textmessage ) delete [] textmessage;
-	if ( buttonmessage ) delete [] buttonmessage;
 
 }
 
@@ -36,18 +34,14 @@ void MessageScreen::SetNextPage ( int newnextpage )
 void MessageScreen::SetTextMessage ( const char *newtextmessage )
 {
 
-	if ( textmessage ) delete [] textmessage;
-	textmessage = new char [strlen(newtextmessage)+1];
-	UplinkSafeStrcpy ( textmessage, newtextmessage );
+	textmessage = newtextmessage;
 
 }
 
 void MessageScreen::SetButtonMessage ( const char *newbuttonmessage )
 {
 
-	if ( buttonmessage ) delete [] buttonmessage;
-	buttonmessage = new char [strlen(newbuttonmessage)+1];
-	UplinkSafeStrcpy ( buttonmessage, newbuttonmessage );
+	buttonmessage = newbuttonmessage;
 
 }
 
@@ -98,7 +92,7 @@ void MessageScreen::Print ()
 	printf ( "MessageScreen : \n" );
 	ComputerScreen::Print ();
 	printf ( "NextPage = %d, TextMessage = %s, ButtonMessage = %s, MailThisToMe = %d\n", 
-				nextpage, textmessage, buttonmessage, mailthistome );
+				nextpage, textmessage.c_str (), buttonmessage.c_str (), mailthistome );
 
 }
 	
