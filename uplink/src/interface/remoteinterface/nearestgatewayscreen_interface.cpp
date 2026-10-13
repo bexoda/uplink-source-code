@@ -151,7 +151,6 @@ void NearestGatewayScreenInterface::Create ( ComputerScreen *newcs )
 		// Work out the size/ratios of the map
 
 		int screenw = app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" );
-	    int screenh = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
 
 		int x1 = 23;
 		int y1 = 50;

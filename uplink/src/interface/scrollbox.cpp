@@ -246,7 +246,6 @@ void ScrollBox::MouseMoveScrollBar ( Button *button )
 
 void ScrollBox::GrabScrollBar ( char *name )
 {
-    int mouseY = get_mouseY ();
     UplinkStrncpy ( currentGrab, name, sizeof ( currentGrab ) );
 }
 

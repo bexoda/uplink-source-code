@@ -326,7 +326,7 @@ void NetworkClient::Update ()
 
     // Check for input from server
 
-    if ( socket != -1 ) {
+    if ( socket != (SOCKET) -1 ) {
 
 	char buffer [512] = "";
 	UINT nLength = sizeof buffer;

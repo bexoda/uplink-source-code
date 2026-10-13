@@ -495,7 +495,6 @@ void WorldGenerator::LoadDynamicsGatewayDefs ()
     // Load additional gateways from the directory
     //
 
-    int numgateways = game->GetWorld()->gatewaydefs.Size();
     DArray <char *> *extraGateways = ListDirectory ( "data/gateways/", ".txt" );
     for ( int j = 0; j < extraGateways->Size(); ++j ) {
         if ( extraGateways->ValidIndex(j) ) {
@@ -632,8 +631,7 @@ void WorldGenerator::GenerateUplinkPublicAccessServer ()
 	GenerateValidMapPos ( x, y );
     //char *compName = strdup( NameGenerator::GeneratePublicAccessServerName("Uplink") );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GeneratePublicAccessServerName( "Uplink" ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GeneratePublicAccessServerName( "Uplink" ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -1569,7 +1567,7 @@ void WorldGenerator::GenerateUplinkCreditsMachine ()
 void WorldGenerator::GenerateCompanyGovernment ()
 {
 
-	Company *company = GenerateCompany ( "Government", 5, 1, 10, -20 );
+	GenerateCompany ( "Government", 5, 1, 10, -20 );
 
 //	Person *admin = GetRandomPerson ();
 //	company->SetAdmin ( admin->name );
@@ -2823,8 +2821,7 @@ Computer *WorldGenerator::GenerateComputer ( const char *companyname )
 
     //char *computername = strdup( NameGenerator::GenerateAccessTerminalName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateAccessTerminalName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateAccessTerminalName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -2872,8 +2869,7 @@ Computer *WorldGenerator::GeneratePublicAccessServer ( const char *companyname )
 
     //char *computername = strdup( NameGenerator::GeneratePublicAccessServerName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GeneratePublicAccessServerName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GeneratePublicAccessServerName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -2916,8 +2912,7 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyn
 
     //char *computername = strdup( NameGenerator::GenerateInternalServicesServerName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateInternalServicesServerName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateInternalServicesServerName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -2971,9 +2966,10 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyn
         comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT |
                                COMPUTER_TRACEACTION_FINE );
 
-    else
-       	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT |
-            				   COMPUTER_TRACEACTION_LEGAL );
+    else {
+        comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT |
+                               COMPUTER_TRACEACTION_LEGAL );
+    }
 
 
 	if ( strcmp ( companyname, "Government" ) == 0 )
@@ -3106,8 +3102,7 @@ Computer *WorldGenerator::GenerateCentralMainframe ( const char *companyname )
 
     //char *computername = strdup( NameGenerator::GenerateCentralMainframeName(companyname) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateCentralMainframeName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateCentralMainframeName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -3264,8 +3259,7 @@ Computer *WorldGenerator::GeneratePublicBankServer ( const char *companyname )
 
     //char *computername = strdup( NameGenerator::GenerateInternationalBankName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateInternationalBankName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateInternationalBankName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -3526,8 +3520,7 @@ Computer *WorldGenerator::GenerateEmptyFileServer ( const char *companyname )
 
     //char *computername = strdup( NameGenerator::GenerateFileServerName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateFileServerName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateFileServerName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -3595,8 +3588,7 @@ Computer *WorldGenerator::GeneratePersonalComputer ( const char *personname )
 
     //char *computername = strdup( NameGenerator::GeneratePersonalComputerName( personname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GeneratePersonalComputerName( personname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GeneratePersonalComputerName( personname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -3634,8 +3626,7 @@ Computer *WorldGenerator::GenerateVoicePhoneSystem ( const char *personname )
 
     //char *computername = strdup( NameGenerator::GenerateVoicePhoneSystemName( personname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateVoicePhoneSystemName( personname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateVoicePhoneSystemName( personname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -3679,11 +3670,7 @@ Person *WorldGenerator::GeneratePerson ()
 
 	//char *name = strdup( NameGenerator::GeneratePersonName () );
 	char name[MAX_PERSONNAME];
-	strncpy( name, NameGenerator::GeneratePersonName(),
-		     MAX_PERSONNAME );
-	if ( name[MAX_PERSONNAME - 1] != '\0' ) {
-		name[MAX_PERSONNAME - 1] = '\0';
-	}
+	snprintf( name, sizeof ( name ), "%s", NameGenerator::GeneratePersonName() );
 
 	Computer *comp = GeneratePersonalComputer ( name );
 	UplinkAssert (comp);
@@ -4153,7 +4140,7 @@ void WorldGenerator::ReplaceAdminCompanies ( Person *person )
 	
 			Company *cp = comps->GetData ( i );
 
-			if ( cp->administrator && strcmp( person->name, cp->administrator ) == 0 ) {
+			if ( strcmp( person->name, cp->administrator ) == 0 ) {
 
 				Person *newadmin = WorldGenerator::GetRandomPerson ();
 	            UplinkAssert ( newadmin );
@@ -4181,7 +4168,7 @@ void WorldGenerator::ReplaceInvalidCompanyAdmins ( )
 
 			Company *cp = comps->GetData ( i );
 			
-			if ( cp->administrator ) {
+			{										// was "if ( cp->administrator )": an array, so always true
 			
 				Person *admin = world->GetPerson ( cp->administrator );
 

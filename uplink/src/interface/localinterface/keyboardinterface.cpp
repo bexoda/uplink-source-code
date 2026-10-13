@@ -67,15 +67,14 @@ void KeyboardInterface::Keypress ( Button *button )
 {
 
 	char letter [32];
-	sscanf ( button->name, "keyboard %s", letter );
+	sscanf ( button->name, "keyboard %31s", letter );
 	Button *tbutton = EclGetButton ( targetbuttonname );
 
 	if ( button ) {
 
 		char newcaption [128];
-		size_t newcaptionsize = min ( strlen ( tbutton->caption ) + 1, sizeof ( newcaption ) );
-		strncpy ( newcaption, tbutton->caption, newcaptionsize );
-		newcaption [ newcaptionsize - 1 ] = '\0';
+		snprintf ( newcaption, sizeof ( newcaption ), "%s", tbutton->caption );
+		size_t newcaptionsize = strlen ( newcaption ) + 1;
 
 		if ( strcmp ( letter, "back" ) == 0 ) {
 

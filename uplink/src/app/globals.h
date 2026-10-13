@@ -91,7 +91,7 @@ char *UplinkStrdup ( const char *s );
 			__FILE__, __LINE__, msg );									\
 }
 #else
-#define	 UplinkWarning(msg) 
+#define	 UplinkWarning(msg) ((void) 0)
 #endif
 
 //

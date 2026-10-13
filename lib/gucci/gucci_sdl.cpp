@@ -27,7 +27,6 @@ using namespace std;
 
 static SDL_Surface *screen = NULL;
 
-static unsigned _GciGetAccurateTime ();
 
 static bool _GciIsInitGraphicsLibrary = false;
 
@@ -105,7 +104,6 @@ char *GciInitGraphics( const char *caption, int graphics_flags, int screenWidth,
 		      int screenDepth, int screenRefresh, int argc, char *argv[] )
 {
   bool debugging = (graphics_flags & GCI_DEBUGSTART) != 0;
-  bool runFullScreen = (graphics_flags & GCI_FULLSCREEN) != 0;
 
   int sdlFlags = 0;
   if (graphics_flags & GCI_DOUBLE) {
@@ -327,9 +325,6 @@ void GciMainLoop()
 {
   finished = false;
 
-  unsigned lastFrameTime = _GciGetAccurateTime();
-  unsigned frameRate = 35;
-  unsigned framePeriod = 1000 / frameRate;
 
   while (!finished) {
 //     unsigned now = _GciGetAccurateTime();
@@ -459,85 +454,6 @@ void GciResizeGlut ( int width, int height )
 void GciRestoreGlut()
 {
 }
-
-static unsigned _GciGetAccurateTime ()
-{
-
-#ifdef WIN32
-
-	static bool supportsHighResTime = false;
-	static bool initted = false;
-
-	static LARGE_INTEGER frequency;
-	static LARGE_INTEGER firstPerformanceCount;
-	static DWORD firstTickCount = 0;
-
-	if ( !initted ) {
-		initted = true;
-
-		if ( QueryPerformanceFrequency ( &frequency ) && 
-		     QueryPerformanceCounter ( &firstPerformanceCount ) ) {
-
-			supportsHighResTime = true;
-		}
-		else {
-			firstTickCount = GetTickCount();
-		}
-	}
-
-	if ( supportsHighResTime ) {
-		LARGE_INTEGER performanceCount;
-		QueryPerformanceCounter ( &performanceCount );
-
-		return (unsigned) ( 1000 * ( performanceCount.QuadPart - firstPerformanceCount.QuadPart ) / frequency.QuadPart );
-	}
-	else {
-		return GetTickCount() - firstTickCount;
-	}
-
-	/*
-	//return 1000 * ( (float) clock () / (float) CLOCKS_PER_SEC );
-
-	LARGE_INTEGER lpFrequency;
-	LARGE_INTEGER lpPerformanceCount;
-	if ( QueryPerformanceFrequency ( &lpFrequency ) != 0 && QueryPerformanceCounter ( &lpPerformanceCount ) != 0 ) {
-
-		return (unsigned) ( ( lpPerformanceCount.QuadPart * 1000 ) / lpFrequency.QuadPart );
-
-	}
-
-	return GetTickCount ();
-	*/
-
-#else
-
-	// Linux version
-
-	static bool initted = false; 
-	static struct timeval startTime; 
-	struct timeval tv; 
-  
-	if (!initted) { 
-		initted = true; 
-		gettimeofday(&startTime, NULL); 
-		return 0; 
-	} 
-
-	gettimeofday(&tv, NULL); 
-  
-	long diff_usec = tv.tv_usec - startTime.tv_usec; 
-	if (diff_usec < 0) { 
-		diff_usec += 1000000; 
-		tv.tv_sec --; 
-	} 
-	long diff_sec = tv.tv_sec - startTime.tv_sec; 
-
-	return 1000 * diff_sec + diff_usec / 1000; 
-
-#endif
-
-}
-
 
 GciScreenModeList *GciListScreenModes() {
 

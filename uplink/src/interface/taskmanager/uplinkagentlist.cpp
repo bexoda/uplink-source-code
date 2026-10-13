@@ -246,7 +246,6 @@ void UplinkAgentList::UpdateLists ()
     //
     // How much data does the player have
 
-	int foundsize = 0;
     int numfiles = 10;
     const char *datatitle = "Uplink_Agent_Data";
     int *filefound = new int [numfiles];            // 0 = not found, 1 = found, -1 = encrypted

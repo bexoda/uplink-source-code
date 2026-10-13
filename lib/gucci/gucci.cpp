@@ -123,16 +123,6 @@ static FTFace * RegisterFace( const char *familyname, const char *filename )
     return face;
 }
 
-static void UnregisterFace( const char *familyname )
-{
-    FTFace *face = faces.GetData(familyname);
-    if (face) {
-        faces.RemoveData(familyname);
-        delete face;
-    }
-}
-
-
 void GciDrawText ( int x, int y, const char *text, int STYLE )
 {
 

@@ -59,7 +59,6 @@ local void mouse(int,int,int,int);
 local void mousemove(int,int);
 local void passivemouse(int,int);
 local void resize(int, int);
-local void drawcube(int, int, int);
 local void idle(void);
 
 local int lastidleupdate = 0;
@@ -94,7 +93,7 @@ void opengl_initialise (int argc, char **argv)
 	}
 
 	GciScreenMode *mode = GciGetClosestScreenMode ( screenWidth, screenHeight );
-	if ( mode->w != screenWidth || mode->h != screenHeight ) {
+	if ( (int) mode->w != screenWidth || (int) mode->h != screenHeight ) {
 		app->GetOptions ()->SetOptionValue ( "graphics_screenwidth", mode->w );
 		app->GetOptions ()->SetOptionValue ( "graphics_screenheight", mode->h );
 		screenWidth = mode->w;
@@ -428,7 +427,7 @@ void keyboard(unsigned char key, int x, int y)
         else {
         
             if ( game->IsRunning () )
-                bool escaped = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->EscapeKeyPressed ();
+                game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->EscapeKeyPressed ();
 
         }
 
@@ -509,7 +508,6 @@ void idle ()
 
     if ( app->Closed () ) return;
 
-	int timesincelastupdate = (int) ( EclGetAccurateTime () - lastidleupdate );
 
 #ifdef WIN32
 	if ( timesincelastupdate < 16 )

@@ -651,13 +651,14 @@ void EclDrawButton ( char *name )
 void EclDrawButton ( int index )
 {
 
-	if ( buttons.ValidIndex ( index ) )
+	if ( buttons.ValidIndex ( index ) ) {
 		if ( EclIsClicked ( buttons [index]->name ) )
 			buttons [index]->Draw ( false, true );
 		else if ( EclIsHighlighted ( buttons [index]->name ) )
 			buttons [index]->Draw ( true, false );
 		else
 			buttons [index]->Draw ( false, false );
+	}
 
 }
 
@@ -1274,8 +1275,6 @@ void EclUpdateAllAnimations ()
 
 						if ( anim->dX || anim->dY ) {
 							
-							int dX = (int)(anim->sourceX + ( EclGetAccurateTime () - anim->starttime ) * anim->dX) - anim->button->x;
-							int dY = (int)(anim->sourceY + ( EclGetAccurateTime () - anim->starttime ) * anim->dY) - anim->button->y;
 
 							//EclDirtyRectangle ( anim->button->x, anim->button->y, dX, anim->button->height );		
 							EclDirtyRectangle ( anim->button->x, anim->button->y, anim->button->width, anim->button->height );		

@@ -188,20 +188,6 @@ void RemoteInterface::RunNewLocation ()
 
 }
 
-local void li_draw ( Button *button, bool highlighted, bool clicked ) 
-{
-
-	glColor4f ( 1.0f, 1.0f, 1.0f, 0.8f );
-	
-	glBegin ( GL_LINE_LOOP );
-		glVertex2i ( button->x, button->y );
-		glVertex2i ( button->x + button->width, button->y );
-		glVertex2i ( button->x + button->width, button->y + button->height );
-		glVertex2i ( button->x, button->y + button->height );
-	glEnd ();
- 
-}
-
 void RemoteInterface::Create ()
 {
 

@@ -3577,8 +3577,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
 
     //char *personalcomputername = strdup( NameGenerator::GeneratePersonalComputerName(poorsod->name) );
 	char personalcomputername[MAX_COMPUTERNAME];
-	strncpy( personalcomputername, NameGenerator::GeneratePersonalComputerName(poorsod->name),
-		     MAX_COMPUTERNAME );
+	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName(poorsod->name) );
 	if ( personalcomputername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		personalcomputername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -4142,8 +4141,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
     //char *personalcomputername = strdup( NameGenerator::GeneratePersonalComputerName( poorsod->name ) );
 	char personalcomputername[MAX_COMPUTERNAME];
-	strncpy( personalcomputername, NameGenerator::GeneratePersonalComputerName( poorsod->name ),
-		     MAX_COMPUTERNAME );
+	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName( poorsod->name ) );
 	if ( personalcomputername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		personalcomputername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -4224,9 +4222,9 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 			News *news = uplink->news.GetData (i);
 			UplinkAssert (news);
 
-			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && news->data1 && strcmp ( news->data1, poorsod->name ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, poorsod->name ) == 0 ) {
 
-				if ( news->data2 && strcmp ( news->data2, comp->ip ) == 0 ) {
+				if ( strcmp ( news->data2, comp->ip ) == 0 ) {
 
 					success = 2;
 					break;

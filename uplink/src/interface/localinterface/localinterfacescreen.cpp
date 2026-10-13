@@ -68,7 +68,6 @@ void LocalInterfaceScreen::CreateHeight ( int panelheight )
 	if ( !IsVisible () ) {
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		//int paneltop = SY(100) + 30;
 		int paneltop = (int) ( 100.0 * ( (screenw * PANELSIZE) / 188.0 ) + 30 );
 		int panelwidth = (int) ( screenw * PANELSIZE );

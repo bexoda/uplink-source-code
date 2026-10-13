@@ -137,8 +137,9 @@ void Computer::SetIsRunning ( bool value )
 void Computer::DisinfectRevelation ()
 {
 
-    if ( isinfected_revelation > 0.0 )
+    if ( isinfected_revelation > 0.0 ) {
         game->GetWorld ()->plotgenerator.Disinfected ( ip );
+    }
 
 	isinfected_revelation = 0.0;
 

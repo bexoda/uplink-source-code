@@ -30,14 +30,9 @@ void DisconnectedScreenInterface::Click ( Button *button )
 
 	int nextpage;
 	char ip [ SIZE_VLOCATION_IP ] = {0};
-	sscanf ( button->name, "disconnectedscreen_click %d %s", &nextpage, ip );
+	sscanf ( button->name, "disconnectedscreen_click %d %23s", &nextpage, ip );
 
-	Computer *comp = NULL;
-	if ( ip ) {
-		VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
-		if ( loc )
-			comp = loc->GetComputer ();
-	}
+	Computer *comp = RemoteInterfaceScreen::ComputerAt ( ip );
 	if ( nextpage != -1 ) game->GetInterface ()->GetRemoteInterface ()->RunScreen ( nextpage, comp );
 
 }

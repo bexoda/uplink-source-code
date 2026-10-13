@@ -87,7 +87,6 @@ void AnalyserInterface::ConnectionDraw ( Button *button, bool highlighted, bool 
 {
 
 	int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-	int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 	int paneltop = (int)(100.0 * ( (screenw * PANELSIZE) / 188.0 ) + 30);
 	int panelwidth = (int)(screenw * PANELSIZE);
 
@@ -198,7 +197,6 @@ void AnalyserInterface::Create ()
 		UplinkStrncpy ( remotehost, " ", sizeof ( remotehost ) );
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		int paneltop = (int)(100.0 * ( (screenw * PANELSIZE) / 188.0 )) + 30;
 		int panelwidth = (int)(screenw * PANELSIZE);
 
@@ -297,7 +295,6 @@ void AnalyserInterface::Update ()
 		// Get screen dimensions
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		int paneltop = (int)(100.0 * ( (screenw * PANELSIZE) / 188.0 )) + 30;
 		int panelwidth = (int)(screenw * PANELSIZE);
 

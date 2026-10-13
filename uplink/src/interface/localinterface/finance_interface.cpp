@@ -75,7 +75,7 @@ static void FinanceInterfaceTextDrawSplit ( Button *button, bool highlighted, bo
 	size_t index = 0;
 	size_t len = strlen ( button->caption );
 
-	for ( int i  = 0; i < ( sizeof(xdistance) / sizeof(int) ); i++ )
+	for ( size_t i = 0; i < ( sizeof(xdistance) / sizeof(int) ); i++ )
 	{
 		size_t curIndex = 0;
 		for ( ; index < len && index < ( sizeof(splitString) - 1 ); index++ )

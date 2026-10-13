@@ -393,7 +393,7 @@ void RsFileClose ( const char *filename, FILE *file )
 	char dfilename [SIZE_RSFILENAME];
 	snprintf ( dfilename, sizeof ( dfilename ), "%s.d", filename );
 
-	int result = remove ( dfilename );
+	remove ( dfilename );
 
 }
 

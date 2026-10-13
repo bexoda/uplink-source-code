@@ -179,8 +179,8 @@ WorldMapInterfaceLabel::WorldMapInterfaceLabel(
     WorldMapInterfaceObject *newFeaturePoint, 
     const char *newCaption)
 
-    : featurePoint(newFeaturePoint),
-      caption(NULL),
+    : caption(NULL),
+      featurePoint(newFeaturePoint),
       labelWidth(0)
 {
     SetTYPE(WORLDMAPOBJECT_LABEL);
@@ -353,9 +353,9 @@ bool WorldMapInterfaceLabel::Overlaps (WorldMapInterfaceObject *other) const
 // ==============================================================================
 
 WorldMapObjectiveFunction::WorldMapObjectiveFunction(const MapRectangle &mapRect)
-    :clipRect(mapRect),
-      mapWidth(mapRect.width),
-      mapHeight(mapRect.height)
+    :mapWidth(mapRect.width),
+      mapHeight(mapRect.height),
+      clipRect(mapRect)
 {
     shadeScreen = new int [mapWidth * mapHeight];
     Reset();

@@ -107,7 +107,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 	// Create blank LAN
 
 	if ( !game->GetWorld()->VerifyVLocation( ip, x, y ) ) {
-		printf ( "LanGenerator::LoadLAN WARNING: Location is invalid, ip(%s), x(%d), y(%d).(%s)\n", (ip)?ip:"NULL", x, y, filename );
+		printf ( "LanGenerator::LoadLAN WARNING: Location is invalid, ip(%s), x(%d), y(%d).(%s)\n", ip, x, y, filename );
 		thefile.close ();
 		RsArchiveFileClose ( filename );
         return NULL;
@@ -367,8 +367,7 @@ Computer  *LanGenerator::GenerateLAN ( const char *companyname, int difficulty )
 
     //char *computername = strdup( NameGenerator::GenerateLANName( companyname ) );
 	char computername[MAX_COMPUTERNAME];
-	strncpy( computername, NameGenerator::GenerateLANName( companyname ),
-		     MAX_COMPUTERNAME );
+	snprintf( computername, sizeof ( computername ), "%s", NameGenerator::GenerateLANName( companyname ) );
 	if ( computername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		computername[MAX_COMPUTERNAME - 1] = '\0';
 	}

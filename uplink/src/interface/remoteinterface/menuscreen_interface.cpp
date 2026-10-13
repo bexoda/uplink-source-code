@@ -54,14 +54,9 @@ void MenuScreenInterface::ClickMenuScreenOption ( Button *button )
 	char text [32];
 	int nextpage, unused;
 	char ip [ SIZE_VLOCATION_IP ] = {0};
-	sscanf ( button->name, "%s %d %d %s", text, &unused, &nextpage, ip );
+	sscanf ( button->name, "%31s %d %d %23s", text, &unused, &nextpage, ip );
 
-	Computer *comp = NULL;
-	if ( ip ) {
-		VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
-		if ( loc )
-			comp = loc->GetComputer ();
-	}
+	Computer *comp = RemoteInterfaceScreen::ComputerAt ( ip );
 	if ( nextpage != -1 ) game->GetInterface ()->GetRemoteInterface ()->RunScreen ( nextpage, comp );
 
 }

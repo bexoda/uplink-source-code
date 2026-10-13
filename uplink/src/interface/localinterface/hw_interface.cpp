@@ -61,7 +61,6 @@ void HWInterface::CreateHWInterface ()
 	if ( !IsVisibleHWInterface () ) {
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		//int paneltop = SX(100) + 30;
 		int paneltop = (int) ( 100.0 * ( (screenw * PANELSIZE) / 188.0 ) + 30 );
 		int panelwidth = (int) ( screenw * PANELSIZE );
@@ -110,10 +109,11 @@ void HWInterface::CreateHWInterface ()
         if ( security->Size () == 0 ) 
             hardware << "None";
 
-        else
-            for ( int i = 0; i < security->Size (); ++i ) 
-                if ( security->ValidIndex (i) ) 
-		            hardware << security->GetData (i) << "\n";
+        else {
+            for ( int i = 0; i < security->Size (); ++i )
+                if ( security->ValidIndex (i) )
+                    hardware << security->GetData (i) << "\n";
+        }
 
 		EclRegisterButton ( screenw - panelwidth, paneltop + 130, panelwidth - 10, SY(150), "", "", "hw_hardware" );
 		EclRegisterButtonCallbacks ( "hw_hardware", text_draw, NULL, NULL, NULL );

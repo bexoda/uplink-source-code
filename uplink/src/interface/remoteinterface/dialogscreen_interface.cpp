@@ -80,16 +80,11 @@ void DialogScreenInterface::NextPageClick ( Button *button )
 	char bname [64 + SIZE_VLOCATION_IP + 1];
 	int data1, data2;
 	char ip [ SIZE_VLOCATION_IP ] = {0};
-	sscanf ( button->name, "%s %d %d %s", bname, &data1, &data2, ip );
+	sscanf ( button->name, "%88s %d %d %23s", bname, &data1, &data2, ip );
 
 	int nextpage = data1;
 
-	Computer *comp = NULL;
-	if ( ip ) {
-		VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
-		if ( loc )
-			comp = loc->GetComputer ();
-	}
+	Computer *comp = RemoteInterfaceScreen::ComputerAt ( ip );
 	if ( nextpage != -1 ) game->GetInterface ()->GetRemoteInterface ()->RunScreen ( nextpage, comp );
 
 }
@@ -102,19 +97,14 @@ void DialogScreenInterface::ScriptButtonClick ( Button *button )
 	char bname [64 + SIZE_VLOCATION_IP + 1];
 	int data1, data2;
 	char ip [ SIZE_VLOCATION_IP ] = {0};
-	sscanf ( button->name, "%s %d %d %s", bname, &data1, &data2, ip );
+	sscanf ( button->name, "%88s %d %d %23s", bname, &data1, &data2, ip );
 
 	int scriptindex = data1;
 	int nextpage = data2;
 
 	if ( scriptindex != -1 ) ScriptLibrary::RunScript ( scriptindex );
 
-	Computer *comp = NULL;
-	if ( ip ) {
-		VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
-		if ( loc )
-			comp = loc->GetComputer ();
-	}
+	Computer *comp = RemoteInterfaceScreen::ComputerAt ( ip );
 	if ( nextpage != -1 ) game->GetInterface ()->GetRemoteInterface ()->RunScreen ( nextpage, comp );
 
 }

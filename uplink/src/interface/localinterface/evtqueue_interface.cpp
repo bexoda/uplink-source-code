@@ -131,7 +131,6 @@ void EventQueueInterface::EventClick ( Button *button )
 	if ( index < game->GetWorld ()->scheduler.events.Size () ) {
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		int paneltop = (int)(100.0 * ( screenw * PANELSIZE / 188.0 )) + 30;
 		int panelwidth = (int)(screenw * PANELSIZE);
 
@@ -186,7 +185,6 @@ void EventQueueInterface::Create ()
 	if ( !IsVisible () ) {
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		int paneltop = (int)(100.0 * ( screenw * PANELSIZE / 188.0 )) + 30;
 		int panelwidth = (int)(screenw * PANELSIZE);
 

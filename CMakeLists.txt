@@ -73,6 +73,7 @@ add_library(irclib STATIC
   ${CONTRIB}/irclib/linux/winsock.cpp)
 target_include_directories(irclib PUBLIC ${CONTRIB}/irclib ${CONTRIB}/irclib/linux)
 target_link_libraries(irclib PRIVATE uplink_flags Threads::Threads)
+target_compile_options(irclib PRIVATE -w)
 
 # FTGL 2.1.2 as shipped (with Introversion's FTSize patch). The game includes it as <ftgl/...>.
 file(GLOB FTGL_SOURCES ${CONTRIB}/FTGL-2.1.2/src/*.cpp)

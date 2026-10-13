@@ -460,7 +460,7 @@ bool Options::Load ( FILE *file )
 
 		if ( fgetc(optionsfile) == 't' )
 			if ( fread(&newThemeLen, sizeof(newThemeLen), 1, optionsfile) == 1 )
-				if ( 0 <= newThemeLen && newThemeLen + 1 < sizeof(themeName) )
+				if ( newThemeLen + 1 < sizeof(themeName) )
 					if ( fread(newThemeName, newThemeLen, 1, optionsfile) == 1 ) {
 						  newThemeName[newThemeLen] = '\0';
 						  UplinkStrncpy(themeName, newThemeName, sizeof ( themeName ));

@@ -154,7 +154,7 @@ void NetworkServer::Update ()
 
 	// Check the listen socket for new connections every 5 seconds
 
-	if ( listening && listensocket != -1 ) {
+	if ( listening && listensocket != (SOCKET) -1 ) {
 
 		if ( time (NULL) > lastlisten + 5 ) {
 

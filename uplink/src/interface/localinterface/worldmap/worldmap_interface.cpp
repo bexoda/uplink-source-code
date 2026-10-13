@@ -442,8 +442,8 @@ void WorldMapInterface::DrawWorldMapSmall ( Button *button, bool highlighted, bo
 class FrameRate {
 public:
   FrameRate(unsigned desiredFrameRate /* Frames per second */)
-    : frameDuration( 1000 / desiredFrameRate ),
-      lastFrame(0)
+    : lastFrame(0),
+      frameDuration( 1000 / desiredFrameRate )
   {
   }
 
@@ -780,7 +780,6 @@ void WorldMapInterface::CreateWorldMapInterface_Small ()
 {
 
     int screenw = app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" );
-    int screenh = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
 
     int fullsizeX = (int) ( screenw * PANELSIZE );
     int fullsizeY = (int) ( 100.0 * ( fullsizeX / 188.0 ) );
@@ -879,7 +878,6 @@ int WorldMapInterface::GetLargeMapWidth()
 
 int WorldMapInterface::GetLargeMapHeight()
 {
-    int screenh = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
     return (int) ( 316.0 * ( GetLargeMapWidth() / 595.0 ) );
 }
 
@@ -1150,7 +1148,6 @@ void WorldMapInterface::CreateWorldMapInterface_Large ()
 
     // Create the background bitmap
     
-    int start = (int) EclGetAccurateTime();
 
     EclRegisterButton ( x1, y1, fullsizeX, fullsizeY, "", "", "worldmap_largemap" );                                                
 	if ( game->GetWorldMapType () == Game::defconworldmap )
@@ -1159,7 +1156,6 @@ void WorldMapInterface::CreateWorldMapInterface_Large ()
 		button_assignbitmap ( "worldmap_largemap", "worldmaplarge.tif" );
            
 //    cout << "Large world map graphic created, " << EclGetAccurateTime() - start << " ms\n";
-    start = (int) EclGetAccurateTime();
     
     //EclGetButton ( "worldmap_largemap" )->image_standard->SetAlpha ( 0.99 );
     EclRegisterButtonCallbacks ( "worldmap_largemap", DrawWorldMapLarge, NULL, NULL, button_highlight);                
@@ -1231,7 +1227,6 @@ void WorldMapInterface::CreateWorldMapInterface_Large ()
     }
     
 //    cout << "Large world map controls added, " << EclGetAccurateTime() - start << " ms\n";
-    start = (int) EclGetAccurateTime();
     
     thisint->layout->FullLayoutLabels();
     
@@ -1411,7 +1406,6 @@ void WorldMapInterface::ScrollX ( float x )
     // background
 
     float windowW = 1.0f / zoom;
-    float windowH = 1.0f / zoom;
 
     scrollX += x;
     if ( scrollX < 0.0f ) scrollX = 0.0f;
@@ -1473,7 +1467,6 @@ void WorldMapInterface::ScrollY ( float y )
 
     // background
 
-    float windowW = 1.0f / zoom;
     float windowH = 1.0f / zoom;
 
     scrollY += y;

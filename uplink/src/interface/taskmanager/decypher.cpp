@@ -102,7 +102,6 @@ void Decypher::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 			MoveTo ( button->x + button->width - 300, button->y + button->height, 1000 );
 
-			int security = game->GetInterface ()->GetRemoteInterface ()->security_level;
 			int difficulty = (int)(CYPHER_WIDTH * CYPHER_HEIGHT * TICKSREQUIRED_BYPASSCYPHER * cs->difficulty);
 			numticksrequired = NumberGenerator::ApplyVariance ( difficulty, (int)(HACKDIFFICULTY_VARIANCE * 100) );
 			progress = 0;

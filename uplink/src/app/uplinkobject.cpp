@@ -17,8 +17,6 @@
 //#define  SAVEFILE_PRINTPROGRESS
 #endif
 
-static int indent;							// Used for formatting Load/Save
-static void PrintIndent ();					//
 
 
 UplinkObject::UplinkObject()
@@ -68,19 +66,10 @@ int UplinkObject::GetOBJECTID ()
 
 }
 
-static void PrintIndent ()
-{
-
-	for ( int i = 0; i < indent-1; ++i )
-		printf ( "\t" );
-
-}
-
 void UplinkObject::LoadID ( FILE *file )
 {
 	
 #ifdef SAVEFILE_PRINTPROGRESS
-	++indent;
 	PrintIndent ();
 	printf ( "Started  loading  %s\n", GetID () );
 #endif
@@ -98,7 +87,6 @@ void UplinkObject::SaveID ( FILE *file )
 {
 
 #ifdef SAVEFILE_PRINTPROGRESS
-	++indent;
 	PrintIndent ();
 	printf ( "Started  saving  %s\n", GetID () );
 #endif
@@ -115,7 +103,6 @@ void UplinkObject::LoadID_END ( FILE *file )
 #ifdef SAVEFILE_PRINTPROGRESS
 	PrintIndent ();
 	printf ( "Finished loading  %s\n", GetID () );
-	--indent;
 #endif
 
 #ifdef SAVEFILE_VERBOSE
@@ -133,7 +120,6 @@ void UplinkObject::SaveID_END ( FILE *file )
 #ifdef SAVEFILE_PRINTPROGRESS
 	PrintIndent ();
 	printf ( "Finished saving  %s\n", GetID () );
-	--indent;
 #endif
 	
 #ifdef SAVEFILE_VERBOSE

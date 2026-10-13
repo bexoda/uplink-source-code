@@ -90,7 +90,7 @@ void Game::NewGame ()
 
 	// Create a unique winning code
 	winningCodeRandom = 0;
-	for ( int i = 0; i < sizeof ( winningCodeRandom ); i++ )
+	for ( size_t i = 0; i < sizeof ( winningCodeRandom ); i++ )
 		winningCodeRandom |= ( NumberGenerator::RandomNumber ( 254 ) + 1 ) << ( i * 8 );
 
 	gob = NULL;

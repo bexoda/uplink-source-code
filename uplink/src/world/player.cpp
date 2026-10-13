@@ -360,7 +360,6 @@ void Player::Update ()
 			// Trace completed - act on action
 
 			Computer *comp = GetRemoteHost ()->GetComputer ();
-			char *username = game->GetInterface ()->GetRemoteInterface ()->security_name;
 
 			ConsequenceGenerator::CaughtHacking ( this, comp );
 

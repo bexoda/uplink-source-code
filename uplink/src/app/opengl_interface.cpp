@@ -259,8 +259,6 @@ void imagebutton_draw_blend ( Button *button, bool highlighted, bool clicked )
 
 }
 
-static float currentX = 0.1f;
-static float currentY = 0.1f;
 
 void imagebutton_drawtextured ( Button *button, bool highlighted, bool clicked )
 {
@@ -1093,7 +1091,6 @@ void tooltip_update ( const char *newtooltip )
 
 		// The tooltip button has been removed / never created
 		// So create it now
-		int screenwidth = app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" );
 		int screenheight = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
 		EclRegisterButton ( 0, screenheight - 15, 500, 15, "", "tooltip" );
 		EclRegisterButtonCallbacks ( "tooltip", textbutton_draw, NULL, NULL, NULL );

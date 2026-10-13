@@ -581,7 +581,6 @@ void ContactScreenInterface::Create ( ComputerScreen *newcs )
 
 		}
 
-		int ybottom = 50 + NUMLINES * 15 + 6;
 
 /*
 		EclRegisterButton ( 20, ybottom, 355, 15, "Type your message here", "", "contact_typehere" );

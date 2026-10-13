@@ -22,6 +22,8 @@ class ComputerScreen;
 // ============================================================================
 
 
+class Computer;
+
 class RemoteInterfaceScreen : public InterfaceScreen  
 {
 
@@ -53,6 +55,7 @@ public:
 	virtual bool ReturnKeyPressed ();				// Return true to block further usage of this return
     virtual bool EscapeKeyPressed ();               // Return true to block further usage of this escape
 
+	static Computer *ComputerAt ( const char *ip );										// NULL if ip is empty or unknown
 	static RemoteInterfaceScreen *GetInterfaceScreen ( int screenID );					// Returns the This object, asserting it is the correct type
 
 };

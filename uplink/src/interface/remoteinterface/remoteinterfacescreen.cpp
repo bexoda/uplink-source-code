@@ -18,6 +18,8 @@
 #include "options/options.h"
 
 #include "game/game.h"
+#include "world/world.h"
+#include "world/vlocation.h"
 
 #include "interface/interface.h"
 #include "interface/remoteinterface/remoteinterface.h"
@@ -135,3 +137,11 @@ RemoteInterfaceScreen *RemoteInterfaceScreen::GetInterfaceScreen ( int screenID 
 
 }
 
+Computer *RemoteInterfaceScreen::ComputerAt ( const char *ip )
+{
+
+	if ( !ip || !ip [0] ) return NULL;
+	VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
+	return loc ? loc->GetComputer () : NULL;
+
+}

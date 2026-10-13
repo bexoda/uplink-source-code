@@ -233,7 +233,6 @@ void ClientCommsInterface::Create ()
     if ( !IsVisible () ) {
 	
 	int screenw = app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" );
-	int screenh = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
 
 	// Create a close button
 

@@ -32,6 +32,7 @@ void LeaveCriticalSection(CRITICAL_SECTION *c)
 namespace Windows {
   class Handle {
   public:
+    virtual ~Handle() {}
     // waitFor returns false if timed out (otherwise true)
     // timeout is given in milliseconds
     virtual bool waitFor( unsigned int timeout ) = 0;

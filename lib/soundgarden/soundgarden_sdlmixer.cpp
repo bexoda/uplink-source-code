@@ -28,7 +28,6 @@ static BTree <Mix_Chunk *> cache;					// Stores sounds already loaded
 //static bool sg_thread_termination_requested = false;
 
 //static void SgDebugPrintf( const char *fmt, ... );
-static void * SgUpdateMikModThread( void *arg );
 
 static void SgPrintActualSoundSettings();
 static void SgPrintSDLMixerVersionInfo();

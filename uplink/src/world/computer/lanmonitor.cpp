@@ -157,8 +157,9 @@ void LanMonitor::SetCurrentSpoof ( int newCurrentSpoof )
 void LanMonitor::ExtendConnection ( int newNode )
 {
 
-    if ( !IsAccessable (newNode) )
+    if ( !IsAccessable (newNode) ) {
         return;
+    }
 
 	//
 	// Is it adjacent to an existing linked system, 
@@ -323,7 +324,6 @@ bool LanMonitor::IsAccessable ( int newNode )
     // are we coming from one of them?
 
     if ( newSystem->validSubnets.Size() > 0 ) {
-        int playerSubnet = currentSpoof;
         if ( currentSpoof == -1 ) return false;
         
         bool valid = false;

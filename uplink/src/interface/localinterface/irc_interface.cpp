@@ -8,7 +8,9 @@
 
 #include <GL/glu.h> /* glu extention library */
 
+#ifdef _MSC_VER
 #pragma warning( disable:4786 )
+#endif
 
 #include "redshirt.h"
 
@@ -150,7 +152,7 @@ void IRCInterface::AddEmoticons ( int row, const char *smiley, Image *imgSmiley 
             
             while ( nextSmiley ) {
                 char textSoFar [2048];
-				size_t lenCopy = min ( (nextSmiley - msg->text) + 1, sizeof ( textSoFar ) );
+				size_t lenCopy = min ( (size_t) ( nextSmiley - msg->text ) + 1, sizeof ( textSoFar ) );
                 strncpy ( textSoFar, msg->text, lenCopy );
                 //textSoFar [ nextSmiley-msg->text ] = '\x0';
 				textSoFar [ lenCopy - 1 ] = '\x0';
@@ -364,8 +366,6 @@ void IRCInterface::AddText ( const char *user, const char *text, float r, float 
 
 	// Break up the text into word wrapped lines
 	
-	int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-	int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 	//int mainWidth = (int) ( screenw * 0.65 );
 	// Dimension to match linksscreen_interface.cpp
 	int mainWidth = 50 + SY(375) + 15;
@@ -612,7 +612,6 @@ void IRCInterface::CreateTalkWindow()
 	//
 	// Main text box
 
-	int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
 	int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 	//int mainWidth = (int) ( screenw * 0.65 );
 	//int mainHeight = (int) ( screenh * 0.8 );
@@ -905,7 +904,6 @@ bool UplinkIRCMonitor::Received_PRIVMSG (const CIrcMessage* pmsg)
         if ( action ) {
 
 		    char parsedMessage[512];
-            char *fullMsg = GETIRCPARAM(1);
 		    UplinkIntSnprintf ( parsedMessage, sizeof( parsedMessage ), "%s %s", (char *) pmsg->prefix.sNick.c_str(), (action + 7) );
 			parsedMessage [ sizeof ( parsedMessage ) - 1 ] = '\0';
 		    IRCInterface::AddText( NULL, parsedMessage, COLOUR_ACTION );

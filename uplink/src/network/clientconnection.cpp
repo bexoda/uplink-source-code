@@ -491,7 +491,7 @@ void ClientConnection::Print  ()
 void ClientConnection::Update ()
 {
 
-	if ( socket != -1 ) {
+	if ( socket != (SOCKET) -1 ) {
 
 		// Read any input from the client
 

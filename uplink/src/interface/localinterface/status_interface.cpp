@@ -62,11 +62,9 @@ void StatusInterface::Create ()
 		LocalInterfaceScreen::Create ();
 
 		int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");
-		int screenh = app->GetOptions ()->GetOptionValue ("graphics_screenheight");
 		int paneltop = (int) ( 100.0 * ( (screenw * PANELSIZE) / 188.0 ) + 30 );
 		int panelwidth = (int) ( screenw * PANELSIZE );
 
-		int cwidth = 95;
 
 		EclRegisterButton ( screenw - panelwidth, paneltop + 3, panelwidth - 7, 15, "STATUS", "Remove the status screen", "status_title" );
 		EclRegisterButtonCallback ( "status_title", TitleClick );

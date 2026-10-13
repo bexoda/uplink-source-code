@@ -44,14 +44,9 @@ void FileServerScreenInterface::CloseClick ( Button *button )
 
 	int nextpage;
 	char ip [ SIZE_VLOCATION_IP ] = {0};
-	sscanf ( button->name, "fileserverscreen_click %d %s", &nextpage, ip );
+	sscanf ( button->name, "fileserverscreen_click %d %23s", &nextpage, ip );
 
-	Computer *comp = NULL;
-	if ( ip ) {
-		VLocation *loc = game->GetWorld ()->GetVLocation ( ip );
-		if ( loc )
-			comp = loc->GetComputer ();
-	}
+	Computer *comp = RemoteInterfaceScreen::ComputerAt ( ip );
 	if ( nextpage != -1 ) game->GetInterface ()->GetRemoteInterface ()->RunScreen ( nextpage, comp );
 
 }
@@ -94,7 +89,7 @@ void FileServerScreenInterface::FileClick ( Button *button )
 	Data *data;
 	int sizeData;
 	int memoryindex;
-	int nbRowsDisplayDataBank = GetInfoRowDisplayDataBank ( &comp->databank, fileindex, &data, &sizeData, &memoryindex );
+	GetInfoRowDisplayDataBank ( &comp->databank, fileindex, &data, &sizeData, &memoryindex );
 
 	if ( data && memoryindex != -1 ) {
 

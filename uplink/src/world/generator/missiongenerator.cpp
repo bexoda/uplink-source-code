@@ -491,8 +491,9 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 			<< " or above will be sufficient for automatic acceptance.\n"
 			<< "You will need around " << 10 * int (totalsize / 10) << " gigaquads of space.";
 
-    if ( target->TYPE == COMPUTER_TYPE_LAN )
+    if ( target->TYPE == COMPUTER_TYPE_LAN ) {
         details << "\nThe data is stored on a LAN.\n";
+    }
 
 
 
@@ -815,8 +816,9 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
 			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
-    if ( target->TYPE == COMPUTER_TYPE_LAN )
+    if ( target->TYPE == COMPUTER_TYPE_LAN ) {
         details << "\nThe data is stored on a LAN.\n";
+    }
 
 
 
@@ -1121,7 +1123,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 		Person *transferer = game->GetWorld ()->GetPerson ( taccount->name );
 		UplinkAssert (transferer);
 
-		bool success = taccount->TransferMoney ( target->ip, taccountno, receiver->ip, raccountno, amount, transferer );
+		taccount->TransferMoney ( target->ip, taccountno, receiver->ip, raccountno, amount, transferer );
 
 		UplinkStrncpy ( description, "Trace a recent balance transfer", sizeof ( description ) );
 
@@ -2769,7 +2771,6 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 
 	UplinkAssert (mission);
 
-	char *ip		= mission->completionA;
 	char *datatitle = mission->completionB;					// Required data title
 
 	if ( strcmp ( datatitle, "ALL" ) == 0 )
@@ -2843,7 +2844,6 @@ bool MissionGenerator::IsMissionComplete_StealAllFiles ( Mission *mission, Perso
 	UplinkAssert (message);
 
 	char *ip		= mission->completionA;
-	char *datatitle = mission->completionB;					// ALL
 	char *ourcompip = mission->completionC;
 	int numfiles, datasize;
 	sscanf ( mission->completionD, "%d %d", &numfiles, &datasize );
@@ -3033,7 +3033,7 @@ bool MissionGenerator::IsMissionComplete_DestroyFile ( Mission *mission, Person 
 
 			// method 1 - Delete all files
 
-			if ( news->NEWSTYPE == NEWS_TYPE_DELETED && news->data1 && strcmp ( news->data1, ip ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1, ip ) == 0 ) {
 
 				MissionCompleted ( mission, person, message );
 				return true;
@@ -3042,7 +3042,7 @@ bool MissionGenerator::IsMissionComplete_DestroyFile ( Mission *mission, Person 
 
 			// method 2 - Destroy the entire computer
 
-			if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED && news->data1 && strcmp ( news->data1, ip ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED && strcmp ( news->data1, ip ) == 0 ) {
 
 				MissionCompleted ( mission, person, message );
 				return true;
@@ -3239,8 +3239,8 @@ bool MissionGenerator::IsMissionComplete_ChangeData	( Mission *mission, Person *
 
 		if ( fieldvalue ) {
 
-			char *string1 = mission->completionD ? LowerCaseString ( mission->completionD ) : NULL;      
-			char *string2 = mission->completionE ? LowerCaseString ( mission->completionE ) : NULL;
+			char *string1 = LowerCaseString ( mission->completionD );      
+			char *string2 = LowerCaseString ( mission->completionE );
 
 			char *fieldvaluelower = LowerCaseString ( fieldvalue );
 			foundStrings = ( strstr ( fieldvaluelower, string1 ) && strstr ( fieldvaluelower, string2 ) );
@@ -3302,12 +3302,12 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 		News *news = uplink->news.GetData (i);
 		UplinkAssert (news);
 
-		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && news->data1 && strcmp ( news->data1, personname ) == 0 ) {
+		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, personname ) == 0 ) {
 
 			if ( strcmp ( framedfor, "FINANCIAL" ) == 0 || strcmp ( framedfor, "DESTROYALL" ) == 0 ) {
 
 				// Make sure he was arrested for hacking this computer
-				arrested = (news->data2 && ip && strcmp ( news->data2, ip ) == 0);
+				arrested = (strcmp ( news->data2, ip ) == 0);
 				break;
 
 			}
@@ -3349,7 +3349,7 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 				News *news = uplink->news.GetData (in);
 				UplinkAssert (news);
 
-				if ( news->NEWSTYPE == NEWS_TYPE_HACKED && news->data1 && ip && strcmp ( news->data1, ip ) == 0 ) {
+				if ( news->NEWSTYPE == NEWS_TYPE_HACKED && strcmp ( news->data1, ip ) == 0 ) {
 
 					if ( strcmp ( message->from, "PLAYER" ) == 0 )
 						game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
@@ -3369,7 +3369,7 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 				News *news = uplink->news.GetData (in);
 				UplinkAssert (news);
 
-				if ( news->NEWSTYPE == NEWS_TYPE_DELETED && news->data1 && ip && strcmp ( news->data1, ip ) == 0 ) {
+				if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1, ip ) == 0 ) {
 
 					if ( strcmp ( message->from, "PLAYER" ) == 0 ) {
 						game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
@@ -3398,9 +3398,7 @@ bool MissionGenerator::IsMissionComplete_TraceUser ( Mission *mission, Person *p
 {
 
 	char *personname    = LowerCaseString (mission->completionA);
-	char *targetaccount = mission->completionC ?
-                            LowerCaseString (mission->completionC) :
-                            NULL;                                       // NULL unless this is a TraceUser_MoneyTransfer
+	char *targetaccount = LowerCaseString (mission->completionC);	// completionC is an array, so this was never NULL (even when not a TraceUser_MoneyTransfer)
     char *msgbody       = LowerCaseString ( message->GetBody () );
 
 	// Check the person's name is in the mail
@@ -3523,7 +3521,7 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 		UplinkAssert (news);
 
 		if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED &&
-			 news->data1 && strcmp ( news->data1, sourceip ) == 0 ) {
+			 strcmp ( news->data1, sourceip ) == 0 ) {
 
 			// Data bank formatted
 			// System shut down
@@ -3536,7 +3534,7 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 
 		}
 		else if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERSHUTDOWN &&
-			  	  news->data1 && strcmp ( news->data1, sourceip ) == 0 ) {
+			  	  strcmp ( news->data1, sourceip ) == 0 ) {
 
 			// System shut down
 			// But files not deleted
@@ -3590,7 +3588,7 @@ bool MissionGenerator::IsMissionComplete_RemoveUser	( Mission *mission, Person *
 		News *news = uplink->news.GetData (i);
 		UplinkAssert (news);
 
-		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && news->data1 && strcmp ( news->data1, personname ) == 0 ) {
+		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, personname ) == 0 ) {
 
 			if ( strcmp ( message->from, "PLAYER" ) == 0 )
 				game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
