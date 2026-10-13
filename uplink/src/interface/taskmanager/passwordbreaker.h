@@ -20,7 +20,6 @@ protected:
 	std::string caption;
 	OptString username;
 	OptString password;
-	bool *found;
 
 	int numticksrequired;						// For next letter
 	int progress;

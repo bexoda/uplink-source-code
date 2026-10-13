@@ -45,7 +45,6 @@ PasswordBreaker::PasswordBreaker () : UplinkTask ()
 
 	length = difficulty = currentchar = 0;
 	password = username = NULL;
-	found = NULL;
 
 	targetstring = NULL;
 
@@ -54,7 +53,6 @@ PasswordBreaker::PasswordBreaker () : UplinkTask ()
 PasswordBreaker::~PasswordBreaker()
 {
 
-	if ( found )    delete [] found;
 
 
 }
@@ -156,14 +154,7 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 	// Set up the password breaker to work with this new data
 
-	if ( found )
-		delete [] found;
-	found = new bool [length];
-
 	caption.assign ( length, 'x' );
-	for ( int i = 0; i < length; ++i ) {
-		found [i] = false;
-	}
 
     int pid = SvbLookupPID (this);
 
@@ -229,7 +220,6 @@ void PasswordBreaker::Tick ( int n )
 
 						// This char has been discovered
 						caption [currentchar] = password.c_str () [currentchar];
-						found [currentchar] = true;
 						currentchar++;
 
 						SgPlaySound ( RsArchiveFileOpen ( "sounds/done.wav" ), "sounds/done.wav" );
