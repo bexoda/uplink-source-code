@@ -12,6 +12,8 @@
 #ifndef _included_mission_h
 #define _included_mission_h
 
+#include <memory>
+
 #include "app/optstring.h"
 
 #include <string>
@@ -41,7 +43,7 @@ protected:
 
 	OptString details;						// Listed on bbs boards
 	OptString fulldetails;					// Listed after acceptance (contains actual target details)
-	Date *duedate;						// Can be NULL
+	std::unique_ptr<Date> duedate;						// Can be NULL
 
 	OptString whysomuchmoney;				// Answer to these questions
 	OptString howsecure;					// They can be NULL

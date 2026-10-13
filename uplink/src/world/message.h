@@ -11,6 +11,8 @@
 #ifndef _included_message_h
 #define _included_message_h
 
+#include <memory>
+
 #include "app/optstring.h"
 
 #include <string>
@@ -35,7 +37,7 @@ protected:
 	OptString subject;
 	OptString body;
 
-	Data *data;							// An attached file/program
+	std::unique_ptr<Data> data;							// An attached file/program
 
 public:
 

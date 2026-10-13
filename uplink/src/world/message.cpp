@@ -30,14 +30,14 @@ Message::Message()
 	SetSubject ( " " );
 	SetBody ( " " );
 
-	data = NULL;
+	data.reset ();
 
 }
  
 Message::~Message()
 {
 
-	if ( data ) delete data;
+	data.reset ();
 
     DeleteLListData ( &links );
     DeleteBTreeData ( &codes );
@@ -104,17 +104,16 @@ void Message::GiveCode ( const char *ip, char *code )
 void Message::AttachData ( Data *newdata )
 {
 
-	if ( data )
-		delete data;
+	data.reset ();
 	// Copy newdata
-	data = new Data ( newdata );	
+	data.reset ( new Data ( newdata ) );	
 
 }
 
 Data *Message::GetData ()
 {
 
-	return data;
+	return data.get ();
 
 }
 

@@ -21,7 +21,7 @@ Mission::Mission ()
 
 	details = NULL;
 	fulldetails = NULL;
-	duedate = NULL;
+	duedate.reset ();
     
 	whysomuchmoney = NULL;
 	howsecure = NULL;
@@ -53,7 +53,7 @@ Mission::~Mission ()
 {
 
 
-	if ( duedate ) delete duedate;
+	duedate.reset ();
 
 	DeleteLListData ( &links );
 	DeleteBTreeData ( &codes );
@@ -242,7 +242,7 @@ void Mission::SetDueDate ( Date *newdate )
 {
 
 	if ( !duedate )
-		duedate = new Date();
+		duedate.reset ( new Date() );
 
 	duedate->SetDate( newdate );
 
@@ -251,7 +251,7 @@ void Mission::SetDueDate ( Date *newdate )
 Date *Mission::GetDueDate ()
 {
 
-	return duedate;
+	return duedate.get ();
 
 }
 
@@ -297,7 +297,7 @@ bool Mission::Load  ( FILE *file )
 
 	LoadID ( file );
 
-	duedate = NULL;
+	duedate.reset ();
 
 	if ( !FileReadData ( &TYPE, sizeof(TYPE), 1, file ) ) return false;
 	
@@ -332,7 +332,7 @@ bool Mission::Load  ( FILE *file )
 	if ( !FileReadData ( &hasduedate, sizeof(hasduedate), 1, file ) ) return false;
 
 	if ( hasduedate ) {
-		duedate = new Date ();
+		duedate.reset ( new Date () );
 		if ( !duedate->Load ( file ) ) return false;
 	}
 
