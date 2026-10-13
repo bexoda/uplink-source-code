@@ -47,6 +47,9 @@ warning is a bug report: fix it rather than silence it.
 
 - a world is generated, and the same seed always generates the same world;
 - save → load → save is byte-identical, for a fresh world and after two game days;
+- the hacking tools work as the player uses them (launched from the task manager, clicked
+  onto a remote screen, ticked to completion): Log_Deleter, Log_UnDeleter, File_Copier,
+  File_Deleter, Decrypter, Password_Breaker;
 - a golden SAV62 save (`uplink/tests/fixtures/`) loads and writes back unchanged, and
   generating seed 1 and simulating one day still reproduces it exactly (glibc only).
 

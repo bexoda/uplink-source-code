@@ -264,8 +264,15 @@ void SvbCycle ( int n )
 		if ( tw->progress > 1.0 ) {
 			
 			int numticks = 1 + int (tw->progress - 1.0);
-			tw->task->Tick ( numticks );
 			tw->progress -= (double) numticks;
+			tw->task->Tick ( numticks );
+
+			// A task that finishes removes itself during Tick, deleting tw and shifting the
+			// list. Carry on from wherever tw is now (or the slot it left).
+			int now = -1;
+			for ( int i = 0; i < tasklist.Size (); ++i )
+				if ( tasklist.ValidIndex (i) && tasklist [i] == tw ) { now = i; break; }
+			t = ( now != -1 ) ? now : t - 1;
 
 		}
 
