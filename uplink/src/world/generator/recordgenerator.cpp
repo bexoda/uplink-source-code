@@ -474,7 +474,7 @@ void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 
 			if ( target_acc ) {
 
-				if ( strcmp ( target_acc->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) != 0 ) {		// Prevent transfers to player
+				if ( strcmp ( target_acc->name.c_str (), game->GetWorld ()->GetPlayer ()->handle.c_str () ) != 0 ) {		// Prevent transfers to player
 
 					if ( target_acc != myaccount ) {			// Prevent transfers to my own account
 

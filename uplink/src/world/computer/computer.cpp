@@ -248,7 +248,7 @@ void Computer::CheckForSecurityBreaches ()
 
 				bool ignoreme = false;
 
-				if ( strcmp ( al->fromname, "PLAYER" ) == 0 ) {
+				if ( strcmp ( al->fromname.c_str (), "PLAYER" ) == 0 ) {
 
 					for ( int l = 0; l < game->GetWorld ()->GetPlayer ()->missions.Size (); ++l ) {
 						Mission *m = game->GetWorld ()->GetPlayer ()->missions.GetData (l);

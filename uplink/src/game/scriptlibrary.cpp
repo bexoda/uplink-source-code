@@ -275,7 +275,7 @@ void ScriptLibrary::Script11 ()
 
 	for ( int i = 0; i < baccounts->Size(); i++ )
 		if ( baccounts->ValidIndex ( i ) )
-			if ( strcmp ( name, baccounts->GetData ( i )->name ) == 0 ) {
+			if ( strcmp ( name, baccounts->GetData ( i )->name.c_str () ) == 0 ) {
 				delete baccounts;
 				create_msgbox ( "Error", "You must enter an unique username" );
 				return;

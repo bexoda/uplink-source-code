@@ -31,7 +31,7 @@ Rating::Rating ()
 
 	creditrating = 0;
 
-	UplinkStrncpy ( owner, "", sizeof ( owner ) );
+	owner = "";
 
 }
 
@@ -59,7 +59,7 @@ void Rating::SetOwner ( const char *newowner )
 {
 
 	UplinkAssert (strlen(newowner) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( owner, newowner, sizeof ( owner ) );
+	owner = newowner;
 
 }
 
@@ -129,7 +129,7 @@ void Rating::ChangeUplinkScore ( int amount )
 	}
 
     // Special case - player needs to be told about Connection Analyser
-    if ( strcmp ( owner, "PLAYER" ) == 0 ) {
+    if ( strcmp ( owner.c_str (), "PLAYER" ) == 0 ) {
 
         if ( uplinkrating == 6 && oldrating < 6 ) {
             if ( !game->GetWorld ()->GetPlayer ()->gateway.HasHUDUpgrade (HUDUPGRADE_CONNECTIONANALYSIS) ) {
@@ -214,9 +214,9 @@ void Rating::ChangeUplinkScore ( int amount )
 		// Score has gone up
 		// Send a congrats message to the owner
 
-		if ( game->GetWorld ()->GetPerson (owner) ) {
+		if ( game->GetWorld ()->GetPerson (owner.c_str ()) ) {
 
-			const char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str ();
+			const char *agenthandle = strcmp ( owner.c_str (), "PLAYER" ) != 0 ? owner.c_str () : game->GetWorld ()->GetPlayer ()->handle.c_str ();
 
 			std::ostringstream body;
 			body << "Congratulations Agent " << agenthandle
@@ -225,7 +225,7 @@ void Rating::ChangeUplinkScore ( int amount )
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
-			msg->SetTo ( owner );
+			msg->SetTo ( owner.c_str () );
 			msg->SetSubject ( "Congratulations" );
 			msg->SetBody ( body.str ().c_str () );
 			msg->Send ();
@@ -244,9 +244,9 @@ void Rating::ChangeUplinkScore ( int amount )
 		// Score has gone down
 		// Send a warning message to the owner
 
-		if ( game->GetWorld ()->GetPerson (owner) ) {
+		if ( game->GetWorld ()->GetPerson (owner.c_str ()) ) {
 
-			const char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str ();
+			const char *agenthandle = strcmp ( owner.c_str (), "PLAYER" ) != 0 ? owner.c_str () : game->GetWorld ()->GetPlayer ()->handle.c_str ();
 			std::ostringstream body;
 			body << "This is a warning Agent " << agenthandle << " - your performance recently has been unsatisfactory.\n"
 					"As such we have been forced to review your case, and have decided to decrease your Uplink rating.\n\n"
@@ -256,7 +256,7 @@ void Rating::ChangeUplinkScore ( int amount )
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
-			msg->SetTo ( owner );
+			msg->SetTo ( owner.c_str () );
 			msg->SetSubject ( "Uplink WARNING" );
 			msg->SetBody ( body.str ().c_str () );
 			msg->Send ();
@@ -305,17 +305,17 @@ void Rating::ChangeNeuromancerScore ( int amount )
 		// Score has gone up
 		// Send a congrats message to the owner
 
-		if ( game->GetWorld ()->GetPerson (owner) ) {
+		if ( game->GetWorld ()->GetPerson (owner.c_str ()) ) {
 
 			char body [128];
 			UplinkSnprintf ( body, sizeof ( body ), "Agent %s - your Neuromancer rating appears to have changed.\n\n"
 													"Your rating is now %s.",
-													strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str (),
+													strcmp ( owner.c_str (), "PLAYER" ) != 0 ? owner.c_str () : game->GetWorld ()->GetPlayer ()->handle.c_str (),
 													GetNeuromancerRating () );
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
-			msg->SetTo ( owner );
+			msg->SetTo ( owner.c_str () );
 			msg->SetSubject ( "Neuromancer rating change" );
 			msg->SetBody ( body );
 			msg->Send ();
@@ -327,7 +327,7 @@ void Rating::ChangeNeuromancerScore ( int amount )
 
 		// Score has gone down
 
-		if ( game->GetWorld ()->GetPerson (owner) ) {
+		if ( game->GetWorld ()->GetPerson (owner.c_str ()) ) {
 
 			char body [256];
 			UplinkSnprintf ( body, sizeof ( body ), "It appears your neuromancer rating has changed, in view of your recent actions.\n\n"
@@ -336,7 +336,7 @@ void Rating::ChangeNeuromancerScore ( int amount )
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
-			msg->SetTo ( owner );
+			msg->SetTo ( owner.c_str () );
 			msg->SetSubject ( "Neuromancer rating change" );
 			msg->SetBody ( body );
 			msg->Send ();
@@ -405,7 +405,7 @@ void Rating::Save  ( FILE *file )
 void Rating::Print ()
 {
 
-	printf ( "Rating : Owner:%s\n", owner );
+	printf ( "Rating : Owner:%s\n", owner.c_str () );
 	printf ( "\tUplink Score      = %d (%s)\n", uplinkscore, GetUplinkRating () );
 	printf ( "\tNeuromancer Score = %d (%s)\n", neuromancerscore, GetNeuromancerRating () );
 	printf ( "\tCredit rating     = %d\n", creditrating );

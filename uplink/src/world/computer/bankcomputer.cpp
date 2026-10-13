@@ -64,7 +64,7 @@ int BankComputer::CreateBankAccount ( BankAccount *newaccount )
 	//Due to buggy code all around Uplink, don't change: rec->AddField ( RECORDBANK_NAME, newaccount->name );
 	//rec->AddField ( "Name", newaccount->name );
 	rec->AddField ( RECORDBANK_NAME, newaccount->accountnumber );
-	rec->AddField ( RECORDBANK_PASSWORD, newaccount->password );
+	rec->AddField ( RECORDBANK_PASSWORD, newaccount->password.c_str () );
 	rec->AddField ( RECORDBANK_SECURITY, newaccount->security );
 	rec->AddField ( RECORDBANK_ACCNO, newaccount->accountnumber );
 	recordbank.AddRecordSorted ( rec );

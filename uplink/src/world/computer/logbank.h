@@ -10,6 +10,8 @@
 #ifndef _included_logbank_h
 #define _included_logbank_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -95,8 +97,8 @@ public:
 	int TYPE;
 
 	Date date;											// Time of access
-	char fromip [SIZE_VLOCATION_IP];					// The IP the access came from
-	char fromname [SIZE_PERSON_NAME];					// The person who created the log
+	std::string fromip;					// The IP the access came from
+	std::string fromname;					// The person who created the log
 
 	int SUSPICIOUS;										// Was this a suspicious action?
 

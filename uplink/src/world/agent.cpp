@@ -704,7 +704,7 @@ void Agent::AttemptMission_TraceUser ()
 			// Now look at the log
 
 			if ( al->SUSPICIOUS != LOG_NOTSUSPICIOUS &&
-				 strcmp ( al->fromname, hackername ) == 0 &&
+				 strcmp ( al->fromname.c_str (), hackername ) == 0 &&
 				 al->TYPE != LOG_TYPE_CONNECTIONOPENED ) {
 
 				// This is by the hacker but can't be investigated further
@@ -716,7 +716,7 @@ void Agent::AttemptMission_TraceUser ()
 			}
 			else if ( al->SUSPICIOUS != LOG_NOTSUSPICIOUS &&
 				 al->TYPE == LOG_TYPE_CONNECTIONOPENED &&
-				 strcmp ( al->fromname, hackername ) == 0 ) {
+				 strcmp ( al->fromname.c_str (), hackername ) == 0 ) {
 
 				// Now investigated - so set it back to LOG_NOTSUSPICIOUS
 
@@ -724,7 +724,7 @@ void Agent::AttemptMission_TraceUser ()
 				if ( comp->logbank.internallogs.ValidIndex (il) )
 					comp->logbank.internallogs.GetData (il)->SetSuspicious ( LOG_NOTSUSPICIOUS );
 
-				VLocation *vlf = game->GetWorld ()->GetVLocation ( al->fromip );
+				VLocation *vlf = game->GetWorld ()->GetVLocation ( al->fromip.c_str () );
 				Computer *fromcomp = NULL;
 				if ( vlf )
 					fromcomp = vlf->GetComputer ();
@@ -892,8 +892,8 @@ void Agent::EstablishConnection ( const char *ip )
 	for ( int il = 0; il < comp->logbank.logs.Size (); ++il ) {
 		if ( comp->logbank.logs.ValidIndex (il) ) {
 
-			if ( strcmp ( comp->logbank.logs.GetData (il)->fromname, name.c_str () ) == 0 &&
-				 strcmp ( comp->logbank.logs.GetData (il)->fromip, fromip ) == 0 ) {
+			if ( strcmp ( comp->logbank.logs.GetData (il)->fromname.c_str (), name.c_str () ) == 0 &&
+				 strcmp ( comp->logbank.logs.GetData (il)->fromip.c_str (), fromip ) == 0 ) {
 
 				Date logdate;
 				logdate.SetDate ( &(comp->logbank.logs.GetData (il)->date) );
@@ -908,7 +908,7 @@ void Agent::EstablishConnection ( const char *ip )
 					// Look for a valid log to put in the blank place
 					for ( int is = 0; is < comp->logbank.logs.Size (); ++is ) {
 						if ( comp->logbank.logs.ValidIndex (is) ) {
-							if ( strcmp ( comp->logbank.logs.GetData (is)->fromip, fromip ) != 0 ) {
+							if ( strcmp ( comp->logbank.logs.GetData (is)->fromip.c_str (), fromip ) != 0 ) {
 
 								AccessLog *copyme = comp->logbank.logs.GetData (is);
 								// This log was made by someone else

@@ -28,7 +28,7 @@
 Connection::Connection()
 {
 
-	UplinkStrncpy ( owner, "", sizeof ( owner ) );
+	owner = "";
 	traceinprogress = false;
 	traceprogress = 0;
 
@@ -45,7 +45,7 @@ void Connection::SetOwner ( const char *newowner )
 {
 
 	UplinkAssert ( strlen (newowner) < 64 );
-	UplinkStrncpy ( owner, newowner, sizeof ( owner ) );
+	owner = newowner;
 
 }
 
@@ -140,7 +140,7 @@ char *Connection::GetGhost ()
 Person *Connection::GetOwner ()
 {
 
-	Person *person = game->GetWorld ()->GetPerson ( owner );
+	Person *person = game->GetWorld ()->GetPerson ( owner.c_str () );
 	UplinkAssert ( person );
 
 	return person;
@@ -208,7 +208,7 @@ void Connection::Connect ()
     // Special case if this is the Player
     //
 
-	if ( strcmp ( owner, "PLAYER" ) == 0 ) {
+	if ( strcmp ( owner.c_str (), "PLAYER" ) == 0 ) {
 
 		SecurityMonitor::BeginAttack ();
         LanMonitor::BeginAttack ();
@@ -236,7 +236,7 @@ void Connection::Connect ()
 
 				// Previous -> This (ie connection opened)
 				AccessLog *log = new AccessLog ();
-				log->SetProperties ( &(game->GetWorld ()->date), vlocations.GetData (i-1), owner, 
+				log->SetProperties ( &(game->GetWorld ()->date), vlocations.GetData (i-1), owner.c_str (), 
 										LOG_NOTSUSPICIOUS, LOG_TYPE_CONNECTIONOPENED );
 				bouncecomp->logbank.AddLog ( log );
 
@@ -249,7 +249,7 @@ void Connection::Connect ()
 				int logtype = ( i == 0 ) ? LOG_TYPE_BOUNCEBEGIN : LOG_TYPE_BOUNCE;
 				char *fromip = ( i == 0 ) ? (char *) "LOCAL" : vlocations.GetData (i-1);
 
-				log->SetProperties ( &(game->GetWorld ()->date), fromip, owner,
+				log->SetProperties ( &(game->GetWorld ()->date), fromip, owner.c_str (),
 									  LOG_NOTSUSPICIOUS, logtype );
 				log->SetData1 ( vlocations.GetData (i+1) );
 
@@ -285,7 +285,7 @@ void Connection::Disconnect ()
 
 	AccessLog *log1 = new AccessLog ();
 	log1->SetProperties ( &(game->GetWorld ()->date), 
-						  vlocations.GetData ( vlocations.Size () - 2 ), owner,
+						  vlocations.GetData ( vlocations.Size () - 2 ), owner.c_str (),
 						  LOG_NOTSUSPICIOUS, LOG_TYPE_CONNECTIONCLOSED );
 
 	/*
@@ -319,8 +319,8 @@ void Connection::Disconnect ()
 				if ( testdate.Before ( &log1->date ) ) break;					// Every other log is > 5 mins before
 
 				if ( al->TYPE == LOG_TYPE_CONNECTIONOPENED &&
-					 strcmp ( al->fromname, owner ) == 0 &&				
-					 strcmp ( al->fromip, log1->fromip ) == 0 ) {
+					 strcmp ( al->fromname.c_str (), owner.c_str () ) == 0 &&				
+					 strcmp ( al->fromip.c_str (), log1->fromip.c_str () ) == 0 ) {
 					
 					al->SetSuspicious ( LOG_SUSPICIOUS );
 
@@ -355,7 +355,7 @@ void Connection::Disconnect ()
 	// Do the disconnect
 	//
 
-	if ( strcmp ( owner, "PLAYER" ) == 0 ) {
+	if ( strcmp ( owner.c_str (), "PLAYER" ) == 0 ) {
 
 		SecurityMonitor::EndAttack ();
         LanMonitor::EndAttack ();
@@ -438,14 +438,10 @@ bool Connection::Load ( FILE *file )
 	LoadID ( file );
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( owner, sizeof(owner), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( owner, 64, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( owner, sizeof(owner), 1, file ) ) {
-			owner [ sizeof(owner) - 1 ] = '\0';
-			return false;
-		}
-		owner [ sizeof(owner) - 1 ] = '\0';
+		if ( !LoadFixedString ( owner, 64, file ) ) return false;
 	}
 	if ( !FileReadData ( &traceinprogress, sizeof(traceinprogress), 1, file ) ) return false;
 	if ( !FileReadData ( &traceprogress, sizeof(traceprogress), 1, file ) ) return false;
@@ -463,7 +459,7 @@ void Connection::Save ( FILE *file )
 
 	SaveID ( file );
 
-	SaveDynamicString ( owner, sizeof(owner), file );
+	SaveDynamicString ( owner, 64, file );
 	fwrite ( &traceinprogress, sizeof(traceinprogress), 1, file );
 	fwrite ( &traceprogress, sizeof(traceprogress), 1, file );
 
@@ -476,7 +472,7 @@ void Connection::Save ( FILE *file )
 void Connection::Print ()
 {
 
-	printf ( "Connection : Owner = %s, TraceInProgress = %d, TraceProgress = %d\n", owner, traceinprogress, traceprogress );
+	printf ( "Connection : Owner = %s, TraceInProgress = %d, TraceProgress = %d\n", owner.c_str (), traceinprogress, traceprogress );
 	PrintLList ( &vlocations );
 
 }

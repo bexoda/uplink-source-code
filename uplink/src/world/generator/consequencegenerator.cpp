@@ -433,7 +433,7 @@ void ConsequenceGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 
 	if ( comp->traceaction >= COMPUTER_TRACEACTION_LEGAL ) {
 
-		Person *hacker = game->GetWorld ()->GetPerson ( al->fromname );
+		Person *hacker = game->GetWorld ()->GetPerson ( al->fromname.c_str () );
 		UplinkAssert (hacker);
 
 		if ( hacker == game->GetWorld ()->GetPlayer () ||

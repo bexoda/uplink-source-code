@@ -68,8 +68,8 @@ bool LogBank::LogModified ( int index )
 
 	return ( log->TYPE != internallog->TYPE ||
 			 log->SUSPICIOUS != internallog->SUSPICIOUS ||
-			 strcmp ( log->fromip, internallog->fromip ) != 0 ||
-			 strcmp ( log->fromname, internallog->fromname ) != 0 ||
+			 strcmp ( log->fromip.c_str (), internallog->fromip.c_str () ) != 0 ||
+			 strcmp ( log->fromname.c_str (), internallog->fromname.c_str () ) != 0 ||
 			 !log->date.Equal ( &internallog->date ) );
 
 }
@@ -171,7 +171,7 @@ const char *LogBank::TraceLog ( const char *to_ip, const char *logbank_ip, Date 
 
 					// Look up the source computer that created this log
 
-					VLocation *vl = game->GetWorld ()->GetVLocation ( al->fromip );
+					VLocation *vl = game->GetWorld ()->GetVLocation ( al->fromip.c_str () );
 					if ( vl ) {
 
 						Computer *comp = vl->GetComputer ();
@@ -392,7 +392,7 @@ AccessLog::AccessLog()
 
 	TYPE = LOG_TYPE_NONE;
 
-	UplinkStrncpy ( fromip, " ", sizeof ( fromip ) );
+	fromip = " ";
 
 	SUSPICIOUS = false;
 
@@ -419,7 +419,7 @@ void AccessLog::SetProperties ( Date *newdate, const char *newfromip, const char
 	SetTYPE ( newTYPE );
 	SetFromIP ( newfromip );
 
-	UplinkStrncpy( fromname, newfromname, sizeof ( fromname ) );
+	fromname = newfromname;
 
 	SetSuspicious ( newSUSPICIOUS );
 
@@ -430,7 +430,7 @@ void AccessLog::SetProperties ( AccessLog *copyme )
 
 	UplinkAssert (copyme);
 
-	SetProperties ( &(copyme->date), copyme->fromip, copyme->fromname, copyme->SUSPICIOUS, copyme->TYPE );
+	SetProperties ( &(copyme->date), copyme->fromip.c_str (), copyme->fromname.c_str (), copyme->SUSPICIOUS, copyme->TYPE );
 	SetData1 ( copyme->data1 );
 	SetData2 ( copyme->data2 );
 	SetData3 ( copyme->data3 );
@@ -448,7 +448,7 @@ void AccessLog::SetFromIP ( const char *newfromip )
 {
 
 	UplinkAssert (strlen(newfromip) < SIZE_VLOCATION_IP );
-	UplinkStrncpy ( fromip, newfromip, sizeof ( fromip ) );
+	fromip = newfromip;
 
 }
 
@@ -645,7 +645,7 @@ void AccessLog::Print ()
 
 	printf ( "AccessLog : TYPE=%d\n", TYPE );
 	date.Print ();
-	printf ( "fromIP:%s, fromNAME:%s\n", fromip, fromname );
+	printf ( "fromIP:%s, fromNAME:%s\n", fromip.c_str (), fromname.c_str () );
 
 	if ( SUSPICIOUS == LOG_SUSPICIOUS )			printf ( "This was a suspicious action\n" );
 	else if ( SUSPICIOUS ==

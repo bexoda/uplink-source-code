@@ -13,6 +13,8 @@
 #ifndef _included_rating_h
 #define _included_rating_h
 
+#include <string>
+
 
 #include "app/uplinkobject.h"
 
@@ -25,7 +27,7 @@ class Rating : public UplinkObject
 
 public:
 
-	char owner [SIZE_PERSON_NAME];
+	std::string owner;
 
 	int uplinkrating;
 	int uplinkscore;

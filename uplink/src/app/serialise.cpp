@@ -1043,3 +1043,12 @@ bool LoadDynamicStringInt ( const char* _file, int _line, std::string &string, i
 	string = buffer.c_str ();
 	return ok;
 }
+
+bool LoadFixedString ( std::string &string, int size, FILE *file )
+{
+	std::string buffer ( size, '\0' );
+	bool ok = FileReadData ( &buffer [0], size, 1, file );
+	buffer [ size - 1 ] = '\0';
+	string = buffer.c_str ();
+	return ok;
+}

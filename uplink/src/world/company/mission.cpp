@@ -72,7 +72,7 @@ void Mission::SetTYPE ( int newTYPE )
 
 }
 
-void Mission::SetCompletion ( const char *newA, const char *newB, char *newC, char *newD, char *newE )
+void Mission::SetCompletion ( const char *newA, const char *newB, const char *newC, char *newD, char *newE )
 {
 
 	// No need to set them if NULL is passed in - they will not be examined after all

@@ -125,7 +125,7 @@ void AccountScreenInterface::Create ( ComputerScreen *newcs )
 		if ( account ) {
 
 			// Account name
-			EclGetButton ( "accountscreen_accountname" )->SetCaption ( account->name );
+			EclGetButton ( "accountscreen_accountname" )->SetCaption ( account->name.c_str () );
 
 			// Account number
 			char accno [16];

@@ -409,7 +409,7 @@ void LogDeleter::Tick ( int n )
 							// Look for a valid log to put in the blank place
 							for ( int i = 0; i < source->logs.Size (); ++i ) {
 								if ( source->logs.ValidIndex (i) ) {
-									if ( strcmp ( source->logs.GetData (i)->fromip, IP_LOCALHOST ) != 0 ) {
+									if ( strcmp ( source->logs.GetData (i)->fromip.c_str (), IP_LOCALHOST ) != 0 ) {
 										
 										AccessLog *copyme = source->logs.GetData (i);
 										// This log was made by someone else

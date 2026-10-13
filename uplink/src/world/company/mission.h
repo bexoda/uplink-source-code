@@ -79,7 +79,7 @@ public:
 	~Mission ();
 
 	void SetTYPE			( int newTYPE );
-	void SetCompletion		( const char *newA, const char *newB, char *newC, char *newD, char *newE );
+	void SetCompletion		( const char *newA, const char *newB, const char *newC, char *newD, char *newE );
 
 	void SetCreateDate		( Date *date );
 	void SetEmployer		( const char *newemployer );

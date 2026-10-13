@@ -235,7 +235,7 @@ void RecordScreenInterface::CreateRecord ( int index )
 							if ( field_values->ValidIndex ( ii ) ) {
 								BankAccount *account = BankAccount::GetAccount ( cs->GetComputer ()->ip.c_str (), field_values->GetData ( ii ) );
 								if ( account ) {
-									EclRegisterButton ( 140, currentY, 300, buttonheight, account->name, "", bname_value );
+									EclRegisterButton ( 140, currentY, 300, buttonheight, account->name.c_str (), "", bname_value );
 									found = true;
 								}
 							}

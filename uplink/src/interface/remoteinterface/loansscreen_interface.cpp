@@ -237,7 +237,7 @@ void LoansScreenInterface::Create ( ComputerScreen *newcs )
 
 			// Account name
 
-			EclGetButton ( "loansscreen_accountname" )->SetCaption ( account->name );
+			EclGetButton ( "loansscreen_accountname" )->SetCaption ( account->name.c_str () );
 
 			// Account number
 

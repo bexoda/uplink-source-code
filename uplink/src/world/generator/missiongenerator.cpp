@@ -1031,7 +1031,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 
 	// Make sure we don't target the player's Uplink bank account
 
-	if ( strcmp ( taccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
+	if ( strcmp ( taccount->name.c_str (), game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 	//
 	// Fill in the fields of the mission
@@ -1120,7 +1120,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 		amount = 100000 * ( amount / 100000 );
         taccount->balance += amount;
 
-		Person *transferer = game->GetWorld ()->GetPerson ( taccount->name );
+		Person *transferer = game->GetWorld ()->GetPerson ( taccount->name.c_str () );
 		UplinkAssert (transferer);
 
 		taccount->TransferMoney ( target->ip.c_str (), taccountno, receiver->ip.c_str (), raccountno, amount, transferer );
@@ -1134,7 +1134,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 					<< "Trace this account and find the name of the receiver of this money.";
 
         UplinkStrncpy ( completionB, "TraceTransfer", sizeof ( completionB ) );
-		UplinkStrncpy ( completionC, raccount->name, sizeof ( completionC ) );
+		UplinkStrncpy ( completionC, raccount->name.c_str (), sizeof ( completionC ) );
 
 	}
 	else {
@@ -1928,7 +1928,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 				<< "END";
 
 	char accesscode [128];
-    Computer::GenerateAccessCode( sacc->accountnumber, sacc->password, accesscode, sizeof ( accesscode ) );
+    Computer::GenerateAccessCode( sacc->accountnumber, sacc->password.c_str (), accesscode, sizeof ( accesscode ) );
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -1944,7 +1944,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_TRACEUSER );
-	mission->SetCompletion   ( hacker->name.c_str (), source->ip.c_str (), tacc->name, NULL, NULL );
+	mission->SetCompletion   ( hacker->name.c_str (), source->ip.c_str (), tacc->name.c_str (), NULL, NULL );
 	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -2440,8 +2440,8 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	// Make sure they aren't player accounts
 	//
 
-	if ( strcmp ( sourceaccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
-	if ( strcmp ( targetaccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
+	if ( strcmp ( sourceaccount->name.c_str (), game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
+	if ( strcmp ( targetaccount->name.c_str (), game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 
 	int amount_to_transfer = (int) NumberGenerator::RandomNormalNumber ( sourceaccount->balance / 2.0f, sourceaccount->balance * 0.4f );
@@ -3642,7 +3642,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 				sscanf ( pl->accounts.GetData (i), "%s %s", ip, accno );
 
 				BankAccount *ba = BankAccount::GetAccount ( ip, accno );
-				if ( ba && ( success = target_account->HasTransferOccured ( ba->name, amount ) ) )
+				if ( ba && ( success = target_account->HasTransferOccured ( ba->name.c_str (), amount ) ) )
 					break;
 			}
 		}

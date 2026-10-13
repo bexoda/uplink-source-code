@@ -4171,7 +4171,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 			if ( al->SUSPICIOUS != LOG_NOTSUSPICIOUS &&
 				 al->TYPE == LOG_TYPE_CONNECTIONOPENED ) {
 
-				VLocation *vlf = game->GetWorld ()->GetVLocation ( al->fromip );
+				VLocation *vlf = game->GetWorld ()->GetVLocation ( al->fromip.c_str () );
 				Computer *fromcomp = NULL;
 				if ( vlf )
 					fromcomp = vlf->GetComputer ();

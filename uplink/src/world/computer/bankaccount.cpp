@@ -32,7 +32,7 @@ BankAccount::BankAccount ()
 
 	balance = 0;
 	accountnumber = 0;
-	memset ( password, 0, sizeof ( password ) );
+	// password starts empty
 
 }
 
@@ -106,7 +106,7 @@ bool BankAccount::TransferMoney ( const char *source_ip, char *source_accno,
 		source_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
 		source_log->SetData1 ( source_data );
 		source_log->SetData2 ( s_amount );
-		source_log->SetData3 ( target_acc->name );
+		source_log->SetData3 ( target_acc->name.c_str () );
 		source_acc->log.AddLog ( source_log );
 
 		// Log on the target account
@@ -114,7 +114,7 @@ bool BankAccount::TransferMoney ( const char *source_ip, char *source_accno,
 		target_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
 		target_log->SetData1 ( target_data );
 		target_log->SetData2 ( s_amount );
-		target_log->SetData3 ( source_acc->name );
+		target_log->SetData3 ( source_acc->name.c_str () );
 		target_acc->log.AddLog ( target_log );
 
 		return true;
@@ -141,15 +141,15 @@ void BankAccount::SetOwner ( char *newname )
 {
 	
 	UplinkAssert ( strlen(newname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
 void BankAccount::SetSecurity ( const char *newpassword, int newsecurity )
 {
 
-	UplinkAssert ( strlen(newpassword) < sizeof(password) );
-	UplinkStrncpy ( password, newpassword, sizeof ( password ) );
+	UplinkAssert ( strlen(newpassword) < 64 );
+	password = newpassword;
 
 	security = newsecurity;
 
@@ -170,7 +170,7 @@ void BankAccount::ChangeBalance ( int amount, const char *description )
 	// Log this action
 
 	AccessLog *source_log = new AccessLog ();
-	source_log->SetProperties ( &(game->GetWorld ()->date), "unknown", name, LOG_NOTSUSPICIOUS, LOG_TYPE_TEXT );
+	source_log->SetProperties ( &(game->GetWorld ()->date), "unknown", name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TEXT );
 	
 	if ( description )  source_log->SetData1 ( description );
 	else				source_log->SetData1 ( "Unknown" );
@@ -331,7 +331,7 @@ Person *BankAccount::GetPerson ()
 	}
 
 	if ( !accountowner )
-		accountowner = game->GetWorld ()->GetPerson ( name );
+		accountowner = game->GetWorld ()->GetPerson ( name.c_str () );
 
 	return accountowner;
 
@@ -345,14 +345,10 @@ bool BankAccount::Load  ( FILE *file )
 	if ( !LoadDynamicStringStatic ( name, SIZE_PERSON_NAME, file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( password, sizeof(password), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( password, 64, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( password, sizeof(password), 1, file ) ) {
-			password [ sizeof(password) - 1 ] = '\0';
-			return false;
-		}
-		password [ sizeof(password) - 1 ] = '\0';
+		if ( !LoadFixedString ( password, 64, file ) ) return false;
 	}
 	if ( !FileReadData ( &security, sizeof(security), 1,file ) ) return false;
 	if ( !FileReadData ( &accountnumber, sizeof(accountnumber), 1, file ) ) return false;
@@ -374,7 +370,7 @@ void BankAccount::Save  ( FILE *file )
 
 	SaveDynamicString ( name, SIZE_PERSON_NAME, file );
 
-	SaveDynamicString ( password, sizeof(password), file );
+	SaveDynamicString ( password, 64, file );
 	fwrite ( &security, sizeof(security), 1,file );
 	fwrite ( &accountnumber, sizeof(accountnumber), 1, file );
 	fwrite ( &balance, sizeof(balance), 1, file );
@@ -390,8 +386,8 @@ void BankAccount::Print ()
 {
 	
 	printf ( "Bank Account : " );
-	printf ( "\tOwner    : Name:%s\n", name );
-	printf ( "\tSecurity : Password:%s, level:%d\n", password, security );
+	printf ( "\tOwner    : Name:%s\n", name.c_str () );
+	printf ( "\tSecurity : Password:%s, level:%d\n", password.c_str (), security );
 	printf ( "\tAcc No   : %d\n", accountnumber );
 	printf ( "\tBalance  : %d, Loan:%d\n", balance, loan );
 

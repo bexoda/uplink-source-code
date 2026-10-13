@@ -12,6 +12,8 @@
 #ifndef _included_bankaccount_h
 #define _included_bankaccount_h
 
+#include <string>
+
 
 #include "app/uplinkobject.h"
 
@@ -26,8 +28,8 @@ class BankAccount : public UplinkObject
 
 public:
 	
-	char name [SIZE_PERSON_NAME];
-	char password [64];
+	std::string name;
+	std::string password;
 	int security;
 	int accountnumber;
 	int balance;

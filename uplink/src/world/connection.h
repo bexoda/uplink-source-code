@@ -13,6 +13,8 @@
 #ifndef _included_connection_h
 #define _included_connection_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -29,7 +31,7 @@ class Connection : public UplinkObject
 
 public:
 
-	char owner [64];
+	std::string owner;
 	LList <char *> vlocations;				// List of IP addresses, source to target order
 
 	bool traceinprogress;
