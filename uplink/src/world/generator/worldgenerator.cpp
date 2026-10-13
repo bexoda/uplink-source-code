@@ -10,6 +10,7 @@
 
 #include "game/game.h"
 #include "game/data/data.h"
+#include "game/data/upgrades.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -546,16 +547,16 @@ void WorldGenerator::GenerateCompanyUplink ()
 
 	Sale *previoussale = NULL;
 
-	for ( int is = 0; is < NUM_STARTINGSOFTWAREUPGRADES; ++is ) {
+	for ( int is = 0; is < (int) SoftwareUpgrades ().size (); ++is ) {
 
-		if ( previoussale && strcmp ( previoussale->title.c_str (), SOFTWARE_UPGRADES [is].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), SoftwareUpgrades () [is].name ) == 0 ) {
 
 			// New version of an existing item
 
-			previoussale->AddVersion ( SOFTWARE_UPGRADES [is].description,
-									   SOFTWARE_UPGRADES [is].cost,
-									   SOFTWARE_UPGRADES [is].size,
-									   SOFTWARE_UPGRADES [is].data );
+			previoussale->AddVersion ( SoftwareUpgrades () [is].description,
+									   SoftwareUpgrades () [is].cost,
+									   SoftwareUpgrades () [is].size,
+									   SoftwareUpgrades () [is].data );
 
 		}
 		else {
@@ -563,15 +564,15 @@ void WorldGenerator::GenerateCompanyUplink ()
 			// New sale item
 
 			Sale *sale = new Sale ();
-			sale->SetTitle			( SOFTWARE_UPGRADES [is].name );
+			sale->SetTitle			( SoftwareUpgrades () [is].name );
 			sale->SetSaleTYPE		( SALETYPE_SOFTWARE );
-			sale->SetSwhwTYPE		( SOFTWARE_UPGRADES [is].TYPE );
+			sale->SetSwhwTYPE		( SoftwareUpgrades () [is].TYPE );
 
 			sale->AddVersion		( " ", -1, -1, -1 );
-			sale->AddVersion		( SOFTWARE_UPGRADES [is].description,
-									  SOFTWARE_UPGRADES [is].cost,
-									  SOFTWARE_UPGRADES [is].size,
-									  SOFTWARE_UPGRADES [is].data );
+			sale->AddVersion		( SoftwareUpgrades () [is].description,
+									  SoftwareUpgrades () [is].cost,
+									  SoftwareUpgrades () [is].size,
+									  SoftwareUpgrades () [is].data );
 
 			cu->CreateSWSale ( sale );
 
@@ -583,16 +584,16 @@ void WorldGenerator::GenerateCompanyUplink ()
 
 	// Generate the hardware items for sale
 
-	for ( int ih = 0; ih < NUM_STARTINGHARDWAREUPGRADES; ++ih ) {
+	for ( int ih = 0; ih < (int) HardwareUpgrades ().size (); ++ih ) {
 
-		if ( previoussale && strcmp ( previoussale->title.c_str (), HARDWARE_UPGRADES [ih].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), HardwareUpgrades () [ih].name ) == 0 ) {
 
 			// New version of an existing item
 
-			previoussale->AddVersion ( HARDWARE_UPGRADES [ih].description,
-									   HARDWARE_UPGRADES [ih].cost,
-									   HARDWARE_UPGRADES [ih].size,
-									   HARDWARE_UPGRADES [ih].data );
+			previoussale->AddVersion ( HardwareUpgrades () [ih].description,
+									   HardwareUpgrades () [ih].cost,
+									   HardwareUpgrades () [ih].size,
+									   HardwareUpgrades () [ih].data );
 
 		}
 		else {
@@ -600,15 +601,15 @@ void WorldGenerator::GenerateCompanyUplink ()
 			// New sale item
 
 			Sale *sale = new Sale ();
-			sale->SetTitle			( HARDWARE_UPGRADES [ih].name );
+			sale->SetTitle			( HardwareUpgrades () [ih].name );
 			sale->SetSaleTYPE		( SALETYPE_HARDWARE );
-			sale->SetSwhwTYPE		( HARDWARE_UPGRADES [ih].TYPE );
+			sale->SetSwhwTYPE		( HardwareUpgrades () [ih].TYPE );
 
 			sale->AddVersion		( " ", -1, -1, -1 );
-			sale->AddVersion		( HARDWARE_UPGRADES [ih].description,
-									  HARDWARE_UPGRADES [ih].cost,
-									  HARDWARE_UPGRADES [ih].size,
-									  HARDWARE_UPGRADES [ih].data );
+			sale->AddVersion		( HardwareUpgrades () [ih].description,
+									  HardwareUpgrades () [ih].cost,
+									  HardwareUpgrades () [ih].size,
+									  HardwareUpgrades () [ih].data );
 
 			cu->CreateHWSale ( sale );
 
@@ -3776,16 +3777,16 @@ void WorldGenerator::UpdateSoftwareUpgrades ( )
 
 	Sale *previoussale = NULL;
 
-	for ( int is = 0; is < NUM_STARTINGSOFTWAREUPGRADES; ++is ) {
+	for ( int is = 0; is < (int) SoftwareUpgrades ().size (); ++is ) {
 
-		if ( previoussale && strcmp ( previoussale->title.c_str (), SOFTWARE_UPGRADES [is].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), SoftwareUpgrades () [is].name ) == 0 ) {
 
 			// New version of an existing item
 
-			previoussale->AddVersion ( SOFTWARE_UPGRADES [is].description,
-			                           SOFTWARE_UPGRADES [is].cost,
-			                           SOFTWARE_UPGRADES [is].size,
-			                           SOFTWARE_UPGRADES [is].data );
+			previoussale->AddVersion ( SoftwareUpgrades () [is].description,
+			                           SoftwareUpgrades () [is].cost,
+			                           SoftwareUpgrades () [is].size,
+			                           SoftwareUpgrades () [is].data );
 
 		}
 		else {
@@ -3793,15 +3794,15 @@ void WorldGenerator::UpdateSoftwareUpgrades ( )
 			// New sale item
 
 			Sale *sale = new Sale ();
-			sale->SetTitle         ( SOFTWARE_UPGRADES [is].name );
+			sale->SetTitle         ( SoftwareUpgrades () [is].name );
 			sale->SetSaleTYPE      ( SALETYPE_SOFTWARE );
-			sale->SetSwhwTYPE      ( SOFTWARE_UPGRADES [is].TYPE );
+			sale->SetSwhwTYPE      ( SoftwareUpgrades () [is].TYPE );
 
 			sale->AddVersion      ( " ", -1, -1, -1 );
-			sale->AddVersion      ( SOFTWARE_UPGRADES [is].description,
-			                        SOFTWARE_UPGRADES [is].cost,
-			                        SOFTWARE_UPGRADES [is].size,
-			                        SOFTWARE_UPGRADES [is].data );
+			sale->AddVersion      ( SoftwareUpgrades () [is].description,
+			                        SoftwareUpgrades () [is].cost,
+			                        SoftwareUpgrades () [is].size,
+			                        SoftwareUpgrades () [is].data );
 
 			cu->CreateSWSale ( sale );
 

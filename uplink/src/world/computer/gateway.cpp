@@ -11,6 +11,7 @@
 
 #include "game/game.h"
 #include "game/data/data.h"
+#include "game/data/upgrades.h"
 
 #include "world/world.h"
 #include "world/message.h"
@@ -601,15 +602,15 @@ void Gateway::GiveAllHardware ()
 void Gateway::GiveAllSoftware ()
 {
 
-	for ( int i = 0; i < NUM_STARTINGSOFTWAREUPGRADES; ++i ) {
+	for ( int i = 0; i < (int) SoftwareUpgrades ().size (); ++i ) {
 
 		Data *prog = new Data ();
-		prog->SetTitle ( SOFTWARE_UPGRADES [i].name );
+		prog->SetTitle ( SoftwareUpgrades () [i].name );
 		prog->SetDetails ( DATATYPE_PROGRAM,
-						   SOFTWARE_UPGRADES [i].size,
+						   SoftwareUpgrades () [i].size,
 						   0, 0,
-						   (float) SOFTWARE_UPGRADES [i].data,
-						   SOFTWARE_UPGRADES [i].TYPE );
+						   (float) SoftwareUpgrades () [i].data,
+						   SoftwareUpgrades () [i].TYPE );
 		if ( !databank.PutData ( prog ) ) delete prog;
 
 	}

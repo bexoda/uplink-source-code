@@ -1,0 +1,98 @@
+# Software and hardware sold in Uplink, one row per version, in shop order.
+# kind	name	type	cost	size	data	description
+# data: software version, or hardware speed / capacity / bandwidth.
+# description: \n is a line break, \\ a backslash.
+# type (software): 1 file utility, 2 hardware driver, 3 security, 4 cracker, 5 bypasser,
+#   6 LAN tool, 9 HUD upgrade, 10 other.
+software	Decrypter	4	800	2	1	DECRYPTER V1.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V1.0
+software	Decrypter	4	1200	2	2	DECRYPTER V2.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V2.0 or V1.0
+software	Decrypter	4	1600	2	3	DECRYPTER V3.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V3.0\nor below
+software	Decrypter	4	2200	2	4	DECRYPTER V4.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V4.0\nor below
+software	Decrypter	4	3000	3	5	DECRYPTER V5.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V5.0\nor below
+software	Decrypter	4	7000	4	6	DECRYPTER V6.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V6.0\nor below
+software	Decrypter	4	15000	5	7	DECRYPTER V7.0\nTYPE: software.Cracker\n\nDecrypts any file encrypted with an Encrypter V7.0\nor below
+software	Decypher	4	3000	2	1	DECYPHER V1.0\nTYPE: software.Cracker\n\nBreaks through Encryption Cyphers\nUses a Quadratic Decryption Algorithm to force crack an Elliptic-curve Encryption Cypher
+software	Decypher	4	5000	2	2	DECYPHER V2.0\nTYPE: software.Cracker\n\nBreaks through Encryption Cyphers\nThis is a faster implementation of the Quadratic Decryption Algorithm
+software	Decypher	4	8000	2	3	DECYPHER V3.0\nTYPE: software.Cracker\n\nBreaks through Encryption Cyphers\nThis is the fastest version of this item of Software
+software	Dictionary_Hacker	4	1000	4	1	DICTIONARY HACKER V1.0\nTYPE: software.Cracker\n\nA cheap and fast method of breaking passwords\nThis software tool tries every word in a ten-thousand word dictionary as a password. It is faster than a Password Breaker, but not guaranteed to find an answer.
+software	File_Copier	1	100	1	1	FILE COPIER V1.0\nTYPE: software.FileUtil\n\nCopies programs and data from one databank to another\nStandard software tool given free to all Agents
+software	File_Deleter	1	100	1	1	FILE DELETER V1.0\nTYPE: software.FileUtil\n\nDeletes programs and data from a databank\nStandard software tool given free to all Agents
+software	Defrag	1	5000	2	1	DEFRAG\nTYPE: software.FileUtil\n\nPushes all of your files together at the top of your memory banks\nand frees up large blocks of space for use
+software	Firewall_Bypass	5	3000	1	1	FIREWALL BYPASS V1.0\nTYPE: software.Bypasser\n\nActively bypasses firewall systems with a security level of 1\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Firewall_Bypass	5	4000	1	2	FIREWALL BYPASS V2.0\nTYPE: software.Bypasser\n\nActively bypasses firewall systems with a security level of 2 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Firewall_Bypass	5	6000	1	3	FIREWALL BYPASS V3.0\nTYPE: software.Bypasser\n\nActively bypasses firewall systems with a security level of 3 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Firewall_Bypass	5	8000	1	4	FIREWALL BYPASS V4.0\nTYPE: software.Bypasser\n\nActively bypasses firewall systems with a security level of 4 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Firewall_Bypass	5	10000	1	5	FIREWALL BYPASS V5.0\nTYPE: software.Bypasser\n\nActively bypasses firewall systems with a security level of 5 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Firewall_Disable	3	2000	1	1	FIREWALL DISABLE V1.0\nTYPE: software.Security\n\nDisables a firewall with a security level of 1\nThis action will be detected immediately
+software	Firewall_Disable	3	3000	1	2	FIREWALL DISABLE V2.0\nTYPE: software.Security\n\nDisables a firewall with a security level of 2 or below\nThis action will be detected immediately
+software	Firewall_Disable	3	4000	1	3	FIREWALL DISABLE V3.0\nTYPE: software.Security\n\nDisables a firewall with a security level of 3 or below\nThis action will be detected immediately
+software	Firewall_Disable	3	6000	2	4	FIREWALL DISABLE V4.0\nTYPE: software.Security\n\nDisables a firewall with a security level of 4 or below\nThis action will be detected immediately
+software	Firewall_Disable	3	8000	3	5	FIREWALL DISABLE V5.0\nTYPE: software.Security\n\nDisables a firewall with a security level of 5 or below\nThis action will be detected immediately
+software	HUD_ConnectionAnalysis	9	20000	3	1	CONNECTION ANALYSIS V1.0\nTYPE: software.HUDUpgrade\n\nUpgrades your HUD so that you can see the security systems installed on your target computer, and launch Bypass software at them
+software	HUD_IRC-Client	9	4000	2	1	IRC CLIENT V1.0\nTYPE: software.HUDUpgrade\n\nUpgrades your HUD with a new screen, in which you can participate in Internet Relay Chat. This allows you to talk to other hackers for help.\nYou will also need an Internet Connection on your local machine.
+software	HUD_MapShowTrace	9	5000	1	1	MAP SHOW TRACE V1.0\nTYPE: software.HUDUpgrade\n\nUpgrades your HUD so that your map shows the progress of any trace on your connection.\nReplaces the Trace Tracker.
+software	HUD_LANView	9	50000	5	1	LAN VIEW V1.0\nTYPE: software.HUDUpgrade\n\nUpgrades your HUD so that you can analyse and connect to Local Area Network (LAN) systems.\nThis upgrade is required before you can install and run any LAN software.
+software	IP_Lookup	10	500	1	1	IP LOOKUP V1.0\nTYPE: software.Other\n\nConverts a raw IP number into an Internet address and adds it to your links
+software	IP_Probe	10	2000	3	1	IP PROBE V1.0\nTYPE: software.Other\n\nScans a given IP address for security systems and reports the types in use
+software	IP_Probe	10	4000	3	2	IP PROBE V2.0\nTYPE: software.Other\n\nScans a given IP address for security systems and reports the types in use and their version information
+software	IP_Probe	10	5000	3	3	IP PROBE V3.0\nTYPE: software.Other\n\nScans a given IP address for security systems and reports the types in use, their version information and their status
+software	LAN_Probe	6	15000	3	1	LAN PROBE V1.0\nTYPE: Software.LAN\n\nScans a single system on a LAN, and the links running from it.
+software	LAN_Probe	6	20000	3	2	LAN PROBE V2.0\nTYPE: Software.LAN\n\nScans a single system on a LAN, and the links running from it.
+software	LAN_Probe	6	30000	4	3	LAN PROBE V3.0\nTYPE: Software.LAN\n\nScans a single system on a LAN, and the links running from it.
+software	LAN_Scan	6	10000	2	1	LAN SCAN V1.0\nTYPE: Software.LAN\n\nScans an entire LAN, looking for systems
+software	LAN_Scan	6	15000	2	2	LAN SCAN V2.0\nTYPE: Software.LAN\n\nScans an entire LAN, looking for systems
+software	LAN_Scan	6	25000	2	3	LAN SCAN V3.0\nTYPE: Software.LAN\n\nScans an entire LAN, looking for systems
+software	LAN_Spoof	6	20000	2	1	LAN SPOOF V1.0\nTYPE: Software.LAN\n\nSpoofs a system on the network, fooling the network itself\ninto believing you are that system.\nWorks on level 1 systems only.
+software	LAN_Spoof	6	30000	3	2	LAN SPOOF V2.0\nTYPE: Software.LAN\n\nSpoofs a system on the network, fooling the network itself\ninto believing you are that system.\nWorks on level 1 and 2 systems.
+software	LAN_Spoof	6	45000	5	3	LAN SPOOF V3.0\nTYPE: Software.LAN\n\nSpoofs a system on the network, fooling the network itself\ninto believing you are that system.\nWorks on all LAN systems.
+software	LAN_Force	6	15000	2	1	LAN FORCE V1.0\nTYPE: Software.LAN\n\nThis tool will force open any lock system you might\nencounter on a LAN system.\nThe sys Admin will probably notice this.
+software	LAN_Force	6	20000	3	2	LAN FORCE V2.0\nTYPE: Software.LAN\n\nThis tool will force open any lock system you might\nencounter on a LAN system.\nThe sys Admin will probably notice this.
+software	LAN_Force	6	25000	4	3	LAN FORCE V3.0\nTYPE: Software.LAN\n\nThis tool will force open any lock system you might\nencounter on a LAN system.\nThe sys Admin will probably notice this.
+software	Log_Deleter	3	500	1	1	LOG DELETER V1.0\nTYPE: software.Security\n\nDeletes the contents of an access log from a computer\nLeaves an empty log behind
+software	Log_Deleter	3	1000	1	2	LOG DELETER V2.0\nTYPE: software.Security\n\nDeletes an access-log from a computer\nLeaves a distinctive blank space behind
+software	Log_Deleter	3	2000	1	3	LOG DELETER V3.0\nTYPE: software.Security\n\nCopies another user's legitimate access log over the top of of your own.\nVery difficult to detect.
+software	Log_Deleter	3	4000	1	4	LOG DELETER V4.0\nTYPE: software.Security\n\nDeletes an access-log from a computer\nMoves other logs up to cover empty space.\nImpossible to detect.
+software	Log_Modifier	3	4000	2	1	LOG MODIFIER V1.0\nTYPE: software.Security\n\nAllows you to make modifications to an existing log
+software	Log_Modifier	3	6000	2	2	LOG MODIFIER V2.0\nTYPE: software.Security\n\nAllows you to make modifications to an existing log, and create new logs in blank spaces
+software	Log_UnDeleter	3	5000	1	1	LOG UNDELETER V1.0\nTYPE: software.Security\n\nRecovers previously deleted logs
+software	Monitor_Bypass	5	10000	1	1	MONITOR BYPASS V1.0\nTYPE: software.Bypasser\n\nActively bypasses a monitor with a security level of 1\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Monitor_Bypass	5	12000	1	2	MONITOR BYPASS V2.0\nTYPE: software.Bypasser\n\nActively bypasses a monitor with a security level of 2 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Monitor_Bypass	5	16000	1	3	MONITOR BYPASS V3.0\nTYPE: software.Bypasser\n\nActively bypasses a monitor with a security level of 3 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Monitor_Bypass	5	20000	1	4	MONITOR BYPASS V4.0\nTYPE: software.Bypasser\n\nActively bypasses a monitor with a security level of 4 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Monitor_Bypass	5	25000	1	5	MONITOR BYPASS V5.0\nTYPE: software.Bypasser\n\nActively bypasses a monitor with a security level of 5 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Password_Breaker	4	1500	2	1	PASSWORD BREAKER V1.0\nTYPE: software.Cracker\n\nHacks past password protection screens\nNot as fast as a Dictionary Hacker but is guaranteed to find the password eventually
+software	Proxy_Bypass	5	6000	1	1	PROXY BYPASS V1.0\nTYPE: software.Bypasser\n\nActively bypasses a proxy server with a security level of 1\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Proxy_Bypass	5	8000	1	2	PROXY BYPASS V2.0\nTYPE: software.Bypasser\n\nActively bypasses a proxy server with a security level of 2 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Proxy_Bypass	5	12000	1	3	PROXY BYPASS V3.0\nTYPE: software.Bypasser\n\nActively bypasses a proxy server with a security level of 3 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Proxy_Bypass	5	16000	1	4	PROXY BYPASS V4.0\nTYPE: software.Bypasser\n\nActively bypasses a proxy server with a security level of 4 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Proxy_Bypass	5	20000	1	5	PROXY BYPASS V5.0\nTYPE: software.Bypasser\n\nActively bypasses a proxy server with a security level of 5 or below\nAll bypassers require a 'HUD:ConnectionAnalysis' upgrade first
+software	Proxy_Disable	3	3000	1	1	PROXY DISABLE V1.0\nTYPE: software.Security\n\nDisables a proxy with a security level of 1\nThis action will be detected immediately
+software	Proxy_Disable	3	4000	1	2	PROXY DISABLE V2.0\nTYPE: software.Security\n\nDisables a proxy with a security level of 2 or below\nThis action will be detected immediately
+software	Proxy_Disable	3	6000	1	3	PROXY DISABLE V3.0\nTYPE: software.Security\n\nDisables a proxy with a security level of 3 or below\nThis action will be detected immediately
+software	Proxy_Disable	3	8000	2	4	PROXY DISABLE V4.0\nTYPE: software.Security\n\nDisables a proxy with a security level of 4 or below\nThis action will be detected immediately
+software	Proxy_Disable	3	10000	3	5	PROXY DISABLE V5.0\nTYPE: software.Security\n\nDisables a proxy with a security level of 5 or below\nThis action will be detected immediately
+software	Trace_Tracker	3	300	1	1	TRACE TRACKER V1.0\nTYPE: software.Security\n\nInforms you on the progress of any traces on your connection\n(No trace detected, Trace in progress, Trace complete)
+software	Trace_Tracker	3	600	1	2	TRACE TRACKER V2.0\nTYPE: software.Security\n\nInforms you on the progress of any traces on your connection\n(No trace detected, Percentage of trace complete, Trace complete)
+software	Trace_Tracker	3	1400	2	3	TRACE TRACKER V3.0\nTYPE: software.Security\n\nInforms you on the progress of any traces on your connection\n(No trace detected, Time remaining before trace, Trace complete)
+software	Trace_Tracker	3	2500	3	4	TRACE TRACKER V4.0\nTYPE: software.Security\n\nInforms you on the progress of any traces on your connection\n(No trace detected, Time remaining before trace, Trace complete)\nIncluding an estimate of the exact time remaining
+software	Voice_Analyser	10	5000	4	1	VOICE ANALYSER V1.0\nTYPE: software.Other\n\nRecords and analyses voice patterns for reproduction.\nCan be used to simulate voice authorisations.
+software	Voice_Analyser	10	10000	5	2	VOICE ANALYSER V2.0\nTYPE: software.Other\n\nRecords and analyses voice patterns for reproduction.\nCan store and load voice data to and from gateway memory.\nCan be used to simulate voice authorisations.
+hardware	CPU ( 20 Ghz )	1	250	0	20	CPU ( 20 Ghz )\n\nA slow and simple processor designed for use in parallel with many others,in large scale super-computers
+hardware	CPU ( 60 Ghz )	1	1000	0	60	CPU ( 60 Ghz )\n\nAn entry level processor, fitted as standard to all agent computers
+hardware	CPU ( 80 Ghz )	1	1300	0	80	CPU ( 80 Ghz )\n\nA low budget, low speed processor
+hardware	CPU ( 100 Ghz )	1	3000	0	100	CPU ( 100 Ghz )\n\nA reasonably fast processor, and a good upgrade choice for new agents
+hardware	CPU ( 120 Ghz )	1	5000	0	120	CPU ( 120 Ghz )\n\nA faster processor with onboard MPU instruction handling for faster instruction execution
+hardware	CPU ( 150 Ghz )	1	8000	0	150	CPU ( 150 Ghz )\n\nA very fast processor, ideal for cpu-intensive activity
+hardware	CPU ( Turbo 200 Ghz )	1	12000	0	200	CPU ( Turbo 200 Ghz )\n\nA high-speed accelerated processor with unique pre-emptive instruction handling, for use in high-priority critical systems
+hardware	Modem ( 1 Gq / s )	2	1000	0	1	Modem ( 1 Gq / s )\n\nAn entry level modem with a low transfer rate, fitted as standard in all new Gateway systems
+hardware	Modem ( 2 Gq / s )	2	2000	0	2	Modem ( 2 Gq / s )\n\nAn low speed modem with a fairly low transfer rate
+hardware	Modem ( 4 Gq / s )	2	4000	0	4	Modem ( 4 Gq / s )\n\nA reasonable speed modem at a good price
+hardware	Modem ( 6 Gq / s )	2	6000	0	6	Modem ( 6 Gq / s )\n\nA fast modem, normally sufficient for all but the highest bandwidth requirements
+hardware	Modem ( 8 Gq / s )	2	8000	0	8	Modem ( 8 Gq / s )\n\nA very fast modem for large files and fast access times
+hardware	Modem ( 10 Gq / s )	2	10000	0	10	Modem ( 10 Gq / s )\n\nA blindingly fast modem which will take full advantage of the network bandwidth available
+hardware	Memory ( 8 Gq )	4	3000	0	8	Memory ( 8 Gq )\n\n8 Gigaquads of storage space
+hardware	Memory ( 16 Gq )	4	5500	0	16	Memory ( 16 Gq )\n\n16 Gigaquads of storage space
+hardware	Memory ( 24 Gq )	4	8000	0	24	Memory ( 24 Gq )\n\n24 Gigaquads of storage space
+hardware	Memory ( 32 Gq )	4	11000	0	32	Memory ( 32 Gq )\n\n32 Gigaquads of storage space
+hardware	Gateway Self Destruct	5	20000	1	0	Gateway Self Destruct\n\nExplosives are attached to your Gateway computer, designed to destroy any evidence.\nThis is a doomsday device that has saved many agents from jail in the past.
+hardware	Gateway Motion Sensor	5	10000	1	0	Gateway Motion Sensor\n\nAn ultra-sonic based motion sensor, which can detect when people are near your gateway. Often used together with a Self Destruct device.

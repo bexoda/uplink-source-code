@@ -400,6 +400,7 @@ const int PROB_MISSION_TRACEUSER []         =          {  0,  0,  0,  0,  0,  0,
 	*/
 
 
+// The rows of data/upgrades.tsv: see game/data/upgrades.h
 struct ComputerUpgrade
 {
 	const char *name;	
@@ -411,14 +412,8 @@ struct ComputerUpgrade
 };
 
 
-#define NUM_STARTINGSOFTWAREUPGRADES 73
-#define NUM_STARTINGHARDWAREUPGRADES 19
 
-extern const ComputerUpgrade SOFTWARE_UPGRADES  [];
-extern const ComputerUpgrade HARDWARE_UPGRADES  [];
 
-const ComputerUpgrade *GetSoftwareUpgrade ( char *name );
-const ComputerUpgrade *GetHardwareUpgrade ( char *name );
 
 
 /*  ===========================================================================

@@ -123,6 +123,21 @@ saves and updates walk it in node-left-right order and that order is part of the
 `uplink/tests/test_tosser.cpp` pins the behaviour, odd edge cases included; change the
 containers only with those tests and the golden save passing.
 
+## Game data
+
+The software and hardware for sale (names, prices, sizes, versions, descriptions) are in
+`uplink/data/upgrades.tsv`, one row per version, read at startup as `data/upgrades.tsv`: the
+build links it into `build/data/`, and a packaged game needs it in `data/` next to the
+executable (or inside a .dat archive). The format is described at the top of the file and
+in `game/data/upgrades.h`; a malformed row stops the game with the line number.
+
+## Simulation and UI
+
+Code under `uplink/src/world` (the simulation) does not include UI headers or call the
+interface, Eclipse or Soundgarden. It goes through `WorldLink` (`world/worldlink.h`): the
+game installs `GameWorldLink`, and with none installed the world runs headless. The
+`world_layering` test enforces this.
+
 ## Performance
 
     ./uplink_tests "[.bench]"                              # generate seed 1, simulate a day, save

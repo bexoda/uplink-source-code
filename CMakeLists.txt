@@ -160,6 +160,14 @@ foreach(dat ${UPLINK_DATA_FILES})
   file(CREATE_LINK ${dat} ${CMAKE_BINARY_DIR}/${name} SYMBOLIC)
 endforeach()
 
+# Plain-text game data (uplink/data) is read as data/<file>, ahead of the archives.
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/data)
+file(GLOB UPLINK_TEXT_DATA ${CMAKE_SOURCE_DIR}/uplink/data/*)
+foreach(f ${UPLINK_TEXT_DATA})
+  get_filename_component(name ${f} NAME)
+  file(CREATE_LINK ${f} ${CMAKE_BINARY_DIR}/data/${name} SYMBOLIC)
+endforeach()
+
 # ---------------------------------------------------------------- tests
 
 option(UPLINK_TESTS "Build the test suite (needs Catch2 3)" ON)
@@ -169,10 +177,11 @@ if(UPLINK_TESTS)
   set(T ${CMAKE_SOURCE_DIR}/uplink/tests)
   add_executable(uplink_tests
     ${T}/main.cpp ${T}/harness.cpp ${T}/test_world.cpp ${T}/test_golden.cpp
-    ${T}/test_tools.cpp ${T}/test_options.cpp ${T}/test_optstring.cpp ${T}/test_mail.cpp ${T}/test_scheduler.cpp ${T}/test_bench.cpp ${T}/test_tosser.cpp)
+    ${T}/test_tools.cpp ${T}/test_options.cpp ${T}/test_optstring.cpp ${T}/test_mail.cpp ${T}/test_scheduler.cpp ${T}/test_bench.cpp ${T}/test_tosser.cpp ${T}/test_upgrades.cpp)
   target_link_libraries(uplink_tests PRIVATE uplink_game Catch2::Catch2 ZLIB::ZLIB)
   target_compile_definitions(uplink_tests PRIVATE
-    UPLINK_TEST_FIXTURES="${CMAKE_SOURCE_DIR}/uplink/tests/fixtures")
+    UPLINK_TEST_FIXTURES="${CMAKE_SOURCE_DIR}/uplink/tests/fixtures"
+    UPLINK_DATA_DIR="${CMAKE_SOURCE_DIR}/uplink/data")
   file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/test-home)
   include(Catch)
   # Tests boot the real game from the build dir (where the .dat files are linked) and keep
