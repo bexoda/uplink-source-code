@@ -50,17 +50,17 @@ LocalInterface::LocalInterface()
 
 	currentscreencode = 0;
 	screenindex = 0;
-	screen = NULL;
+	screen.reset ();
 
-	hud = new HUDInterface ();
+	hud.reset ( new HUDInterface () );
 
 }
 
 LocalInterface::~LocalInterface()
 {
 
-	if ( screen ) delete screen;
-	if ( hud ) delete hud;
+	screen.reset ();
+	hud.reset ();
 
 }
 
@@ -86,8 +86,7 @@ void LocalInterface::Remove ()
 	if ( IsVisible () ) 
 		if ( screen ) {
 			screen->Remove ();
-			delete screen;
-			screen = NULL;
+			screen.reset ();
 		}
 
 }
@@ -105,8 +104,7 @@ void LocalInterface::RunScreen ( int SCREENCODE, int index )
 	// Get rid of the current local interface
 	if ( screen ) {
 		screen->Remove ();
-		delete screen;
-		screen = NULL;
+		screen.reset ();
 	}
 
 	// Fixing problems with overlapping world map
@@ -131,59 +129,59 @@ void LocalInterface::RunScreen ( int SCREENCODE, int index )
 			break;
 
 		case SCREEN_HW:
-			screen = new HWInterface ();
+			screen.reset ( new HWInterface () );
 			break;
 
 		case SCREEN_MEMORY:
-			screen = new MemoryInterface ();
+			screen.reset ( new MemoryInterface () );
 			break;
 
 		case SCREEN_STATUS:
-			screen = new StatusInterface ();
+			screen.reset ( new StatusInterface () );
 			break;
 
 		case SCREEN_FINANCE:
-			screen = new FinanceInterface ();
+			screen.reset ( new FinanceInterface () );
 			break;
 
 		case SCREEN_ANALYSER:
-			screen = new AnalyserInterface ();
+			screen.reset ( new AnalyserInterface () );
 			break;
 
         case SCREEN_IRC:
-            screen = new IRCInterface ();
+            screen.reset ( new IRCInterface () );
             break;
 
         case SCREEN_LAN:
-            screen = new LanInterface ();
+            screen.reset ( new LanInterface () );
             break;
 
 		case SCREEN_EMAIL:
             if ( game->GetWorld ()->GetPlayer ()->messages.ValidIndex (screenindex) ) {
-                screen = new EmailInterface ();
-			    ((EmailInterface *) screen)->SetMessage ( screenindex );
+                screen.reset ( new EmailInterface () );
+			    ((EmailInterface *) screen.get ())->SetMessage ( screenindex );
             }
             else currentscreencode = SCREEN_NONE;
 			break;
 
 		case SCREEN_MISSION:
             if ( game->GetWorld ()->GetPlayer ()->missions.ValidIndex (screenindex) ) {
-                screen = new MissionInterface ();			
-			    ((MissionInterface *) screen)->SetMission ( screenindex );			
+                screen.reset ( new MissionInterface () );			
+			    ((MissionInterface *) screen.get ())->SetMission ( screenindex );			
             }
             else currentscreencode = SCREEN_NONE;
 			break;
 
 		case SCREEN_SENDMAIL:
-			screen = new SendMailInterface ();
+			screen.reset ( new SendMailInterface () );
 			break;
 
 		case SCREEN_CHEATS:
-			screen = new CheatInterface ();
+			screen.reset ( new CheatInterface () );
 			break;
 
 		case SCREEN_EVTQUEUE:
-			screen = new EventQueueInterface ();
+			screen.reset ( new EventQueueInterface () );
 			break;
 
 		default:
@@ -242,7 +240,7 @@ LocalInterfaceScreen *LocalInterface::GetInterfaceScreen ()
 {
 
 	UplinkAssert ( screen );
-	return screen;
+	return screen.get ();
 
 }
 
@@ -250,7 +248,7 @@ HUDInterface *LocalInterface::GetHUD ()
 {
 
 	UplinkAssert ( hud );
-	return hud;
+	return hud.get ();
 
 }
 

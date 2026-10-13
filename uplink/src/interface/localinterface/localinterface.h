@@ -13,6 +13,8 @@
 #ifndef _included_localinterface_h
 #define _included_localinterface_h
 
+#include <memory>
+
 
 #include "app/uplinkobject.h"
 
@@ -52,8 +54,8 @@ class LocalInterface : public UplinkObject
 
 protected:
 
-	LocalInterfaceScreen *screen;	
-	HUDInterface *hud;
+	std::unique_ptr<LocalInterfaceScreen> screen;	
+	std::unique_ptr<HUDInterface> hud;
 
 public:
 

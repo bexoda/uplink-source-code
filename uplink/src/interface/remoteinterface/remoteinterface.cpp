@@ -86,7 +86,7 @@ RemoteInterface::RemoteInterface ()
 
 	currentscreenindex = 0;
 	previousscreenindex = 0;
-	screen = NULL;
+	screen.reset ();
 	security_level = 10;
 	security_name = " ";
 
@@ -95,7 +95,7 @@ RemoteInterface::RemoteInterface ()
 RemoteInterface::~RemoteInterface ()
 {
 	
-	if ( screen ) delete screen;
+	screen.reset ();
 
 }
 
@@ -105,8 +105,7 @@ void RemoteInterface::RunNewLocation ()
 
 	if ( screen ) {
 		screen->Remove ();
-		delete screen;
-		screen = NULL;
+		screen.reset ();
 	}
 
 	previousscreenindex = 0;
@@ -238,8 +237,7 @@ void RemoteInterface::RunScreen ( int screenindex, Computer *compref )
 
 	if ( screen ) {
 		screen->Remove ();
-		delete screen;
-		screen = NULL;
+		screen.reset ();
 	}
 
 	// Fixing problems with overlapping world map
@@ -260,48 +258,48 @@ void RemoteInterface::RunScreen ( int screenindex, Computer *compref )
 
 		switch ( cs->GetOBJECTID () ) {
 
-			case OID_MESSAGESCREEN		:			screen = new MessageScreenInterface ();		break;
-			case OID_PASSWORDSCREEN		:			screen = new PasswordScreenInterface ();	break;
-			case OID_MENUSCREEN			:			screen = new MenuScreenInterface ();		break;
-			case OID_DIALOGSCREEN		:			screen = new DialogScreenInterface ();		break;
-			case OID_USERIDSCREEN		:			screen = new UserIDScreenInterface ();		break;
-			case OID_LOGSCREEN			:			screen = new LogScreenInterface ();			break;
-			case OID_BBSSCREEN			:			screen = new BBSScreenInterface ();			break;
-			case OID_LINKSSCREEN		:			screen = new LinksScreenInterface ();		break;	
-			case OID_SHARESLISTSCREEN	:			screen = new SharesListScreenInterface ();	break;
-			case OID_CYPHERSCREEN		:			screen = new CypherScreenInterface ();		break;
-			case OID_HIGHSECURITYSCREEN :			screen = new HighSecurityScreenInterface ();break;
-            case OID_DISCONNECTEDSCREEN :           screen = new DisconnectedScreenInterface ();break;
+			case OID_MESSAGESCREEN		:			screen.reset ( new MessageScreenInterface () );		break;
+			case OID_PASSWORDSCREEN		:			screen.reset ( new PasswordScreenInterface () );	break;
+			case OID_MENUSCREEN			:			screen.reset ( new MenuScreenInterface () );		break;
+			case OID_DIALOGSCREEN		:			screen.reset ( new DialogScreenInterface () );		break;
+			case OID_USERIDSCREEN		:			screen.reset ( new UserIDScreenInterface () );		break;
+			case OID_LOGSCREEN			:			screen.reset ( new LogScreenInterface () );			break;
+			case OID_BBSSCREEN			:			screen.reset ( new BBSScreenInterface () );			break;
+			case OID_LINKSSCREEN		:			screen.reset ( new LinksScreenInterface () );		break;	
+			case OID_SHARESLISTSCREEN	:			screen.reset ( new SharesListScreenInterface () );	break;
+			case OID_CYPHERSCREEN		:			screen.reset ( new CypherScreenInterface () );		break;
+			case OID_HIGHSECURITYSCREEN :			screen.reset ( new HighSecurityScreenInterface () );break;
+            case OID_DISCONNECTEDSCREEN :           screen.reset ( new DisconnectedScreenInterface () );break;
 
 			case OID_GENERICSCREEN		:
 
 				switch ( ((GenericScreen *) cs)->SCREEN_TYPE ) {
 					
-					case SCREEN_FILESERVERSCREEN:	screen = new FileServerScreenInterface ();		break;
-					case SCREEN_SWSALESSCREEN	:	screen = new SWSalesScreenInterface ();			break;
-					case SCREEN_HWSALESSCREEN	:	screen = new HWSalesScreenInterface ();			break;			
-					case SCREEN_RECORDSCREEN	:   screen = new RecordScreenInterface ();			break;
-					case SCREEN_ACCOUNTSCREEN	:	screen = new AccountScreenInterface ();			break;
-					case SCREEN_CONTACTSCREEN	:	screen = new ContactScreenInterface ();			break;
-					case SCREEN_NEWSSCREEN		:	screen = new NewsScreenInterface ();			break;
-					case SCREEN_CRIMINALSCREEN  :	screen = new CriminalScreenInterface ();		break;
-					case SCREEN_SECURITYSCREEN	:	screen = new SecurityScreenInterface ();		break;
-					case SCREEN_ACADEMICSCREEN	:	screen = new AcademicScreenInterface ();		break;
-					case SCREEN_RANKINGSCREEN	:	screen = new RankingScreenInterface ();			break;
-					case SCREEN_CONSOLESCREEN	:	screen = new ConsoleScreenInterface ();			break;
-					case SCREEN_SOCSECSCREEN	:	screen = new SocialSecurityScreenInterface ();	break;
-					case SCREEN_LOANSSCREEN		:	screen = new LoansScreenInterface ();			break;
-					case SCREEN_SHARESVIEWSCREEN:	screen = new SharesViewScreenInterface ();		break;
-					case SCREEN_FAITHSCREEN		:	screen = new FaithScreenInterface ();			break;
-					case SCREEN_VOICEANALYSIS	:	screen = new VoiceAnalysisScreenInterface ();	break;
-					case SCREEN_COMPANYINFO		:	screen = new CompanyInfoScreenInterface ();		break;
-					case SCREEN_VOICEPHONE		:	screen = new VoicePhoneScreenInterface ();		break;
-					case SCREEN_NEARESTGATEWAY  :   screen = new NearestGatewayScreenInterface ();	break;
-					case SCREEN_CHANGEGATEWAY	:   screen = new ChangeGatewayScreenInterface ();	break;
-                    case SCREEN_CODECARD        :   screen = new CodeCardScreenInterface ();        break;
-                    case SCREEN_PROTOVISION     :   screen = new ProtovisionScreenInterface ();     break;                  
-                    case SCREEN_NUCLEARWAR      :   screen = new NuclearWarScreenInterface ();      break;
-                    case SCREEN_RADIOTRANSMITTER:   screen = new RadioTransmitterScreenInterface ();break;
+					case SCREEN_FILESERVERSCREEN:	screen.reset ( new FileServerScreenInterface () );		break;
+					case SCREEN_SWSALESSCREEN	:	screen.reset ( new SWSalesScreenInterface () );			break;
+					case SCREEN_HWSALESSCREEN	:	screen.reset ( new HWSalesScreenInterface () );			break;			
+					case SCREEN_RECORDSCREEN	:   screen.reset ( new RecordScreenInterface () );			break;
+					case SCREEN_ACCOUNTSCREEN	:	screen.reset ( new AccountScreenInterface () );			break;
+					case SCREEN_CONTACTSCREEN	:	screen.reset ( new ContactScreenInterface () );			break;
+					case SCREEN_NEWSSCREEN		:	screen.reset ( new NewsScreenInterface () );			break;
+					case SCREEN_CRIMINALSCREEN  :	screen.reset ( new CriminalScreenInterface () );		break;
+					case SCREEN_SECURITYSCREEN	:	screen.reset ( new SecurityScreenInterface () );		break;
+					case SCREEN_ACADEMICSCREEN	:	screen.reset ( new AcademicScreenInterface () );		break;
+					case SCREEN_RANKINGSCREEN	:	screen.reset ( new RankingScreenInterface () );			break;
+					case SCREEN_CONSOLESCREEN	:	screen.reset ( new ConsoleScreenInterface () );			break;
+					case SCREEN_SOCSECSCREEN	:	screen.reset ( new SocialSecurityScreenInterface () );	break;
+					case SCREEN_LOANSSCREEN		:	screen.reset ( new LoansScreenInterface () );			break;
+					case SCREEN_SHARESVIEWSCREEN:	screen.reset ( new SharesViewScreenInterface () );		break;
+					case SCREEN_FAITHSCREEN		:	screen.reset ( new FaithScreenInterface () );			break;
+					case SCREEN_VOICEANALYSIS	:	screen.reset ( new VoiceAnalysisScreenInterface () );	break;
+					case SCREEN_COMPANYINFO		:	screen.reset ( new CompanyInfoScreenInterface () );		break;
+					case SCREEN_VOICEPHONE		:	screen.reset ( new VoicePhoneScreenInterface () );		break;
+					case SCREEN_NEARESTGATEWAY  :   screen.reset ( new NearestGatewayScreenInterface () );	break;
+					case SCREEN_CHANGEGATEWAY	:   screen.reset ( new ChangeGatewayScreenInterface () );	break;
+                    case SCREEN_CODECARD        :   screen.reset ( new CodeCardScreenInterface () );        break;
+                    case SCREEN_PROTOVISION     :   screen.reset ( new ProtovisionScreenInterface () );     break;                  
+                    case SCREEN_NUCLEARWAR      :   screen.reset ( new NuclearWarScreenInterface () );      break;
+                    case SCREEN_RADIOTRANSMITTER:   screen.reset ( new RadioTransmitterScreenInterface () );break;
 
 					default:
 						UplinkAbortArgs ( "Unrecognised GenericScreen %d, computer '%s' (%s)", ((GenericScreen *) cs)->SCREEN_TYPE, comp->name.c_str (), comp->ip.c_str () );
@@ -442,7 +440,7 @@ RemoteInterfaceScreen *RemoteInterface::GetInterfaceScreen ()
 {
 
 	UplinkAssert ( screen );
-	return screen;
+	return screen.get ();
 
 }
 

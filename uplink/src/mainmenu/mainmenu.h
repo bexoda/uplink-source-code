@@ -9,6 +9,8 @@
 #ifndef _included_mainmenu_h
 #define _included_mainmenu_h
 
+#include <memory>
+
 
 #include "app/uplinkobject.h"
 
@@ -48,7 +50,7 @@ class MainMenu : public UplinkObject
 protected:
 
 	int currentscreencode;
-	MainMenuScreen *screen;		
+	std::unique_ptr<MainMenuScreen> screen;		
 
 public:
 

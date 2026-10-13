@@ -12,6 +12,8 @@
 #ifndef _included_remoteinterface_h
 #define _included_remoteinterface_h
 
+#include <memory>
+
 #include <string>
 
 
@@ -74,7 +76,7 @@ class RemoteInterface : public UplinkObject
 
 protected:
 
-	RemoteInterfaceScreen *screen;
+	std::unique_ptr<RemoteInterfaceScreen> screen;
 
 public:
 

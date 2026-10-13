@@ -39,14 +39,14 @@ MainMenu::MainMenu()
 {
 
 	currentscreencode = 0;
-	screen = NULL;
+	screen.reset ();
 
 }
 
 MainMenu::~MainMenu()
 {
 
-	if ( screen ) delete screen;
+	screen.reset ();
 
 }
 
@@ -65,8 +65,7 @@ void MainMenu::Remove ()
 	if ( IsVisible () ) 
 		if ( screen ) {
 			screen->Remove ();
-			delete screen;
-			screen = NULL;
+			screen.reset ();
 		}
 
 }
@@ -84,32 +83,31 @@ void MainMenu::RunScreen ( int SCREENCODE )
 	// Get rid of the current local interface
 	if ( screen ) {
 		screen->Remove ();
-		delete screen;
-		screen = NULL;
+		screen.reset ();
 	}
 
 	currentscreencode = SCREENCODE;
 
 	switch ( currentscreencode ) {
 
-		case MAINMENU_LOGIN:			screen = new LoginInterface ();					break;
-		case MAINMENU_LOADING:			screen = new LoadingInterface ();				break;
-		case MAINMENU_FIRSTLOAD:		screen = new FirstTimeLoadingInterface ();		break;
-		case MAINMENU_OPTIONS:			screen = new OptionsInterface ();				break;		
-		case MAINMENU_OBITUARY:			screen = new ObituaryInterface ();				break;
-		case MAINMENU_CONNECTIONLOST:	screen = new ConnectionLostInterface ();		break;
-		case MAINMENU_DISAVOWED:		screen = new DisavowedInterface ();				break;
-		case MAINMENU_THETEAM:			screen = new TheTeamInterface ();				break;
-        case MAINMENU_CLOSING:          screen = new ClosingInterface ();               break;
-        case MAINMENU_DEMOGAMEOVER:     screen = new DemoGameOverInterface ();          break;
-        case MAINMENU_REVELATIONWON:    screen = new RevelationWonInterface ();         break;
-        case MAINMENU_REVELATIONLOST:   screen = new RevelationLostInterface ();        break;
-        case MAINMENU_WAREZGAMEOVER:    screen = new WarezGameOverInterface ();         break;
+		case MAINMENU_LOGIN:			screen.reset ( new LoginInterface () );					break;
+		case MAINMENU_LOADING:			screen.reset ( new LoadingInterface () );				break;
+		case MAINMENU_FIRSTLOAD:		screen.reset ( new FirstTimeLoadingInterface () );		break;
+		case MAINMENU_OPTIONS:			screen.reset ( new OptionsInterface () );				break;		
+		case MAINMENU_OBITUARY:			screen.reset ( new ObituaryInterface () );				break;
+		case MAINMENU_CONNECTIONLOST:	screen.reset ( new ConnectionLostInterface () );		break;
+		case MAINMENU_DISAVOWED:		screen.reset ( new DisavowedInterface () );				break;
+		case MAINMENU_THETEAM:			screen.reset ( new TheTeamInterface () );				break;
+        case MAINMENU_CLOSING:          screen.reset ( new ClosingInterface () );               break;
+        case MAINMENU_DEMOGAMEOVER:     screen.reset ( new DemoGameOverInterface () );          break;
+        case MAINMENU_REVELATIONWON:    screen.reset ( new RevelationWonInterface () );         break;
+        case MAINMENU_REVELATIONLOST:   screen.reset ( new RevelationLostInterface () );        break;
+        case MAINMENU_WAREZGAMEOVER:    screen.reset ( new WarezGameOverInterface () );         break;
 
-		case MAINMENU_GENERICOPTIONS:	screen = new GenericOptionsInterface ();		break;
-		case MAINMENU_NETWORKOPTIONS:	screen = new NetworkOptionsInterface ();		break;
-        case MAINMENU_THEME:            screen = new ThemeInterface ();                 break;
-		case MAINMENU_GRAPHICOPTIONS:	screen = new GraphicOptionsInterface ();		break;
+		case MAINMENU_GENERICOPTIONS:	screen.reset ( new GenericOptionsInterface () );		break;
+		case MAINMENU_NETWORKOPTIONS:	screen.reset ( new NetworkOptionsInterface () );		break;
+        case MAINMENU_THEME:            screen.reset ( new ThemeInterface () );                 break;
+		case MAINMENU_GRAPHICOPTIONS:	screen.reset ( new GraphicOptionsInterface () );		break;
 
 		case MAINMENU_UNKNOWN:
 			UplinkAbort ( "Tried to create a local screen with MAINMENU_UNKNOWN SCREENCODE" );
@@ -138,7 +136,7 @@ MainMenuScreen *MainMenu::GetMenuScreen ()
 {
 
 	UplinkAssert ( screen );
-	return screen;
+	return screen.get ();
 
 }
 
