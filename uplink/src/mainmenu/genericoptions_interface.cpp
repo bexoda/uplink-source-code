@@ -190,12 +190,12 @@ void GenericOptionsInterface::SetOptionTYPE ( const char *newtype )
 		UplinkSnprintf ( name1, sizeof ( name1 ), "generic_option %d", i );
 		UplinkSnprintf ( name2, sizeof ( name2 ), "generic_value %d", i );
 
-		char *optionname = strchr ( option->name, '_' ) + 1;
+		const char *optionname = strchr ( option->name.c_str (), '_' ) + 1;
 		
 		char value [8];
 		UplinkSnprintf ( value, sizeof ( value ), "%d", option->value );
 
-		EclRegisterButton ( screenw - 210, screenh - 40, 150, 15, optionname, option->tooltip, name1 );
+		EclRegisterButton ( screenw - 210, screenh - 40, 150, 15, optionname, option->tooltip.c_str (), name1 );
 		EclRegisterButtonCallbacks ( name1, button_draw, ToggleBoxClick, button_click, button_highlight );
         
 		if ( option->yesorno ) {

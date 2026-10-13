@@ -29,7 +29,7 @@ static ColourOption getColourDefault ( 0.0, 0.0, 0.0 );
 
 Options::Options()
 {
-    UplinkStrncpy ( themeName, "graphics", sizeof ( themeName ) );
+    themeName = "graphics";
 }
 
 Options::~Options()
@@ -155,7 +155,7 @@ LList <Option *> *Options::GetAllOptions ( const char *searchstring, bool return
 			UplinkAssert (option);
 
 			if ( option->visible || returnhidden )
-				if ( !searchstring || strstr ( option->name, searchstring ) != NULL )
+				if ( !searchstring || strstr ( option->name.c_str (), searchstring ) != NULL )
 					result->PutData ( option );
 
 		}
@@ -253,9 +253,7 @@ void Options::CreateDefaultOptions ()
 
 void Options::SetThemeName ( const char *newThemeName )
 {
-    // Called with GetThemeName() to re-read the current theme; copying a buffer onto itself is UB.
-    if ( newThemeName != themeName )
-        UplinkStrncpy ( themeName, newThemeName, sizeof ( themeName ) );
+    themeName = newThemeName;      // safe when called with GetThemeName() to re-read the theme
 
     //
     // Parse the theme.txt file
@@ -269,14 +267,18 @@ void Options::SetThemeName ( const char *newThemeName )
         // Header
 
         char unused [64];
+        char line [1024];
 	    thefile >> unused >> ws;
-        thefile.getline ( themeTitle, 128 );
+        thefile.getline ( line, 128 );
+        themeTitle = line;
 
         thefile >> unused >> ws;
-        thefile.getline ( themeAuthor, 128 );
+        thefile.getline ( line, 128 );
+        themeAuthor = line;
 
         thefile >> unused >> ws;
-        thefile.getline ( themeDescription, 1024 );
+        thefile.getline ( line, 1024 );
+        themeDescription = line;
 
         // Colours
 
@@ -313,19 +315,19 @@ void Options::SetThemeName ( const char *newThemeName )
 
 }
 
-char *Options::GetThemeName ()
+const char *Options::GetThemeName ()
 {
-    return themeName;
+    return themeName.c_str ();
 }
 
-char *Options::GetThemeTitle ()
+const char *Options::GetThemeTitle ()
 {
-    return themeTitle;
+    return themeTitle.c_str ();
 }
 
-char *Options::GetThemeDescription ()
+const char *Options::GetThemeDescription ()
 {
-    return themeDescription;
+    return themeDescription.c_str ();
 }
 
 ColourOption *Options::GetColour ( const char *colourName )
@@ -351,7 +353,7 @@ char *Options::ThemeFilename ( const char *filename )
 	size_t resultsize = 256;
     char *result = new char [resultsize];
 
-    if ( strcmp ( themeName, "graphics" ) == 0 ) {
+    if ( strcmp ( themeName.c_str (), "graphics" ) == 0 ) {
 
         UplinkSnprintf ( result, resultsize, "graphics/%s", filename );
 
@@ -359,9 +361,9 @@ char *Options::ThemeFilename ( const char *filename )
     else {
 
         char fullFilename[256];
-        UplinkSnprintf ( fullFilename, sizeof ( fullFilename ), "%s%s/%s", app->path, themeName, filename );
+        UplinkSnprintf ( fullFilename, sizeof ( fullFilename ), "%s%s/%s", app->path, themeName.c_str (), filename );
 		if ( DoesFileExist ( fullFilename ) ) {
-            UplinkSnprintf ( result, resultsize, "%s/%s", themeName, filename );
+            UplinkSnprintf ( result, resultsize, "%s/%s", themeName.c_str (), filename );
 
 		} else {
             UplinkSnprintf ( result, resultsize, "graphics/%s", filename );
@@ -377,7 +379,7 @@ void Options::RequestShutdownChange ( const char *optionName, int newValue )
 {
 
     OptionChange *oc = new OptionChange ();
-    UplinkStrncpy ( oc->name, optionName, sizeof ( oc->name ) );
+    oc->name = optionName;
     oc->value = newValue;
 
     shutdownChanges.PutData( oc );
@@ -392,7 +394,7 @@ void Options::ApplyShutdownChanges ()
         OptionChange *oc = shutdownChanges.GetData(0);
         shutdownChanges.RemoveData(0);
 
-        SetOptionValue ( oc->name, oc->value );
+        SetOptionValue ( oc->name.c_str (), oc->value );
 
         delete oc;
 
@@ -455,15 +457,15 @@ bool Options::Load ( [[maybe_unused]] FILE *file )
 		// 't' in the optionsfile at this point signals
 		// theme name comes next
 
-		char newThemeName[sizeof(themeName)];
+		char newThemeName[128];
 		size_t newThemeLen;
 
 		if ( fgetc(optionsfile) == 't' )
 			if ( fread(&newThemeLen, sizeof(newThemeLen), 1, optionsfile) == 1 )
-				if ( newThemeLen + 1 < sizeof(themeName) )
+				if ( newThemeLen + 1 < 128 )
 					if ( fread(newThemeName, newThemeLen, 1, optionsfile) == 1 ) {
 						  newThemeName[newThemeLen] = '\0';
-						  UplinkStrncpy(themeName, newThemeName, sizeof ( themeName ));
+						  themeName = newThemeName;
 					}
 
 		if ( encrypted )
@@ -513,9 +515,9 @@ void Options::Save ( [[maybe_unused]] FILE *file )
 		SaveID_END ( optionsfile );
 
 		fputc('t', optionsfile);
-		size_t themeLen = strlen(themeName);
+		size_t themeLen = strlen(themeName.c_str ());
 		fwrite(&themeLen, sizeof(themeLen), 1, optionsfile);
-		fwrite(themeName, themeLen, 1, optionsfile);
+		fwrite(themeName.c_str (), themeLen, 1, optionsfile);
 
 		fclose ( optionsfile );
 
@@ -562,8 +564,8 @@ Options *options;
 Option::Option()
 {
 
-	UplinkStrncpy ( name, "", sizeof ( name ) );
-	UplinkStrncpy ( tooltip, "", sizeof ( tooltip ) );
+	name = "";
+	tooltip = "";
 	yesorno = false;
 	visible = true;
 	value = 0;
@@ -579,7 +581,7 @@ void Option::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_OPTION_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -587,7 +589,7 @@ void Option::SetTooltip ( const char *newtooltip )
 {
 
 	UplinkAssert ( strlen(newtooltip) < SIZE_OPTION_TOOLTIP );
-	UplinkStrncpy ( tooltip, newtooltip, sizeof ( tooltip ) );
+	tooltip = newtooltip;
 
 }
 
@@ -617,17 +619,9 @@ bool Option::Load ( FILE *file )
 
 	LoadID ( file );
 
-	if ( !FileReadData ( name, sizeof(name), 1, file ) ) {
-		name [ 0 ] = '\0';
-		return false;
-	}
-	name [ sizeof(name) - 1 ] = '\0';
+	if ( !LoadFixedString ( name, SIZE_OPTION_NAME, file ) ) return false;
 
-	if ( !FileReadData ( tooltip, sizeof(tooltip), 1, file ) ) {
-		tooltip [ 0 ] = '\0';
-		return false;
-	}
-	tooltip [ sizeof(tooltip) - 1 ] = '\0';
+	if ( !LoadFixedString ( tooltip, SIZE_OPTION_TOOLTIP, file ) ) return false;
 
 	if ( !FileReadData ( &yesorno, sizeof(yesorno), 1, file ) ) return false;
 	if ( !FileReadData ( &visible, sizeof(visible), 1, file ) ) return false;
@@ -644,8 +638,8 @@ void Option::Save ( FILE *file )
 
 	SaveID ( file );
 
-	fwrite ( name, sizeof(name), 1, file );
-	fwrite ( tooltip, sizeof(tooltip), 1, file );
+	SaveFixedString ( name, SIZE_OPTION_NAME, file );
+	SaveFixedString ( tooltip, SIZE_OPTION_TOOLTIP, file );
 	fwrite ( &yesorno, sizeof(yesorno), 1, file );
 	fwrite ( &visible, sizeof(visible), 1, file );
 	fwrite ( &value, sizeof(value), 1, file );
@@ -657,7 +651,7 @@ void Option::Save ( FILE *file )
 void Option::Print ()
 {
 
-	printf ( "Option : name=%s, value=%d\n", name, value );
+	printf ( "Option : name=%s, value=%d\n", name.c_str (), value );
 	printf ( "\tYesOrNo=%d, Visible=%d\n", yesorno, visible );
 
 }

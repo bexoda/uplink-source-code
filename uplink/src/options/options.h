@@ -15,6 +15,8 @@
 #ifndef _included_options_h
 #define _included_options_h
 
+#include <string>
+
 #include "app/globals.h"
 #include "app/uplinkobject.h"
 
@@ -32,10 +34,10 @@ protected:
 	BTree <Option *> options;
     LList <OptionChange *> shutdownChanges;
 
-    char themeName[128];
-    char themeAuthor[128];
-    char themeTitle[128];
-    char themeDescription[1024];
+    std::string themeName;
+    std::string themeAuthor;
+    std::string themeTitle;
+    std::string themeDescription;
     BTree <ColourOption *> colours;
 
 public:
@@ -57,9 +59,9 @@ public:
 	LList <Option *> *GetAllOptions ( const char *searchstring, bool returnhidden );		// String can be NULL - will return ALL
 
     void SetThemeName ( const char *newThemeName );
-    char *GetThemeName ();
-    char *GetThemeTitle ();
-    char *GetThemeDescription ();
+    const char *GetThemeName ();
+    const char *GetThemeTitle ();
+    const char *GetThemeDescription ();
     
     ColourOption *GetColour     ( const char *colourName );                                   // Always safe - returns BLACK if not found
 
@@ -90,8 +92,8 @@ class Option : public UplinkObject
 
 public:
 
-	char name [SIZE_OPTION_NAME];
-	char tooltip [SIZE_OPTION_TOOLTIP];
+	std::string name;
+	std::string tooltip;
 
 	bool yesorno;										// Is this a boolean option
 	bool visible;										// Is this a hidden option
@@ -126,7 +128,7 @@ class OptionChange
 public:
     OptionChange () {};
 
-    char name [SIZE_OPTION_NAME];
+    std::string name;
     int value;
 };
 
