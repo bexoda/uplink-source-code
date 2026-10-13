@@ -36,7 +36,6 @@ SeizeGatewayEvent::SeizeGatewayEvent ()
 SeizeGatewayEvent::~SeizeGatewayEvent ()
 {
 
-	if ( reason ) delete [] reason;
 
 }
 
@@ -51,10 +50,7 @@ void SeizeGatewayEvent::SetName ( const char *newname )
 void SeizeGatewayEvent::SetReason ( const char *newreason )
 {
 
-	if ( reason )
-		delete [] reason;
-	reason = new char [strlen(newreason)+1];
-	UplinkSafeStrcpy ( reason, newreason );
+	reason = newreason;
 
 }
 
@@ -71,7 +67,7 @@ void SeizeGatewayEvent::Run ()
 	Person *person = game->GetWorld ()->GetPerson ( name.c_str () );
 	UplinkAssert (person);
 
-	ConsequenceGenerator::SeizeGateway ( person, reason );
+	ConsequenceGenerator::SeizeGateway ( person, reason.c_str () );
 
 	//
 	// If this is the player, then it's GAME OVER
@@ -84,7 +80,7 @@ void SeizeGatewayEvent::Run ()
 			std::ostringstream deathmsg;
 
 			deathmsg << "Disavowed by Uplink Corporation at " << game->GetWorld ()->date.GetLongString ()
-					 << "\nFor " << reason
+					 << "\nFor " << reason.c_str ()
 					 << "\n";
 
 			game->GameOver ( deathmsg.str ().c_str () );
@@ -146,7 +142,7 @@ char *SeizeGatewayEvent::GetLongString ()
 	longstring << "Seize Gateway Event\n"
 			   << "For : " << name << "\n"
 			   << "GatewayID : " << gateway_id << "\n"
-			   << "Reason : " << reason;
+			   << "Reason : " << reason.c_str ();
 	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
@@ -194,7 +190,7 @@ void SeizeGatewayEvent::Print ()
 
 	printf ( "Seize Gateway Event for %s, Gateway no. %d:\n", name.c_str (), gateway_id );
 	UplinkEvent::Print ();
-	printf ( "%s\n", reason );
+	printf ( "%s\n", reason.c_str () );
 
 
 }

@@ -11,6 +11,8 @@
 #ifndef _included_seizeevent_h
 #define _included_seizeevent_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 
@@ -23,7 +25,7 @@ class SeizeGatewayEvent : public UplinkEvent
 
 protected:
 
-	char *reason;
+	OptString reason;
 
 public:
 

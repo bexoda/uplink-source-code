@@ -720,7 +720,7 @@ void NewsGenerator::AllFilesDeleted ( Computer *comp, const char *filetype )
 
 }
 
-void NewsGenerator::Arrested ( Person *person, Computer *comp, char *reason )
+void NewsGenerator::Arrested ( Person *person, Computer *comp, const char *reason )
 {
 
 	UplinkAssert ( person );

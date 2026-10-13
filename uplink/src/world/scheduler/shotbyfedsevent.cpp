@@ -27,7 +27,6 @@ ShotByFedsEvent::ShotByFedsEvent ()
 ShotByFedsEvent::~ShotByFedsEvent ()
 {
 
-	if ( reason ) delete [] reason;
 
 }
 
@@ -42,10 +41,7 @@ void ShotByFedsEvent::SetName ( const char *newname )
 void ShotByFedsEvent::SetReason ( const char *newreason )
 {
 
-	if ( reason )
-		delete [] reason;
-	reason = new char [strlen(newreason)+1];
-	UplinkSafeStrcpy ( reason, newreason );
+	reason = newreason;
 
 }
 
@@ -57,7 +53,7 @@ void ShotByFedsEvent::Run ()
 
 	person->SetStatus ( PERSON_STATUS_DEAD );
 
-	ConsequenceGenerator::ShotByFeds ( person, reason );
+	ConsequenceGenerator::ShotByFeds ( person, reason.c_str () );
 
 }
 
@@ -77,7 +73,7 @@ char *ShotByFedsEvent::GetLongString ()
 	std::ostringstream longstring;
 	longstring << "Shot By Feds Event\n"
 			   << "For : " << name << "\n"
-			   << "Reason : " << reason;
+			   << "Reason : " << reason.c_str ();
 	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
@@ -122,7 +118,7 @@ void ShotByFedsEvent::Print ()
 
 	printf ( "ShotByFedsEvent : for %s\n", name.c_str () );
 	UplinkEvent::Print ();
-	printf ( "Reason : %s\n", reason );
+	printf ( "Reason : %s\n", reason.c_str () );
 
 }
 

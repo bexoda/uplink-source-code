@@ -11,6 +11,8 @@
 #ifndef _included_shotbyfedsevent_h
 #define _included_shotbyfedsevent_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -29,7 +31,7 @@ class ShotByFedsEvent : public UplinkEvent
 
 protected:
 
-	char *reason;
+	OptString reason;
 
 public:
 

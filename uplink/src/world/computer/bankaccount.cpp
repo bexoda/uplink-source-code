@@ -214,9 +214,9 @@ bool BankAccount::HasTransferOccured ( char *s_ip, char *t_ip, int t_accno, int 
     			UplinkAssert ( al->data1 );
 	    		UplinkAssert ( al->data2 );
 
-				if ( strstr ( al->data1, t_ip )      != 0 &&
-				     strstr ( al->data1, t_accno_s ) != 0 &&
-				     strcmp ( al->data2, amount_s )  == 0 ) {
+				if ( strstr ( al->data1.c_str (), t_ip )      != 0 &&
+				     strstr ( al->data1.c_str (), t_accno_s ) != 0 &&
+				     strcmp ( al->data2.c_str (), amount_s )  == 0 ) {
 
 				    // This is the correct log in the source account
 
@@ -254,9 +254,9 @@ bool BankAccount::HasTransferOccured ( char *s_ip, char *t_ip, int t_accno, int 
 			    UplinkAssert ( al->data1 );
 			    UplinkAssert ( al->data2 );
 
-				if ( strstr ( al->data1, s_ip )      != 0 &&
-				     strstr ( al->data1, s_accno_s ) != 0 &&
-				     strcmp ( al->data2, amount_s )  == 0 ) {
+				if ( strstr ( al->data1.c_str (), s_ip )      != 0 &&
+				     strstr ( al->data1.c_str (), s_accno_s ) != 0 &&
+				     strcmp ( al->data2.c_str (), amount_s )  == 0 ) {
 			
 				    // This is the correct log in the target account
 
@@ -295,8 +295,8 @@ bool BankAccount::HasTransferOccured ( const char *person, int amount )
           	    UplinkAssert ( al->data2 );
 			    UplinkAssert ( al->data3 );
 
-                if ( strcmp ( al->data2, amount_s ) == 0 &&
-				     strcmp ( al->data3, person )   == 0 ) {
+                if ( strcmp ( al->data2.c_str (), amount_s ) == 0 &&
+				     strcmp ( al->data3.c_str (), person )   == 0 ) {
 
 				    // This is it
 				    return true;

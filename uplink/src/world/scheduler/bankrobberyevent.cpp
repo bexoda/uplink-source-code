@@ -63,9 +63,9 @@ void BankRobberyEvent::Run ()
 
 					if ( al->data1 && al->data2 ) {
 
-						if ( strstr ( al->data1, target_ip.c_str () )    != 0 &&
-							 strstr ( al->data1, target_accno.c_str () ) != 0 &&
-							 strcmp ( al->data2, amount_s )     == 0 ) {
+						if ( strstr ( al->data1.c_str (), target_ip.c_str () )    != 0 &&
+							 strstr ( al->data1.c_str (), target_accno.c_str () ) != 0 &&
+							 strcmp ( al->data2.c_str (), amount_s )     == 0 ) {
 
 							rumbled = true;
 							break;
@@ -100,9 +100,9 @@ void BankRobberyEvent::Run ()
 
 						if ( al->data1 && al->data2 ) {
 
-							if ( strstr ( al->data1, source_ip.c_str () )    != 0 &&
-								 strstr ( al->data1, source_accno.c_str () ) != 0 &&
-								 strcmp ( al->data2, amount_s )     == 0 ) {
+							if ( strstr ( al->data1.c_str (), source_ip.c_str () )    != 0 &&
+								 strstr ( al->data1.c_str (), source_accno.c_str () ) != 0 &&
+								 strcmp ( al->data2.c_str (), amount_s )     == 0 ) {
 
 								rumbled = true;
 								break;

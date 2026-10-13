@@ -30,8 +30,6 @@ ArrestEvent::ArrestEvent ()
 ArrestEvent::~ArrestEvent ()
 {
 
-	if ( reason ) delete [] reason;
-	if ( ip ) delete [] ip;
 
 }
 
@@ -46,20 +44,14 @@ void ArrestEvent::SetName ( const char *newname )
 void ArrestEvent::SetReason ( const char *newreason )
 {
 
-	if ( reason )
-		delete [] reason;
-	reason = new char [strlen(newreason)+1];
-	UplinkSafeStrcpy ( reason, newreason );
+	reason = newreason;
 
 }
 
 void ArrestEvent::SetIP ( const char *newip )
 {
 
-	if ( ip )
-		delete [] ip;
-	ip = new char [strlen(newip)+1];
-	UplinkSafeStrcpy ( ip, newip );
+	ip = newip;
 
 }
 
@@ -76,13 +68,13 @@ void ArrestEvent::Run ()
 	Computer *comp = NULL;
 
 	if ( ip ) {
-		VLocation *vl = game->GetWorld ()->GetVLocation ( ip );
+		VLocation *vl = game->GetWorld ()->GetVLocation ( ip.c_str () );
 		UplinkAssert (vl);
 		comp = vl->GetComputer ();
 		UplinkAssert (comp);
 	}
 
-	ConsequenceGenerator::Arrested ( person, comp, reason );
+	ConsequenceGenerator::Arrested ( person, comp, reason.c_str () );
 
 }
 
@@ -101,7 +93,7 @@ char *ArrestEvent::GetLongString ()
 	std::ostringstream longstring;
 	longstring << "ArrestEvent:\n"
 			   << "For : " << name << "\n"
-			   << "Reason : " << reason;
+			   << "Reason : " << reason.c_str ();
 
 	return UplinkStrdup ( longstring.str ().c_str () );
 
@@ -153,8 +145,8 @@ void ArrestEvent::Print ()
 	printf ( "Arrest Event for %s:\n", name.c_str () );
 	UplinkEvent::Print ();
 
-	printf ( "%s\n", reason );
-	if ( ip ) printf ( "IP:%s\n", ip );
+	printf ( "%s\n", reason.c_str () );
+	if ( ip ) printf ( "IP:%s\n", ip.c_str () );
 
 
 }

@@ -11,6 +11,8 @@
 #ifndef _included_arrestevent_h
 #define _included_arrestevent_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 
@@ -23,8 +25,8 @@ class ArrestEvent : public UplinkEvent
 
 protected:
 
-	char *reason;
-	char *ip;							
+	OptString reason;
+	OptString ip;							
 
 public:
 

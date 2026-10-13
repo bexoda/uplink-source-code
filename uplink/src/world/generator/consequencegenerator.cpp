@@ -317,7 +317,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 }
 
-void ConsequenceGenerator::ShotByFeds ( Person *person, char * /*reason*/ )
+void ConsequenceGenerator::ShotByFeds ( Person *person, const char * /*reason*/ )
 {
 
 	UplinkAssert (person);
@@ -329,7 +329,7 @@ void ConsequenceGenerator::ShotByFeds ( Person *person, char * /*reason*/ )
 
 }
 
-void ConsequenceGenerator::Arrested ( Person *person, Computer *comp, char *reason )
+void ConsequenceGenerator::Arrested ( Person *person, Computer *comp, const char *reason )
 {
 
 	UplinkAssert (person);
@@ -404,7 +404,7 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 
 }
 
-void ConsequenceGenerator::SeizeGateway  ( Person *person, char * /*reason*/ )
+void ConsequenceGenerator::SeizeGateway  ( Person *person, const char * /*reason*/ )
 {
 
 	UplinkAssert (person);

@@ -40,7 +40,6 @@ GameObituary::GameObituary ()
 GameObituary::~GameObituary ()
 {
 
-	if ( gameoverreason ) delete [] gameoverreason;
 
 }
 
@@ -48,16 +47,14 @@ GameObituary::~GameObituary ()
 void GameObituary::SetGameOverReason ( const char *newreason )
 {
 
-	if ( gameoverreason ) delete [] gameoverreason;
-	gameoverreason = new char [strlen(newreason)+1];
-	UplinkSafeStrcpy ( gameoverreason, newreason );
+	gameoverreason = newreason;
 
 }
 
-char *GameObituary::GameOverReason ()
+const char *GameObituary::GameOverReason ()
 {
 
-	return gameoverreason;
+	return gameoverreason.c_str ();
 
 }
 
@@ -189,7 +186,7 @@ void GameObituary::Print  ()
     printf ( "WarezGameOver = %d\n", warezgameover );
 #endif
 
-	printf ( "Game over reason = %s\n", gameoverreason );
+	printf ( "Game over reason = %s\n", gameoverreason.c_str () );
 
 }
 

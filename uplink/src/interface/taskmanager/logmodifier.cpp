@@ -751,7 +751,7 @@ void LogModifier::CreateExpandedInterface ()
 			log->Print ();
 
 			EclRegisterCaptionChange ( fromip, log->fromip.c_str () );
-			if ( log->data1 ) EclRegisterCaptionChange ( data1, log->data1 );
+			if ( log->data1 ) EclRegisterCaptionChange ( data1, log->data1.c_str () );
 
 			logtype = log->TYPE;
 			ChangeLogType ( pid );

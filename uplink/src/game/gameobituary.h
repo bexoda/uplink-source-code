@@ -12,6 +12,8 @@
 #ifndef _included_gameobituary_h
 #define _included_gameobituary_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 #include "app/uplinkobject.h"
@@ -23,7 +25,7 @@ class GameObituary : public UplinkObject
 
 protected:
 
-	char *gameoverreason;
+	OptString gameoverreason;
 
 public:
 
@@ -48,7 +50,7 @@ public:
 	~GameObituary ();
 
 	void SetGameOverReason ( const char *newreason );
-	char *GameOverReason ();
+	const char *GameOverReason ();
     void SetDemoGameOver ( bool newvalue );
     void SetWarezGameOver ( bool newvalue );
 

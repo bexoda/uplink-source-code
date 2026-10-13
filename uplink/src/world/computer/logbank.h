@@ -10,6 +10,8 @@
 #ifndef _included_logbank_h
 #define _included_logbank_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -102,9 +104,9 @@ public:
 
 	int SUSPICIOUS;										// Was this a suspicious action?
 
-	char *data1;										// Misc data
-	char *data2;										// Check before Dereferencing.
-	char *data3;										// Left foot before right.
+	OptString data1;										// Misc data
+	OptString data2;										// Check before Dereferencing.
+	OptString data3;										// Left foot before right.
 
 public:
 
@@ -122,7 +124,7 @@ public:
 	void SetSuspicious ( int newSUSPICIOUS );
 
 	void SetData1 ( const char *newdata );
-	void SetData2 ( char *newdata );
+	void SetData2 ( const char *newdata );
 	void SetData3 ( const char *newdata );
 
 	char *GetDescription ();							// Must remember to delete result

@@ -159,7 +159,7 @@ const char *LogBank::TraceLog ( const char *to_ip, const char *logbank_ip, Date 
 				// Now look at the log
 
 				if ( al->TYPE == LOG_TYPE_BOUNCEBEGIN &&
-					 al->data1 && strcmp ( al->data1, to_ip ) == 0 ) {
+					 al->data1 && strcmp ( al->data1.c_str (), to_ip ) == 0 ) {
 
 					// This computer is the origin of the bounced call
 					// And is therefore the solution to this trace
@@ -167,7 +167,7 @@ const char *LogBank::TraceLog ( const char *to_ip, const char *logbank_ip, Date 
 
 				}
 				else if ( al->TYPE == LOG_TYPE_BOUNCE &&
-						  al->data1 && strcmp ( al->data1, to_ip ) == 0 ) {
+						  al->data1 && strcmp ( al->data1.c_str (), to_ip ) == 0 ) {
 
 					// Look up the source computer that created this log
 
@@ -403,9 +403,6 @@ AccessLog::AccessLog()
 AccessLog::~AccessLog()
 {
 
-	if ( data1 ) delete [] data1;
-	if ( data2 ) delete [] data2;
-	if ( data3 ) delete [] data3;
 
 }
 
@@ -431,9 +428,9 @@ void AccessLog::SetProperties ( AccessLog *copyme )
 	UplinkAssert (copyme);
 
 	SetProperties ( &(copyme->date), copyme->fromip.c_str (), copyme->fromname.c_str (), copyme->SUSPICIOUS, copyme->TYPE );
-	SetData1 ( copyme->data1 );
-	SetData2 ( copyme->data2 );
-	SetData3 ( copyme->data3 );
+	SetData1 ( copyme->data1.c_str () );
+	SetData2 ( copyme->data2.c_str () );
+	SetData3 ( copyme->data3.c_str () );
 
 }
 
@@ -462,39 +459,21 @@ void AccessLog::SetSuspicious ( int newSUSPICIOUS )
 void AccessLog::SetData1 ( const char *newdata )
 {
 
-	if ( data1 ) delete [] data1;
-	data1 = NULL;
-
-	if ( newdata ) {
-		data1 = new char [strlen(newdata)+1];
-		UplinkSafeStrcpy ( data1, newdata );
-	}
+	data1 = newdata;
 
 }
 
-void AccessLog::SetData2 ( char *newdata )
+void AccessLog::SetData2 ( const char *newdata )
 {
 
-	if ( data2 ) delete [] data2;
-	data2 = NULL;
-
-	if ( newdata ) {
-		data2 = new char [strlen(newdata)+1];
-		UplinkSafeStrcpy ( data2, newdata );
-	}
+	data2 = newdata;
 
 }
 
 void AccessLog::SetData3 ( const char *newdata )
 {
 
-	if ( data3 ) delete [] data3;
-	data3 = NULL;
-
-	if ( newdata ) {
-		data3 = new char [strlen(newdata)+1];
-		UplinkSafeStrcpy ( data3, newdata );
-	}
+	data3 = newdata;
 
 }
 
@@ -528,12 +507,12 @@ char *AccessLog::GetDescription ()
 
 		case LOG_TYPE_BOUNCEBEGIN:
 			UplinkAssert (data1);
-			fullcaption << "Connection opened to " << data1;
+			fullcaption << "Connection opened to " << data1.c_str ();
 			break;
 
 		case LOG_TYPE_BOUNCE:
 			UplinkAssert (data1);
-			fullcaption << "Connection from " << fromip << " routed to " << data1;
+			fullcaption << "Connection from " << fromip << " routed to " << data1.c_str ();
 			break;
 
 		case LOG_TYPE_TRANSFERTO:
@@ -543,9 +522,9 @@ char *AccessLog::GetDescription ()
 
 			    char ip [SIZE_VLOCATION_IP];
 			    char accno [16];
-			    sscanf ( data1, "%s %s", ip, accno );
+			    sscanf ( data1.c_str (), "%s %s", ip, accno );
 
-			    fullcaption << data2 << "c transfered to IP " << ip << ", acc no. " << accno;
+			    fullcaption << data2.c_str () << "c transfered to IP " << ip << ", acc no. " << accno;
 
             }
             else {
@@ -565,9 +544,9 @@ char *AccessLog::GetDescription ()
 
 			    char ip [SIZE_VLOCATION_IP];
 			    char accno [16];
-			    sscanf ( data1, "%s %s", ip, accno );
+			    sscanf ( data1.c_str (), "%s %s", ip, accno );
 
-			    fullcaption << data2 << "c deposited from IP " << ip << ", acc no. " << accno;
+			    fullcaption << data2.c_str () << "c deposited from IP " << ip << ", acc no. " << accno;
 
             }
             else {
@@ -582,7 +561,7 @@ char *AccessLog::GetDescription ()
 
 		default:
 			UplinkAssert (data1);
-			fullcaption << "From " << fromip << " : " << data1;
+			fullcaption << "From " << fromip << " : " << data1.c_str ();
 			break;
 
 	};
@@ -655,9 +634,9 @@ void AccessLog::Print ()
 	else
 												printf ( "This was not suspicious\n" );
 
-	if ( data1 ) printf ( "Data1 : %s\n", data1 );
-	if ( data2 ) printf ( "Data2 : %s\n", data2 );
-	if ( data3 ) printf ( "Data3 : %s\n", data3 );
+	if ( data1 ) printf ( "Data1 : %s\n", data1.c_str () );
+	if ( data2 ) printf ( "Data2 : %s\n", data2.c_str () );
+	if ( data3 ) printf ( "Data3 : %s\n", data3.c_str () );
 
 }
 
