@@ -62,7 +62,7 @@ void Player::GiveMessage ( Message *message )
 
 	if ( message->GetData () ) {
 		Data *datacopy = new Data ( message->GetData () );
-		gateway.databank.PutData ( datacopy );
+		if ( !gateway.databank.PutData ( datacopy ) ) delete datacopy;
 	}
 
 }

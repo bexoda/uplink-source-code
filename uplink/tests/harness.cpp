@@ -15,12 +15,14 @@
 #include "world/date.h"
 #include "options/options.h"
 #include "eclipse.h"
+#include "vanbakel.h"
 
 namespace harness {
 
+static bool booted = false;
+
 void Boot ()
 {
-	static bool booted = false;
 	if ( booted ) return;
 	booted = true;
 
@@ -53,6 +55,16 @@ void NewWorld ( unsigned seed )
 	game = new Game ();
 	srand ( seed );
 	game->NewGame ();
+}
+
+void Shutdown ()
+{
+	if ( !booted ) return;
+	EclReset ( app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" ),
+	           app->GetOptions ()->GetOptionValue ( "graphics_screenheight" ) );
+	delete game;
+	game = NULL;
+	SvbReset ();		// as App::Close does: running tools outlive the game
 }
 
 std::string ScratchFile ( const char *name )

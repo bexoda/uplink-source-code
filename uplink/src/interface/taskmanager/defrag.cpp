@@ -156,7 +156,7 @@ void Defrag::StopDefrag ( )
 		Data *data = transitData.GetData (i);
 		UplinkAssert (data);
 
-		databank->PutData ( data );
+		if ( !databank->PutData ( data ) ) delete data;
 
 	}
 	

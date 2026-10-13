@@ -462,7 +462,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 		while ( target->databank.FindValidPlacement (file) == -1 )
 			target->databank.SetSize ( target->databank.GetSize () + file->size );
 
-		target->databank.PutData ( file );
+		if ( !target->databank.PutData ( file ) ) delete file;
 
 	}
 
@@ -861,7 +861,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 		while ( target->databank.FindValidPlacement (file) == -1 )
 			target->databank.SetSize ( target->databank.GetSize () + file->size );
 
-		target->databank.PutData ( file );
+		if ( !target->databank.PutData ( file ) ) delete file;
 
 	}
 

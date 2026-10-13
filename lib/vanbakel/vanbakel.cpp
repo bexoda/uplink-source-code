@@ -23,9 +23,10 @@ local int nextpid = 0;
 void SvbReset ()
 {
 
-	for ( int i = 0; i < tasklist.Size (); i++ )
-		if ( tasklist.ValidIndex ( i ) && tasklist.GetData ( i ) )
-			SvbRemoveTask ( tasklist.GetData ( i )->task );
+	// SvbRemoveTask shrinks the list, so always take the first task: walking an index
+	// forward skipped every other task and Empty () then leaked them.
+	while ( tasklist.ValidIndex ( 0 ) )
+		SvbRemoveTask ( tasklist.GetData ( 0 )->pid );
 
 	tasklist.Empty ();
 	nextpid = 0;

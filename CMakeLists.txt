@@ -169,7 +169,7 @@ if(UPLINK_TESTS)
   set(T ${CMAKE_SOURCE_DIR}/uplink/tests)
   add_executable(uplink_tests
     ${T}/main.cpp ${T}/harness.cpp ${T}/test_world.cpp ${T}/test_golden.cpp
-    ${T}/test_tools.cpp ${T}/test_options.cpp ${T}/test_optstring.cpp ${T}/test_mail.cpp)
+    ${T}/test_tools.cpp ${T}/test_options.cpp ${T}/test_optstring.cpp ${T}/test_mail.cpp ${T}/test_scheduler.cpp)
   target_link_libraries(uplink_tests PRIVATE uplink_game Catch2::Catch2 ZLIB::ZLIB)
   target_compile_definitions(uplink_tests PRIVATE
     UPLINK_TEST_FIXTURES="${CMAKE_SOURCE_DIR}/uplink/tests/fixtures")

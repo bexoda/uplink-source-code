@@ -28,4 +28,7 @@ void RunWorld ( int gameSeconds );
 
 std::string ScratchFile ( const char *name );
 
+// Frees the game and every registered button, so LeakSanitizer reports only real leaks.
+void Shutdown ();
+
 }

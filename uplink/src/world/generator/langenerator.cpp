@@ -320,7 +320,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		data->SetTitle ( datatitle );
 		data->SetDetails ( TYPE, size, (encrypted ? NumberGenerator::RandomNumber ( 5 ) : 0),
 									   (compressed ? NumberGenerator::RandomNumber ( 5 ) : 0) );
-		comp->databank.PutData ( data );
+		if ( !comp->databank.PutData ( data ) ) delete data;
 
 	}
 
@@ -418,7 +418,7 @@ Computer  *LanGenerator::GenerateLAN ( const char *companyname, int difficulty )
 		data->SetTitle ( datatitle );
 		data->SetDetails ( TYPE, size, (encrypted ? NumberGenerator::RandomNumber ( 5 ) : 0),
 									   (compressed ? NumberGenerator::RandomNumber ( 5 ) : 0) );
-		comp->databank.PutData ( data );
+		if ( !comp->databank.PutData ( data ) ) delete data;
 
 	}
 

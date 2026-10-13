@@ -611,7 +611,7 @@ void Gateway::GiveAllSoftware ()
 						   0, 0,
 						   (float) SOFTWARE_UPGRADES [i].data,
 						   SOFTWARE_UPGRADES [i].TYPE );
-		databank.PutData ( prog );
+		if ( !databank.PutData ( prog ) ) delete prog;
 
 	}
 

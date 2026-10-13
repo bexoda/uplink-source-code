@@ -1084,17 +1084,17 @@ void PlotGenerator::Run_Act1Scene1 ()
     Data *data = new Data ();
     data->SetTitle ( "Revelation" );
     data->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, 1.0, SOFTWARETYPE_OTHER );
-    test->databank.PutData ( data );
+    if ( !test->databank.PutData ( data ) ) delete data;
 
     Data *data2 = new Data ();
     data2->SetTitle ( "Faith" );
     data2->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, 2.0, SOFTWARETYPE_OTHER );
-    test->databank.PutData ( data2 );
+    if ( !test->databank.PutData ( data2 ) ) delete data2;
 
     Data *data3 = new Data ();
     data3->SetTitle ( "Revelation_Tracker" );
     data3->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, 1.0, SOFTWARETYPE_OTHER );
-    test->databank.PutData ( data3 );
+    if ( !test->databank.PutData ( data3 ) ) delete data3;
 
 
 #else
@@ -1404,7 +1404,7 @@ void PlotGenerator::Run_Act1Scene5 ()
 	data->SetTitle ( "RevelationCoreV0.7" );
 	data->SetDetails ( DATATYPE_DATA, 3, 5, 0, 0.7f );
 	hiscomp->databank.SetSize ( hiscomp->databank.GetSize () + 5 );
-	hiscomp->databank.PutData ( data );
+	if ( !hiscomp->databank.PutData ( data ) ) delete data;
 
 	DialogScreen *ds = (DialogScreen *) hiscomp->GetComputerScreen (3);
 	UplinkAssert ( ds->GetOBJECTID () == OID_DIALOGSCREEN );
@@ -3010,7 +3010,7 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
     data->SetTitle ( "RevelationTracer" );
     data->SetDetails ( DATATYPE_PROGRAM, 3 );
 
-    ourcomp->databank.PutData ( data );
+    if ( !ourcomp->databank.PutData ( data ) ) delete data;
 
 	//
 	// Add in a new account for the player to use
@@ -3112,7 +3112,7 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
     data->SetTitle ( "Revelation" );
     data->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, 1.0 );
 
-    ourcomp->databank.PutData ( data );
+    if ( !ourcomp->databank.PutData ( data ) ) delete data;
 
 	//
 	// Add in a new account for the player to use
@@ -3249,7 +3249,7 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
 		while ( target->databank.FindValidPlacement (file) == -1 )
 			target->databank.SetSize ( target->databank.GetSize () + file->size );
 
-		target->databank.PutData ( file );
+		if ( !target->databank.PutData ( file ) ) delete file;
 
 	}
 
@@ -3340,7 +3340,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
     data->SetTitle ( "Revelation_Tracker" );
     data->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, 1.0, SOFTWARETYPE_OTHER );
 
-    ourcomp->databank.PutData ( data );
+    if ( !ourcomp->databank.PutData ( data ) ) delete data;
 
     //
     // Put Faith on file server
@@ -3349,7 +3349,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
     data2->SetTitle ( "Faith" );
     data2->SetDetails ( DATATYPE_PROGRAM, 3, 0, 0, version_faith, SOFTWARETYPE_OTHER );
 
-    ourcomp->databank.PutData ( data2 );
+    if ( !ourcomp->databank.PutData ( data2 ) ) delete data2;
 
 	//
 	// Add in a new account for the player to use
@@ -3508,7 +3508,7 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
 		while ( target->databank.FindValidPlacement (file) == -1 )
 			target->databank.SetSize ( target->databank.GetSize () + file->size );
 
-		target->databank.PutData ( file );
+		if ( !target->databank.PutData ( file ) ) delete file;
 
 	}
 
@@ -3662,7 +3662,7 @@ Mission *PlotGenerator::GenerateMission_ShinyHammer ()
 		while ( target->databank.FindValidPlacement (file) == -1 )
 			target->databank.SetSize ( target->databank.GetSize () + file->size );
 
-		target->databank.PutData ( file );
+		if ( !target->databank.PutData ( file ) ) delete file;
 
     }
 

@@ -113,7 +113,7 @@ void InstallHardwareEvent::Run ()
             if      ( strcmp ( hwsale->title.c_str (), "Gateway Self Destruct" ) == 0 )      driver->SetTitle ( "Gateway_Nuke" );
             else if ( strcmp ( hwsale->title.c_str (), "Gateway Motion Sensor" ) == 0 )      driver->SetTitle ( "Motion_Sensor" );
 
-		    game->GetWorld ()->GetPlayer ()->gateway.databank.PutData ( driver );
+		    if ( !game->GetWorld ()->GetPlayer ()->gateway.databank.PutData ( driver ) ) delete driver;
 
         }
 

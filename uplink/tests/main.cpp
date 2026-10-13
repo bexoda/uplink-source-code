@@ -4,6 +4,8 @@
 
 #include <catch2/catch_session.hpp>
 
+#include "harness.h"
+
 #include <string>
 #include <vector>
 #include <unistd.h>
@@ -26,5 +28,7 @@ int main ( int argc, char **argv )
 
 	std::vector<char *> cargs;
 	for ( auto &a : args ) cargs.push_back ( a.data () );
-	return Catch::Session ().run ( (int) cargs.size (), cargs.data () );
+	int result = Catch::Session ().run ( (int) cargs.size (), cargs.data () );
+	harness::Shutdown ();
+	return result;
 }

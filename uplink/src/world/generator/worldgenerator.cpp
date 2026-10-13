@@ -1402,7 +1402,7 @@ void WorldGenerator::GenerateUplinkInternalServicesSystem ()
     Data *program = new Data ();
     program->SetTitle ( "Uplink_Agent_List" );
     program->SetDetails ( DATATYPE_PROGRAM, 2, 0, 0, 1.0, SOFTWARETYPE_OTHER );
-    comp->databank.PutData ( program );
+    if ( !comp->databank.PutData ( program ) ) delete program;
 
 	for ( int i = 0; i < 10; ++i ) {
 
@@ -1417,7 +1417,7 @@ void WorldGenerator::GenerateUplinkInternalServicesSystem ()
 		    file->SetTitle ( datatitle );
 		    file->SetDetails ( DATATYPE_DATA, size, encrypted, 0 );
 
-            comp->databank.PutData ( file );
+            if ( !comp->databank.PutData ( file ) ) delete file;
 
         }
 
@@ -1447,17 +1447,17 @@ void WorldGenerator::GenerateUplinkTestMachine ()
 	Data *data1 = new Data ();
 	data1->SetTitle ( "Uplink test data" );
 	data1->SetDetails ( DATATYPE_DATA, 6, 0, 0 );
-	comp->databank.PutData ( data1 );
+	if ( !comp->databank.PutData ( data1 ) ) delete data1;
 
 	Data *data2 = new Data ();
 	data2->SetTitle ( "Random file" );
 	data2->SetDetails ( DATATYPE_DATA, 3, 4, 1 );
-	comp->databank.PutData ( data2 );
+	if ( !comp->databank.PutData ( data2 ) ) delete data2;
 
 	Data *data3 = new Data ();
 	data3->SetTitle ( "Sample program" );
 	data3->SetDetails ( DATATYPE_PROGRAM, 2, 0, 0 );
-	comp->databank.PutData ( data3 );
+	if ( !comp->databank.PutData ( data3 ) ) delete data3;
 
 	// Generate an admin log on
 
@@ -3067,7 +3067,7 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyn
 		data->SetTitle ( datatitle );
 		data->SetDetails ( TYPE, size, (encrypted ? NumberGenerator::RandomNumber ( 5 ) : 0),
 									   (compressed ? NumberGenerator::RandomNumber ( 5 ) : 0) );
-		comp->databank.PutData ( data );
+		if ( !comp->databank.PutData ( data ) ) delete data;
 
 	}
 
@@ -3224,7 +3224,7 @@ Computer *WorldGenerator::GenerateCentralMainframe ( const char *companyname )
 		data->SetTitle ( datatitle );
 		data->SetDetails ( TYPE, size, (encrypted ? NumberGenerator::RandomNumber ( 5 ) : 0),
 									   (compressed ? NumberGenerator::RandomNumber ( 5 ) : 0) );
-		comp->databank.PutData ( data );
+		if ( !comp->databank.PutData ( data ) ) delete data;
 
 	}
 
