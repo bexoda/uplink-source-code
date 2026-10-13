@@ -309,6 +309,9 @@ char *NameGenerator::GenerateComplexPassword ()
 	// change up to half the letters
 
 	char password [9];
+	// Called twice on purpose: the old UplinkStrncpy macro evaluated its source twice, and seeded
+	// worlds depend on the extra random draws (see uplink/tests/test_golden.cpp).
+	GeneratePassword ();
 	UplinkStrncpy ( password, GeneratePassword (), sizeof ( password ) );
 
 	int numchanges = NumberGenerator::RandomNumber ( 5 );

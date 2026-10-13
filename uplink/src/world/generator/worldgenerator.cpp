@@ -2792,6 +2792,9 @@ Company *WorldGenerator::GenerateCompany ()
 
 	// Generate the company
 	char companyname [SIZE_COMPANY_NAME];
+	// Called twice on purpose: the old UplinkStrncpy macro evaluated its source twice, and seeded
+	// worlds depend on the extra random draws (see uplink/tests/test_golden.cpp).
+	NameGenerator::GenerateCompanyName ();
 	UplinkStrncpy ( companyname, NameGenerator::GenerateCompanyName (), sizeof ( companyname ) );
 
 	int size      = (int) NumberGenerator::RandomNormalNumber ( COMPANYSIZE_AVERAGE,      COMPANYSIZE_RANGE );
@@ -2808,6 +2811,9 @@ Company *WorldGenerator::GenerateCompany_Bank ()
 {
 
 	char companyname [SIZE_COMPANY_NAME];
+    // Called twice on purpose: the old UplinkStrncpy macro evaluated its source twice, and seeded
+    // worlds depend on the extra random draws (see uplink/tests/test_golden.cpp).
+    NameGenerator::GenerateBankName ();
     UplinkStrncpy ( companyname, NameGenerator::GenerateBankName (), sizeof ( companyname ) );
 
 	int size      = (int) NumberGenerator::RandomNormalNumber ( 4, 4 );
@@ -3732,7 +3738,13 @@ Agent *WorldGenerator::GenerateAgent ()
 	char name [SIZE_PERSON_NAME];
 	char handle [SIZE_AGENT_HANDLE];
 
+    // Called twice on purpose: the old UplinkStrncpy macro evaluated its source twice, and seeded
+    // worlds depend on the extra random draws (see uplink/tests/test_golden.cpp).
+    NameGenerator::GeneratePersonName ();
     UplinkStrncpy ( name, NameGenerator::GeneratePersonName (), sizeof ( name ) );
+    // Called twice on purpose: the old UplinkStrncpy macro evaluated its source twice, and seeded
+    // worlds depend on the extra random draws (see uplink/tests/test_golden.cpp).
+    NameGenerator::GenerateAgentAlias ();
     UplinkStrncpy ( handle, NameGenerator::GenerateAgentAlias (), sizeof ( handle ) );
 
 	Computer *comp = GeneratePersonalComputer ( name );
