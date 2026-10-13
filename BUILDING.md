@@ -112,4 +112,21 @@ process. `ctest` runs with `detect_leaks=0` because those make every test exit n
   someone else (a message given to its recipient, an image given back to a button) the code
   says `release ()`; a `reset ()` there frees memory still in use. Destructors keep explicit
   `reset ()` calls where teardown order matters (`Game`, `Interface`).
-- Containers (`LList`, `BTree`, `DArray` holding owned pointers) are not converted yet.
+- Containers holding owned pointers (`LList <T *>`, `BTree <T *>`, `DArray <T *>`) are still
+  freed by hand with `DeleteLListData` and friends.
+
+## Containers
+
+`lib/tosser` keeps its 2003 interface, which the whole game uses, over new storage:
+`LList` and `DArray` are `std::vector`s, `BTree` is still the original unbalanced tree because
+saves and updates walk it in node-left-right order and that order is part of the save format.
+`uplink/tests/test_tosser.cpp` pins the behaviour, odd edge cases included; change the
+containers only with those tests and the golden save passing.
+
+## Performance
+
+    ./uplink_tests "[.bench]"                              # generate seed 1, simulate a day, save
+    UPLINK_BENCH_SECONDS=7200 valgrind --tool=callgrind ./uplink_tests "[.bench]"
+
+Release build, this machine: generate 0.07s, simulate one game day 0.75s (11.2s before the
+container work), save 0.02s.
