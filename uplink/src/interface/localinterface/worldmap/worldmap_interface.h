@@ -30,7 +30,7 @@ class WorldMapInterface : public LocalInterfaceScreen
 protected:
 
     static int  stipplepattern;
-    static void CycleStipplePattern ();
+    static void CycleStipplePattern ( int periodms );
    
     static void RemoveWorldMapInterface ();
 

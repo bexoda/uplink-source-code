@@ -164,8 +164,9 @@ option(UPLINK_TESTS "Build the test suite (needs Catch2 3)" ON)
 if(UPLINK_TESTS)
   find_package(Catch2 3 REQUIRED)
   enable_testing()
-  file(GLOB TEST_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/uplink/tests/*.cpp)
-  add_executable(uplink_tests ${TEST_SOURCES})
+  set(T ${CMAKE_SOURCE_DIR}/uplink/tests)
+  add_executable(uplink_tests
+    ${T}/main.cpp ${T}/harness.cpp ${T}/test_world.cpp ${T}/test_golden.cpp)
   target_link_libraries(uplink_tests PRIVATE uplink_game Catch2::Catch2 ZLIB::ZLIB)
   target_compile_definitions(uplink_tests PRIVATE
     UPLINK_TEST_FIXTURES="${CMAKE_SOURCE_DIR}/uplink/tests/fixtures")
@@ -175,5 +176,17 @@ if(UPLINK_TESTS)
   # their agent files in a scratch HOME, never the developer's ~/.uplink.
   catch_discover_tests(uplink_tests
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    PROPERTIES ENVIRONMENT "HOME=${CMAKE_BINARY_DIR}/test-home;SDL_AUDIODRIVER=dummy")
+    PROPERTIES ENVIRONMENT "HOME=${CMAKE_BINARY_DIR}/test-home")
+
+  # Screenshot tests need a window: they skip without DISPLAY. CI runs them under xvfb-run.
+  find_package(PNG REQUIRED)
+  add_executable(uplink_screen_tests
+    ${T}/main.cpp ${T}/harness.cpp ${T}/screens.cpp ${T}/test_screens.cpp)
+  target_link_libraries(uplink_screen_tests PRIVATE uplink_game Catch2::Catch2 PNG::PNG)
+  target_compile_definitions(uplink_screen_tests PRIVATE
+    UPLINK_TEST_SCREENS="${CMAKE_SOURCE_DIR}/uplink/tests/screens")
+  catch_discover_tests(uplink_screen_tests
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    PROPERTIES ENVIRONMENT "HOME=${CMAKE_BINARY_DIR}/test-home" LABELS screens
+               SKIP_RETURN_CODE 4)
 endif()

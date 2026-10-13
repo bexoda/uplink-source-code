@@ -13,6 +13,8 @@
 #include "game/game.h"
 #include "world/world.h"
 #include "world/date.h"
+#include "options/options.h"
+#include "eclipse.h"
 
 namespace harness {
 
@@ -21,6 +23,8 @@ void Boot ()
 	static bool booted = false;
 	if ( booted ) return;
 	booted = true;
+
+	setenv ( "SDL_AUDIODRIVER", "dummy", 0 );	// tests never need sound
 
 	char *exe = br_find_exe ( NULL );
 	Init_App ( exe );
@@ -41,6 +45,10 @@ void Boot ()
 void NewWorld ( unsigned seed )
 {
 	Boot ();
+	// Clear the previous game's buttons, as the game does whenever it leaves a game: the
+	// interface only builds screens whose buttons are not registered already.
+	EclReset ( app->GetOptions ()->GetOptionValue ( "graphics_screenwidth" ),
+	           app->GetOptions ()->GetOptionValue ( "graphics_screenheight" ) );
 	delete game;
 	game = new Game ();
 	srand ( seed );

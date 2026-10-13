@@ -161,6 +161,8 @@ int EclAnimationsRunning();
 void EclUpdateAllAnimations ();
 
 double EclGetAccurateTime ();				// Returns the time in millisecond accuracy
+void EclSetFixedTime ( double milliseconds );	// Tests: EclGetAccurateTime returns this until cleared
+void EclClearFixedTime ();
 
 // ============================================================================
 

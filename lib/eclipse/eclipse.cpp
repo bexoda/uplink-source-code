@@ -1380,8 +1380,25 @@ void EclUpdateAllAnimations ()
 
 }
 
+static bool   fixedtimeset = false;
+static double fixedtime = 0.0;
+
+void EclSetFixedTime ( double milliseconds )
+{
+	fixedtimeset = true;
+	fixedtime = milliseconds;
+}
+
+void EclClearFixedTime ()
+{
+	fixedtimeset = false;
+}
+
 double EclGetAccurateTime ()
 {
+
+	if ( fixedtimeset ) return fixedtime;
+
 
 #ifdef WIN32
 

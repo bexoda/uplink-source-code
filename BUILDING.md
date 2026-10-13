@@ -10,7 +10,7 @@ Debian/Ubuntu packages:
 
     sudo apt install build-essential cmake pkg-config \
         libsdl1.2-compat-dev libsdl-mixer1.2-dev libfreetype-dev \
-        libtiff-dev libjpeg-dev zlib1g-dev libgl-dev libglu1-mesa-dev catch2
+        libtiff-dev libjpeg-dev zlib1g-dev libgl-dev libglu1-mesa-dev libpng-dev catch2 xvfb
 
 Build and run:
 
@@ -52,6 +52,24 @@ console output from a test run is in `build/test-home/.uplink/debug.log`.
 
 If a change alters the save format on purpose, bump `SAVEFILE_VERSION`, keep loading the old
 version, and regenerate the golden file with `./uplink_tests "[.regenerate]"`.
+
+### Screenshot tests
+
+`uplink_screen_tests` renders real screens in a window and compares them, pixel for pixel,
+with the PNGs in `uplink/tests/screens/`: the Public Access Server welcome, the gateway HUD,
+the finance, status, hardware and memory panels, and the full world map. They skip when
+there is no display; run them with
+
+    xvfb-run -s "-screen 0 1024x768x24" ctest -L screens --output-on-failure
+
+A failure leaves `<scene>.actual.png` and `<scene>.diff.png` (differences in red) in the
+build directory. Frames are deterministic: fixed seed, button animations off, the game clock
+held and the UI clock (`EclSetFixedTime`) stepped by fixed amounts.
+
+The references were made with Mesa's llvmpipe under Xvfb; another renderer (a real GPU
+driver) will differ by a few pixels, so run them the same way. After an intended visual
+change, regenerate with `UPLINK_UPDATE_SCREENS=1` and look at every changed image before
+committing it.
 
 ## Sanitizers
 

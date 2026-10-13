@@ -67,11 +67,12 @@ float WorldMapInterface::zoom = 1.0f;
 #define MAXZOOM 4.0f
 
 
-void WorldMapInterface::CycleStipplePattern ()
+void WorldMapInterface::CycleStipplePattern ( int periodms )
 {
 
-    ++stippleindex;
-    if ( stippleindex > 7 ) stippleindex = 0;
+    // The dashes on connection lines advance one step per period. The step is taken from the
+    // clock rather than counted, so what is drawn depends only on the time.
+    stippleindex = (int) ( EclGetAccurateTime () / periodms ) % 8;
 
     stipplepattern = STIPPLE [stippleindex];
 
@@ -1742,7 +1743,7 @@ void WorldMapInterface::Update ()
             if ( EclGetButton ( "worldmap_smallmap" ) ) {
                 EclDirtyButton ( "worldmap_smallmap" );    
                 EclDirtyButton ( "worldmap_connect" );
-				CycleStipplePattern ();
+				CycleStipplePattern ( 100 );
                 lastupdate = (int) EclGetAccurateTime ();
             }
 
@@ -1754,7 +1755,7 @@ void WorldMapInterface::Update ()
 
             if ( EclGetButton ( "worldmap_largemap" ) ) {
                 EclDirtyButton ( "worldmap_largemap" );
-				CycleStipplePattern ();
+				CycleStipplePattern ( 200 );
                 lastupdate = (int) EclGetAccurateTime ();
             }
 
