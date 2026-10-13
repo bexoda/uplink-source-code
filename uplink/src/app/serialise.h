@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <string>
 
+#include "app/optstring.h"
+
 #include "tosser.h"
 
 class UplinkObject;
@@ -141,6 +143,11 @@ void SaveDynamicString     ( const std::string &string, int maxsize, FILE *file 
 bool LoadDynamicStringInt  ( const char* _file, int _line, std::string &string, int maxsize, FILE *file );
 bool LoadFixedString       ( std::string &string, int size, FILE *file );	// a raw char[size] block (pre-SAV59 saves)
 void SaveFixedString       ( const std::string &string, int size, FILE *file );	// writes a zero-padded char[size] block
+
+// OptString versions: unset is saved and loaded as NULL was.
+void SaveDynamicString     ( const OptString &string, FILE *file );
+void SaveDynamicString     ( const OptString &string, int maxsize, FILE *file );
+bool LoadDynamicStringInt  ( const char* _file, int _line, OptString *string, FILE *file );
 
 #define LoadDynamicStringPtr(string,file) LoadDynamicStringInt(__FILE__,__LINE__,string,file)
 #define LoadDynamicStringStatic(string,maxsize,file) LoadDynamicStringInt(__FILE__,__LINE__,string,maxsize,file)

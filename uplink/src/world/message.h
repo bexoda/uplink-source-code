@@ -11,6 +11,8 @@
 #ifndef _included_message_h
 #define _included_message_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -30,8 +32,8 @@ class Message : public UplinkObject
 
 protected:
 
-	char *subject;
-	char *body;
+	OptString subject;
+	OptString body;
 
 	Data *data;							// An attached file/program
 
@@ -62,8 +64,8 @@ public:
 	void AttachData ( Data *newdata );
 	Data *GetData ();
 
-	char *GetSubject ();
-	char *GetBody	 ();
+	const char *GetSubject ();
+	const char *GetBody	 ();
 
 	void Send ();
 

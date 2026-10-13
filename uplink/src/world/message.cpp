@@ -37,8 +37,6 @@ Message::Message()
 Message::~Message()
 {
 
-	if ( subject ) delete [] subject;
-	if ( body ) delete [] body;
 	if ( data ) delete data;
 
     DeleteLListData ( &links );
@@ -65,18 +63,14 @@ void Message::SetFrom ( const char *newfrom )
 void Message::SetSubject ( const char *newsubject )
 {
 
-	if ( subject ) delete [] subject;
-	subject = new char [ strlen(newsubject) + 1 ];
-	UplinkSafeStrcpy ( subject, newsubject );
+	subject = newsubject;
 
 }
 
 void Message::SetBody ( const char *newbody )
 {
 
-	if ( body ) delete [] body;
-	body = new char [ strlen (newbody) + 1 ];
-	UplinkSafeStrcpy ( body, newbody );
+	body = newbody;
 
 }
 
@@ -124,19 +118,19 @@ Data *Message::GetData ()
 
 }
 
-char *Message::GetSubject ()
+const char *Message::GetSubject ()
 {
 
 	UplinkAssert ( subject );
-	return subject;
+	return subject.c_str ();
 
 }
 
-char *Message::GetBody ()
+const char *Message::GetBody ()
 {
 
 	UplinkAssert ( body );
-	return body;
+	return body.c_str ();
 
 }
 
@@ -159,7 +153,7 @@ void Message::Send ()
 		msg->SetTo ( from.c_str () );
 		msg->SetFrom ( "MAIL SERVER" );
 		msg->SetSubject ( "Failed to deliver this email - unknown recipient" );
-		msg->SetBody ( body );
+		msg->SetBody ( body.c_str () );
 		msg->Send ();
 
 	}
@@ -174,15 +168,7 @@ bool Message::Load ( FILE *file )
 	if ( !LoadDynamicStringStatic ( to, SIZE_PERSON_NAME, file ) ) return false;
 	if ( !LoadDynamicStringStatic ( from, SIZE_PERSON_NAME, file ) ) return false;
 
-	if ( subject ) {
-		delete [] subject;
-		subject = NULL;
-	}
 	if ( !LoadDynamicStringPtr ( &subject, file ) ) return false;
-	if ( body ) {
-		delete [] body;
-		body = NULL;
-	}
 	if ( !LoadDynamicStringPtr ( &body, file ) ) return false;
 
 	if ( !date.Load ( file ) ) return false;
@@ -222,8 +208,8 @@ void Message::Print ()
 	printf ( "Message : \n" );
 	printf ( "\tTo   = %s\n", to.c_str () );
 	printf ( "\tFrom = %s\n", from.c_str () );
-	printf ( "\tSubject = %s\n", subject );
-	printf ( "\tbody = %s\n", body );
+	printf ( "\tSubject = %s\n", subject.c_str () );
+	printf ( "\tbody = %s\n", body.c_str () );
 
 	PrintLList ( &links );
 	PrintBTree ( &codes );

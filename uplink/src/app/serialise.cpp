@@ -1044,6 +1044,25 @@ bool LoadDynamicStringInt ( const char* _file, int _line, std::string &string, i
 	return ok;
 }
 
+void SaveDynamicString ( const OptString &string, FILE *file )
+{
+	SaveDynamicString ( string.c_str (), -1, file );
+}
+
+void SaveDynamicString ( const OptString &string, int maxsize, FILE *file )
+{
+	SaveDynamicString ( string.c_str (), maxsize, file );
+}
+
+bool LoadDynamicStringInt ( const char* _file, int _line, OptString *string, FILE *file )
+{
+	char *loaded = NULL;
+	bool ok = LoadDynamicStringInt ( _file, _line, &loaded, file );
+	*string = loaded;
+	delete [] loaded;
+	return ok;
+}
+
 void SaveFixedString ( const std::string &string, int size, FILE *file )
 {
 	std::string buffer ( size, '\0' );
