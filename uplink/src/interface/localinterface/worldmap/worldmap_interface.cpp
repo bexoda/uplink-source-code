@@ -156,7 +156,7 @@ void WorldMapInterface::ConnectClick ( Button * /*button*/ )
 
 }
 
-void WorldMapInterface::AfterPhoneDialler ( char * /*ip*/, char * /*info*/ )
+void WorldMapInterface::AfterPhoneDialler ( const char * /*ip*/, const char * /*info*/ )
 {
 
     game->GetWorld ()->GetPlayer ()->GetConnection ()->Connect ();

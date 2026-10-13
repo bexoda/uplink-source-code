@@ -2,6 +2,8 @@
 #ifndef _included_dialler_h
 #define _included_dialler_h
 
+#include "app/optstring.h"
+
 
 #include "interface/localinterface/localinterfacescreen.h"
 
@@ -13,8 +15,8 @@ protected:
 
 	static char buttonnames [][9];
 
-	char *ip;
-	char *infosup;
+	OptString ip;
+	OptString infosup;
 
 	int nextscene;
 

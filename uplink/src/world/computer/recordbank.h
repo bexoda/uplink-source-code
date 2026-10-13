@@ -62,7 +62,7 @@ public:
     
     Record *GetRecordFromName           ( const char *name );
     Record *GetRecordFromNamePassword   ( char *name, char *password );
-    Record *GetRecordFromAccountNumber  ( char *accNo );
+    Record *GetRecordFromAccountNumber  ( const char *accNo );
 
 	int FindNextRecordIndexNameNotSystemAccount ( int curindex = -1);
 

@@ -51,11 +51,7 @@ PhoneDialler::PhoneDialler ()
 PhoneDialler::~PhoneDialler ()
 {
     
-	if ( ip )
-		delete [] ip;
 
-	if ( infosup )
-		delete [] infosup;
 
 }
 
@@ -123,19 +119,9 @@ void PhoneDialler::DialNumber ( int x, int y, const char *number, int scenario, 
 
 	UplinkAssert ( number );
 
-	if ( ip )
-		delete [] ip;
-	ip = new char [ strlen ( number ) + 1 ];
-	UplinkSafeStrcpy ( ip, number );
+	ip = number;
 
-	if ( infosup ) {
-		delete [] infosup;
-		infosup = NULL;
-	}
-	if ( info ) {
-		infosup = new char [ strlen ( info ) + 1 ];
-		UplinkSafeStrcpy ( infosup, info );
-	}
+	infosup = info;
 
 	nextscene = scenario;
 
@@ -162,20 +148,20 @@ void PhoneDialler::UpdateDisplay ()
 
 	if ( curnumber != -1 && ( buttonDiallerNumber = EclGetButton ( "dialler_number" ) ) ) {
 	
-		if ( curnumber < (int) strlen ( ip ) ) {
+		if ( curnumber < (int) strlen ( ip.c_str () ) ) {
 
 			char ch;
 			do {
-				ch = ip [ curnumber ];
+				ch = ip.c_str () [ curnumber ];
 				curnumber++;
-			} while ( curnumber < (int) strlen ( ip ) && !( ch >= '1' && ch <= '9' ) );
+			} while ( curnumber < (int) strlen ( ip.c_str () ) && !( ch >= '1' && ch <= '9' ) );
 
 			if ( ch >= '1' && ch <= '9' ) {
 
 				EclHighlightButton ( buttonnames [ ch - '1' ] );
 				
 				char caption [64];
-				UplinkStrncpy ( caption, ip, sizeof ( caption ) );
+				UplinkStrncpy ( caption, ip.c_str (), sizeof ( caption ) );
 				caption [curnumber] = 0;
 				buttonDiallerNumber->SetCaption ( caption );
 
@@ -200,17 +186,17 @@ void PhoneDialler::UpdateDisplay ()
 			}
 			else if ( nextscene == 3 ) {
 
-				WorldMapInterface::AfterPhoneDialler ( ip, infosup );
+				WorldMapInterface::AfterPhoneDialler ( ip.c_str (), infosup.c_str () );
 
 			}
 			else if ( nextscene == 4 ) {
 
-				FinanceInterface::AfterPhoneDialler ( ip, infosup );
+				FinanceInterface::AfterPhoneDialler ( ip.c_str (), infosup.c_str () );
 
 			}
 			else if ( nextscene == 5 ) {
 
-				LinksScreenInterface::AfterPhoneDialler ( ip, infosup );
+				LinksScreenInterface::AfterPhoneDialler ( ip.c_str (), infosup.c_str () );
 
 			}
 			else {

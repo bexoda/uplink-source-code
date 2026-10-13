@@ -29,7 +29,7 @@ protected:
 
 public:
 
-	static void AfterPhoneDialler ( char *ip, char *info );
+	static void AfterPhoneDialler ( const char *ip, const char *info );
 
 	FinanceInterface ();
 	~FinanceInterface ();

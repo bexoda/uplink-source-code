@@ -1,3 +1,5 @@
+
+#include "app/optstring.h"
 // ============================================================================
 
 #define WORLDMAPOBJECT_NONE			0
@@ -39,7 +41,7 @@ public:
 
 protected:
 
-    char *ip;
+    OptString ip;
     bool isMission;             // If this object is related to a mission
 	bool isColored;             // If this object is colored
 
@@ -71,7 +73,7 @@ protected:
 
 protected:
 
-    char *caption;
+    OptString caption;
     WorldMapInterfaceObject *featurePoint; // Does not own featurePoint
 
     int labelPos;

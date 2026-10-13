@@ -37,7 +37,6 @@ AcademicScreenInterface::AcademicScreenInterface ()
 AcademicScreenInterface::~AcademicScreenInterface ()
 {
 
-	if ( searchname ) delete [] searchname;
 
 }
 
@@ -185,7 +184,6 @@ void AcademicScreenInterface::SetSearchName ( char *newsearchname )
 
 	recordindex = comp->recordbank.FindNextRecordIndexNameNotSystemAccount ();
 
-	if ( searchname ) delete [] searchname;
 
 	if ( recordindex != -1 )
 		searchname = LowerCaseString (newsearchname);
@@ -271,7 +269,6 @@ void AcademicScreenInterface::Update ()
 			//if ( recordindex == comp->recordbank.records.Size () ) {
 			if ( recordindex == -1 ) {
 
-				delete [] searchname;
 				searchname = NULL;
 				recordindex = -1;
 				return;
@@ -288,11 +285,10 @@ void AcademicScreenInterface::Update ()
 			UpdateScreen ();
 
 
-			if ( strcmp ( searchname, lowercasethisname ) == 0 ) {
+			if ( strcmp ( searchname.c_str (), lowercasethisname ) == 0 ) {
 
 				// Record found - stop searching
 
-				delete [] searchname;
 				searchname = NULL;
 
 			}

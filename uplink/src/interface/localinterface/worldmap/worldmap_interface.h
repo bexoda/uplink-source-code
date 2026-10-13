@@ -109,7 +109,7 @@ public:
     static void CloseWorldMapInterface_Large ();
     static int IsVisibleWorldMapInterface ();					// returns size of map visible
 
-	static void AfterPhoneDialler ( char *ip, char *info );
+	static void AfterPhoneDialler ( const char *ip, const char *info );
     
     WorldMapInterface ();
     ~WorldMapInterface ();

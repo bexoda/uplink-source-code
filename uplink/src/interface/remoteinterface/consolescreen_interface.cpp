@@ -254,14 +254,14 @@ void ConsoleScreenInterface::RunCommand ( ConsoleCommand *cc )
 
 		switch ( cc->TYPE ) {
 
-			case CMDTYPE_TEXT:					RunCommand_TEXT ( cc->data1 );					break;
+			case CMDTYPE_TEXT:					RunCommand_TEXT ( cc->data1.c_str () );					break;
 			case CMDTYPE_DIR:					RunCommand_DIR ();								break;
 			case CMDTYPE_HELP:					RunCommand_HELP ();								break;
 			case CMDTYPE_EXIT:					RunCommand_EXIT ();								break;
-			case CMDTYPE_DELETEALL:				RunCommand_DELETEALL ( cc->data1 );				break;
-			case CMDTYPE_RUN:					RunCommand_RUN ( cc->data1, false );			break;
-			case CMDTYPE_RUNPROGRAM:			RunCommand_RUN ( cc->data1, true );				break;
-			case CMDTYPE_CD:					SetCurrentDir ( cc->data1 );					break;
+			case CMDTYPE_DELETEALL:				RunCommand_DELETEALL ( cc->data1.c_str () );				break;
+			case CMDTYPE_RUN:					RunCommand_RUN ( cc->data1.c_str (), false );			break;
+			case CMDTYPE_RUNPROGRAM:			RunCommand_RUN ( cc->data1.c_str (), true );				break;
+			case CMDTYPE_CD:					SetCurrentDir ( cc->data1.c_str () );					break;
 			case CMDTYPE_SHUTDOWN:				RunCommand_SHUTDOWN ();							break;
 			case CMDTYPE_DISCONNECT:			RunCommand_DISCONNECT ();						break;
 
@@ -276,7 +276,7 @@ void ConsoleScreenInterface::RunCommand ( ConsoleCommand *cc )
 
 }
 
-void ConsoleScreenInterface::RunCommand_TEXT ( char *text )
+void ConsoleScreenInterface::RunCommand_TEXT ( const char *text )
 {
 
 	for ( int i = 0; i < NUMLINES-1; ++i ) {
@@ -437,7 +437,7 @@ void ConsoleScreenInterface::RunCommand_DIR ()
 
 }
 
-void ConsoleScreenInterface::RunCommand_DELETEALL ( char *dir )
+void ConsoleScreenInterface::RunCommand_DELETEALL ( const char *dir )
 {
 
 	ConsoleScreenInterface *thisint = (ConsoleScreenInterface *) GetInterfaceScreen ( SCREEN_CONSOLESCREEN );
@@ -583,7 +583,7 @@ void ConsoleScreenInterface::RunCommand_DELETEALL ( char *dir )
 
 }
 
-void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
+void ConsoleScreenInterface::RunCommand_RUN	( const char *program, bool actuallyrun )
 {
 
 	ConsoleScreenInterface *thisint = (ConsoleScreenInterface *) GetInterfaceScreen ( SCREEN_CONSOLESCREEN );
@@ -954,8 +954,7 @@ ConsoleCommand::ConsoleCommand ( int newTYPE, const char *newdata1, int newtime 
 	time = newtime;
 
 	if ( newdata1 ) {
-		data1 = new char [strlen(newdata1)+1];
-		UplinkSafeStrcpy ( data1, newdata1 );
+		data1 = newdata1;
 	}
 	else
 		data1 = NULL;
@@ -965,6 +964,5 @@ ConsoleCommand::ConsoleCommand ( int newTYPE, const char *newdata1, int newtime 
 ConsoleCommand::~ConsoleCommand ()
 {
 
-	if ( data1 ) delete [] data1;
 
 }

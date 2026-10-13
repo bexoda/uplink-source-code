@@ -125,7 +125,7 @@ void LinksScreenInterface::LinkClick ( Button *button )
 
 }
 
-void LinksScreenInterface::AfterPhoneDialler ( char *ip, char * /*info*/ )
+void LinksScreenInterface::AfterPhoneDialler ( const char *ip, const char * /*info*/ )
 {
 
 	UplinkAssert ( ip );

@@ -11,6 +11,8 @@
 #ifndef _included_ircinterface_h
 #define _included_ircinterface_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #ifdef _MSC_VER
@@ -108,8 +110,8 @@ public:
 
 public:
 
-	char *user;
-    char *text;
+	OptString user;
+    OptString text;
 	float red;
 	float green;
 	float blue;
@@ -128,7 +130,7 @@ public:
 
 public:
 
-    char *name;
+    OptString name;
     int status;
 
 };

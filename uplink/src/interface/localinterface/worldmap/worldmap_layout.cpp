@@ -44,8 +44,6 @@ WorldMapInterfaceObject::WorldMapInterfaceObject ()
 WorldMapInterfaceObject::~WorldMapInterfaceObject ()
 {
 
-    if ( ip )
-        delete [] ip;
 
 }
 
@@ -76,12 +74,9 @@ void WorldMapInterfaceObject::SetBasePosition ( int newx, int newy )
 void WorldMapInterfaceObject::SetIP ( const char *newip )
 {
 
-	if ( ip )
-		delete [] ip;
 
 	if ( newip ) {
-		ip = new char [ strlen(newip) + 1 ];
-		UplinkSafeStrcpy ( ip, newip );
+		ip = newip;
 
 		CheckIP ();
 	}
@@ -98,10 +93,10 @@ void WorldMapInterfaceObject::CheckIP ()
 
 	if ( ip ) {
 		Player *pl = game->GetWorld ()->GetPlayer ();
-		isMission = pl->HasMissionLink ( ip ) || pl->HasMessageLink ( ip );
+		isMission = pl->HasMissionLink ( ip.c_str () ) || pl->HasMessageLink ( ip.c_str () );
 
 		VLocation *vl;
-		isColored = ( ( vl = game->GetWorld()->GetVLocation( ip ) ) && vl->colored );
+		isColored = ( ( vl = game->GetWorld()->GetVLocation( ip.c_str () ) ) && vl->colored );
 	}
 	else {
 		isMission = false;
@@ -113,7 +108,7 @@ void WorldMapInterfaceObject::CheckIP ()
 const char *WorldMapInterfaceObject::GetIP () const
 {
 
-    return ip;
+    return ip.c_str ();
 
 }
 
@@ -201,21 +196,18 @@ void WorldMapInterfaceLabel::CalculatePossibleLabelPositions( const MapRectangle
 
 void WorldMapInterfaceLabel::SetCaption ( const char *newcaption )
 {
-    if ( caption ) delete [] caption;
-    caption = new char [strlen(newcaption)+1];
-    UplinkSafeStrcpy ( caption, newcaption );
+    caption = newcaption;
     CalculateWidth();
 }
 
 const char *WorldMapInterfaceLabel::GetCaption () const
 {
-    return caption;
+    return caption.c_str ();
 }
 
 WorldMapInterfaceLabel::~WorldMapInterfaceLabel ()
 {
 
-    if ( caption ) delete [] caption;
 
 }
 
@@ -250,7 +242,7 @@ void WorldMapInterfaceLabel::Draw ( int xOffset, int yOffset, float zoom )
 
         if ( xPos >= 0 && yPos >= 0 ) {
             glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );        
-            GciDrawText ( xPos, yPos + 7, caption );
+            GciDrawText ( xPos, yPos + 7, caption.c_str () );
         }
 
         break;
@@ -269,7 +261,7 @@ MapRectangle WorldMapInterfaceLabel::GetExtent () const
 
 void WorldMapInterfaceLabel::CalculateWidth()
 {
-    labelWidth = GciTextWidth(caption);
+    labelWidth = GciTextWidth(caption.c_str ());
 //     int spaces = 0;
     
 //     for (const char *s = caption; *s; s++)

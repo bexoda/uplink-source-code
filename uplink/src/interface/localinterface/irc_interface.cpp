@@ -100,13 +100,13 @@ void IRCInterface::MainTextDraw ( Button *button, bool /*highlighted*/, bool /*c
 
             if ( msg->user ) {
                 glColor3f( COLOUR_USER );
-                GciDrawText ( xpos, ypos, msg->user );
+                GciDrawText ( xpos, ypos, msg->user.c_str () );
                 xpos += 80;
                 // TODO : Handle big nick names
             }
 
             glColor3f( msg->red, msg->green, msg->blue );
-          	GciDrawText ( xpos, ypos, msg->text );
+          	GciDrawText ( xpos, ypos, msg->text.c_str () );
 			
             AddEmoticons ( i, ":)", imgSmileyHappy );
             AddEmoticons ( i, "=)", imgSmileyHappy );
@@ -148,12 +148,12 @@ void IRCInterface::AddEmoticons ( int row, const char *smiley, Image *imgSmiley 
         
         if ( imgSmiley ) {
 
-            char *nextSmiley = strstr ( msg->text, smiley );
+            const char *nextSmiley = strstr ( msg->text.c_str (), smiley );
             
             while ( nextSmiley ) {
                 char textSoFar [2048];
-				size_t lenCopy = min ( (size_t) ( nextSmiley - msg->text ) + 1, sizeof ( textSoFar ) );
-                strncpy ( textSoFar, msg->text, lenCopy );
+				size_t lenCopy = min ( (size_t) ( nextSmiley - msg->text.c_str () ) + 1, sizeof ( textSoFar ) );
+                strncpy ( textSoFar, msg->text.c_str (), lenCopy );
                 //textSoFar [ nextSmiley-msg->text ] = '\x0';
 				textSoFar [ lenCopy - 1 ] = '\x0';
                 int smileyXpos = xpos + GciTextWidth ( textSoFar );
@@ -217,7 +217,7 @@ void IRCInterface::UserListDraw ( Button *button, bool highlighted, bool clicked
                 else
                     glColor3f ( 1.0f, 0.5f, 0.5f );
 
-                GciDrawText ( xpos, ypos, users.GetData(i + baseOffset)->name ); 
+                GciDrawText ( xpos, ypos, users.GetData(i + baseOffset)->name.c_str () ); 
 
             }
 
@@ -477,7 +477,7 @@ void IRCInterface::AddUser ( const char *name )
     for ( int i = 0; i < users.Size(); ++i ) {
         UplinkIRCUser *thisUser = users.GetData(i);
         UplinkAssert (thisUser);
-        char *lowerCaseThisUser = LowerCaseString ( thisUser->name );
+        char *lowerCaseThisUser = LowerCaseString ( thisUser->name.c_str () );
         if ( ( user->status == 1 && thisUser->status == 0 )                                                            ||
              (user->status == 1 && thisUser->status == 1 && strcmp ( lowerCaseName, lowerCaseThisUser ) < 0 )          ||
              (user->status == 0 && thisUser->status == 0 && strcmp ( lowerCaseName, lowerCaseThisUser ) < 0 ) ) {
@@ -512,7 +512,7 @@ void IRCInterface::RemoveUser ( char *name )
     for ( int i = 0; i < users.Size(); ++i ) {
         UplinkIRCUser *user = users.GetData(i);
         UplinkAssert (user);
-        if ( strcmp ( user->name, name ) == 0 ) {
+        if ( strcmp ( user->name.c_str (), name ) == 0 ) {
             users.RemoveData( i );
             ScrollBox *scrollBox = ScrollBox::GetScrollBox( "irc_userscroll" );
             if ( scrollBox ) scrollBox->SetNumItems( users.Size() );
@@ -528,7 +528,7 @@ UplinkIRCUser *IRCInterface::GetUser ( const char *name )
     for ( int i = 0; i < users.Size(); ++i ) {
         UplinkIRCUser *user = users.GetData(i);
         UplinkAssert (user);
-        if ( strcmp ( user->name, name ) == 0 )
+        if ( strcmp ( user->name.c_str (), name ) == 0 )
             return user;        
     }
 
@@ -544,28 +544,14 @@ UplinkIRCMessage::UplinkIRCMessage ()
 
 UplinkIRCMessage::~UplinkIRCMessage ()
 {
-	if ( user ) delete [] user;
-    if ( text ) delete [] text;
 }
 
 void UplinkIRCMessage::Set ( const char *newuser, char *newtext, float r, float g, float b )
 {
 	
-    if ( user ) delete [] user;
-    user = NULL;
-
-    if ( newuser ) {
-        user = new char [strlen(newuser)+1];
-        UplinkSafeStrcpy ( user, newuser );
-    }
+    user = newuser;
     
-    if ( text ) delete [] text;
-	text = NULL;
-
-	if ( newtext ) {
-		text = new char [strlen(newtext)+1];
-		UplinkSafeStrcpy ( text, newtext );
-	}
+	text = newtext;
 
 	red = r;
 	green = g;
@@ -582,19 +568,12 @@ UplinkIRCUser::UplinkIRCUser ()
 
 UplinkIRCUser::~UplinkIRCUser ()
 {
-    if ( name ) delete [] name;
 }
 
 void UplinkIRCUser::Set ( const char *newname )
 {
 
-    if ( name ) delete [] name;
-    name = NULL;
-
-    if ( newname ) {
-        name = new char [strlen(newname)+1];
-        UplinkSafeStrcpy ( name, newname );
-    }
+    name = newname;
 
 }
 

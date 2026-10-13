@@ -9,6 +9,8 @@
 #ifndef _included_socialsecurityscreeninterface_h
 #define _included_socialsecurityscreeninterface_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "interface/remoteinterface/remoteinterfacescreen.h"
@@ -24,7 +26,7 @@ class SocialSecurityScreenInterface : public RemoteInterfaceScreen
 
 protected:
 
-	char *searchname;
+	OptString searchname;
 	int recordindex;
 	int lastupdate;
 

@@ -9,6 +9,8 @@
 #ifndef _included_academicscreeninterface_h
 #define _included_academicscreeninterface_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "interface/remoteinterface/remoteinterfacescreen.h"
@@ -24,7 +26,7 @@ class AcademicScreenInterface : public RemoteInterfaceScreen
 
 protected:
 
-	char *searchname;
+	OptString searchname;
 	int recordindex;
 	int lastupdate;
 

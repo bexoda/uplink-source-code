@@ -149,7 +149,7 @@ Record *RecordBank::GetRecordFromNamePassword ( char *name, char *password )
     return GetRecord( query );
 }
 
-Record *RecordBank::GetRecordFromAccountNumber ( char *accNo )
+Record *RecordBank::GetRecordFromAccountNumber ( const char *accNo )
 {
     char query[256];
 	char * tempAccNo = MakeSafeField( accNo );

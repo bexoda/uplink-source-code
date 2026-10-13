@@ -11,6 +11,8 @@
 #ifndef _included_consolescreeninterface_h
 #define _included_consolescreeninterface_H
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "tosser.h"
@@ -66,12 +68,12 @@ public:
 	void RunCommand				( const char *command );				// Parses command into ConsoleCommand object
 	void RunCommand				( ConsoleCommand *cc );
 
-	void RunCommand_TEXT		( char *text );
+	void RunCommand_TEXT		( const char *text );
 	void RunCommand_DIR			();
 	void RunCommand_HELP		();
 	void RunCommand_EXIT		();
-	void RunCommand_DELETEALL	( char *dir );
-	void RunCommand_RUN			( char *program, bool actuallyrun );				// If true, the command itself is run
+	void RunCommand_DELETEALL	( const char *dir );
+	void RunCommand_RUN			( const char *program, bool actuallyrun );				// If true, the command itself is run
 	void RunCommand_SHUTDOWN	();
 	void RunCommand_DISCONNECT	();
 
@@ -111,7 +113,7 @@ class ConsoleCommand
 public:
 
 	int TYPE;
-	char *data1;
+	OptString data1;
 	int time;
 
 public:

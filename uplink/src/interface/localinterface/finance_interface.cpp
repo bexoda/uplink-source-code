@@ -196,7 +196,7 @@ void FinanceInterface::ClickAccountButton ( Button *button )
 
 }
 
-void FinanceInterface::AfterPhoneDialler ( char *ip, char *info )
+void FinanceInterface::AfterPhoneDialler ( const char *ip, const char *info )
 {
 
 	UplinkAssert ( ip );
