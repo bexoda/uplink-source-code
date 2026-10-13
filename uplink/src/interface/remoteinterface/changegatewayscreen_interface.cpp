@@ -391,9 +391,9 @@ void ChangeGatewayScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "changegateway_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "changegateway_maintitle" );
 		EclRegisterButtonCallbacks ( "changegateway_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "changegateway_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "changegateway_subtitle" );
 		EclRegisterButtonCallbacks ( "changegateway_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 20, 120, 220, 15, "Gateway Name and Cost", " ", "changegateway_title" );
@@ -480,9 +480,9 @@ void ChangeGatewayScreenInterface::CreateAreYouSure ()
 
 	// Titles
 
-	EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "changegateway_maintitle" );
+	EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "changegateway_maintitle" );
 	EclRegisterButtonCallbacks ( "changegateway_maintitle", DrawMainTitle, NULL, NULL, NULL );
-	EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "changegateway_subtitle" );
+	EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "changegateway_subtitle" );
 	EclRegisterButtonCallbacks ( "changegateway_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 	// Proceed and cancel

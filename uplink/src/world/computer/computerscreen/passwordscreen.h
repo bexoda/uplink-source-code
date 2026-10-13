@@ -10,6 +10,8 @@
 #ifndef _included_passwordscreen_h
 #define _included_passwordscreen_h
 
+#include <string>
+
 // ============================================================================
 
 #include "world/computer/computerscreen/computerscreen.h"
@@ -26,7 +28,7 @@ public:
 
 	int nextpage;
 	int difficulty;									// 1 = easy, >1 = getting harder
-	char password [SIZE_PASSWORDSCREEN_PASSWORD];
+	std::string password;
 
 public:
 

@@ -393,9 +393,9 @@ void FileServerScreenInterface::Create ( ComputerScreen *newcs )
 		log->SetData1 ( "Accessed fileserver" );
 		GetComputerScreen ()->GetComputer ()->logbank.AddLog ( log );
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "fileserverscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "fileserverscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "fileserverscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "fileserverscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "fileserverscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "fileserverscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 15, 120, 144, 15, "Filename", "", "fileserverscreen_filenametitle" );

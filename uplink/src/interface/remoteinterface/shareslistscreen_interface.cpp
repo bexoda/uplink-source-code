@@ -380,9 +380,9 @@ void SharesListScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Draw the screen titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "shareslistscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "shareslistscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "shareslistscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "shareslistscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "shareslistscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "shareslistscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 30, 120, 176, 15, "Company name", "", "shareslistscreen_companytitle" );

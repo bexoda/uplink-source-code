@@ -52,21 +52,21 @@ int MenuScreen::NumOptions  ()
 
 }
 
-char *MenuScreen::GetCaption ( int index )
+const char *MenuScreen::GetCaption ( int index )
 {
 
 	UplinkAssert ( options.ValidIndex ( index ) );
 
-	return options.GetData (index)->caption;
+	return options.GetData (index)->caption.c_str ();
 
 }
 
-char *MenuScreen::GetTooltip ( int index )
+const char *MenuScreen::GetTooltip ( int index )
 {
 
 	UplinkAssert ( options.ValidIndex ( index ) );
 
-	return options.GetData (index)->tooltip;
+	return options.GetData (index)->tooltip.c_str ();
 	
 }
 
@@ -150,8 +150,8 @@ int MenuScreen::GetOBJECTID ()
 MenuScreenOption::MenuScreenOption ()
 {
 
-	UplinkStrncpy ( caption, "", sizeof ( caption ) );
-	UplinkStrncpy ( tooltip, "", sizeof ( tooltip ) );
+	caption = "";
+	tooltip = "";
 	nextpage = -1;
 	security = 10;
 
@@ -165,7 +165,7 @@ void MenuScreenOption::SetCaption ( const char *newcaption )
 {
 
 	UplinkAssert ( strlen(newcaption) < SIZE_MENUSCREENOPTION_CAPTION );
-	UplinkStrncpy ( caption, newcaption, sizeof ( caption ) );
+	caption = newcaption;
 
 }
 
@@ -173,7 +173,7 @@ void MenuScreenOption::SetTooltip ( const char *newtooltip )
 {
 
 	UplinkAssert ( strlen(newtooltip) < SIZE_MENUSCREENOPTION_TOOLTIP );
-	UplinkStrncpy ( tooltip, newtooltip, sizeof ( tooltip ) );
+	tooltip = newtooltip;
 
 }
 
@@ -227,8 +227,8 @@ void MenuScreenOption::Print ()
 {
 
 	printf ( "MenuScreenOption : \n" );
-	printf ( "\tNextPage = %d, Caption = %s\n", nextpage, caption );
-	printf ( "\tTooltip = %s, security = %d\n", tooltip, security );
+	printf ( "\tNextPage = %d, Caption = %s\n", nextpage, caption.c_str () );
+	printf ( "\tTooltip = %s, security = %d\n", tooltip.c_str (), security );
 
 }
 

@@ -179,9 +179,9 @@ void PasswordScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 150, 120, 350, 25, GetComputerScreen ()->maintitle, "", "passwordscreen_maintitle" );
+		EclRegisterButton ( 150, 120, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "passwordscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "passwordscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 150, 140, 350, 20, GetComputerScreen ()->subtitle, "", "passwordscreen_subtitle" );
+		EclRegisterButton ( 150, 140, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "passwordscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "passwordscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 		
 		EclRegisterButton ( 168, 185, 220, 110, "", "", "passwordscreen_message" );
@@ -240,7 +240,7 @@ void PasswordScreenInterface::Update ()
 {
 
 	if ( game->GetWorld ()->GetPlayer ()->IsConnected () && 
-	     strcmp ( EclGetButton ( "passwordscreen_password" )->caption, GetComputerScreen ()->password ) == 0 ) {
+	     strcmp ( EclGetButton ( "passwordscreen_password" )->caption, GetComputerScreen ()->password.c_str () ) == 0 ) {
 
 		SgPlaySound ( RsArchiveFileOpen ( "sounds/login.wav" ), "sounds/login.wav" );
 		NextPage ();

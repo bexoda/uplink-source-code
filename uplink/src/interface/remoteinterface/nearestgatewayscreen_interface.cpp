@@ -140,7 +140,7 @@ void NearestGatewayScreenInterface::Create ( ComputerScreen *newcs )
  
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 40, 10, 350, 25, GetComputerScreen ()->subtitle, "", "nearestgateway_maintitle" );
+		EclRegisterButton ( 40, 10, 350, 25, GetComputerScreen ()->subtitle.c_str (), "", "nearestgateway_maintitle" );
 		EclRegisterButtonCallbacks ( "nearestgateway_maintitle", DrawMainTitle, NULL, NULL, NULL );
 
 		// Black out the computer picture

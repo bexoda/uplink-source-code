@@ -159,9 +159,9 @@ void RadioTransmitterScreenInterface::Create ( ComputerScreen *newcs )
         UplinkAssert (newcs);
         cs = newcs;
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "radioscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "radioscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "radioscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "radioscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "radioscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "radioscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
         EclRegisterButton ( 100, 120, 300, 100, "Wireless LAN transmitter online\nReady to establish Uplink.", " ", "radioscreen_text" );

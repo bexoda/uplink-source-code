@@ -22,7 +22,6 @@ PasswordScreen::PasswordScreen()
 
 	nextpage = -1;
 	difficulty = 1;
-	memset( password, 0, sizeof ( password ) );
 
 }
 
@@ -42,7 +41,7 @@ void PasswordScreen::SetPassword ( const char *newpassword )
 {
 
 	UplinkAssert ( strlen (newpassword) < SIZE_PASSWORDSCREEN_PASSWORD );
-	UplinkStrncpy ( password, newpassword, sizeof ( password ) );
+	password = newpassword;
 
 }
 
@@ -63,14 +62,10 @@ bool PasswordScreen::Load  ( FILE *file )
 	if ( !FileReadData ( &nextpage, sizeof(nextpage), 1, file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( password, sizeof(password), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( password, SIZE_PASSWORDSCREEN_PASSWORD, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( password, sizeof(password), 1, file ) ) {
-			password [ sizeof(password) - 1 ] = '\0';
-			return false;
-		}
-		password [ sizeof(password) - 1 ] = '\0';
+		if ( !LoadFixedString ( password, SIZE_PASSWORDSCREEN_PASSWORD, file ) ) return false;
 	}
 
 	if ( !FileReadData ( &difficulty, sizeof(difficulty), 1, file ) ) return false;
@@ -89,7 +84,7 @@ void PasswordScreen::Save  ( FILE *file )
 	ComputerScreen::Save ( file );
 
 	fwrite ( &nextpage, sizeof(nextpage), 1, file );
-	SaveDynamicString ( password, sizeof(password), file );
+	SaveDynamicString ( password, SIZE_PASSWORDSCREEN_PASSWORD, file );
 	fwrite ( &difficulty, sizeof(difficulty), 1, file );
 
 	SaveID_END ( file );
@@ -101,7 +96,7 @@ void PasswordScreen::Print ()
 
 	printf ( "PasswordScreen : \n" );
 	ComputerScreen::Print ();
-	printf ( "Nextpage = %d, Password = %s, Difficulty = %d\n", nextpage, password, difficulty );
+	printf ( "Nextpage = %d, Password = %s, Difficulty = %d\n", nextpage, password.c_str (), difficulty );
 
 }
 	

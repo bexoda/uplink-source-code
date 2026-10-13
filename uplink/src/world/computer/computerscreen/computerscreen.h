@@ -15,6 +15,8 @@
 #ifndef _included_computerscreen_h
 #define _included_computerscreen_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -36,9 +38,9 @@ class ComputerScreen : public UplinkObject
 
 public:
 
-	char maintitle [SIZE_COMPUTERSCREEN_MAINTITLE];
-	char subtitle  [SIZE_COMPUTERSCREEN_SUBTITLE];
-	char computer  [SIZE_COMPUTER_NAME];
+	std::string maintitle;
+	std::string subtitle;
+	std::string computer;
 
 public:
 

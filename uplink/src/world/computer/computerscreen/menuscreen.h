@@ -12,6 +12,8 @@
 #ifndef _included_menuscreen_h
 #define _included_menuscreen_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -37,8 +39,8 @@ public:
 
 	void  AddOption	  ( const char *caption, const char *tooltip, int nextpage, int security = 10, int index = -1 );
 	int   NumOptions  ();
-	char *GetCaption  ( int index );
-	char *GetTooltip  ( int index );
+	const char *GetCaption  ( int index );
+	const char *GetTooltip  ( int index );
 	int   GetNextPage ( int index );
 	int   GetSecurity ( int index );
  
@@ -66,8 +68,8 @@ class MenuScreenOption : public UplinkObject
 
 public :
 
-	char caption [SIZE_MENUSCREENOPTION_CAPTION];
-	char tooltip [SIZE_MENUSCREENOPTION_TOOLTIP];
+	std::string caption;
+	std::string tooltip;
 	int nextpage;
 	int security;
 

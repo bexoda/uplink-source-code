@@ -202,9 +202,9 @@ void DialogScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 0, 0, 0, 0, " ", " ", "dialogscreen" );
 		EclRegisterButtonCallbacks ( "dialogscreen", NULL, NULL, NULL, NULL );
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "dialogscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "dialogscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "dialogscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "dialogscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "dialogscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "dialogscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		DialogScreen *ds = GetComputerScreen ();

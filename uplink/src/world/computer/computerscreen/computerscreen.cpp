@@ -19,9 +19,9 @@
 ComputerScreen::ComputerScreen()
 {
 
-	UplinkStrncpy ( maintitle, " ", sizeof ( maintitle ) );
-	UplinkStrncpy ( subtitle, " ", sizeof ( subtitle ) );
-	UplinkStrncpy ( computer, " ", sizeof ( computer ) );
+	maintitle = " ";
+	subtitle = " ";
+	computer = " ";
 
 }
 
@@ -34,7 +34,7 @@ void ComputerScreen::SetMainTitle ( const char *newmaintitle )
 {
 
 	UplinkAssert ( strlen(newmaintitle) < SIZE_COMPUTERSCREEN_MAINTITLE );
-	UplinkStrncpy ( maintitle, newmaintitle, sizeof ( maintitle ) );
+	maintitle = newmaintitle;
 
 }
 
@@ -42,7 +42,7 @@ void ComputerScreen::SetSubTitle ( const char *newsubtitle )
 {
 
 	UplinkAssert ( strlen(newsubtitle) < SIZE_COMPUTERSCREEN_SUBTITLE );
-	UplinkStrncpy ( subtitle, newsubtitle, sizeof ( subtitle ) );
+	subtitle = newsubtitle;
 
 }
 
@@ -50,14 +50,14 @@ void ComputerScreen::SetComputer ( const char *newcomputer )
 {
 
 	UplinkAssert ( strlen(newcomputer) < SIZE_COMPUTER_NAME );
-	UplinkStrncpy ( computer, newcomputer, sizeof ( computer ) );
+	computer = newcomputer;
 
 }
 
 Computer *ComputerScreen::GetComputer ()
 {
 
-	return game->GetWorld ()->GetComputer ( computer );
+	return game->GetWorld ()->GetComputer ( computer.c_str () );
 
 }
 
@@ -92,10 +92,10 @@ void ComputerScreen::Save  ( FILE *file )
 void ComputerScreen::Print ()
 {
 
-	printf ( "MainTitle : %s\n", maintitle );
-	printf ( "SubTitle  : %s\n", subtitle );
+	printf ( "MainTitle : %s\n", maintitle.c_str () );
+	printf ( "SubTitle  : %s\n", subtitle.c_str () );
 
-	printf ( "Computer  : %s\n", computer );
+	printf ( "Computer  : %s\n", computer.c_str () );
 
 }
 

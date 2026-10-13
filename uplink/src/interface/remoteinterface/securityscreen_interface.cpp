@@ -124,9 +124,9 @@ void SecurityScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "securityscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "securityscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "securityscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "securityscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "securityscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "securityscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		Computer *comp = game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetComputer ();

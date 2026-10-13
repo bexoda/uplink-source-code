@@ -148,9 +148,9 @@ void HighSecurityScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "highsecurity_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "highsecurity_maintitle" );
 		EclRegisterButtonCallbacks ( "highsecurity_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "highsecurity_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "highsecurity_subtitle" );
 		EclRegisterButtonCallbacks ( "highsecurity_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		HighSecurityScreen *hs = GetComputerScreen ();
@@ -194,7 +194,7 @@ void HighSecurityScreenInterface::Create ( ComputerScreen *newcs )
 			UplinkSnprintf ( button, sizeof ( button ), "highsecurity_systembutton %d", i );
 			UplinkSnprintf ( status, sizeof ( status ), "highsecurity_systemstatus %d", i );
 
-			EclRegisterButton ( 30, 140 + i * 40, 300, 25, mso->caption, "Click here to access this system", title );
+			EclRegisterButton ( 30, 140 + i * 40, 300, 25, mso->caption.c_str (), "Click here to access this system", title );
 			EclRegisterButtonCallbacks ( title, SystemTitleDraw, SystemClick, button_click, button_highlight );			
 
 			EclRegisterButton ( 335, 140 + i * 40, 100, 20, "", "Click here to access this system", status );

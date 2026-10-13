@@ -315,9 +315,9 @@ void UserIDScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 130, 90, 320, 25, GetComputerScreen ()->maintitle, "", "useridscreen_maintitle" );
+		EclRegisterButton ( 130, 90, 320, 25, GetComputerScreen ()->maintitle.c_str (), "", "useridscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "useridscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 130, 110, 320, 20, GetComputerScreen ()->subtitle, "", "useridscreen_subtitle" );
+		EclRegisterButton ( 130, 110, 320, 20, GetComputerScreen ()->subtitle.c_str (), "", "useridscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "useridscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 168, 155, 220, 120, "", "", "useridscreen_image" );

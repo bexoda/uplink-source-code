@@ -72,9 +72,9 @@ void MenuScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 0, 0, 0, 0, "", "", "menuscreeninterface" );
 		EclRegisterButtonCallbacks ( "menuscreeninterface", NULL, NULL, NULL, NULL );
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "menuscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "menuscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "menuscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "menuscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "menuscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "menuscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		int timeinterval = (int) ( 1000.0 / GetComputerScreen ()->NumOptions () );

@@ -241,10 +241,10 @@ void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 		if ( password )
 			delete [] password;
-		size_t length = strlen ( ps->password );
+		size_t length = strlen ( ps->password.c_str () );
 		size_t passwordsize = length+1;
 		password = new char [passwordsize];
-		UplinkStrncpy ( password, ps->password, passwordsize );
+		UplinkStrncpy ( password, ps->password.c_str (), passwordsize );
 		status = DICTIONARYHACKER_INPROGRESS;
 
 		if ( username )

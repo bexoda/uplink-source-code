@@ -74,9 +74,9 @@ void VoicePhoneScreenInterface::Create ( ComputerScreen *newcs )
         UplinkAssert (person);
         voiceindex = person->voiceindex;
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "voicescreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "voicescreen_maintitle" );
 		EclRegisterButtonCallbacks ( "voicescreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "voicescreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "voicescreen_subtitle" );
 		EclRegisterButtonCallbacks ( "voicescreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 40, 140, 300, 250, " ", " ", "voicescreen_text" );

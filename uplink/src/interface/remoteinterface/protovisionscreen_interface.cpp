@@ -99,9 +99,9 @@ void ProtovisionScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "protovisionscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "protovisionscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "protovisionscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "protovisionscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "protovisionscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "protovisionscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
         const char *textmessage = "Falken's maze\n"

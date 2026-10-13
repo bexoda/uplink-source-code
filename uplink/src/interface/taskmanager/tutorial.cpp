@@ -2107,9 +2107,9 @@ bool Tutorial::HasCompletedCurrentSection ()
         else if ( current_part == 11 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_MENUSCREEN );
         else if ( current_part == 13 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
-                                                                 strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle, "Help/" ) == 0 );
+                                                                 strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle.c_str (), "Help/" ) == 0 );
         else if ( current_part == 17 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
-                                                                 strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle, "Internal Services Main Menu" ) == 0 );
+                                                                 strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle.c_str (), "Internal Services Main Menu" ) == 0 );
         else if ( current_part == 20 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_CHANGEGATEWAY );
         else                                            return nextclicked;

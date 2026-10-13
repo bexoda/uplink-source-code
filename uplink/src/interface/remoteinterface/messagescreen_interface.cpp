@@ -41,7 +41,7 @@ void MessageScreenInterface::MailMeClick ( Button * /*button*/ )
 	Message *m = new Message ();
 	m->SetTo ( "PLAYER" );
 	m->SetFrom ( msi->GetComputer ()->name.c_str () );	
-	m->SetSubject ( msi->subtitle );
+	m->SetSubject ( msi->subtitle.c_str () );
 	m->SetBody ( msi->textmessage );
 	m->Send ();
 
@@ -73,9 +73,9 @@ void MessageScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "messagescreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "messagescreen_maintitle" );
 		EclRegisterButtonCallbacks ( "messagescreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "messagescreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "messagescreen_subtitle" );
 		EclRegisterButtonCallbacks ( "messagescreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 50, 120, 400, 245, "", "", "messagescreen_message" );

@@ -280,9 +280,9 @@ void LogScreenInterface::Create ( ComputerScreen *newcs )
 		LogBank *logbank = GetComputerScreen ()->GetTargetLogBank ();		
 		UplinkAssert (logbank);
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "logscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "logscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "logscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "logscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "logscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "logscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 15, 120, 96, 15, "Date", "", "logscreen_datetitle" );

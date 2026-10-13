@@ -274,9 +274,9 @@ void SharesViewScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Draw the screen titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "sharesviewscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "sharesviewscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "sharesviewscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "sharesviewscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "sharesviewscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "sharesviewscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		// Share value graph

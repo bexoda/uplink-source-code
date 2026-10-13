@@ -63,9 +63,9 @@ void DisconnectedScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "disconnectedscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "disconnectedscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "disconnectedscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "disconnectedscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "disconnectedscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "disconnectedscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 50, 120, 400, 30, "", "", "disconnectedscreen_message" );

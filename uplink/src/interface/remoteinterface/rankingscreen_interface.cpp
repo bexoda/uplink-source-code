@@ -175,9 +175,9 @@ void RankingScreenInterface::Create ( ComputerScreen *newcs )
 		// Build the interface
 		//
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "ranking_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "ranking_maintitle" );
 		EclRegisterButtonCallbacks ( "ranking_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "ranking_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "ranking_subtitle" );
 		EclRegisterButtonCallbacks ( "ranking_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 

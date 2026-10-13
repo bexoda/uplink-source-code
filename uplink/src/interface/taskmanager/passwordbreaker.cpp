@@ -104,14 +104,14 @@ void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 	    comp = ps->GetComputer ();
 	    UplinkAssert (comp);
 
-		length = (int) strlen ( ps->password );
+		length = (int) strlen ( ps->password.c_str () );
 		difficulty = ps->difficulty;
 		
 		if ( password )
 			delete [] password;
 		size_t passwordsize = length+1;
 		password = new char [passwordsize];
-		UplinkStrncpy ( password, ps->password, passwordsize );
+		UplinkStrncpy ( password, ps->password.c_str (), passwordsize );
 
 		if ( username )
 			delete [] username;

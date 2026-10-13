@@ -59,9 +59,9 @@ void FaithScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Create the titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "faithscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "faithscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "faithscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "faithscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "faithscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "faithscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 

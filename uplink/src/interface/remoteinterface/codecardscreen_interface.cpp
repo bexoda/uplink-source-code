@@ -319,9 +319,9 @@ void CodeCardScreenInterface::Create ( ComputerScreen *newcs )
 
         // Create the buttons
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "codecard_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "codecard_maintitle" );
 		EclRegisterButtonCallbacks ( "codecard_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "codecard_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "codecard_subtitle" );
 		EclRegisterButtonCallbacks ( "codecard_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
         std::ostringstream caption;

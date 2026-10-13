@@ -114,9 +114,9 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "companyscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "companyscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "companyscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "companyscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "companyscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "companyscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		const char *companyname = GetComputerScreen ()->GetComputer ()->companyname.c_str ();

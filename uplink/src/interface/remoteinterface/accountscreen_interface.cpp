@@ -85,9 +85,9 @@ void AccountScreenInterface::Create ( ComputerScreen *newcs )
 
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "accountscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "accountscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "accountscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "accountscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "accountscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "accountscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		// Account Name

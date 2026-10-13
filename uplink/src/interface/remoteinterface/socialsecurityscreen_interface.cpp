@@ -106,9 +106,9 @@ void SocialSecurityScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Draw the screen titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "ss_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "ss_maintitle" );
 		EclRegisterButtonCallbacks ( "ss_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "ss_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "ss_subtitle" );
 		EclRegisterButtonCallbacks ( "ss_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		// Photo

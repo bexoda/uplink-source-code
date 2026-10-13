@@ -261,7 +261,7 @@ void NuclearWarScreenInterface::Create ( ComputerScreen *newcs )
  
 	if ( !IsVisible () ) {
 
-		EclRegisterButton ( 40, 10, 350, 25, GetComputerScreen ()->subtitle, "", "nuclearwar_maintitle" );
+		EclRegisterButton ( 40, 10, 350, 25, GetComputerScreen ()->subtitle.c_str (), "", "nuclearwar_maintitle" );
 		EclRegisterButtonCallbacks ( "nuclearwar_maintitle", DrawMainTitle, NULL, NULL, NULL );
 
 		// Work out the size/ratios of the map

@@ -121,9 +121,9 @@ void RecordScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Create the titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "recordscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "recordscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "recordscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "recordscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "recordscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "recordscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		// Create record 0

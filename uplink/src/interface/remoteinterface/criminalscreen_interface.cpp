@@ -239,9 +239,9 @@ void CriminalScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Draw the screen titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "criminalscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "criminalscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "criminalscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "criminalscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "criminalscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "criminalscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 30, 130, 128, 160, "", "Shows the person's photograph", "criminal_photo" );

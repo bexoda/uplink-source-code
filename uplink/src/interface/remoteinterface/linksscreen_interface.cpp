@@ -712,9 +712,9 @@ void LinksScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Draw the screen titles
 
-		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle, "", "linksscreen_maintitle" );
+		EclRegisterButton ( 80, 60, 350, 25, GetComputerScreen ()->maintitle.c_str (), "", "linksscreen_maintitle" );
 		EclRegisterButtonCallbacks ( "linksscreen_maintitle", DrawMainTitle, NULL, NULL, NULL );
-		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "linksscreen_subtitle" );
+		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle.c_str (), "", "linksscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "linksscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
 		// Create the links
