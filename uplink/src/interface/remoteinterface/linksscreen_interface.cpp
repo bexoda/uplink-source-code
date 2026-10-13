@@ -590,7 +590,7 @@ void LinksScreenInterface::SetFullList ()
 
 }
 
-void LinksScreenInterface::ApplyFilter ( char *filter )
+void LinksScreenInterface::ApplyFilter ( const char *filter )
 {
 
 	//
@@ -795,7 +795,7 @@ void LinksScreenInterface::Create ( ComputerScreen *newcs )
 		}
 		else if ( GetComputerScreen ()->SCREENTYPE == LINKSSCREENTYPE_LOCALLINKS ) {
 
-			char *companyname = GetComputerScreen ()->GetComputer ()->companyname;
+			const char *companyname = GetComputerScreen ()->GetComputer ()->companyname.c_str ();
 
 			LList <const char *> alllinks;
 			DArray <VLocation *> *locs = game->GetWorld ()->locations.ConvertToDArray ();

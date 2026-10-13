@@ -39,7 +39,7 @@ void CompanyInfoScreenInterface::MdAddClick ( Button *button )
 	CompanyInfoScreenInterface *thisint = (CompanyInfoScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
 	UplinkAssert (thisint);
 
-	char *companyname = thisint->GetComputerScreen ()->GetComputer ()->companyname;
+	const char *companyname = thisint->GetComputerScreen ()->GetComputer ()->companyname.c_str ();
 	UplinkAssert (companyname);
 	Company *company = game->GetWorld ()->GetCompany ( companyname );
 	UplinkAssert (company);
@@ -59,7 +59,7 @@ void CompanyInfoScreenInterface::AdminAddClick ( Button *button )
 	CompanyInfoScreenInterface *thisint = (CompanyInfoScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
 	UplinkAssert (thisint);
 
-	char *companyname = thisint->GetComputerScreen ()->GetComputer ()->companyname;
+	const char *companyname = thisint->GetComputerScreen ()->GetComputer ()->companyname.c_str ();
 	UplinkAssert (companyname);
 	Company *company = game->GetWorld ()->GetCompany ( companyname );
 	UplinkAssert (company);
@@ -119,7 +119,7 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "companyscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "companyscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
-		char *companyname = GetComputerScreen ()->GetComputer ()->companyname;
+		const char *companyname = GetComputerScreen ()->GetComputer ()->companyname.c_str ();
 		UplinkAssert (companyname);
 		Company *company = game->GetWorld ()->GetCompany ( companyname );
 		UplinkAssert (company);

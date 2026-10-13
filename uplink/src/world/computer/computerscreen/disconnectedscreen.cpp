@@ -40,7 +40,7 @@ void DisconnectedScreen::SetTextMessage ( const char *newtextmessage )
 
 }
 
-void DisconnectedScreen::AddLoginLost ( char *ip )
+void DisconnectedScreen::AddLoginLost ( const char *ip )
 {
 
 	size_t ipcopysize = SIZE_VLOCATION_IP;

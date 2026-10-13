@@ -228,7 +228,7 @@ void WorldGenerator::GenerateSimpleStartingMissionA ()
 	Computer *target1 = NULL;
 
 	while ( !employer1 || !target1 ||
-		strcmp ( employer1->name, target1->companyname ) == 0 ) {
+		strcmp ( employer1->name, target1->companyname.c_str () ) == 0 ) {
 
 		employer1 = WorldGenerator::GetRandomCompany ();
 		UplinkAssert (employer1);
@@ -254,7 +254,7 @@ void WorldGenerator::GenerateSimpleStartingMissionB ()
 	Computer *target2 = NULL;
 
 	while ( !employer2 || !target2 ||
-		strcmp ( employer2->name, target2->companyname ) == 0 ) {
+		strcmp ( employer2->name, target2->companyname.c_str () ) == 0 ) {
 
 		employer2 = WorldGenerator::GetRandomCompany ();
 		UplinkAssert (employer2);
@@ -2205,7 +2205,7 @@ void WorldGenerator::GenerateStockMarket ()
 
 
 	MessageScreen *ms0 = new MessageScreen ();
-	ms0->SetMainTitle ( comp->name );
+	ms0->SetMainTitle ( comp->name.c_str () );
 	ms0->SetSubTitle ( "Welcome" );
 	ms0->SetTextMessage ( txtmsg.str ().c_str () );
 	ms0->SetButtonMessage ( "OK" );
@@ -2216,7 +2216,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 1									( Main Menu )
 
 	MenuScreen *ms1 = new MenuScreen ();
-	ms1->SetMainTitle ( comp->name );
+	ms1->SetMainTitle ( comp->name.c_str () );
 	ms1->SetSubTitle ( "Main Menu" );
 	ms1->AddOption ( "Log in", "Log in using an existing username and password", 4 );
 
@@ -2230,7 +2230,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 2									( New user )
 
 	DialogScreen *ds2 = new DialogScreen ();
-	ds2->SetMainTitle ( comp->name );
+	ds2->SetMainTitle ( comp->name.c_str () );
 	ds2->SetSubTitle ( "New User" );
 
 	ds2->AddWidget ( "name",      WIDGET_BASIC, 80, 180, 170, 20, "Enter your name", "This is your name" );
@@ -2249,7 +2249,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 3									( New user created )
 
 	MessageScreen *ms3 = new MessageScreen ();
-	ms3->SetMainTitle ( comp->name );
+	ms3->SetMainTitle ( comp->name.c_str () );
 	ms3->SetSubTitle ( "New user created" );
 	ms3->SetTextMessage ( "Your new user account has been created successfully.\n"
 						  "You are now authorised to trade shares on this system." );
@@ -2260,7 +2260,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 4									( Log in )
 
 	UserIDScreen *uid4 = new UserIDScreen ();
-	uid4->SetMainTitle ( comp->name );
+	uid4->SetMainTitle ( comp->name.c_str () );
 	uid4->SetSubTitle ( "Enter username and password" );
 	uid4->SetDifficulty ( HACKDIFFICULTY_STOCKMARKET );
 	uid4->SetNextPage ( 5 );
@@ -2269,7 +2269,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 5									( User menu )
 
 	MenuScreen *ms5 = new MenuScreen ();
-	ms5->SetMainTitle ( comp->name );
+	ms5->SetMainTitle ( comp->name.c_str () );
 	ms5->SetSubTitle ( "User Menu" );
 	ms5->AddOption ( "Browse shares", "Browse a list of all shares available", 7 );
 	ms5->AddOption ( "Admin", "View the admin menu", 8, 1 );
@@ -2280,7 +2280,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 7									( Browse shares )
 
 	SharesListScreen *sls7 = new SharesListScreen ();
-	sls7->SetMainTitle ( comp->name );
+	sls7->SetMainTitle ( comp->name.c_str () );
 	sls7->SetSubTitle ( "Browse Shares" );
 	sls7->SetScreenType ( SHARESLISTSCREENTYPE_ALLSHARES );
 	sls7->SetNextPage ( 5 );
@@ -2290,7 +2290,7 @@ void WorldGenerator::GenerateStockMarket ()
 	// Screen 8									( Admin menu )
 
 	MenuScreen *ms8 = new MenuScreen ();
-	ms8->SetMainTitle ( comp->name );
+	ms8->SetMainTitle ( comp->name.c_str () );
 	ms8->SetSubTitle ( "Admin menu" );
 #ifdef TESTGAME
 	ms8->AddOption ( "View records", "View all records on this system", 9 );
@@ -2303,7 +2303,7 @@ void WorldGenerator::GenerateStockMarket ()
 
 	GenericScreen *rs9 = new GenericScreen ();
 	rs9->SetScreenType ( SCREEN_RECORDSCREEN );
-	rs9->SetMainTitle ( comp->name );
+	rs9->SetMainTitle ( comp->name.c_str () );
 	rs9->SetSubTitle ( "Records" );
 	rs9->SetNextPage ( 8 );
 	comp->AddComputerScreen ( rs9, 9 );
@@ -2312,7 +2312,7 @@ void WorldGenerator::GenerateStockMarket ()
 
 	LogScreen *ls10 = new LogScreen ();
 	ls10->SetTARGET ( LOGSCREEN_TARGET_ACCESSLOGS );
-	ls10->SetMainTitle ( comp->name );
+	ls10->SetMainTitle ( comp->name.c_str () );
 	ls10->SetSubTitle ( "Access logs" );
 	ls10->SetNextPage ( 8 );
 	comp->AddComputerScreen ( ls10, 10 );
@@ -2321,7 +2321,7 @@ void WorldGenerator::GenerateStockMarket ()
 
 	GenericScreen *gs11 = new GenericScreen ();
 	gs11->SetScreenType ( SCREEN_SHARESVIEWSCREEN );
-	gs11->SetMainTitle ( comp->name );
+	gs11->SetMainTitle ( comp->name.c_str () );
 	gs11->SetSubTitle ( "View share details" );
 	gs11->SetNextPage ( 7 );
 	comp->AddComputerScreen ( gs11, 11 );
@@ -2471,7 +2471,7 @@ void WorldGenerator::GenerateOCP ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkStrncpy ( personname, "internal@OCP.net", sizeof ( personname ) );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 }
@@ -2528,7 +2528,7 @@ void WorldGenerator::GenerateSJGames ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkStrncpy ( personname, "internal@Steve Jackson Games.net", sizeof ( personname ) );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 }
@@ -2711,7 +2711,7 @@ void WorldGenerator::GenerateIntroversion ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkStrncpy ( personname, "internal@Introversion Software.net", sizeof ( personname ) );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, contact->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 }
@@ -2764,7 +2764,7 @@ Company *WorldGenerator::GenerateCompany ( const char *companyname, int size, in
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", companyname );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, comp->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, comp->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 	// Set up our share prices for the start
@@ -3691,9 +3691,9 @@ Person *WorldGenerator::GeneratePerson ()
 	person->SetAge ( age );
 	person->SetPhotoIndex ( photo );
     person->SetVoiceIndex ( voice );
-	person->SetLocalHost ( comp->ip );
-	person->SetRemoteHost ( comp->ip );
-	person->SetPhoneNumber ( phone->ip );
+	person->SetLocalHost ( comp->ip.c_str () );
+	person->SetRemoteHost ( comp->ip.c_str () );
+	person->SetPhoneNumber ( phone->ip.c_str () );
 
 	game->GetWorld ()->CreatePerson ( person );
 
@@ -3744,9 +3744,9 @@ Agent *WorldGenerator::GenerateAgent ()
 	person->SetAge ( age );
 	person->SetPhotoIndex ( photo );
     person->SetVoiceIndex ( voice );
-	person->SetLocalHost ( comp->ip );
-	person->SetRemoteHost ( comp->ip );
-    person->SetPhoneNumber ( phone->ip );
+	person->SetLocalHost ( comp->ip.c_str () );
+	person->SetRemoteHost ( comp->ip.c_str () );
+    person->SetPhoneNumber ( phone->ip.c_str () );
 	person->rating.SetUplinkRating ( (int) NumberGenerator::RandomNormalNumber ( AGENT_UPLINKRATINGAVERAGE, AGENT_UPLINKRATINGVARIANCE ) );
 
 
@@ -3911,7 +3911,7 @@ Computer *WorldGenerator::GetRandomComputer ( int TYPE )
 			UplinkAssert ( comp );
 
 			if ( (comp->TYPE & TYPE) && comp->istargetable && comp->isrunning &&
-				 strcmp(comp->companyname, "Government" ) != 0 )
+				 strcmp(comp->companyname.c_str (), "Government" ) != 0 )
 				typecomps->PutData ( comps->GetData (i) );
 
 		}

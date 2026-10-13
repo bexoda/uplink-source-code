@@ -48,7 +48,7 @@ public:
 
 	void SetMainTitle ( const char *newmaintitle );
 	void SetSubTitle  ( const char *newsubtitle );
-	void SetComputer  ( char *newcomputer );
+	void SetComputer  ( const char *newcomputer );
 
 	Computer *GetComputer ();
 

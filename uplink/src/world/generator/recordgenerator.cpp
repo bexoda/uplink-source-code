@@ -445,7 +445,7 @@ void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 
 	Person *person = game->GetWorld ()->GetPerson ( personname );
 	UplinkAssert (person);
-	int accno = person->CreateNewAccount ( bank->ip, personname, NameGenerator::GeneratePassword (), balance, loan );
+	int accno = person->CreateNewAccount ( bank->ip.c_str (), personname, NameGenerator::GeneratePassword (), balance, loan );
 	person->rating.SetCreditRating ( financial_situation );
 
 	char accno_s [16];
@@ -486,19 +486,19 @@ void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 							char source_data [128];
 							char target_data [128];
 							char s_amount [16];
-							UplinkSnprintf ( source_data, sizeof ( source_data ), "%s %d", target_bank->ip, target_acc->accountnumber );
-							UplinkSnprintf ( target_data, sizeof ( target_data ), "%s %d", bank->ip, myaccount->accountnumber );
+							UplinkSnprintf ( source_data, sizeof ( source_data ), "%s %d", target_bank->ip.c_str (), target_acc->accountnumber );
+							UplinkSnprintf ( target_data, sizeof ( target_data ), "%s %d", bank->ip.c_str (), myaccount->accountnumber );
 							UplinkSnprintf ( s_amount, sizeof ( s_amount ), "%d", amount );
 
 							AccessLog *source_log = new AccessLog ();
-							source_log->SetProperties ( &transferdate, bank->ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
+							source_log->SetProperties ( &transferdate, bank->ip.c_str (), person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
 							source_log->SetData1 ( source_data );
 							source_log->SetData2 ( s_amount );
 							source_log->SetData3 ( person->name.c_str () );
 							myaccount->log.AddLog ( source_log );
 
 							AccessLog *target_log = new AccessLog ();
-							target_log->SetProperties ( &transferdate, bank->ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
+							target_log->SetProperties ( &transferdate, bank->ip.c_str (), person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
 							target_log->SetData1 ( target_data );
 							target_log->SetData2 ( s_amount );
 							target_log->SetData3 ( person->name.c_str () );

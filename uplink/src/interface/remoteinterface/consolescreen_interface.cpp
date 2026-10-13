@@ -611,12 +611,12 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
 
 				if ( strcmp ( program, "revelation" ) == 0 ) {
 
-					game->GetWorld ()->plotgenerator.RunRevelation ( comp->ip, data->version, true );
+					game->GetWorld ()->plotgenerator.RunRevelation ( comp->ip.c_str (), data->version, true );
 
 				}
                 else if ( strcmp ( program, "faith" ) == 0 ) {
 
-                    game->GetWorld ()->plotgenerator.RunFaith ( comp->ip, data->version, true );
+                    game->GetWorld ()->plotgenerator.RunFaith ( comp->ip.c_str (), data->version, true );
 
                     if ( comp->isinfected_revelation > 0.0 ) {
                         queue.PutDataAtStart ( new ConsoleCommand ( CMDTYPE_TEXT, "Revelation is still running", 0 ) );
@@ -630,7 +630,7 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
                 }
                 else if ( strcmp ( program, "revelationtracer" ) == 0 ) {
 
-                    game->GetWorld ()->plotgenerator.RunRevelationTracer ( comp->ip );
+                    game->GetWorld ()->plotgenerator.RunRevelationTracer ( comp->ip.c_str () );
 
 				    queue.PutDataAtStart ( new ConsoleCommand ( CMDTYPE_TEXT, "Listening for Revelation activity on port 666...", 0 ) );
                     queue.PutDataAtStart ( new ConsoleCommand ( CMDTYPE_TEXT, "RevelationTracer is now INVISIBLE to other users", 0 ) );

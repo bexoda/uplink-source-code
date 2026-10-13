@@ -238,12 +238,12 @@ void World::CreateComputer ( Computer *computer )
 {
 
 	UplinkAssert (computer);
-	UplinkAssert (computer->name);
+	UplinkAssert (computer->name.c_str ());
 
-	computers.PutData ( computer->name, computer );	
+	computers.PutData ( computer->name.c_str (), computer );	
 
-	UplinkAssert ( GetVLocation ( computer->ip ) );
-	GetVLocation ( computer->ip )->SetComputer ( computer->name );
+	UplinkAssert ( GetVLocation ( computer->ip.c_str () ) );
+	GetVLocation ( computer->ip.c_str () )->SetComputer ( computer->name.c_str () );
 
 }
 

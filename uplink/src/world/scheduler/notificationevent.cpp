@@ -353,7 +353,7 @@ void NotificationEvent::AddInterestOnLoans ()
 				     << "Your new loan is " << account->loan << "c.";
 
 			    Message *msg = new Message ();
-			    msg->SetFrom ( comp->name );
+			    msg->SetFrom ( comp->name.c_str () );
 			    msg->SetTo ( "PLAYER" );
 			    msg->SetSubject ( "Interest charged" );
 			    msg->SetBody ( body.str ().c_str () );

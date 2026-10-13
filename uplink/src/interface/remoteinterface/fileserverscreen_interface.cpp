@@ -55,7 +55,7 @@ bool FileServerScreenInterface::EscapeKeyPressed ()
 {
 
 	char name [128 + SIZE_VLOCATION_IP + 1];
-	UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+	UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
     Button *button = EclGetButton (name);
     
 	if ( button )
@@ -444,7 +444,7 @@ void FileServerScreenInterface::Create ( ComputerScreen *newcs )
 		// Create the close button
 
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRegisterButton ( 421, 121, 13, 13, "", "Close the File Server Screen", name );
 		button_assignbitmaps ( name, "close.tif", "close_h.tif", "close_c.tif" );
 		EclRegisterButtonCallback ( name, CloseClick );
@@ -497,7 +497,7 @@ void FileServerScreenInterface::Remove ()
             ScrollBox::RemoveScrollBox( "fileserverscreen_scroll" );
 
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "fileserverscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRemoveButton ( name );
 
 	}

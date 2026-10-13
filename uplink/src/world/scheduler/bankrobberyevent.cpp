@@ -173,8 +173,8 @@ char *BankRobberyEvent::GetLongString ()
 
 }
 
-void BankRobberyEvent::SetDetails ( char *newsourceip, char *newsourceaccno,
-                                    char *newtargetip, char *newtargetaccno,
+void BankRobberyEvent::SetDetails ( const char *newsourceip, char *newsourceaccno,
+                                    const char *newtargetip, char *newtargetaccno,
                                     int newamount, Date *newhackdate )
 {
 

@@ -476,7 +476,7 @@ void LanGenerator::SanityCheckLAN ( LanComputer *comp )
                             ComputerScreen *nextPage = comp->screens.GetData(mso->nextpage);
                             if ( nextPage->GetOBJECTID () == OID_MENUSCREEN ) {
 
-                                printf ( "ERROR Screen %d Points to %d at %s", i, mso->nextpage, comp->companyname );
+                                printf ( "ERROR Screen %d Points to %d at %s", i, mso->nextpage, comp->companyname.c_str () );
 
                             }
 
@@ -1330,7 +1330,7 @@ int LanGenerator::GenerateRouter( LanComputer *comp, LanCluster *cluster, int x,
 	// Create the screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "EXTERNAL ROUTER ACCESSED\n\n"
 						 "You have accessed the Local Area Network of our company.\n"
@@ -1362,7 +1362,7 @@ int LanGenerator::GenerateHUB ( LanComputer *comp, LanCluster *cluster, int x, i
 	// Create the screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "INTERNAL HUB ACCESSED\n\n"
 						 "HUB Internal Operating system Active\n"
@@ -1393,7 +1393,7 @@ int LanGenerator::GenerateTerminal ( LanComputer *comp, LanCluster *cluster, int
 	// Opening message screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "TERMINAL ACCESSED\n\n"
 						 "Password verification will be required\n"
@@ -1418,7 +1418,7 @@ int LanGenerator::GenerateTerminal ( LanComputer *comp, LanCluster *cluster, int
 	// You're in screen
 
 	MessageScreen *ms2 = new MessageScreen();
-	ms2->SetMainTitle ( comp->companyname );
+	ms2->SetMainTitle ( comp->companyname.c_str () );
 	ms2->SetSubTitle ( "ACCESS GRANTED" );
 	ms2->SetTextMessage ( "All security verification checks out OK.\n"
                           "You are now authorised to use this Terminal system.\n\n"
@@ -1453,7 +1453,7 @@ int LanGenerator::GenerateLock ( LanComputer *comp, LanCluster *cluster, int x, 
 	// Create the screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "LOCK ACCESSED\n\n"
 						 "Full systems check: OK\n"
@@ -1488,7 +1488,7 @@ int LanGenerator::GenerateAuthentication ( LanComputer *comp, LanCluster *cluste
 	// Opening message screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "AUTHENTICATION SERVER ACCESSED\n\n"
 						 "Authentication Server dedicated server software running\n"
@@ -1539,7 +1539,7 @@ int LanGenerator::GenerateAuthentication ( LanComputer *comp, LanCluster *cluste
 
 	DialogScreen *ds = new DialogScreen ();
 	int dsIndex = comp->AddComputerScreen( ds );
-	ds->SetMainTitle ( comp->companyname );
+	ds->SetMainTitle ( comp->companyname.c_str () );
 	ds->SetSubTitle ( "Authentication Server" );
 	ds->AddWidget( "text", WIDGET_CAPTION, 50, 100, 200, 100, "Access to authentication Server systems granted.\n"
 														 "Please proceed with caution.", " " );
@@ -1568,7 +1568,7 @@ int LanGenerator::GenerateMainServer ( LanComputer *comp, LanCluster *cluster, i
 	// Opening message screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( "MAIN SERVER ACCESSED\n\n"
 						 "External connection to Main Server granted.\n"
@@ -1668,7 +1668,7 @@ int LanGenerator::GenerateLogServer ( LanComputer *comp, LanCluster *cluster, in
     // Message screen
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Log Server" );
 	ms->SetTextMessage ( "External access to LOG server granted.\n\n"
                          "Checking Operating System : OK\n"
@@ -1721,7 +1721,7 @@ int LanGenerator::GenerateIsolationBridge ( LanComputer *comp, LanCluster *clust
 
 	DialogScreen *ds = new DialogScreen ();
 	int dsIndex = comp->AddComputerScreen( ds );
-	ds->SetMainTitle ( comp->companyname );
+	ds->SetMainTitle ( comp->companyname.c_str () );
 	ds->SetSubTitle ( "ISOLATION BRIDGE" );
 	ds->AddWidget( "text", WIDGET_CAPTION, 50, 100, 200, 100, "Isolation bridge accessed", " " );
 	ds->AddWidget( "enable", WIDGET_SCRIPTBUTTON, 50, 200, 150, 20, "Enable Isolation Bridge",
@@ -1742,7 +1742,7 @@ int LanGenerator::GenerateSessionKeyServer ( LanComputer *comp, LanCluster *clus
     UplinkAssert (cluster);
 
     MessageScreen *ms = new MessageScreen ();
-    ms->SetMainTitle ( comp->companyname );
+    ms->SetMainTitle ( comp->companyname.c_str () );
     ms->SetSubTitle ( "Session key server" );
     ms->SetTextMessage ( "This is a session key server" );
     int msIndex = comp->AddComputerScreen ( ms );
@@ -1762,7 +1762,7 @@ int LanGenerator::GenerateModem ( LanComputer *comp, LanCluster *cluster, int x,
     // New modem virtual location
 
 	char computername [SIZE_COMPUTER_NAME];
-	UplinkSnprintf ( computername, sizeof ( computername ), "%s LAN Dial Up access", comp->companyname );
+	UplinkSnprintf ( computername, sizeof ( computername ), "%s LAN Dial Up access", comp->companyname.c_str () );
 
 	int mapx, mapy;
     WorldGenerator::GenerateValidMapPos ( mapx, mapy );
@@ -1781,7 +1781,7 @@ int LanGenerator::GenerateModem ( LanComputer *comp, LanCluster *cluster, int x,
 	vl->SetIP ( ip );
 	game->GetWorld ()->CreateVLocation ( vl );
 	vl->SetListed ( false );
-    vl->SetComputer ( comp->name );
+    vl->SetComputer ( comp->name.c_str () );
 
     if ( phoneNum ) UplinkStrncpy ( phoneNum, ip, phoneNumsize );
 
@@ -1813,7 +1813,7 @@ int LanGenerator::GenerateModem ( LanComputer *comp, LanCluster *cluster, int x,
 													 ip );
 
 	MessageScreen *ms = new MessageScreen ();
-	ms->SetMainTitle ( comp->companyname );
+	ms->SetMainTitle ( comp->companyname.c_str () );
 	ms->SetSubTitle ( "Local Area Network" );
 	ms->SetTextMessage ( textMsg );
 	int msIndex = comp->AddComputerScreen( ms );
@@ -1836,7 +1836,7 @@ int LanGenerator::GenerateRadioTransmitter ( LanComputer *comp, LanCluster *clus
     UplinkAssert (cluster);
 
     GenericScreen *gs = new GenericScreen ();
-    gs->SetMainTitle ( comp->companyname );
+    gs->SetMainTitle ( comp->companyname.c_str () );
     gs->SetSubTitle ( "Wireless LAN Transmitter" );
     gs->SetScreenType ( SCREEN_RADIOTRANSMITTER );
     int gsIndex = comp->AddComputerScreen ( gs );
@@ -1853,7 +1853,7 @@ int LanGenerator::GenerateRadioReceiver ( LanComputer *comp, LanCluster *cluster
     UplinkAssert (cluster);
 
     MessageScreen *ms = new MessageScreen ();
-    ms->SetMainTitle ( comp->companyname );
+    ms->SetMainTitle ( comp->companyname.c_str () );
     ms->SetSubTitle ( "Wireless LAN Receiver" );
     ms->SetTextMessage ( "Wireless connection successfully established.\n"
                          "Checking receiver systems : OK\n"
@@ -1876,7 +1876,7 @@ int LanGenerator::GenerateFaxPrinter ( LanComputer *comp, LanCluster *cluster, i
     UplinkAssert (cluster);
 
     MessageScreen *ms = new MessageScreen ();
-    ms->SetMainTitle ( comp->companyname );
+    ms->SetMainTitle ( comp->companyname.c_str () );
     ms->SetSubTitle ( "Fax printer" );
     ms->SetTextMessage ( "This is a fax printer" );
     int msIndex = comp->AddComputerScreen ( ms );
@@ -2107,7 +2107,7 @@ void LanCluster::Merge ( LanCluster *target, LanComputer *comp )
 							if ( locations->GetData(i)->GetOBJECTID() == OID_VLOCATIONSPECIAL ) {
 
 								VLocationSpecial *vl = (VLocationSpecial *) locations->GetData(i);
-								if ( strcmp ( vl->computer.c_str (), comp->name ) == 0 &&
+								if ( strcmp ( vl->computer.c_str (), comp->name.c_str () ) == 0 &&
 									 vl->screenIndex == targetScreenIndex &&
 									 vl->securitySystemIndex < systems.Size () ) {
 
@@ -2210,7 +2210,7 @@ void LanCluster::Merge ( LanComputer *target )
 							if ( locations->GetData(i)->GetOBJECTID() == OID_VLOCATIONSPECIAL ) {
 
 								VLocationSpecial *vl = (VLocationSpecial *) locations->GetData(i);
-								if ( strcmp ( vl->computer.c_str (), target->name ) == 0 &&
+								if ( strcmp ( vl->computer.c_str (), target->name.c_str () ) == 0 &&
 									 vl->screenIndex == targetScreenIndex &&
 									 vl->securitySystemIndex < systems.Size () ) {
 

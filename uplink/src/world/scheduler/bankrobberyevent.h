@@ -39,8 +39,8 @@ public:
 
 	void Run ();
 
-    void SetDetails ( char *newsourceip, char *newsourceaccno,
-                      char *newtargetip, char *newtargetaccno,
+    void SetDetails ( const char *newsourceip, char *newsourceaccno,
+                      const char *newtargetip, char *newtargetaccno,
                       int newamount, Date *newhackdate );
 
 	char *GetShortString ();

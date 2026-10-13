@@ -711,7 +711,7 @@ void WorldMapInterface::DrawLocation ( Button *button, bool highlighted, bool cl
 		
 		char msg[256];
 		
-		UplinkSnprintf(msg, sizeof ( msg ), "Owner: %s", comp->companyname);
+		UplinkSnprintf(msg, sizeof ( msg ), "Owner: %s", comp->companyname.c_str ());
 		int w1 = GciTextWidth(msg) + 10;
 
 		UplinkSnprintf(msg, sizeof ( msg ), "IP: %s", ip);
@@ -750,7 +750,7 @@ void WorldMapInterface::DrawLocation ( Button *button, bool highlighted, bool cl
 
         char line1 [64], line2 [128];
         UplinkSnprintf ( line1, sizeof ( line1 ), "IP: %s", ip );
-        UplinkSnprintf ( line2, sizeof ( line2 ), "Owner: %s", comp->companyname );
+        UplinkSnprintf ( line2, sizeof ( line2 ), "Owner: %s", comp->companyname.c_str () );
         glColor3f ( 1.0f, 1.0f, 1.0f );
 		GciDrawText ( x + 5, y + 10, line1 );
         GciDrawText ( x + 5, y + 20, line2 );

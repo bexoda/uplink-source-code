@@ -119,7 +119,7 @@ Mission *DemoPlotGenerator::Generate_FileCopyMission ()
     while ( !mission ) {
 
 	    while ( !employer1 || !target1 ||
-		    strcmp ( employer1->name, target1->companyname ) == 0 ) {
+		    strcmp ( employer1->name, target1->companyname.c_str () ) == 0 ) {
 
 		    employer1 = WorldGenerator::GetRandomCompany ();
 		    UplinkAssert (employer1);
@@ -147,7 +147,7 @@ Mission *DemoPlotGenerator::Generate_FileDeleteMission ()
     while ( !mission ) {
 
 	    while ( !employer2 || !target2 ||
-		    strcmp ( employer2->name, target2->companyname ) == 0 ) {
+		    strcmp ( employer2->name, target2->companyname.c_str () ) == 0 ) {
 
 		    employer2 = WorldGenerator::GetRandomCompany ();
 		    UplinkAssert (employer2);
@@ -272,7 +272,7 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	UplinkSnprintf ( completionD, sizeof ( completionD ), "%d", newnumber );
 	UplinkSnprintf ( completionE, sizeof ( completionE ), "%d", newnumber );
 
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
     UplinkStrncpy ( arcmissiontarget, person->name.c_str (), sizeof ( arcmissiontarget ) );
@@ -304,7 +304,7 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	mission->SetDescription  ( description );
 	mission->SetDetails		 ( details.str ().c_str () );
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
     return mission;

@@ -13,6 +13,8 @@
 #ifndef _included_computer_h
 #define _included_computer_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -76,9 +78,9 @@ public:
 
 	int TYPE;
 
-	char name		 [SIZE_COMPUTER_NAME];			
-	char companyname [SIZE_COMPANY_NAME];
-	char ip			 [SIZE_VLOCATION_IP];
+	std::string name;			
+	std::string companyname;
+	std::string ip;
 
 	int tracespeed;
 	int traceaction;

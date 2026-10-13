@@ -344,7 +344,7 @@ void UserIDScreenInterface::Create ( ComputerScreen *newcs )
 
 		UplinkAssert ( cs->GetComputer () );
 
-		if ( game->GetWorld ()->GetPlayer ()->codes.LookupTree ( cs->GetComputer ()->ip ) ) {
+		if ( game->GetWorld ()->GetPlayer ()->codes.LookupTree ( cs->GetComputer ()->ip.c_str () ) ) {
 
 			DArray <char *> *codes = game->GetWorld ()->GetPlayer ()->codes.ConvertToDArray ();
 			DArray <char *> *ips   = game->GetWorld ()->GetPlayer ()->codes.ConvertIndexToDArray ();
@@ -356,7 +356,7 @@ void UserIDScreenInterface::Create ( ComputerScreen *newcs )
 
 			for ( int i = 0; i < codes->Size (); ++i ) {
 				if ( codes->ValidIndex (i) && ips->ValidIndex (i) ) {
-					if ( strcmp ( ips->GetData (i), cs->GetComputer ()->ip ) == 0 ) {
+					if ( strcmp ( ips->GetData (i), cs->GetComputer ()->ip.c_str () ) == 0 ) {
 
 						char name [64];
 						UplinkSnprintf ( name, sizeof ( name ), "useridscreen_code %d", currentcode );

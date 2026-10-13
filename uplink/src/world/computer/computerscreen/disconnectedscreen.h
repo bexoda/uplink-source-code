@@ -42,7 +42,7 @@ public:
 	void SetNextPage ( int newnextpage );
 	void SetTextMessage ( const char *newtextmessage );
 
-    static void AddLoginLost ( char *ip );
+    static void AddLoginLost ( const char *ip );
     static void ClearLoginsLost ();
 
     // Common functions

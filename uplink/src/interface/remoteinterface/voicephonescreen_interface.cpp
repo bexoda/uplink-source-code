@@ -70,7 +70,7 @@ void VoicePhoneScreenInterface::Create ( ComputerScreen *newcs )
 
         Computer *comp = GetComputerScreen ()->GetComputer ();
         UplinkAssert (comp);
-        Person *person = game->GetWorld ()->GetPerson ( comp->companyname );
+        Person *person = game->GetWorld ()->GetPerson ( comp->companyname.c_str () );
         UplinkAssert (person);
         voiceindex = person->voiceindex;
 

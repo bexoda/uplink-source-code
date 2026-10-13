@@ -168,7 +168,7 @@ void ScriptLibrary::Script10 ()
 
 	// Get the source and target values
 
-	char *source_ip    = comp->ip;
+	const char *source_ip    = comp->ip.c_str ();
 	char *target_ip    = EclGetButton ( "t_ip_value 0 0" )->caption;
 	char *source_accno = EclGetButton ( "s_accno_value -1 -1" )->caption;	
 	char *target_accno = EclGetButton ( "t_accno_value 0 0" )->caption;
@@ -285,8 +285,8 @@ void ScriptLibrary::Script11 ()
 
 	// Create the account
 
-	int accno = game->GetWorld ()->GetPlayer ()->CreateNewAccount ( comp->ip, name, passwd, 0, 0 );
-	game->GetWorld ()->GetPlayer ()->GiveLink ( comp->ip );
+	int accno = game->GetWorld ()->GetPlayer ()->CreateNewAccount ( comp->ip.c_str (), name, passwd, 0, 0 );
+	game->GetWorld ()->GetPlayer ()->GiveLink ( comp->ip.c_str () );
 
 	// Log the player in as this person
 
@@ -347,8 +347,8 @@ void ScriptLibrary::Script12 ()
 	char code [128];
     Computer::GenerateAccessCode( name, passwd, code, sizeof ( code ) );
 
-	game->GetWorld ()->GetPlayer ()->GiveLink ( comp->ip );
-	game->GetWorld ()->GetPlayer ()->GiveCode ( comp->ip, code );
+	game->GetWorld ()->GetPlayer ()->GiveLink ( comp->ip.c_str () );
+	game->GetWorld ()->GetPlayer ()->GiveCode ( comp->ip.c_str (), code );
 
 	// Log the player in as this person
 
@@ -746,9 +746,9 @@ void ScriptLibrary::Script33 ()
 
     Computer *bank = game->GetWorld ()->GetComputer ( NameGenerator::GenerateInternationalBankName("Uplink") );
 	UplinkAssert (bank);
-	int accno = game->GetWorld ()->GetPlayer ()->CreateNewAccount ( bank->ip, name, password, 
+	int accno = game->GetWorld ()->GetPlayer ()->CreateNewAccount ( bank->ip.c_str (), name, password, 
 																	0, PLAYER_START_BALANCE );
-	game->GetWorld ()->GetPlayer ()->GiveLink ( bank->ip );
+	game->GetWorld ()->GetPlayer ()->GiveLink ( bank->ip.c_str () );
 
 	// Store the new player's account on Uplink's computer
 
@@ -1710,14 +1710,14 @@ void ScriptLibrary::Script71 ()
 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_SPECIAL );
-	mission->SetCompletion   ( ourcomp->ip, NULL, NULL, NULL, NULL );    
+	mission->SetCompletion   ( ourcomp->ip.c_str (), NULL, NULL, NULL, NULL );    
 	mission->SetEmployer     ( employer->name );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, payment );
 	mission->SetDescription  ( description );	
 	mission->SetFullDetails  ( details.str ().c_str () );
-	mission->GiveLink ( ourcomp->ip );
-	mission->GiveCode ( ourcomp->ip, code );
+	mission->GiveLink ( ourcomp->ip.c_str () );
+	mission->GiveCode ( ourcomp->ip.c_str (), code );
 
 
     game->GetWorld ()->GetPlayer ()->GiveMission (mission);

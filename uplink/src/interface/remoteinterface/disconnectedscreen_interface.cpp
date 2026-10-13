@@ -110,7 +110,7 @@ void DisconnectedScreenInterface::Create ( ComputerScreen *newcs )
 
 		int width = 100;
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "disconnectedscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "disconnectedscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRegisterButton ( 320 - width/2, 380, width, 20, "OK", "Click to close this screen", name );
 		EclRegisterButtonCallback ( name, Click );
 
@@ -130,7 +130,7 @@ void DisconnectedScreenInterface::Remove ()
 		EclRemoveButton ( "disconnectedscreen_subtitle" );
 
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "disconnectedscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "disconnectedscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRemoveButton ( name );
 
 	}

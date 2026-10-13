@@ -212,7 +212,7 @@ Mission *MissionGenerator::Generate_StealFile ( Company *employer )
 		{
 			Computer *target = WorldGenerator::GetRandomLowSecurityComputer ( COMPUTER_TYPE_INTERNALSERVICESMACHINE );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname ) == 0 ) return NULL;
+			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_StealSingleFile ( employer, target );
 			break;
 		}
@@ -223,7 +223,7 @@ Mission *MissionGenerator::Generate_StealFile ( Company *employer )
                                                                    COMPUTER_TYPE_CENTRALMAINFRAME |
                                                                    COMPUTER_TYPE_LAN );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname ) == 0 ) return NULL;
+			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_StealAllFiles   ( employer, target );
 			break;
 		}
@@ -241,7 +241,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	UplinkAssert (target);
 
 
-	if ( strcmp ( employer->name, target->companyname ) == 0 ) return NULL;
+	if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
 
 	int difficulty = (int) NumberGenerator::RandomNormalNumber ( MINDIFFICULTY_MISSION_STEALFILE, DIFFICULTY_MISSION_VARIANCE );
 	if ( difficulty < MINDIFFICULTY_MISSION_STEALFILE ) difficulty = MINDIFFICULTY_MISSION_STEALFILE;
@@ -264,7 +264,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 
 	// Create the data to be stolen and add it to the target computer's memory
 
-	char *datatitle = NameGenerator::GenerateDataName ( target->name, DATATYPE_DATA );
+	char *datatitle = NameGenerator::GenerateDataName ( target->name.c_str (), DATATYPE_DATA );
 
 	int encrypted = difficulty < 3 ? 0 : (int) NumberGenerator::RandomNormalNumber ( (float) difficulty, (float) ( difficulty / 2 ) );
     if ( encrypted > 7 ) encrypted = 7;
@@ -281,7 +281,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
     target->databank.InsertData ( data );
 	//target->databank.PutData ( data );
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip.c_str () ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	// Infer the internal services contact address
@@ -339,7 +339,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	// Insert the mission
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_STEALFILE );
-	mission->SetCompletion   ( target->ip, datatitle, NULL, NULL, NULL );
+	mission->SetCompletion   ( target->ip.c_str (), datatitle, NULL, NULL, NULL );
 	mission->SetEmployer     ( employer->name );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -351,7 +351,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( difficulty > 3 )		mission->SetWhySoMuchMoney ( "The files contain sensitive data." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -466,7 +466,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 
 	}
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip.c_str () ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	/********** Patch by François Gagné **********/
@@ -504,11 +504,11 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	char completionE [16];												// TYPE of data
 
 	char whoisthetarget [128];
-	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The data is owned by %s", target->companyname );
+	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The data is owned by %s", target->companyname.c_str () );
 
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, "ALL", sizeof ( completionB ) );
-	UplinkStrncpy ( completionC, ourcomp->ip, sizeof ( completionC ) );
+	UplinkStrncpy ( completionC, ourcomp->ip.c_str (), sizeof ( completionC ) );
 	UplinkSnprintf ( completionD, sizeof ( completionD ), "%d %d", numfiles, totalsize );
 
 	if ( missiontype == 1 ) {
@@ -600,9 +600,9 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	mission->SetWhySoMuchMoney ( "There will be a lot of data to copy" );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
-	mission->GiveLink ( ourcomp->ip );
-	mission->GiveCode ( ourcomp->ip, code );
+	mission->GiveLink ( target->ip.c_str () );
+	mission->GiveLink ( ourcomp->ip.c_str () );
+	mission->GiveCode ( ourcomp->ip.c_str (), code );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -628,7 +628,7 @@ Mission *MissionGenerator::Generate_DestroyFile ( Company *employer )
 		{
 			Computer *target = WorldGenerator::GetRandomLowSecurityComputer ( COMPUTER_TYPE_INTERNALSERVICESMACHINE );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname ) == 0 ) return NULL;
+			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_DestroySingleFile ( employer, target );
 			break;
 		}
@@ -639,7 +639,7 @@ Mission *MissionGenerator::Generate_DestroyFile ( Company *employer )
                                                                    COMPUTER_TYPE_CENTRALMAINFRAME |
                                                                    COMPUTER_TYPE_LAN );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname ) == 0 ) return NULL;
+			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_DestroyAllFiles ( employer, target );
 			break;
 		}
@@ -680,7 +680,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 
 	// Create the data to be stolen and add it to the target computer's memory
 
-	char *datatitle = NameGenerator::GenerateDataName ( target->name, DATATYPE_DATA );
+	char *datatitle = NameGenerator::GenerateDataName ( target->name.c_str (), DATATYPE_DATA );
 
 	Data *data = new Data ();
 	data->SetTitle ( datatitle );
@@ -692,7 +692,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
     target->databank.InsertData ( data );
 	//target->databank.PutData ( data );
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip.c_str () ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	// Infer the internal services contact address
@@ -737,7 +737,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 
 	char completionA [SIZE_VLOCATION_IP];
 	char completionB [SIZE_DATA_TITLE];
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, datatitle, sizeof ( completionB ) );
 
 	Date postdate;
@@ -760,7 +760,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( difficulty > 4 )		mission->SetWhySoMuchMoney ( "The data will be well protected." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -825,11 +825,11 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	char completionA [SIZE_VLOCATION_IP];								// IP
 	char completionB [SIZE_DATA_TITLE];									// Data title or ALL
 	char completionC [16];												// Type of file
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, "ALL", sizeof ( completionB ) );
 
 	char whoisthetarget [128];
-	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The data is owned by %s", target->companyname );
+	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The data is owned by %s", target->companyname.c_str () );
 
 	int type = NumberGenerator::RandomNumber ( 4 ) + 1;
 
@@ -865,7 +865,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 
 	}
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip.c_str () ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	/*
@@ -961,7 +961,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	mission->SetWhySoMuchMoney ( "The data will be well protected." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -1041,7 +1041,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
     char completionB [32];                          // Field required
     char completionC [128];                         // Name of person responsible (only type3)
 
-    UplinkSnprintf ( completionA, sizeof ( completionA ), "%s %d", target->ip, taccount->accountnumber );
+    UplinkSnprintf ( completionA, sizeof ( completionA ), "%s %d", target->ip.c_str (), taccount->accountnumber );
     UplinkStrncpy ( completionC, "Unused", sizeof ( completionC ) );
 
 	char description [SIZE_MISSION_DESCRIPTION];
@@ -1113,8 +1113,8 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 		UplinkSnprintf ( taccountno, sizeof ( taccountno ), "%d", taccount->accountnumber );
 		UplinkSnprintf ( raccountno, sizeof ( raccountno ), "%d", raccount->accountnumber );
 
-		if ( game->GetWorld ()->GetPlayer ()->IsPlayerAccount (receiver->ip, raccountno) ) return NULL;
-		if ( game->GetWorld ()->GetPlayer ()->IsPlayerAccount (target->ip, taccountno) ) return NULL;
+		if ( game->GetWorld ()->GetPlayer ()->IsPlayerAccount (receiver->ip.c_str (), raccountno) ) return NULL;
+		if ( game->GetWorld ()->GetPlayer ()->IsPlayerAccount (target->ip.c_str (), taccountno) ) return NULL;
 
 		int amount = (int) NumberGenerator::RandomNormalNumber ( 1000000, 700000 );
 		amount = 100000 * ( amount / 100000 );
@@ -1123,7 +1123,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 		Person *transferer = game->GetWorld ()->GetPerson ( taccount->name );
 		UplinkAssert (transferer);
 
-		taccount->TransferMoney ( target->ip, taccountno, receiver->ip, raccountno, amount, transferer );
+		taccount->TransferMoney ( target->ip.c_str (), taccountno, receiver->ip.c_str (), raccountno, amount, transferer );
 
 		UplinkStrncpy ( description, "Trace a recent balance transfer", sizeof ( description ) );
 
@@ -1179,7 +1179,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 	mission->SetWhySoMuchMoney ( "The data is highly personal, and well protected" );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -1426,7 +1426,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	// Generate the remaining fields of the mission
 	//
 
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
@@ -1464,7 +1464,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	mission->SetWhySoMuchMoney ( whysomuchmoney );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -1586,7 +1586,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	// Generate the remaining fields of the mission
 	//
 
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
@@ -1625,7 +1625,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	mission->SetHowSecure ( "You will need to bypass the Proxy server." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -1790,7 +1790,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	// Generate the remaining fields of the mission
 	//
 
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nSend a notice of completion to\n"
@@ -1824,7 +1824,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	mission->SetHowSecure ( "The GCD uses a Proxy security system." );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -1944,7 +1944,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_TRACEUSER );
-	mission->SetCompletion   ( hacker->name.c_str (), source->ip, tacc->name, NULL, NULL );
+	mission->SetCompletion   ( hacker->name.c_str (), source->ip.c_str (), tacc->name, NULL, NULL );
 	mission->SetEmployer     ( employer->name );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -1955,8 +1955,8 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 	mission->SetDetails		 ( details.str ().c_str () );
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
-	mission->GiveLink ( source->ip );
-	mission->GiveCode ( source->ip, accesscode );
+	mission->GiveLink ( source->ip.c_str () );
+	mission->GiveCode ( source->ip.c_str (), accesscode );
 	mission->SetWhySoMuchMoney ( "Bank records are notoriously hard to crack" );
     mission->SetHowSecure ( "Banks are always well defended." );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
@@ -2006,7 +2006,7 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	UplinkStrncpy ( completionA, person->name.c_str (), sizeof ( completionA ) );
 	if ( strcmp ( person->name.c_str (), "PLAYER" ) == 0 ) UplinkStrncpy ( completionA, game->GetWorld ()->GetPlayer ()->handle.c_str (), sizeof ( completionA ) );
 
-	UplinkSnprintf ( completionB, sizeof ( completionB ), "%s %d", bank->ip, account->accountnumber );
+	UplinkSnprintf ( completionB, sizeof ( completionB ), "%s %d", bank->ip.c_str (), account->accountnumber );
 	UplinkSnprintf ( completionC, sizeof ( completionC ), "%d", amount );
 
 	//
@@ -2154,7 +2154,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 					   "IP: " << bank->ip << "\n";
 
 		UplinkStrncpy ( completionB, "FINANCIAL", sizeof ( completionB ) );
-		UplinkStrncpy ( completionC, bank->ip, sizeof ( completionC ) );
+		UplinkStrncpy ( completionC, bank->ip.c_str (), sizeof ( completionC ) );
 
 		payment = (int) ( payment * 1.2 );
 
@@ -2176,7 +2176,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 					   "IP: " << target->ip << "\n";
 
 		UplinkStrncpy ( completionB, "DESTROYALL", sizeof ( completionB ) );
-		UplinkStrncpy ( completionC, target->ip, sizeof ( completionC ) );
+		UplinkStrncpy ( completionC, target->ip.c_str (), sizeof ( completionC ) );
 
 		payment = (int) ( payment * 1.2 );
 
@@ -2313,7 +2313,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 	// Look up the owner
 	//
 
-	char *companyname = hacked->companyname;
+	const char *companyname = hacked->companyname.c_str ();
 
 	char contact [SIZE_PERSON_NAME];
 	UplinkSnprintf ( contact, sizeof ( contact ), "internal@%s.net", companyname );
@@ -2355,7 +2355,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 
 	Mission *m = new Mission ();
 	m->SetTYPE		 ( MISSION_TRACEUSER );
-	m->SetCompletion   ( hacker->name.c_str (), hacked->ip, NULL, NULL, NULL );
+	m->SetCompletion   ( hacker->name.c_str (), hacked->ip.c_str (), NULL, NULL, NULL );
 	m->SetEmployer     ( companyname );
 	m->SetContact      ( contact );
 	m->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -2365,7 +2365,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 	m->SetDescription  ( description );
 	m->SetDetails	   ( details.str ().c_str () );
 	m->SetFullDetails  ( fulldetails.str ().c_str () );
-	m->GiveLink        ( hacked->ip );
+	m->GiveLink        ( hacked->ip.c_str () );
 
 	m->SetWhySoMuchMoney ( "The hacker will certainly have covered his tracks" );
     m->SetHowSecure ( "You may have to hack several targets." );
@@ -2374,7 +2374,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
     if ( provideaccount ) {
 	    char code [128];
         Computer::GenerateAccessCode( username, password, code, sizeof ( code ) );
-	    m->GiveCode ( hacked->ip, code );
+	    m->GiveCode ( hacked->ip.c_str (), code );
     }
 
 	if ( hacker == game->GetWorld ()->GetPlayer () ) m->SetNpcPriority ( true );
@@ -2460,8 +2460,8 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	char completionD [16];							// Amount in source account
 	char completionE [16];							// Amount in target account
 
-	UplinkSnprintf ( completionA, sizeof ( completionA ), "%s %d", source->ip, sourceaccount->accountnumber );
-	UplinkSnprintf ( completionB, sizeof ( completionB ), "%s %d", target->ip, targetaccount->accountnumber );
+	UplinkSnprintf ( completionA, sizeof ( completionA ), "%s %d", source->ip.c_str (), sourceaccount->accountnumber );
+	UplinkSnprintf ( completionB, sizeof ( completionB ), "%s %d", target->ip.c_str (), targetaccount->accountnumber );
 	UplinkSnprintf ( completionC, sizeof ( completionC ), "%d", amount_to_transfer );
 	UplinkSnprintf ( completionD, sizeof ( completionD ), "%d", sourceaccount->balance );
 	UplinkSnprintf ( completionE, sizeof ( completionE ), "%d", targetaccount->balance );
@@ -2499,7 +2499,7 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	postdate.AdvanceMinute ( NumberGenerator::RandomNumber ( 60 ) * -1 );
 
 	char whoisthetarget [128];
-	UplinkStrncpy ( whoisthetarget, source->name, sizeof ( whoisthetarget ) );
+	UplinkStrncpy ( whoisthetarget, source->name.c_str (), sizeof ( whoisthetarget ) );
 
 	//
 	// Insert the mission
@@ -2520,7 +2520,7 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	mission->SetWhySoMuchMoney ( "Financial systems are always well guarded." );
 	mission->SetHowSecure ( "The bank will be using Proxys and Monitors." );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
-	mission->GiveLink ( source->ip );
+	mission->GiveLink ( source->ip.c_str () );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 
 
@@ -2590,7 +2590,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 
 
 	char completionA [SIZE_MISSION_COMPLETION];
-	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -2598,7 +2598,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 	postdate.AdvanceMinute ( NumberGenerator::RandomNumber ( 60 ) * -1 );
 
 	char whoisthetarget [128];
-	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The system is owned by %s", target->companyname );
+	UplinkSnprintf ( whoisthetarget, sizeof ( whoisthetarget ), "The system is owned by %s", target->companyname.c_str () );
 
 	//
 	// Insert the mission
@@ -2617,7 +2617,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 	mission->SetDetails		 ( details.str ().c_str () );
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "The computer system will be heavily defended." );
-	mission->GiveLink ( target->ip );
+	mission->GiveLink ( target->ip.c_str () );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 

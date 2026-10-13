@@ -39,7 +39,7 @@ public:
 	Player ();
 	~Player ();
 
-	bool IsPlayerAccount   ( char *bankip, char *accno );							// True if this account is owned by the player
+	bool IsPlayerAccount   ( const char *bankip, char *accno );							// True if this account is owned by the player
 	
 	void GiveAllLinks ();
 	void GiveMessage ( Message *message );

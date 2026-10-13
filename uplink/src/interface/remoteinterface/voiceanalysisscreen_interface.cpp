@@ -73,7 +73,7 @@ void VoiceAnalysisScreenInterface::FinishVoicePlayback ( char *voicename )
 
 	STATUS = VOICEANALYSISSCREEN_ANALYSING;
 
-	Company *company = game->GetWorld ()->GetCompany (GetComputerScreen ()->GetComputer ()->companyname);
+	Company *company = game->GetWorld ()->GetCompany (GetComputerScreen ()->GetComputer ()->companyname.c_str ());
 	UplinkAssert (company);
 	
 	if ( strcmp ( voicename, company->administrator ) == 0 ) {

@@ -213,7 +213,7 @@ void Connection::Connect ()
 		SecurityMonitor::BeginAttack ();
         LanMonitor::BeginAttack ();
 
-        if ( strcmp ( comp->companyname, "ARC" ) == 0 ) 
+        if ( strcmp ( comp->companyname.c_str (), "ARC" ) == 0 ) 
             game->GetWorld ()->plotgenerator.PlayerVisitsPlotSites ();
 
 	}
@@ -381,7 +381,7 @@ void Connection::Disconnect ()
 
                     bool changed = comp->ChangeSecurityCodes ();
 
-                    if ( changed ) DisconnectedScreen::AddLoginLost ( comp->ip );
+                    if ( changed ) DisconnectedScreen::AddLoginLost ( comp->ip.c_str () );
 
                 }
 

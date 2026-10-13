@@ -46,7 +46,7 @@ void ComputerScreen::SetSubTitle ( const char *newsubtitle )
 
 }
 
-void ComputerScreen::SetComputer ( char *newcomputer )
+void ComputerScreen::SetComputer ( const char *newcomputer )
 {
 
 	UplinkAssert ( strlen(newcomputer) < SIZE_COMPUTER_NAME );

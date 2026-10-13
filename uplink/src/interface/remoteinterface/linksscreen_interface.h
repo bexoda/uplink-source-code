@@ -71,7 +71,7 @@ public:
 	void SetFullList ( LList <char *> *newfulllist );						            // The list is copied
 	void SetFullList ( LList <const char *> *newfulllist );						            // The list is copied
 	void SetFullList ();										            			// Uses current filtered list
-	void ApplyFilter ( char *filter );
+	void ApplyFilter ( const char *filter );
 
 	void Create ();
 	void Create ( ComputerScreen *newcs );

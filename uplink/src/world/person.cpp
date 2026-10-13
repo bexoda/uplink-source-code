@@ -105,7 +105,7 @@ void Person::SetRemoteHost ( const char *newip )
 
 }
 
-void Person::SetPhoneNumber ( char *newphone )
+void Person::SetPhoneNumber ( const char *newphone )
 {
 
 	UplinkAssert ( strlen(newphone) < SIZE_VLOCATION_IP );
@@ -211,7 +211,7 @@ void Person::ChangeBalance ( int amount, const char *description )
                 UplinkAssert (vl);
                 Computer *comp = vl->GetComputer ();
                 UplinkAssert (comp);
-                Company *company = game->GetWorld ()->GetCompany (comp->companyname);
+                Company *company = game->GetWorld ()->GetCompany (comp->companyname.c_str ());
                 UplinkAssert (company);
 
                 std::ostringstream reason;
@@ -238,7 +238,7 @@ void Person::ChangeBalance ( int amount, const char *description )
 
 }
 
-int Person::CreateNewAccount ( char *bankip, char *accname, const char *password, int balance, int loan )
+int Person::CreateNewAccount ( const char *bankip, char *accname, const char *password, int balance, int loan )
 {
 
 	// Get the bank in question

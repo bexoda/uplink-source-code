@@ -55,7 +55,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 	// Lookup the company owner
 	//
 
-	Company *company = game->GetWorld ()->GetCompany ( comp->companyname );
+	Company *company = game->GetWorld ()->GetCompany ( comp->companyname.c_str () );
 	UplinkAssert ( company );
 
 	int severity = company->size / 10 + 1;
@@ -132,7 +132,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 		// Disconnect user if he is still connected here
 
 		if ( person->GetConnection ()->GetTarget () &&
-			 strcmp ( person->GetConnection ()->GetTarget (), comp->ip ) == 0 ) {
+			 strcmp ( person->GetConnection ()->GetTarget (), comp->ip.c_str () ) == 0 ) {
 
 			person->GetConnection ()->Disconnect ();
 			person->GetConnection ()->Reset ();
@@ -154,7 +154,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 		Message *msg = new Message ();
 		msg->SetTo ( person->name.c_str () );
-		msg->SetFrom ( comp->companyname );
+		msg->SetFrom ( comp->companyname.c_str () );
 		msg->SetSubject ( "You were caught hacking our computer systems" );
 		msg->SetBody ( "Our system administrator has informed us that you have been using "
 					   "one of our accounts to gain unauthorised access to our computer systems.\n"
@@ -186,7 +186,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 			char reason [128 + SIZE_COMPUTER_NAME];
 			UplinkSnprintf ( reason, sizeof ( reason ), "Our system security agents have caught you making unauthorised access "
-														  "to our computer system %s.", comp->name );
+														  "to our computer system %s.", comp->name.c_str () );
 
 			// You have a few days to complete it
 
@@ -233,7 +233,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 			ArrestEvent *event = new ArrestEvent ();
 			event->SetName ( person->name.c_str () );
 			event->SetReason ( reason.str ().c_str () );
-			event->SetIP ( comp->ip );
+			event->SetIP ( comp->ip.c_str () );
 			event->SetRunDate ( &duedate );
 
 			game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
@@ -459,7 +459,7 @@ void ConsequenceGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 
 				if ( m->TYPE == MISSION_TRACEUSER &&
 					 strcmp ( m->completionA, hacker->name.c_str () ) == 0 &&
-					 strcmp ( m->links.GetData (0), comp->ip ) == 0 ) {
+					 strcmp ( m->links.GetData (0), comp->ip.c_str () ) == 0 ) {
 
 					alreadynoticed = true;
 					break;
@@ -596,7 +596,7 @@ void ConsequenceGenerator::MissionCompleted_ChangeAccount ( Mission *mission, Pe
 
 		// Get the employer
 
-		Company *employer = game->GetWorld ()->GetCompany ( source->companyname );
+		Company *employer = game->GetWorld ()->GetCompany ( source->companyname.c_str () );
 		UplinkAssert (employer);
 
 		MissionGenerator::Generate_TraceUser_MoneyTransfer ( employer, source, target, source_acc, target_acc, amount, person );

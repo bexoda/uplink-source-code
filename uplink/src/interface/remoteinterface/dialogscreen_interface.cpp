@@ -129,7 +129,7 @@ bool DialogScreenInterface::ReturnKeyPressed ()
 				UplinkSnprintf ( name, sizeof ( name ), "%s %d %d", dsw->GetName (), dsw->data1, dsw->data2 );		
 				Button *button = EclGetButton (name);
 				if ( !button ) {
-					UplinkSnprintf ( name, sizeof ( name ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, ds->GetComputer ()->ip );		
+					UplinkSnprintf ( name, sizeof ( name ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, ds->GetComputer ()->ip.c_str () );		
 					button = EclGetButton (name);
 				}
 				if ( button ) button->MouseUp ();
@@ -165,7 +165,7 @@ bool DialogScreenInterface::EscapeKeyPressed ()
 				UplinkSnprintf ( name, sizeof ( name ), "%s %d %d", dsw->GetName (), dsw->data1, dsw->data2 );		
 				Button *button = EclGetButton (name);
 				if ( !button ) {
-					UplinkSnprintf ( name, sizeof ( name ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, ds->GetComputer ()->ip );		
+					UplinkSnprintf ( name, sizeof ( name ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, ds->GetComputer ()->ip.c_str () );		
 					button = EclGetButton (name);
 				}
 				if ( button ) button->MouseUp ();
@@ -222,7 +222,7 @@ void DialogScreenInterface::Create ( ComputerScreen *newcs )
 			UplinkSnprintf ( name, sizeof ( name ), "%s %d %d", dsw->GetName (), dsw->data1, dsw->data2 );
 
 			char nameip [64 + SIZE_VLOCATION_IP + 1];
-			UplinkSnprintf ( nameip, sizeof ( nameip ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, comp->ip );
+			UplinkSnprintf ( nameip, sizeof ( nameip ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, comp->ip.c_str () );
 
 			// Customize the widget depending on its type
 
@@ -325,7 +325,7 @@ void DialogScreenInterface::RemoveWidget ( DialogScreenWidget *dsw, Computer *co
 	EclRemoveButton ( name );
 
 	char nameip [64 + SIZE_VLOCATION_IP + 1];
-	UplinkSnprintf ( nameip, sizeof ( nameip ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, comp->ip );
+	UplinkSnprintf ( nameip, sizeof ( nameip ), "%s %d %d %s", dsw->GetName (), dsw->data1, dsw->data2, comp->ip.c_str () );
 
 	EclRemoveButton ( nameip );
 

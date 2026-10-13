@@ -435,7 +435,7 @@ void Agent::GiveCode ( const char *newip, char *newcode )
 
 }
 
-int  Agent::CreateNewAccount ( char *bankip, char *accname, const char *password, int balance, int loan )
+int  Agent::CreateNewAccount ( const char *bankip, char *accname, const char *password, int balance, int loan )
 {
 
 	int accno = Person::CreateNewAccount ( bankip, accname, password, balance, loan );
@@ -731,7 +731,7 @@ void Agent::AttemptMission_TraceUser ()
 
 				if ( fromcomp ) {
 
-					char *traced_ip = fromcomp->logbank.TraceLog ( comp->ip, fromcomp->ip, &(al->date), rating.uplinkrating );
+					const char *traced_ip = fromcomp->logbank.TraceLog ( comp->ip.c_str (), fromcomp->ip.c_str (), &(al->date), rating.uplinkrating );
 
 					if ( traced_ip ) {
 
@@ -841,7 +841,7 @@ void Agent::AttemptMission_RemoveComputer ()
 
 }
 
-void Agent::EstablishConnection ( char *ip )
+void Agent::EstablishConnection ( const char *ip )
 {
 
 	connection.Reset ();
@@ -859,9 +859,9 @@ void Agent::EstablishConnection ( char *ip )
 																COMPUTER_TYPE_PUBLICBANKSERVER			);
 		UplinkAssert (comp);
 
-		if ( !connection.LocationIncluded ( comp->ip ) &&
-			 strcmp ( comp->ip, ip ) != 0 )
-			connection.AddVLocation ( comp->ip );
+		if ( !connection.LocationIncluded ( comp->ip.c_str () ) &&
+			 strcmp ( comp->ip.c_str (), ip ) != 0 )
+			connection.AddVLocation ( comp->ip.c_str () );
 
 		else
 			--i;

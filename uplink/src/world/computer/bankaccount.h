@@ -55,9 +55,9 @@ public:
 
 	Person *GetPerson ();
 
-	static BankAccount *GetAccount ( char *bankip, char *accno );
-	static bool	TransferMoney ( char *source_ip, char *source_accno,
-								char *target_ip, char *target_accno,
+	static BankAccount *GetAccount ( const char *bankip, char *accno );
+	static bool	TransferMoney ( const char *source_ip, char *source_accno,
+								const char *target_ip, char *target_accno,
 								int amount, Person *person );
 
 	// Common functions

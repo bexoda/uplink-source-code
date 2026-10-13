@@ -38,9 +38,9 @@ Computer::Computer()
 {
 
 	TYPE = COMPUTER_TYPE_UNKNOWN;
-	UplinkStrncpy ( name, "", sizeof ( name ) );
-	UplinkStrncpy ( companyname, "", sizeof ( companyname ) );
-	UplinkStrncpy ( ip, "", sizeof ( ip ) );
+	name = "";
+	companyname = "";
+	ip = "";
 	tracespeed = 0;
 	traceaction = COMPUTER_TRACEACTION_NONE;
 
@@ -73,7 +73,7 @@ void Computer::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen ( newname ) < SIZE_COMPUTER_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -84,7 +84,7 @@ void Computer::SetCompanyName ( const char *newname )
 
 		UplinkAssert ( strlen ( newname ) < SIZE_COMPANY_NAME );
 		UplinkAssert ( game->GetWorld ()->GetCompany ( newname ) );
-		UplinkStrncpy ( companyname, newname, sizeof ( companyname ) );
+		companyname = newname;
 
 	}
 
@@ -95,7 +95,7 @@ void Computer::SetIP ( const char *newip )
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
 	UplinkAssert ( game->GetWorld ()->GetVLocation ( newip ) );
-	UplinkStrncpy ( ip, newip, sizeof ( ip ) );
+	ip = newip;
 
 }
 
@@ -138,7 +138,7 @@ void Computer::DisinfectRevelation ()
 {
 
     if ( isinfected_revelation > 0.0 ) {
-        game->GetWorld ()->plotgenerator.Disinfected ( ip );
+        game->GetWorld ()->plotgenerator.Disinfected ( ip.c_str () );
     }
 
 	isinfected_revelation = 0.0;
@@ -169,7 +169,7 @@ int  Computer::AddComputerScreen ( ComputerScreen *cs, int index )
 
 	// Give the computer a pointer to this computer screen
 	UplinkAssert (cs);
-	cs->SetComputer ( name );
+	cs->SetComputer ( name.c_str () );
 
 	if ( index == -1 ) {
 		
@@ -254,7 +254,7 @@ void Computer::CheckForSecurityBreaches ()
 						Mission *m = game->GetWorld ()->GetPlayer ()->missions.GetData (l);
 						UplinkAssert (m);
 
-						if ( m->TYPE == MISSION_TRACEUSER && strcmp ( m->completionB, ip ) == 0 ) 
+						if ( m->TYPE == MISSION_TRACEUSER && strcmp ( m->completionB, ip.c_str () ) == 0 ) 
 							ignoreme = true;
 
 					}
@@ -348,9 +348,9 @@ bool Computer::ChangeSecurityCodes ()
         case COMPUTER_TYPE_UNKNOWN :
         {
 
-            if ( strcmp ( ip, IP_SOCIALSECURITYDATABASE ) == 0 ||
-                 strcmp ( ip, IP_GLOBALCRIMINALDATABASE ) == 0 ||
-                 strcmp ( ip, IP_ACADEMICDATABASE ) == 0 ) {
+            if ( strcmp ( ip.c_str (), IP_SOCIALSECURITYDATABASE ) == 0 ||
+                 strcmp ( ip.c_str (), IP_GLOBALCRIMINALDATABASE ) == 0 ||
+                 strcmp ( ip.c_str (), IP_ACADEMICDATABASE ) == 0 ) {
 
 			    Record *admin = recordbank.GetRecordFromName ( RECORDBANK_ADMIN );
 			    UplinkAssert (admin);
@@ -599,8 +599,8 @@ void Computer::Save  ( FILE *file )
 void Computer::Print ()
 {
 
-	printf ( "Computer : Name = %s\n", name );
-	printf ( "TYPE = %d, Companyname = %s, ip = %s, tracespeed = %d, traceaction = %d, targetable = %d, externally open = %d, running = %d\n", TYPE, companyname, ip, tracespeed, traceaction, istargetable, isexternallyopen, isrunning );
+	printf ( "Computer : Name = %s\n", name.c_str () );
+	printf ( "TYPE = %d, Companyname = %s, ip = %s, tracespeed = %d, traceaction = %d, targetable = %d, externally open = %d, running = %d\n", TYPE, companyname.c_str (), ip.c_str (), tracespeed, traceaction, istargetable, isexternallyopen, isrunning );
 	printf ( "numrecenthacks = %d, numhacksthismonth = %d, numhackslastmonth = %d\n", numrecenthacks, numhacksthismonth, numhackslastmonth );
 	printf ( "infected with revelation = %f\n", isinfected_revelation );
     
@@ -638,8 +638,8 @@ void Computer::Update ()
             UplinkAssert (comp1);
             UplinkAssert (comp2);
 
-            game->GetWorld ()->plotgenerator.RunRevelation ( comp1->ip, isinfected_revelation, false );
-            game->GetWorld ()->plotgenerator.RunRevelation ( comp2->ip, isinfected_revelation, false );
+            game->GetWorld ()->plotgenerator.RunRevelation ( comp1->ip.c_str (), isinfected_revelation, false );
+            game->GetWorld ()->plotgenerator.RunRevelation ( comp2->ip.c_str (), isinfected_revelation, false );
 
             //
             // Shut down this computer
@@ -647,12 +647,12 @@ void Computer::Update ()
 	        SetIsRunning ( false );
 	        databank.Format ();
 	        logbank.Empty ();
-            game->GetWorld ()->plotgenerator.Disinfected ( ip );
+            game->GetWorld ()->plotgenerator.Disinfected ( ip.c_str () );
 
             //
             // Disconnect the player if he is connected
 
-            if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), ip ) == 0 ) {
+            if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), ip.c_str () ) == 0 ) {
 
 	            game->GetWorld ()->GetPlayer ()->connection.Disconnect ();
 	            game->GetWorld ()->GetPlayer ()->connection.Reset ();

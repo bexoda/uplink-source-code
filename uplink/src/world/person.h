@@ -78,7 +78,7 @@ public:
     void SetVoiceIndex  ( int newindex );
 	void SetLocalHost   ( const char *newip );
 	void SetRemoteHost  ( const char *newip );
-	void SetPhoneNumber ( char *newphone );	
+	void SetPhoneNumber ( const char *newphone );	
 	void SetStatus	    ( int newSTATUS );
 	int  GetStatus	    ( );
 
@@ -89,7 +89,7 @@ public:
 	VLocation *GetLocalHost ();	
 	VLocation *GetRemoteHost ();						
 
-	virtual int  CreateNewAccount ( char *bankip, char *accname, const char *password, 
+	virtual int  CreateNewAccount ( const char *bankip, char *accname, const char *password, 
 									int balance, int loan );						// Returns account number	
 
 	int  GetBalance ();																// Overall bank balance

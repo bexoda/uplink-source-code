@@ -307,7 +307,7 @@ void AnalyserInterface::Update ()
 
 		// Create the new remote host buttons
 
-		if ( strcmp ( comp->ip, IP_LOCALHOST ) != 0 ) {
+		if ( strcmp ( comp->ip.c_str (), IP_LOCALHOST ) != 0 ) {
 
 			if ( !EclGetButton ( "analyser_remotehost" ) ) {
 
@@ -324,7 +324,7 @@ void AnalyserInterface::Update ()
 
 		}
 		
-		EclRegisterCaptionChange ( "analyser_remotehost_title", comp->name );
+		EclRegisterCaptionChange ( "analyser_remotehost_title", comp->name.c_str () );
 
 		// Create the new security system buttons
 

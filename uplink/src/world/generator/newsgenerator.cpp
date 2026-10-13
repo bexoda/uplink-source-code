@@ -53,7 +53,7 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 	// Social security database
 	// ================================================================================================================
 
-	if ( strcmp ( comp->name, "International Social Security Database" ) == 0 ) {
+	if ( strcmp ( comp->name.c_str (), "International Social Security Database" ) == 0 ) {
 
 		switch ( comp->NumRecentHacks () ) {
 			case 0:
@@ -126,7 +126,7 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 	// Academic database
 	// ================================================================================================================
 
-	else if ( strcmp ( comp->name, "International Academic Database" ) == 0 ) {
+	else if ( strcmp ( comp->name.c_str (), "International Academic Database" ) == 0 ) {
 
 		switch ( comp->NumRecentHacks () ) {
 			case 0:
@@ -196,7 +196,7 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 	// Global Criminal Database
 	// ================================================================================================================
 
-    else if ( strcmp ( comp->name, "Global Criminal Database" ) == 0 ) {
+    else if ( strcmp ( comp->name.c_str (), "Global Criminal Database" ) == 0 ) {
 
         switch ( comp->NumRecentHacks () ) {
 
@@ -358,7 +358,7 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 	News *news = new News ();
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
-	news->SetData ( NEWS_TYPE_HACKED, comp->ip );
+	news->SetData ( NEWS_TYPE_HACKED, comp->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -490,8 +490,8 @@ void NewsGenerator::ComputerDestroyed ( Computer *comp, bool filesdeleted )
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
 
-	if ( filesdeleted ) news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip );
-	else				news->SetData ( NEWS_TYPE_COMPUTERSHUTDOWN, comp->ip );
+	if ( filesdeleted ) news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip.c_str () );
+	else				news->SetData ( NEWS_TYPE_COMPUTERSHUTDOWN, comp->ip.c_str () );
 
 
 
@@ -604,7 +604,7 @@ void NewsGenerator::AllFilesStolen ( Computer *comp, char *filetype, int totalfi
 	News *news = new News ();
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
-	news->SetData ( NEWS_TYPE_STOLEN, comp->ip );
+	news->SetData ( NEWS_TYPE_STOLEN, comp->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -711,7 +711,7 @@ void NewsGenerator::AllFilesDeleted ( Computer *comp, const char *filetype )
 	News *news = new News ();
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
-	news->SetData ( NEWS_TYPE_DELETED, comp->ip );
+	news->SetData ( NEWS_TYPE_DELETED, comp->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -853,7 +853,7 @@ void NewsGenerator::Arrested ( Person *person, Computer *comp, char *reason )
 	News *news = new News ();
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
-	news->SetData ( NEWS_TYPE_ARREST, person->name.c_str (), comp ? comp->ip : NULL );
+	news->SetData ( NEWS_TYPE_ARREST, person->name.c_str (), comp ? comp->ip.c_str () : NULL );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );

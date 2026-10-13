@@ -170,7 +170,7 @@ protected:
 	
     void Revelation_ReleaseUncontrolled ();                         // Its game over! (success for ARC)
 
-	void NewsRevelationUsed ( char *ip, int success );				// Generates a news story
+	void NewsRevelationUsed ( const char *ip, int success );				// Generates a news story
 
 public:
 
@@ -187,18 +187,18 @@ public:
 	bool PlayerContactsARC		( Message *msg );					// These handle all emails from the player to the main co's.  
 	bool PlayerContactsARUNMOR	( Message *msg );					// They return true if this function handled the email
 
-	void RunRevelation ( char *ip, float version, bool playerresponsible );
-	void RunRevelation ( char *ip, float version, bool playerresponsible, int success );
+	void RunRevelation ( const char *ip, float version, bool playerresponsible );
+	void RunRevelation ( const char *ip, float version, bool playerresponsible, int success );
 
-    void RunRevelationTracer ( char *ip );
+    void RunRevelationTracer ( const char *ip );
 
-    void RunFaith ( char *ip, float version, bool playerresponsible );
+    void RunFaith ( const char *ip, float version, bool playerresponsible );
 
 	float GetVersion_Faith ();
 	float GetVersion_Revelation ();
 
-    void Infected ( char *ip );                                     // These manage the list of 
-    void Disinfected ( char *ip );                                  // infected computer systems
+    void Infected ( const char *ip );                                     // These manage the list of 
+    void Disinfected ( const char *ip );                                  // infected computer systems
 
     bool PlayerCompletedSpecialMission	( int missionID );
 	int GetSpecialMissionsCompleted ();

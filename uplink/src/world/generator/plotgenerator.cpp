@@ -197,7 +197,7 @@ void PlotGenerator::Initialise_ARC ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", companyname );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 	// Set up our share prices for the start
@@ -338,7 +338,7 @@ void PlotGenerator::Initialise_ARUNMOR ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", companyname );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
 	// Set up our share prices for the start
@@ -388,7 +388,7 @@ void PlotGenerator::Initialise_DARWIN ()
 
 	char personname [SIZE_PERSON_NAME];
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", companyname );
-	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip );
+	Person *pinternal = game->GetWorld ()->CreatePerson ( personname, pas->ip.c_str () );
 	pinternal->SetIsTargetable ( false );
 
     company->Grow ( 0 );
@@ -837,7 +837,7 @@ bool PlotGenerator::PlayerContactsARUNMOR ( Message *msg )
 
 }
 
-void PlotGenerator::RunRevelation ( char *ip, float version, bool playerresponsible )
+void PlotGenerator::RunRevelation ( const char *ip, float version, bool playerresponsible )
 {
 
 #ifndef DEMOGAME
@@ -895,7 +895,7 @@ void PlotGenerator::RunRevelation ( char *ip, float version, bool playerresponsi
 
 }
 
-void PlotGenerator::RunFaith ( char *ip, float version, bool /*playerresponsible*/ )
+void PlotGenerator::RunFaith ( const char *ip, float version, bool /*playerresponsible*/ )
 {
 
 #ifndef DEMOGAME
@@ -937,7 +937,7 @@ void PlotGenerator::RunFaith ( char *ip, float version, bool /*playerresponsible
 
 }
 
-void PlotGenerator::RunRevelation ( char *ip, float version, bool /*playerresponsible*/, int success )
+void PlotGenerator::RunRevelation ( const char *ip, float version, bool /*playerresponsible*/, int success )
 {
 
 #ifndef DEMOGAME
@@ -1027,7 +1027,7 @@ void PlotGenerator::RunRevelation ( char *ip, float version, bool /*playerrespon
 
 }
 
-void PlotGenerator::RunRevelationTracer ( char *ip )
+void PlotGenerator::RunRevelationTracer ( const char *ip )
 {
 
     UplinkStrncpy ( tracer_lastknownip, ip, sizeof ( tracer_lastknownip ) );
@@ -1190,7 +1190,7 @@ void PlotGenerator::Run_Act1Scene2 ()
     if ( existing0 ) delete existing0;
 
 	PasswordScreen *ps0 = new PasswordScreen ();
-	ps0->SetMainTitle ( comp->name );
+	ps0->SetMainTitle ( comp->name.c_str () );
 	ps0->SetSubTitle ( "Speak friend, and enter" );
 	ps0->SetPassword ( "MySocratesNote" );
 	ps0->SetDifficulty ( 50 );
@@ -1198,21 +1198,21 @@ void PlotGenerator::Run_Act1Scene2 ()
 	comp->AddComputerScreen ( ps0, 0 );
 
 	MenuScreen *ms1 = new MenuScreen ();
-	ms1->SetMainTitle ( comp->name );
+	ms1->SetMainTitle ( comp->name.c_str () );
 	ms1->SetSubTitle ( "Menu" );
 	ms1->AddOption ( "Filez", "Mess with my files", 2 );
 	ms1->AddOption ( "eMailz", "Edit my mail settings", 3 );
 	comp->AddComputerScreen ( ms1, 1 );
 
 	GenericScreen *gs2 = new GenericScreen ();
-	gs2->SetMainTitle ( comp->name );
+	gs2->SetMainTitle ( comp->name.c_str () );
 	gs2->SetSubTitle ( "Filez" );
 	gs2->SetScreenType ( SCREEN_FILESERVERSCREEN );
 	gs2->SetNextPage ( 1 );
 	comp->AddComputerScreen ( gs2, 2 );
 
 	DialogScreen *ds3 = new DialogScreen ();
-	ds3->SetMainTitle ( comp->name );
+	ds3->SetMainTitle ( comp->name.c_str () );
 	ds3->SetSubTitle ( "eMailz" );
 	ds3->AddWidget ( "close", WIDGET_NEXTPAGE, 270, 380, 100, 20, "Close", "Click to close this screen", 1, -1, NULL, NULL );
 	comp->AddComputerScreen ( ds3, 3 );
@@ -1388,7 +1388,7 @@ void PlotGenerator::Run_Act1Scene5 ()
 	// He also sets up the delayed email
 	//
 
-	agent->EstablishConnection ( comp->ip );
+	agent->EstablishConnection ( comp->ip.c_str () );
 
 	AccessLog *al = new AccessLog ();
 	al->SetProperties ( &(game->GetWorld ()->date), "unknown", "unknown" );
@@ -1506,8 +1506,8 @@ void PlotGenerator::Run_Act1Scene7 ()
 		msg->SetFrom ( from );
 		msg->SetSubject ( "Warning about ARC" );
 		msg->SetBody ( body.str ().c_str () );
-		msg->GiveLink ( comp->ip );
-		msg->GiveCode ( comp->ip, code );
+		msg->GiveLink ( comp->ip.c_str () );
+		msg->GiveCode ( comp->ip.c_str (), code );
 		msg->Send ();
 
 
@@ -1613,7 +1613,7 @@ void PlotGenerator::Run_Act2Scene1 ()
 	Computer *hiscomp = game->GetWorld ()->GetComputer ( hiscomputername );
     if ( UplinkIncompatibleSaveGameAssert (hiscomp, __FILE__, __LINE__) )
 		return;
-	char *ip = hiscomp->ip;
+	const char *ip = hiscomp->ip.c_str ();
 	game->GetWorld ()->computers.RemoveData ( hiscomputername );
 
 	Computer *comp = new Computer ();
@@ -1760,7 +1760,7 @@ void PlotGenerator::Run_Act2Scene2 ()
         Computer *comp = game->GetWorld ()->GetComputer ( NameGenerator::GenerateInternalServicesServerName("Arunmor") );
 
 		++numuses_revelation;
-		RunRevelation ( comp->ip, 1.0, false, 2 );
+		RunRevelation ( comp->ip.c_str (), 1.0, false, 2 );
 
         version_faith = 0.2f;
 
@@ -1931,7 +1931,7 @@ void PlotGenerator::Run_Act3Scene2 ()
 
 	GenericScreen *gs3 = new GenericScreen ();
 	gs3->SetScreenType ( SCREEN_FAITHSCREEN );
-	gs3->SetMainTitle ( comp->name );
+	gs3->SetMainTitle ( comp->name.c_str () );
 	gs3->SetSubTitle ( "Faith V Revelation" );
 	gs3->SetNextPage ( 1 );
 	comp->AddComputerScreen ( gs3, 3 );
@@ -2665,7 +2665,7 @@ void PlotGenerator::Run_Act5Scene2 ()
             Computer *comp = WorldGenerator::GetRandomComputer ( COMPUTER_TYPE_INTERNALSERVICESMACHINE |
                                                                  COMPUTER_TYPE_CENTRALMAINFRAME        );
             UplinkAssert (comp);
-            RunRevelation ( comp->ip, version_revelation, false, 2 );
+            RunRevelation ( comp->ip.c_str (), version_revelation, false, 2 );
 
         }
 
@@ -2796,7 +2796,7 @@ void PlotGenerator::Run_Act5Scene5 ()
                                                                  COMPUTER_TYPE_CENTRALMAINFRAME        );
             UplinkAssert (comp);
 
-            RunRevelation ( comp->ip, version_revelation, false, 2 );
+            RunRevelation ( comp->ip.c_str (), version_revelation, false, 2 );
 
             int timebetweenlaunches = (int) ( 3 - (version_revelation - version_faith) );
 			if ( timebetweenlaunches < 1 )
@@ -3081,9 +3081,9 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
     m->SetWhySoMuchMoney ( "The mission is extremely important." );
     m->SetHowSecure ( "The target will be very secure." );
     m->SetWhoIsTheTarget ( "Andromeda Research Corporation." );
-    m->GiveLink ( comp->ip );
-    m->GiveLink ( ourcomp->ip );
-    m->GiveCode ( ourcomp->ip, code );
+    m->GiveLink ( comp->ip.c_str () );
+    m->GiveLink ( ourcomp->ip.c_str () );
+    m->GiveCode ( ourcomp->ip.c_str (), code );
 
 
 	return m;
@@ -3181,9 +3181,9 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
     m->SetWhySoMuchMoney ( "It involves very important people." );
     m->SetHowSecure ( "It won't be a problem." );
     m->SetWhoIsTheTarget ( "The CEO of Andromeda Research Corporation." );
-    m->GiveLink ( target->ip );
-    m->GiveLink ( ourcomp->ip );
-    m->GiveCode ( ourcomp->ip, code );
+    m->GiveLink ( target->ip.c_str () );
+    m->GiveLink ( ourcomp->ip.c_str () );
+    m->GiveCode ( ourcomp->ip.c_str (), code );
 
 
 	return m;
@@ -3310,9 +3310,9 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
     mission->SetWhySoMuchMoney ( "This mission will be extremely difficult" );
     mission->SetWhoIsTheTarget ( "Andromeda Research Corporation" );
     mission->SetHowSecure ( "The system will be extremely secure." );
-	mission->GiveLink ( target->ip );
-	mission->GiveLink ( ourcomp->ip );
-	mission->GiveCode ( ourcomp->ip, code );
+	mission->GiveLink ( target->ip.c_str () );
+	mission->GiveLink ( ourcomp->ip.c_str () );
+	mission->GiveCode ( ourcomp->ip.c_str (), code );
 
 
     return mission;
@@ -3399,8 +3399,8 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
     m->SetDifficulty ( 20 );
     m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_COUNTERATTACK) );
     m->SetFullDetails ( details.str ().c_str () );
-    m->GiveLink ( ourcomp->ip );
-    m->GiveCode ( ourcomp->ip, code );
+    m->GiveLink ( ourcomp->ip.c_str () );
+    m->GiveCode ( ourcomp->ip.c_str (), code );
 
     return m;
 
@@ -3556,9 +3556,9 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
     mission->SetPayment      ( PAYMENT_SPECIALMISSION_DARWIN );
 	mission->SetDescription  ( description );
 	mission->SetFullDetails  ( fulldetails.str ().c_str () );
-	mission->GiveLink ( target->ip );
-	mission->GiveLink ( ourcomp->ip );
-	mission->GiveCode ( ourcomp->ip, code );
+	mission->GiveLink ( target->ip.c_str () );
+	mission->GiveLink ( ourcomp->ip.c_str () );
+	mission->GiveCode ( ourcomp->ip.c_str (), code );
 
 
     return mission;
@@ -3590,7 +3590,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
     BankComputer *bank = (BankComputer *) WorldGenerator::GetRandomComputer ( COMPUTER_TYPE_PUBLICBANKSERVER );
 	UplinkAssert (bank);
 
-    UplinkStrncpy ( saveitforthejury_targetbankip, bank->ip, sizeof ( saveitforthejury_targetbankip ) );
+    UplinkStrncpy ( saveitforthejury_targetbankip, bank->ip.c_str (), sizeof ( saveitforthejury_targetbankip ) );
 
 	char description [SIZE_MISSION_DESCRIPTION];
 	std::ostringstream fulldetails;
@@ -3629,8 +3629,8 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
 	m->SetDescription  ( description );
 	m->SetFullDetails  ( fulldetails.str ().c_str () );
 
-	m->GiveLink ( bank->ip );
-    m->GiveLink ( personalComputer->ip );
+	m->GiveLink ( bank->ip.c_str () );
+    m->GiveLink ( personalComputer->ip.c_str () );
 
     return m;
 
@@ -3749,7 +3749,7 @@ bool PlotGenerator::IsMissionComplete_Tracer ()
     if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 		return false;
 
-    if ( strcmp ( tracer_lastknownip, comp->ip ) == 0 ) {
+    if ( strcmp ( tracer_lastknownip, comp->ip.c_str () ) == 0 ) {
 
         // Success
 
@@ -4178,11 +4178,11 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
 				if ( fromcomp ) {
 
-					char *traced_ip = fromcomp->logbank.TraceLog ( comp->ip, fromcomp->ip, &(al->date), 10 );
+					const char *traced_ip = fromcomp->logbank.TraceLog ( comp->ip.c_str (), fromcomp->ip.c_str (), &(al->date), 10 );
 
 					if ( traced_ip ) {
 
-						if ( strcmp ( traced_ip, personalComputer->ip ) == 0 ) {
+						if ( strcmp ( traced_ip, personalComputer->ip.c_str () ) == 0 ) {
 
 							// Now investigated - so set it back to LOG_NOTSUSPICIOUS
 
@@ -4224,7 +4224,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
 			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, poorsod->name.c_str () ) == 0 ) {
 
-				if ( strcmp ( news->data2, comp->ip ) == 0 ) {
+				if ( strcmp ( news->data2, comp->ip.c_str () ) == 0 ) {
 
 					success = 2;
 					break;
@@ -4394,7 +4394,7 @@ bool PlotGenerator::IsMissionComplete_ShinyHammer ()
 
 }
 
-void PlotGenerator::NewsRevelationUsed ( char *ip, int success )
+void PlotGenerator::NewsRevelationUsed ( const char *ip, int success )
 {
 
 	// Look up the system attacked
@@ -4459,7 +4459,7 @@ void PlotGenerator::NewsRevelationUsed ( char *ip, int success )
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
 
-	news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip );
+	news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip.c_str () );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -4493,7 +4493,7 @@ void PlotGenerator::Revelation_ReleaseUncontrolled ()
 #endif              // FULLGAME
 
 
-void PlotGenerator::Infected ( char *ip )
+void PlotGenerator::Infected ( const char *ip )
 {
 
 #ifndef DEMOGAME
@@ -4516,7 +4516,7 @@ void PlotGenerator::Infected ( char *ip )
 
 }
 
-void PlotGenerator::Disinfected ( char *ip )
+void PlotGenerator::Disinfected ( const char *ip )
 {
 
 #ifndef DEMOGAME

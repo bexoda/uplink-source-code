@@ -58,7 +58,7 @@ public:
 	void GiveMessage ( Message *message );
     int HasAccount  ( const char *ip );                           // Returns access level or -1
 
-	int  CreateNewAccount ( char *bankip, char *accname, const char *password, 
+	int  CreateNewAccount ( const char *bankip, char *accname, const char *password, 
 							int balance, int loan );			// Returns account number	
 
 	bool HasMissionLink ( const char *ip );
@@ -70,7 +70,7 @@ public:
 	void AttemptMission_TraceUser ();
 	void AttemptMission_RemoveComputer ();
 
-	void EstablishConnection ( char *ip );				// Complexity based on skill
+	void EstablishConnection ( const char *ip );				// Complexity based on skill
 
     static bool ParseAccessCode ( const char *code, char *username, size_t usernamesize, char *password, size_t passwordsize );
 

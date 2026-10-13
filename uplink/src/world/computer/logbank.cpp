@@ -74,7 +74,7 @@ bool LogBank::LogModified ( int index )
 
 }
 
-char *LogBank::TraceLog ( char *to_ip, char *logbank_ip, Date *date, int uplinkrating )
+const char *LogBank::TraceLog ( const char *to_ip, const char *logbank_ip, Date *date, int uplinkrating )
 {
 
 	UplinkAssert ( to_ip );
@@ -89,7 +89,7 @@ char *LogBank::TraceLog ( char *to_ip, char *logbank_ip, Date *date, int uplinkr
 	UplinkAssert (vl_local);
 	Computer *comp_local = vl_local->GetComputer ();
 	UplinkAssert (comp_local);
-	Company *company_local = game->GetWorld ()->GetCompany ( comp_local->companyname );
+	Company *company_local = game->GetWorld ()->GetCompany ( comp_local->companyname.c_str () );
 	UplinkAssert (company_local);
 
 	// Try to find a log that showed a user bouncing from this machine
@@ -182,7 +182,7 @@ char *LogBank::TraceLog ( char *to_ip, char *logbank_ip, Date *date, int uplinkr
 
 							if ( (!isbank || (isbank && uplinkrating >= MINREQUIREDRATING_HACKBANKSERVER)) &&
 								 (!isgov  || (isgov  && uplinkrating >= MINREQUIREDRATING_HACKGOVERNMENTCOMPUTER )) )
-								return comp->logbank.TraceLog ( logbank_ip, comp->ip, date, uplinkrating );
+								return comp->logbank.TraceLog ( logbank_ip, comp->ip.c_str (), date, uplinkrating );
 
 						}
 

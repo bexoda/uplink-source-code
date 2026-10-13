@@ -142,7 +142,7 @@ Computer *VLocation::GetComputer ()
         if( tree )
         {
             Computer *comp = tree->data;
-            if( comp && strcmp( comp->ip, ip.c_str () ) == 0 ) 
+            if( comp && strcmp( comp->ip.c_str (), ip.c_str () ) == 0 ) 
             {
                 return comp;
             }

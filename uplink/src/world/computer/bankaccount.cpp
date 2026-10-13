@@ -40,7 +40,7 @@ BankAccount::~BankAccount ()
 {
 }
 	
-BankAccount *BankAccount::GetAccount ( char *bankip, char *accno )
+BankAccount *BankAccount::GetAccount ( const char *bankip, char *accno )
 {
 
 	VLocation *vl = game->GetWorld ()->GetVLocation ( bankip );
@@ -56,8 +56,8 @@ BankAccount *BankAccount::GetAccount ( char *bankip, char *accno )
 
 }
 
-bool BankAccount::TransferMoney ( char *source_ip, char *source_accno,
-								  char *target_ip, char *target_accno,
+bool BankAccount::TransferMoney ( const char *source_ip, char *source_accno,
+								  const char *target_ip, char *target_accno,
 								  int amount, Person *person )
 {
 

@@ -144,7 +144,7 @@ void RecordScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButtonCallback ( "recordscreen_commit", CommitClick );
 
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "recordscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "recordscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRegisterButton ( 320, 370, 80, 20, "Close", "Close the records screen", name );
 		EclRegisterButtonCallback ( name, CloseClick );
 
@@ -233,7 +233,7 @@ void RecordScreenInterface::CreateRecord ( int index )
 					if ( field_titles->ValidIndex ( ii ) )
 						if ( strcmp ( field_titles->GetData ( ii ), RECORDBANK_ACCNO ) == 0 ) {
 							if ( field_values->ValidIndex ( ii ) ) {
-								BankAccount *account = BankAccount::GetAccount ( cs->GetComputer ()->ip, field_values->GetData ( ii ) );
+								BankAccount *account = BankAccount::GetAccount ( cs->GetComputer ()->ip.c_str (), field_values->GetData ( ii ) );
 								if ( account ) {
 									EclRegisterButton ( 140, currentY, 300, buttonheight, account->name, "", bname_value );
 									found = true;
@@ -275,7 +275,7 @@ void RecordScreenInterface::Remove ()
 		EclRemoveButton ( "recordscreen_commit" );
 
 		char name [128 + SIZE_VLOCATION_IP + 1];
-		UplinkSnprintf ( name, sizeof ( name ), "recordscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip );
+		UplinkSnprintf ( name, sizeof ( name ), "recordscreen_click %d %s", GetComputerScreen ()->nextpage, GetComputerScreen ()->GetComputer ()->ip.c_str () );
 		EclRemoveButton ( name );
 
 	}

@@ -67,7 +67,7 @@ void Player::GiveMessage ( Message *message )
 
 }
 
-bool Player::IsPlayerAccount ( char *bankip, char *accno )
+bool Player::IsPlayerAccount ( const char *bankip, char *accno )
 {
 
 	char searchstring [64];

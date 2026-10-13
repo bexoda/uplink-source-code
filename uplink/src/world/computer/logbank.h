@@ -39,7 +39,7 @@ public:
 
 	bool LogModified ( int index );							// Is the log in internallogs different to that in logs?
 
-	char *TraceLog ( char *to_ip, char *logbank_ip, Date *date, int uplinkrating );		
+	const char *TraceLog ( const char *to_ip, const char *logbank_ip, Date *date, int uplinkrating );		
 															// ie source->logbank_ip->to_ip; lookup source and return (recursive)
 
     void Empty ();
