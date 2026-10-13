@@ -121,7 +121,7 @@ public:
 
 	void SetData1 ( const char *newdata );
 	void SetData2 ( char *newdata );
-	void SetData3 ( char *newdata );
+	void SetData3 ( const char *newdata );
 
 	char *GetDescription ();							// Must remember to delete result
 

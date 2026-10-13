@@ -73,7 +73,7 @@ public:
 	void SetNextLoadGame ( const char *username );       // Set the username to load with the next call to LoadGame
 	void LoadGame ();                                    // Use the username set with SetNextLoadGame
 	void LoadGame ( char *username );
-	void SaveGame ( char *username );
+	void SaveGame ( const char *username );
 	void RetireGame ( char *username );
 	static DArray <char *> *ListExistingGames ();
 

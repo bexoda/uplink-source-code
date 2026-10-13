@@ -51,7 +51,7 @@ void LanMonitor::BeginAttack ()
 
     Player *player = game->GetWorld ()->GetPlayer ();
     UplinkAssert (player);
-	VLocation *tvl = game->GetWorld ()->GetVLocation ( player->remotehost );
+	VLocation *tvl = game->GetWorld ()->GetVLocation ( player->remotehost.c_str () );
 	UplinkAssert (tvl);
 	Computer *comp = tvl->GetComputer ();
 	UplinkAssert (comp);
@@ -474,7 +474,7 @@ void LanMonitor::Update ()
 		    duedate.AdvanceSecond ( (int) NumberGenerator::RandomNormalNumber ( 30, 10 ) );
 
 		    AttemptMissionEvent *ami = new AttemptMissionEvent ();
-		    ami->SetAgentName ( agent->name );
+		    ami->SetAgentName ( agent->name.c_str () );
 		    ami->SetRunDate ( &duedate );
 		    game->GetWorld ()->scheduler.ScheduleEvent ( ami );
 

@@ -698,7 +698,7 @@ void ScriptLibrary::Script33 ()
 	
     Computer::GenerateAccessCode( name, password, accesscode, sizeof ( accesscode ) );
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->handle, "NEWAGENT" ) != 0 ) {
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->handle.c_str (), "NEWAGENT" ) != 0 ) {
 		create_msgbox ( "Error", "Our records show you are already\n"
                                  "registered as an Uplink agent." );
 		return;
@@ -1468,7 +1468,7 @@ void ScriptLibrary::Script51 ()
 
 	game->GetWorld ()->GetPlayer ()->gateway.nuked = true;
 
-	app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle );				
+	app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle.c_str () );				
 	game->SetGameSpeed ( GAMESPEED_PAUSED );
 
     EclReset ( app->GetOptions ()->GetOptionValue ("graphics_screenwidth"),
@@ -1818,7 +1818,7 @@ void ScriptLibrary::Script80 ()
 
                 int currentSystem = LanMonitor::currentSystem;
 
-                char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+                const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	            VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	            UplinkAssert (vl);
 	            Computer *comp = vl->GetComputer ();
@@ -1969,7 +1969,7 @@ void ScriptLibrary::Script82 ()
 
                 int currentSystem = LanMonitor::currentSystem;
 
-                char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+                const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	            VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	            UplinkAssert (vl);
 	            Computer *comp = vl->GetComputer ();
@@ -2058,7 +2058,7 @@ void ScriptLibrary::Script83 ()
 
                 int currentSystem = LanMonitor::currentSystem;
 
-                char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+                const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	            VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	            UplinkAssert (vl);
 	            Computer *comp = vl->GetComputer ();

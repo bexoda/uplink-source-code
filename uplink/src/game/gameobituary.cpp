@@ -78,7 +78,7 @@ void GameObituary::SetWarezGameOver ( bool newvalue )
 void GameObituary::Evaluate ()
 {
 
-	UplinkStrncpy ( name, game->GetWorld ()->GetPlayer ()->handle, sizeof ( name ) );
+	UplinkStrncpy ( name, game->GetWorld ()->GetPlayer ()->handle.c_str (), sizeof ( name ) );
 	money = game->GetWorld ()->GetPlayer ()->GetBalance ();
 	uplinkrating = game->GetWorld ()->GetPlayer ()->rating.uplinkrating;	
 	neuromancerrating = game->GetWorld ()->GetPlayer ()->rating.neuromancerrating;

@@ -34,10 +34,10 @@ Person::Person()
 	age = -1;
 	photoindex = 0;
     voiceindex = 0;
-	UplinkStrncpy ( name, " ", sizeof ( name ) );
-	UplinkStrncpy ( localhost, " ", sizeof ( localhost ) );
-	UplinkStrncpy ( remotehost, " ", sizeof ( remotehost ) );
-	UplinkStrncpy ( phonenumber, " ", sizeof ( phonenumber ) );
+	name = " ";
+	localhost = " ";
+	remotehost = " ";
+	phonenumber = " ";
 
 	STATUS = PERSON_STATUS_NONE;
 
@@ -57,10 +57,10 @@ void Person::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
-	connection.SetOwner ( name );
-	rating.SetOwner ( name );
+	connection.SetOwner ( name.c_str () );
+	rating.SetOwner ( name.c_str () );
 
 }
 
@@ -89,9 +89,9 @@ void Person::SetLocalHost ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
-	UplinkStrncpy ( localhost, newip, sizeof ( localhost ) );
+	localhost = newip;
 
-	UplinkAssert ( game->GetWorld ()->GetVLocation ( localhost ) );
+	UplinkAssert ( game->GetWorld ()->GetVLocation ( localhost.c_str () ) );
 
 }
 
@@ -99,9 +99,9 @@ void Person::SetRemoteHost ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
-	UplinkStrncpy ( remotehost, newip, sizeof ( remotehost ) );
+	remotehost = newip;
 
-	UplinkAssert ( game->GetWorld ()->GetVLocation ( remotehost ) );
+	UplinkAssert ( game->GetWorld ()->GetVLocation ( remotehost.c_str () ) );
 
 }
 
@@ -109,9 +109,9 @@ void Person::SetPhoneNumber ( char *newphone )
 {
 
 	UplinkAssert ( strlen(newphone) < SIZE_VLOCATION_IP );
-	UplinkStrncpy ( phonenumber, newphone, sizeof ( phonenumber ) );
+	phonenumber = newphone;
 
-	UplinkAssert ( game->GetWorld ()->GetVLocation ( phonenumber ) );
+	UplinkAssert ( game->GetWorld ()->GetVLocation ( phonenumber.c_str () ) );
 
 }
 
@@ -145,7 +145,7 @@ void Person::GiveMessage ( Message *message )
 bool Person::IsConnected ()
 {
 
-	return ( strcmp ( localhost, remotehost ) != 0 );
+	return ( strcmp ( localhost.c_str (), remotehost.c_str () ) != 0 );
 
 }
 
@@ -159,7 +159,7 @@ Connection *Person::GetConnection ()
 VLocation *Person::GetLocalHost ()
 {
 
-	VLocation *vl = game->GetWorld ()->GetVLocation ( localhost );
+	VLocation *vl = game->GetWorld ()->GetVLocation ( localhost.c_str () );
 	UplinkAssert ( vl );
 	return vl;
 
@@ -168,7 +168,7 @@ VLocation *Person::GetLocalHost ()
 VLocation *Person::GetRemoteHost ()
 {
 
-	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
+	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost.c_str () );
 	UplinkAssert ( vl );
 	return vl;
 
@@ -197,7 +197,7 @@ void Person::ChangeBalance ( int amount, const char *description )
 
 		BankAccount *ba = BankAccount::GetAccount ( ip, accno );
 		if ( !ba ) {
-			UplinkAbortArgs( "Cannot find bank account, name='%s', ip='%s', accno='%s'", name, ip, accno );
+			UplinkAbortArgs( "Cannot find bank account, name='%s', ip='%s', accno='%s'", name.c_str (), ip, accno );
 		}
 		ba->ChangeBalance ( amount, description );
 
@@ -320,13 +320,13 @@ bool Person::Load  ( FILE *file )
 	if ( !LoadDynamicStringStatic ( remotehost, SIZE_VLOCATION_IP, file ) ) return false;
 	if ( !LoadDynamicStringStatic ( phonenumber, SIZE_VLOCATION_IP, file ) ) return false;
 
-	if ( !game->GetWorld ()->locations.LookupTree ( localhost ) ) {
-		UplinkPrintAbortArgs ( "WARNING: Person::Load, Localhost IP '%s' already existing", localhost );
+	if ( !game->GetWorld ()->locations.LookupTree ( localhost.c_str () ) ) {
+		UplinkPrintAbortArgs ( "WARNING: Person::Load, Localhost IP '%s' already existing", localhost.c_str () );
 		return false;
 	}
 
-	if ( !game->GetWorld ()->locations.LookupTree ( remotehost ) ) {
-		UplinkPrintAbortArgs ( "WARNING: Person::Load, Remotehost IP '%s' already existing", remotehost );
+	if ( !game->GetWorld ()->locations.LookupTree ( remotehost.c_str () ) ) {
+		UplinkPrintAbortArgs ( "WARNING: Person::Load, Remotehost IP '%s' already existing", remotehost.c_str () );
 		return false;
 	}
 
@@ -380,8 +380,8 @@ void Person::Print ()
 {
 
 	printf ( "Person : " );
-	printf ( "name = %s, Age = %d, photoindex = %d, voiceindex = %d, status = %d\n", name, age, photoindex, voiceindex, STATUS );
-	printf ( "LocalHost : %s, RemoteHost : %s, Phone : %s\n", localhost, remotehost, phonenumber );
+	printf ( "name = %s, Age = %d, photoindex = %d, voiceindex = %d, status = %d\n", name.c_str (), age, photoindex, voiceindex, STATUS );
+	printf ( "LocalHost : %s, RemoteHost : %s, Phone : %s\n", localhost.c_str (), remotehost.c_str (), phonenumber.c_str () );
 
 	printf ( "Messages : \n" );
 	PrintLList ( (LList <UplinkObject *> *) &messages );
@@ -399,7 +399,7 @@ void Person::Print ()
 void Person::Update ()
 {
 
-	if ( strcmp ( name, "PLAYER" ) != 0 ) {
+	if ( strcmp ( name.c_str (), "PLAYER" ) != 0 ) {
 
 		//
 		// This person reads his mail
@@ -437,7 +437,7 @@ void Person::Update ()
 						Mission *mis = game->GetWorld ()->GetPlayer ()->missions.GetData (i);
 						UplinkAssert (mis);
 
-						if ( strcmp ( mis->contact, name ) == 0 &&
+						if ( strcmp ( mis->contact, name.c_str () ) == 0 &&
                              strstr ( msg->GetBody (), mis->description ) != NULL &&                // ie the name of the mission appears in your email
                              MissionGenerator::IsMissionComplete ( mis, this, msg ) ) {
 

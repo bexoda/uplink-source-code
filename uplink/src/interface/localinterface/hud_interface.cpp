@@ -93,7 +93,7 @@ void HUDInterface::CloseGame ()
 
 	// Save game and log off
 
-	app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle );
+	app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle.c_str () );
 	game->SetGameSpeed ( GAMESPEED_PAUSED );
 
     EclReset ( app->GetOptions ()->GetOptionValue ("graphics_screenwidth"),

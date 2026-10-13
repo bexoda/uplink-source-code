@@ -737,7 +737,7 @@ void IRCInterface::Create ()
 		EclRegisterButton ( 130, 170, 300, 15, "6667", "Enter the port number here", "irc_port" );
 		EclRegisterButton ( 130, 190, 300, 15, "#Uplink", "Enter the channel name here", "irc_channel" );
 		//EclRegisterButton ( 130, 210, 300, 15, "My Nickname", "Enter your nickname here", "irc_nickname" );
-		EclRegisterButton ( 130, 210, 300, 15, game->GetWorld ()->GetPlayer ()->handle, "Enter your nickname here", "irc_nickname" );
+		EclRegisterButton ( 130, 210, 300, 15, game->GetWorld ()->GetPlayer ()->handle.c_str (), "Enter your nickname here", "irc_nickname" );
         //EclRegisterButton ( 130, 230, 300, 15, "My Real Name", "Enter your real name here", "irc_fullname" );
         EclRegisterButton ( 130, 230, 300, 15, "Uplink Agent", "Enter your real name here", "irc_fullname" );
 

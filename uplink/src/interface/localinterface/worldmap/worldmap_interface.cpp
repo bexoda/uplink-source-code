@@ -1160,7 +1160,7 @@ void WorldMapInterface::CreateWorldMapInterface_Large ()
     //EclGetButton ( "worldmap_largemap" )->image_standard->SetAlpha ( 0.99 );
     EclRegisterButtonCallbacks ( "worldmap_largemap", DrawWorldMapLarge, NULL, NULL, button_highlight);                
     
-    VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->localhost );
+    VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->localhost.c_str () );
     UplinkAssert ( vl );
     //EclRegisterButton ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + x1 - 3, GetScaledY ( vl->y, WORLDMAP_LARGE ) + y1 - 3, 7, 7, "Localhost", "Your physical location", "worldmap 127.0.0.1 0" );
     EclRegisterButton ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + x1 - 3, GetScaledY ( vl->y, WORLDMAP_LARGE ) + y1 - 3, 7, 7, "Localhost", "Your physical location", "worldmap 127.0.0.1" );

@@ -839,7 +839,7 @@ void ConsoleScreenInterface::Create ( ComputerScreen *newcs )
 							 LOG_NOTSUSPICIOUS, LOG_TYPE_TEXT );
 		log->SetData1 ( "Accessed console" );
 
-		VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost );
+		VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost.c_str () );
 		UplinkAssert ( vl );
 		Computer *comp = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 		UplinkAssert ( comp );

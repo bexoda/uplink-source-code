@@ -251,7 +251,7 @@ void RadioTransmitterScreenInterface::Connect ()
     //
     // Search for a radio receiver at our frequency
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();

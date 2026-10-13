@@ -190,7 +190,7 @@ void App::UnRegisterPhoneDialler ( PhoneDialler *phoneDiallerScreen )
 
 }
 
-void CopyGame ( char * /*username*/, char *filename )
+void CopyGame ( const char * /*username*/, char *filename )
 {
 
 	char filenametmp [256];
@@ -349,7 +349,7 @@ void App::LoadGame ( char *username )
 
 }
 
-void App::SaveGame ( char *username )
+void App::SaveGame ( const char *username )
 {
 
 	if ( strcmp ( username, "NEWAGENT" ) == 0 ) return;
@@ -605,7 +605,7 @@ void App::Update ()
 
 		// The game has ended and now needs shutting down
 		
-		app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle );				
+		app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle.c_str () );				
 		game->SetGameSpeed ( GAMESPEED_PAUSED );
 
         EclReset ( app->GetOptions ()->GetOptionValue ("graphics_screenwidth"),

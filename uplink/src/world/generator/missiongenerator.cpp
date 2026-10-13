@@ -1031,7 +1031,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 
 	// Make sure we don't target the player's Uplink bank account
 
-	if ( strcmp ( taccount->name, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+	if ( strcmp ( taccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 	//
 	// Fill in the fields of the mission
@@ -1283,7 +1283,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1334,7 +1334,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1358,7 +1358,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1400,7 +1400,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1427,7 +1427,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	//
 
 	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
-	UplinkStrncpy ( completionB, person->name, sizeof ( completionB ) );
+	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
 				<< "   NAME    : " << person->name << "\n"
@@ -1546,7 +1546,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1568,7 +1568,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1587,7 +1587,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	//
 
 	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
-	UplinkStrncpy ( completionB, person->name, sizeof ( completionB ) );
+	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
 				<< "   NAME    : " << person->name << "\n"
@@ -1710,7 +1710,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1737,7 +1737,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1767,7 +1767,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 		char *personname = record->GetField ( RECORDBANK_NAME );
 		UplinkAssert (personname);
 
-		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+		if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 		person = game->GetWorld ()->GetPerson ( personname );
 		UplinkAssert (person);
@@ -1791,7 +1791,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	//
 
 	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
-	UplinkStrncpy ( completionB, person->name, sizeof ( completionB ) );
+	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
 	fulldetails	<< "\nSend a notice of completion to\n"
 				<< personname << "\n"
@@ -1944,7 +1944,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_TRACEUSER );
-	mission->SetCompletion   ( hacker->name, source->ip, tacc->name, NULL, NULL );
+	mission->SetCompletion   ( hacker->name.c_str (), source->ip, tacc->name, NULL, NULL );
 	mission->SetEmployer     ( employer->name );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -2003,8 +2003,8 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	char completionB [64];							// (Target account) IP ACCNO
 	char completionC [16];							// Amount to transfer
 
-	UplinkStrncpy ( completionA, person->name, sizeof ( completionA ) );
-	if ( strcmp ( person->name, "PLAYER" ) == 0 ) UplinkStrncpy ( completionA, game->GetWorld ()->GetPlayer ()->handle, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, person->name.c_str (), sizeof ( completionA ) );
+	if ( strcmp ( person->name.c_str (), "PLAYER" ) == 0 ) UplinkStrncpy ( completionA, game->GetWorld ()->GetPlayer ()->handle.c_str (), sizeof ( completionA ) );
 
 	UplinkSnprintf ( completionB, sizeof ( completionB ), "%s %d", bank->ip, account->accountnumber );
 	UplinkSnprintf ( completionC, sizeof ( completionC ), "%d", amount );
@@ -2108,7 +2108,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 	char completionC [SIZE_MISSION_COMPLETION];									// IP of target (if applicable)
 
 
-	UplinkStrncpy ( completionA, person->name, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, person->name.c_str (), sizeof ( completionA ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
@@ -2224,7 +2224,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 	if ( missiontype == 1 ) m->SetHowSecure ( "That depends on what you frame him for." );
 	else if ( missiontype == 2 ) m->SetHowSecure ( "Banks always have very high security." );
 
-    m->GiveLink ( person->localhost );
+    m->GiveLink ( person->localhost.c_str () );
 	if ( missiontype == 2 || missiontype == 3 ) m->GiveLink ( completionC );
 
 
@@ -2355,7 +2355,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 
 	Mission *m = new Mission ();
 	m->SetTYPE		 ( MISSION_TRACEUSER );
-	m->SetCompletion   ( hacker->name, hacked->ip, NULL, NULL, NULL );
+	m->SetCompletion   ( hacker->name.c_str (), hacked->ip, NULL, NULL, NULL );
 	m->SetEmployer     ( companyname );
 	m->SetContact      ( contact );
 	m->SetPayment      ( payment, (int) ( payment * 1.1 ) );
@@ -2440,8 +2440,8 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	// Make sure they aren't player accounts
 	//
 
-	if ( strcmp ( sourceaccount->name, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
-	if ( strcmp ( targetaccount->name, game->GetWorld ()->GetPlayer ()->handle ) == 0 ) return NULL;
+	if ( strcmp ( sourceaccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
+	if ( strcmp ( targetaccount->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) == 0 ) return NULL;
 
 
 	int amount_to_transfer = (int) NumberGenerator::RandomNormalNumber ( sourceaccount->balance / 2.0f, sourceaccount->balance * 0.4f );
@@ -2701,7 +2701,7 @@ Mission *MissionGenerator::Generate_RemoveUser ( Company *employer )
 
 
 	char completionA [SIZE_MISSION_COMPLETION];
-	UplinkStrncpy ( completionA, target->name, sizeof ( completionA ) );
+	UplinkStrncpy ( completionA, target->name.c_str (), sizeof ( completionA ) );
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -2994,7 +2994,7 @@ bool MissionGenerator::IsMissionComplete_StealAllFiles ( Mission *mission, Perso
 
 		Message *m = new Message ();
 		m->SetTo ( "PLAYER" );
-		m->SetFrom ( person->name );
+		m->SetFrom ( person->name.c_str () );
 		m->SetSubject ( "Your recent mission" );
 		m->SetBody ( newmessage );
 		m->Send ();
@@ -3541,7 +3541,7 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 
 			Message *msg = new Message ();
 			msg->SetTo ( message->from );
-			msg->SetFrom ( person->name );
+			msg->SetFrom ( person->name.c_str () );
 			msg->SetSubject ( "Problems with mission completion" );
 			msg->SetBody ( "It appears the target system was shut down, but the files were not deleted.\n"
 						   "This means the company will most likely be able to recover the data.\n\n"
@@ -3635,7 +3635,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 	bool success = target_account->HasTransferOccured ( finedperson, amount );
 	if ( !success ) {
 		Player *pl = game->GetWorld()->GetPlayer();
-		if ( strcmp ( finedperson, pl->handle ) == 0 ) {
+		if ( strcmp ( finedperson, pl->handle.c_str () ) == 0 ) {
 			for ( int i = 0; i < pl->accounts.Size (); ++i ) {
 				char ip [SIZE_VLOCATION_IP];
 				char accno [16];
@@ -3662,7 +3662,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 
 		Message *m = new Message ();
 		m->SetTo ( message->from );
-		m->SetFrom ( person->name );
+		m->SetFrom ( person->name.c_str () );
 		m->SetSubject ( "Fine paid" );
 		m->SetBody ( body.str ().c_str () );
 		m->Send ();
@@ -3679,7 +3679,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 
 		Message *m = new Message ();
 		m->SetTo ( message->from );
-		m->SetFrom ( person->name );
+		m->SetFrom ( person->name.c_str () );
 		m->SetSubject ( "Outstanding fine still not paid" );
 		m->SetBody ( body.str ().c_str () );
 		m->Send ();
@@ -3704,7 +3704,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 
 	        Message *m = new Message ();
 	        m->SetTo ( message->from );
-	        m->SetFrom ( person->name );
+	        m->SetFrom ( person->name.c_str () );
 	        m->SetSubject ( "Mission withdrawn" );
 	        m->SetBody ( "It appears you have already sold the information.\n\n"
                          "Since it is now in the public domain, we have withdrawn the mission offer." );
@@ -3830,7 +3830,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 
 	        Message *m = new Message ();
 	        m->SetTo ( message->from );
-	        m->SetFrom ( person->name );
+	        m->SetFrom ( person->name.c_str () );
 	        m->SetSubject ( "Mission completed" );
 	        m->SetBody ( body.str ().c_str () );
 	        m->Send ();
@@ -3889,7 +3889,7 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
 
 	Message *m = new Message ();
 	m->SetTo ( message->from );
-	m->SetFrom ( person->name );
+	m->SetFrom ( person->name.c_str () );
 	m->SetSubject ( "Mission completed" );
 	m->SetBody ( body.str ().c_str () );
 	m->Send ();
@@ -3933,7 +3933,7 @@ void MissionGenerator::MissionNotCompleted ( Mission * /*mission*/, Person *pers
 
 	Message *m = new Message ();
 	m->SetTo ( message->from );
-	m->SetFrom ( person->name );
+	m->SetFrom ( person->name.c_str () );
 	m->SetSubject ( "Mission NOT completed" );
 	m->SetBody ( body.str ().c_str () );
 	m->Send ();

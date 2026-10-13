@@ -103,7 +103,7 @@ bool BankAccount::TransferMoney ( char *source_ip, char *source_accno,
 
 		// Log on the source account
 		AccessLog *source_log = new AccessLog ();
-		source_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name, LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
+		source_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
 		source_log->SetData1 ( source_data );
 		source_log->SetData2 ( s_amount );
 		source_log->SetData3 ( target_acc->name );
@@ -111,7 +111,7 @@ bool BankAccount::TransferMoney ( char *source_ip, char *source_accno,
 
 		// Log on the target account
 		AccessLog *target_log = new AccessLog ();
-		target_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name, LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
+		target_log->SetProperties ( &(game->GetWorld ()->date), source_ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
 		target_log->SetData1 ( target_data );
 		target_log->SetData2 ( s_amount );
 		target_log->SetData3 ( source_acc->name );

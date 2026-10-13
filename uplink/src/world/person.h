@@ -15,6 +15,8 @@
 #ifndef _included_person_h
 #define _included_person_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -42,15 +44,15 @@ class Person : public UplinkObject
 
 public:
 
-	char name	   [SIZE_PERSON_NAME];
+	std::string name;
 	int age;
 
 	int photoindex;							// Which picture to use
     int voiceindex;                         // Which voice samples to use
 
-	char localhost  [SIZE_VLOCATION_IP];
-	char remotehost [SIZE_VLOCATION_IP];
-	char phonenumber [SIZE_VLOCATION_IP];
+	std::string localhost;
+	std::string remotehost;
+	std::string phonenumber;
 
 	LList <Message *> messages;
 	LList <char *> accounts;				// List of [IP ACCNO]

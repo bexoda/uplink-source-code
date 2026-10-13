@@ -28,7 +28,7 @@ void SecurityMonitor::BeginAttack ()
 
 	// Look up the computer system the player is connected to
 
-	VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost );
+	VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost.c_str () );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
 	UplinkAssert (comp);
@@ -87,7 +87,7 @@ void SecurityMonitor::Update ()
 
 			if ( game->GetWorld ()->date.After ( &nextmonitor_date ) ) {
 
-				VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost );
+				VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost.c_str () );
 				UplinkAssert (vl);
 				Computer *comp = vl->GetComputer ();
 				UplinkAssert (comp);
@@ -123,7 +123,7 @@ void SecurityMonitor::Update ()
 			
 			if ( game->GetWorld ()->date.After ( &nextmonitor_date ) ) {
 
-				VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost );
+				VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost.c_str () );
 				UplinkAssert (vl);
 				Computer *comp = vl->GetComputer ();
 				UplinkAssert (comp);

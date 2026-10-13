@@ -491,7 +491,7 @@ void specialkeyboard (int key, int /*x*/, int /*y*/)
 #ifndef DEMOGAME
 
 		case GCI_KEY_F12:							// Exit
-			if ( game->IsRunning () ) app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle );
+			if ( game->IsRunning () ) app->SaveGame ( game->GetWorld ()->GetPlayer ()->handle.c_str () );
 			app->Close ();
 			break;
 

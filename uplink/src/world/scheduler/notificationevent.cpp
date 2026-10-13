@@ -465,7 +465,7 @@ void NotificationEvent::GiveMissionToNPC ()
 		UplinkAssert (mission);
 
 		if ( agent->rating.uplinkrating >= mission->minuplinkrating && mission->TYPE != MISSION_SPECIAL &&
-			 !( mission->TYPE == MISSION_TRACEUSER && strcmp ( mission->completionA, agent->name ) == 0 ) ) {
+			 !( mission->TYPE == MISSION_TRACEUSER && strcmp ( mission->completionA, agent->name.c_str () ) == 0 ) ) {
 
 			if ( mission->npcpriority ) {
 				// This is a priority mission - accept it!
@@ -523,7 +523,7 @@ void NotificationEvent::GiveMissionToNPC ()
 		duedate.AdvanceHour ( NumberGenerator::RandomNumber ( 2 ) + 1 );
 
 		AttemptMissionEvent *ami = new AttemptMissionEvent ();
-		ami->SetAgentName ( agent->name );
+		ami->SetAgentName ( agent->name.c_str () );
 		ami->SetRunDate ( &duedate );
 		game->GetWorld ()->scheduler.ScheduleEvent ( ami );
 
@@ -561,7 +561,7 @@ void NotificationEvent::GiveMissionToNPC ()
 			duedate.AdvanceHour ( NumberGenerator::RandomNumber ( 4 ) + 1 );
 
 			AttemptMissionEvent *ami = new AttemptMissionEvent ();
-			ami->SetAgentName ( agent->name );
+			ami->SetAgentName ( agent->name.c_str () );
 			ami->SetRunDate ( &duedate );
 			game->GetWorld ()->scheduler.ScheduleEvent ( ami );
 
@@ -614,7 +614,7 @@ void NotificationEvent::PayUplinkMonthlyFee ()
 						"Thank you.";
 
 				Message *m = new Message ();
-				m->SetTo ( person->name );
+				m->SetTo ( person->name.c_str () );
 				m->SetFrom ( "Uplink Corporation" );
 				m->SetSubject ( "Uplink monthly fee deducted" );
 				m->SetBody ( body.str ().c_str () );

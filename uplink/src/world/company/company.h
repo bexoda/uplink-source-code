@@ -67,7 +67,7 @@ public:
 	void SetAlignment ( int newalignment );
 
 	void SetBoss ( const char *bossname );
-	void SetAdmin ( char *adminname );
+	void SetAdmin ( const char *adminname );
 
 	void Grow ( int dayspast );					// Applies growth
 	void VaryGrowth ();

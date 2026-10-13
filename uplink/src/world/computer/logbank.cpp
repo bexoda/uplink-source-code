@@ -485,7 +485,7 @@ void AccessLog::SetData2 ( char *newdata )
 
 }
 
-void AccessLog::SetData3 ( char *newdata )
+void AccessLog::SetData3 ( const char *newdata )
 {
 
 	if ( data3 ) delete [] data3;

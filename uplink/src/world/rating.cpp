@@ -55,7 +55,7 @@ const char *Rating::GetNeuromancerRatingString ( int nrating )
 
 }
 
-void Rating::SetOwner ( char *newowner )
+void Rating::SetOwner ( const char *newowner )
 {
 
 	UplinkAssert (strlen(newowner) < SIZE_PERSON_NAME );
@@ -216,7 +216,7 @@ void Rating::ChangeUplinkScore ( int amount )
 
 		if ( game->GetWorld ()->GetPerson (owner) ) {
 
-			char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle;
+			const char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str ();
 
 			std::ostringstream body;
 			body << "Congratulations Agent " << agenthandle
@@ -246,7 +246,7 @@ void Rating::ChangeUplinkScore ( int amount )
 
 		if ( game->GetWorld ()->GetPerson (owner) ) {
 
-			char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle;
+			const char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str ();
 			std::ostringstream body;
 			body << "This is a warning Agent " << agenthandle << " - your performance recently has been unsatisfactory.\n"
 					"As such we have been forced to review your case, and have decided to decrease your Uplink rating.\n\n"
@@ -310,7 +310,7 @@ void Rating::ChangeNeuromancerScore ( int amount )
 			char body [128];
 			UplinkSnprintf ( body, sizeof ( body ), "Agent %s - your Neuromancer rating appears to have changed.\n\n"
 													"Your rating is now %s.",
-													strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle,
+													strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle.c_str (),
 													GetNeuromancerRating () );
 
 			Message *msg = new Message ();

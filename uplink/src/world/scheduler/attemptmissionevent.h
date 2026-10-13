@@ -29,7 +29,7 @@ public:
 
 	void Run ();
 
-	void SetAgentName ( char *newagentname );
+	void SetAgentName ( const char *newagentname );
 
 	char *GetShortString ();
 	char *GetLongString ();

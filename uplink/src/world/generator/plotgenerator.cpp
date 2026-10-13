@@ -175,12 +175,12 @@ void PlotGenerator::Initialise_ARC ()
     Person *ceo = WorldGenerator::GetRandomPerson ();
     UplinkAssert (ceo);
     ceo->SetIsTargetable ( false );
-    arc->SetBoss ( ceo->name );
+    arc->SetBoss ( ceo->name.c_str () );
 
     Person *admin = WorldGenerator::GetRandomPerson ();
     UplinkAssert (admin);
     admin->SetIsTargetable ( false );
-    arc->SetAdmin ( admin->name );
+    arc->SetAdmin ( admin->name.c_str () );
 
 
 	pas->SetIsTargetable ( false );
@@ -316,12 +316,12 @@ void PlotGenerator::Initialise_ARUNMOR ()
     Person *ceo = WorldGenerator::GetRandomPerson ();
     UplinkAssert (ceo);
     ceo->SetIsTargetable ( false );
-    company->SetBoss ( ceo->name );
+    company->SetBoss ( ceo->name.c_str () );
 
     Person *admin = WorldGenerator::GetRandomPerson ();
     UplinkAssert (admin);
     admin->SetIsTargetable ( false );
-    company->SetAdmin ( admin->name );
+    company->SetAdmin ( admin->name.c_str () );
 
 
     pas->SetIsTargetable ( false );
@@ -381,8 +381,8 @@ void PlotGenerator::Initialise_DARWIN ()
     Person *admin = WorldGenerator::GetRandomPerson ();
     UplinkAssert (ceo);
     UplinkAssert (admin);
-	company->SetBoss ( ceo->name );
-	company->SetAdmin ( admin->name );
+	company->SetBoss ( ceo->name.c_str () );
+	company->SetAdmin ( admin->name.c_str () );
 
  	// Generate contact addresses for this company
 
@@ -1170,8 +1170,8 @@ void PlotGenerator::Run_Act1Scene2 ()
 
 	delete allpeople;
 
-	UplinkStrncpy ( act1scene3agent, sorted.GetData (1)->name, sizeof ( act1scene3agent ) );
-	UplinkStrncpy ( act1scene4agent, sorted.GetData (0)->name, sizeof ( act1scene4agent ) );
+	UplinkStrncpy ( act1scene3agent, sorted.GetData (1)->name.c_str (), sizeof ( act1scene3agent ) );
+	UplinkStrncpy ( act1scene4agent, sorted.GetData (0)->name.c_str (), sizeof ( act1scene4agent ) );
 
 	//
 	// Set up a log in on scene4 guys computer
@@ -1494,12 +1494,12 @@ void PlotGenerator::Run_Act1Scene7 ()
 				"before something terrible happens.  I don't know if it's already too late.";
 
 		char from [32];
-		UplinkSnprintf ( from, sizeof ( from ), "Agent %s", agent->handle );
+		UplinkSnprintf ( from, sizeof ( from ), "Agent %s", agent->handle.c_str () );
 
 		// Include an access code, but it shouldn't work (they've disabled it by now, of course)
 
 		char code [128];
-        Computer::GenerateAccessCode( agent->handle, "MySocratesNote", code, sizeof ( code ) );
+        Computer::GenerateAccessCode( agent->handle.c_str (), "MySocratesNote", code, sizeof ( code ) );
 
 		Message *msg = new Message ();
 		msg->SetTo ( "PLAYER" );
@@ -3573,11 +3573,11 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
     Person *poorsod = WorldGenerator::GetRandomPerson ();
     UplinkAssert (poorsod);
 
-    UplinkStrncpy ( saveitforthejury_guytobeframed, poorsod->name, sizeof ( saveitforthejury_guytobeframed ) );
+    UplinkStrncpy ( saveitforthejury_guytobeframed, poorsod->name.c_str (), sizeof ( saveitforthejury_guytobeframed ) );
 
     //char *personalcomputername = strdup( NameGenerator::GeneratePersonalComputerName(poorsod->name) );
 	char personalcomputername[MAX_COMPUTERNAME];
-	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName(poorsod->name) );
+	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName(poorsod->name.c_str ()) );
 	if ( personalcomputername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		personalcomputername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -4141,7 +4141,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
     //char *personalcomputername = strdup( NameGenerator::GeneratePersonalComputerName( poorsod->name ) );
 	char personalcomputername[MAX_COMPUTERNAME];
-	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName( poorsod->name ) );
+	snprintf( personalcomputername, sizeof ( personalcomputername ), "%s", NameGenerator::GeneratePersonalComputerName( poorsod->name.c_str () ) );
 	if ( personalcomputername[MAX_COMPUTERNAME - 1] != '\0' ) {
 		personalcomputername[MAX_COMPUTERNAME - 1] = '\0';
 	}
@@ -4222,7 +4222,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 			News *news = uplink->news.GetData (i);
 			UplinkAssert (news);
 
-			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, poorsod->name ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, poorsod->name.c_str () ) == 0 ) {
 
 				if ( strcmp ( news->data2, comp->ip ) == 0 ) {
 

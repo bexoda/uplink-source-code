@@ -128,7 +128,7 @@ public:
 	int  NumRecentHacks ();
 
     static void GenerateAccessCode( char *code, char *result, size_t resultsize );
-    static void GenerateAccessCode( char *name, const char *code, char *result, size_t resultsize );
+    static void GenerateAccessCode( const char *name, const char *code, char *result, size_t resultsize );
     static void GenerateAccessCode( int accNo, const char *code, char *result, size_t resultsize );
 
 	// Common functions

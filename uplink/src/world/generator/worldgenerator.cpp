@@ -205,8 +205,8 @@ void WorldGenerator::GenerateRandomWorld ()
 				UplinkAssert (ceo);
 				UplinkAssert (admin);
 
-				company->SetBoss ( ceo->name );
-				company->SetAdmin ( admin->name );
+				company->SetBoss ( ceo->name.c_str () );
+				company->SetAdmin ( admin->name.c_str () );
 
 			}
 		}
@@ -4140,11 +4140,11 @@ void WorldGenerator::ReplaceAdminCompanies ( Person *person )
 	
 			Company *cp = comps->GetData ( i );
 
-			if ( strcmp( person->name, cp->administrator ) == 0 ) {
+			if ( strcmp( person->name.c_str (), cp->administrator ) == 0 ) {
 
 				Person *newadmin = WorldGenerator::GetRandomPerson ();
 	            UplinkAssert ( newadmin );
-				cp->SetAdmin ( newadmin->name );
+				cp->SetAdmin ( newadmin->name.c_str () );
 
 			}
 
@@ -4178,7 +4178,7 @@ void WorldGenerator::ReplaceInvalidCompanyAdmins ( )
 				
 					Person *newadmin = WorldGenerator::GetRandomPerson ();
 					UplinkAssert ( newadmin );
-					cp->SetAdmin ( newadmin->name );
+					cp->SetAdmin ( newadmin->name.c_str () );
 				
 				}
 

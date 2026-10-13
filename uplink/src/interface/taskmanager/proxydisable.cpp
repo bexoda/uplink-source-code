@@ -109,7 +109,7 @@ void ProxyDisable::GoClick ( Button *button )
 
 	thistask->progress = 1;
 
-	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost, sizeof ( thistask->ip ) );
+	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( thistask->ip ) );
 	
 	// Look up the target
 
@@ -180,7 +180,7 @@ void ProxyDisable::Tick ( int /*n*/ )
 		// Stop the task if we've disconnected and we were running
 
 		if ( progress > 0 &&
-		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost, ip ) != 0 ) {
+		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip ) != 0 ) {
 
 			SvbRemoveTask ( SvbLookupPID ( this ) );
             return;

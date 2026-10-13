@@ -96,7 +96,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 		// ie not "NONE", "DISCONNECT" or "WARNINGMAIL"
 
-		Record *rec = RecordGenerator::GetCriminal ( person->name );
+		Record *rec = RecordGenerator::GetCriminal ( person->name.c_str () );
 
 		if ( rec ) {
 			char *existing = rec->GetField ( "Convictions" );
@@ -137,7 +137,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 			person->GetConnection ()->Disconnect ();
 			person->GetConnection ()->Reset ();
 
-			if ( strcmp ( person->name, "PLAYER" ) == 0 ) {
+			if ( strcmp ( person->name.c_str (), "PLAYER" ) == 0 ) {
 
 				game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
 				game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2);
@@ -153,7 +153,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 		// Send warning mail
 
 		Message *msg = new Message ();
-		msg->SetTo ( person->name );
+		msg->SetTo ( person->name.c_str () );
 		msg->SetFrom ( comp->companyname );
 		msg->SetSubject ( "You were caught hacking our computer systems" );
 		msg->SetBody ( "Our system administrator has informed us that you have been using "
@@ -180,7 +180,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 		// No point in fining anyone other than the player
 		// As no one would ever notice
 
-		if ( strcmp ( person->name, "PLAYER" ) == 0 ) {
+		if ( strcmp ( person->name.c_str (), "PLAYER" ) == 0 ) {
 
 			// Generate a "pay fine" mission
 
@@ -224,14 +224,14 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 		warningdate.AdvanceMinute ( TIME_LEGALACTION_WARNING * -1 );
 
 
-		if ( strcmp ( person->name, "PLAYER" ) != 0 ) {
+		if ( strcmp ( person->name.c_str (), "PLAYER" ) != 0 ) {
 
 			std::ostringstream reason;
 			reason << "hacking into the "
 				   << comp->name << ".\n";
 
 			ArrestEvent *event = new ArrestEvent ();
-			event->SetName ( person->name );
+			event->SetName ( person->name.c_str () );
 			event->SetReason ( reason.str ().c_str () );
 			event->SetIP ( comp->ip );
 			event->SetRunDate ( &duedate );
@@ -250,7 +250,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 				   << comp->name << ".\n";
 
 			SeizeGatewayEvent *event = new SeizeGatewayEvent ();
-			event->SetName ( person->name );
+			event->SetName ( person->name.c_str () );
 			event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
 			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
@@ -277,14 +277,14 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 		warningdate.SetDate ( &duedate );
 		warningdate.AdvanceMinute ( TIME_TACTICALACTION_WARNING * -1 );
 
-		if ( strcmp ( person->name, "PLAYER" ) != 0 ) {
+		if ( strcmp ( person->name.c_str (), "PLAYER" ) != 0 ) {
 
 			std::ostringstream reason;
 			reason << "hacking into the "
 				   << comp->name << ".\n";
 
 			ShotByFedsEvent *event = new ShotByFedsEvent ();
-			event->SetName ( person->name );
+			event->SetName ( person->name.c_str () );
 			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
 
@@ -302,7 +302,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 				   << comp->name << ".\n";
 
 			SeizeGatewayEvent *event = new SeizeGatewayEvent ();
-			event->SetName ( person->name );
+			event->SetName ( person->name.c_str () );
 			event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
 			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
@@ -365,7 +365,7 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 	int finesize;
 	sscanf ( fine->completionC, "%d", &finesize );
 
-	if ( strcmp ( person->name, "PLAYER" ) != 0 ) {
+	if ( strcmp ( person->name.c_str (), "PLAYER" ) != 0 ) {
 
 		int jailtime = finesize / 1000;
 
@@ -374,7 +374,7 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 			   << "Send to jail for " << jailtime << " years.\n";
 
 		ArrestEvent *event = new ArrestEvent ();
-		event->SetName ( person->name );
+		event->SetName ( person->name.c_str () );
 		event->SetReason ( reason.str ().c_str () );
 		event->SetRunDate ( &duedate );
 
@@ -391,7 +391,7 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 		reason << "For refusing to pay a " << finesize << "c fine.\n";
 
 		SeizeGatewayEvent *event = new SeizeGatewayEvent ();
-		event->SetName ( person->name );
+		event->SetName ( person->name.c_str () );
 		event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
 		event->SetReason ( reason.str ().c_str () );
 		event->SetRunDate ( &duedate );
@@ -458,7 +458,7 @@ void ConsequenceGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 				UplinkAssert (m);
 
 				if ( m->TYPE == MISSION_TRACEUSER &&
-					 strcmp ( m->completionA, hacker->name ) == 0 &&
+					 strcmp ( m->completionA, hacker->name.c_str () ) == 0 &&
 					 strcmp ( m->links.GetData (0), comp->ip ) == 0 ) {
 
 					alreadynoticed = true;

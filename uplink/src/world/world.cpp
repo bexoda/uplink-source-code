@@ -251,9 +251,9 @@ void World::CreatePerson ( Person *person )
 {
 
 	UplinkAssert (person);
-	UplinkAssert (person->name);
+	UplinkAssert (person->name.c_str ());
 
-	people.PutData ( person->name, person );
+	people.PutData ( person->name.c_str (), person );
 
 }
 
@@ -313,7 +313,7 @@ Computer *World::GetComputer ( const char *name )
 Person *World::GetPerson ( const char *name )
 {
 
-	if ( people.LookupTree("PLAYER") && strcmp ( name, GetPlayer ()->handle ) == 0 ) {
+	if ( people.LookupTree("PLAYER") && strcmp ( name, GetPlayer ()->handle.c_str () ) == 0 ) {
 	
 		// We're looking for the player
 		return game->GetWorld ()->GetPlayer ();

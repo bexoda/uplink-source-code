@@ -46,8 +46,8 @@ void CompanyInfoScreenInterface::MdAddClick ( Button *button )
 
 	Person *boss = game->GetWorld ()->GetPerson ( company->boss );
 	
-	if ( boss && strcmp ( boss->phonenumber, " " ) != 0 )
-		game->GetWorld ()->GetPlayer ()->GiveLink ( boss->phonenumber );
+	if ( boss && strcmp ( boss->phonenumber.c_str (), " " ) != 0 )
+		game->GetWorld ()->GetPlayer ()->GiveLink ( boss->phonenumber.c_str () );
 
 	EclRemoveButton ( button->name );
 
@@ -66,8 +66,8 @@ void CompanyInfoScreenInterface::AdminAddClick ( Button *button )
 
 	Person *admin = game->GetWorld ()->GetPerson ( company->administrator );
 	
-	if ( admin && strcmp ( admin->phonenumber, " " ) != 0 )
-		game->GetWorld ()->GetPlayer ()->GiveLink ( admin->phonenumber );
+	if ( admin && strcmp ( admin->phonenumber.c_str (), " " ) != 0 )
+		game->GetWorld ()->GetPlayer ()->GiveLink ( admin->phonenumber.c_str () );
 
 	EclRemoveButton ( button->name );
 
@@ -140,8 +140,8 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 
 			UplinkSnprintf ( mdemail, sizeof ( mdemail ), "%s@%s.net", bossnameEmail, companynameEmail );
 			UplinkSnprintf ( adminemail, sizeof ( adminemail ), "%s@%s.net", administratornameEmail, companynameEmail );
-			UplinkSnprintf ( mdtel, sizeof ( mdtel ), "tel. %s", boss->phonenumber );
-			UplinkSnprintf ( admintel, sizeof ( admintel ), "tel. %s", admin->phonenumber );
+			UplinkSnprintf ( mdtel, sizeof ( mdtel ), "tel. %s", boss->phonenumber.c_str () );
+			UplinkSnprintf ( admintel, sizeof ( admintel ), "tel. %s", admin->phonenumber.c_str () );
 
 			delete [] administratornameEmail;
 			delete [] bossnameEmail;
@@ -165,7 +165,7 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 50, 190, 250, 15, mdemail, " ", "companyscreen_mdemail" );
 		EclRegisterButton ( 50, 210, 150, 15, mdtel, " ", "companyscreen_mdtel" );
 
-		if ( boss && !game->GetWorld ()->GetPlayer ()->HasLink ( boss->phonenumber ) ) {
+		if ( boss && !game->GetWorld ()->GetPlayer ()->HasLink ( boss->phonenumber.c_str () ) ) {
 			EclRegisterButton ( 35, 211, 13, 13, " ", "Add this phone number to your contact list", "companyscreen_mdadd" );
 			button_assignbitmaps ( "companyscreen_mdadd", "add.tif", "add_h.tif", "add_c.tif" );
 			EclRegisterButtonCallback ( "companyscreen_mdadd", MdAddClick );
@@ -176,7 +176,7 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 300, 190, 250, 15, adminemail, " ", "companyscreen_adminemail" );
 		EclRegisterButton ( 300, 210, 150, 15, admintel, " ", "companyscreen_admintel" );
 
-		if ( admin && !game->GetWorld ()->GetPlayer ()->HasLink ( admin->phonenumber ) ) {
+		if ( admin && !game->GetWorld ()->GetPlayer ()->HasLink ( admin->phonenumber.c_str () ) ) {
 			EclRegisterButton ( 285, 211, 13, 13, " ", "Add this phone number to your contact list", "companyscreen_adminadd" );
 			button_assignbitmaps ( "companyscreen_adminadd", "add.tif", "add_h.tif", "add_c.tif" );
 			EclRegisterButtonCallback ( "companyscreen_adminadd", AdminAddClick );

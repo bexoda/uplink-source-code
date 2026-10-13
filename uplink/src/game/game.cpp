@@ -462,7 +462,7 @@ void Game::Update ()
 
 	if ( time(NULL) > lastsave + 1 * 60 ) {
 
-		app->SaveGame ( GetWorld ()->GetPlayer ()->handle );
+		app->SaveGame ( GetWorld ()->GetPlayer ()->handle.c_str () );
 		lastsave = time(NULL);
 
 	}

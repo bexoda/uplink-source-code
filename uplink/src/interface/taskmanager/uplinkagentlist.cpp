@@ -224,7 +224,7 @@ void UplinkAgentList::UpdateLists ()
 					Person *s = sorted.GetData (is);
 					UplinkAssert (s);
 
-					if ( strcmp ( ((Agent *) p)->handle, ((Agent *)s)->handle ) <= 0 ) {
+					if ( strcmp ( ((Agent *) p)->handle.c_str (), ((Agent *)s)->handle.c_str () ) <= 0 ) {
 
 						sorted.PutDataAtIndex ( p, is );
 						inserted = true;
@@ -300,7 +300,7 @@ void UplinkAgentList::UpdateLists ()
 		size_t namesize = SIZE_PERSON_NAME;
         char *name = new char [namesize];
 
-        UplinkStrncpy ( handle, ((Agent *) person)->handle, handlesize );
+        UplinkStrncpy ( handle, ((Agent *) person)->handle.c_str (), handlesize );
 
         if ( person == game->GetWorld ()->GetPlayer () ) {
 
@@ -315,7 +315,7 @@ void UplinkAgentList::UpdateLists ()
 
 				if      ( filefound [fileindex] == 0 ) {      UplinkStrncpy ( name, "Unknown", namesize );
 				} else if ( filefound [fileindex] == -1 ) {   UplinkStrncpy ( name, "Encrypted", namesize );
-				} else if ( filefound [fileindex] == 1 ) {    UplinkStrncpy ( name, person->name, namesize );
+				} else if ( filefound [fileindex] == 1 ) {    UplinkStrncpy ( name, person->name.c_str (), namesize );
 				}
 
             }

@@ -124,7 +124,7 @@ void LanScan::GoClick ( Button *button )
 		
 	// Set it going
 
-	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost, sizeof ( thistask->ip ) );
+	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( thistask->ip ) );
 	thistask->numticksrequired = TICKSREQUIRED_LANSCAN;
 	thistask->progress = 0;
 	thistask->status = LANSCAN_SCANNING;
@@ -173,7 +173,7 @@ void LanScan::Tick ( int n )
 		// Stop the task if we've disconnected and we were running
 
 		if ( progress > 0 &&
-		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost, ip ) != 0 ) {
+		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip ) != 0 ) {
 
 			SvbRemoveTask ( SvbLookupPID ( this ) );
             return;

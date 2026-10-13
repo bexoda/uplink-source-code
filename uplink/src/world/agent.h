@@ -11,6 +11,8 @@
 #ifndef _included_agent_h
 #define _included_agent_h
 
+#include <string>
+
 // ============================================================================
 
 #include <stdio.h>
@@ -36,7 +38,7 @@ public:
 	BTree <char *> codes;					// All known access codes, indexed on ip
 	LList <Mission *> missions;				// The agents' missions	
 
-	char handle [SIZE_AGENT_HANDLE];
+	std::string handle;
 
 public:
 

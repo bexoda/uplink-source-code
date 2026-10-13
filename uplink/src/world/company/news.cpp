@@ -60,7 +60,7 @@ char *News::GetDetails ()
 
 }
 
-void News::SetData ( int newNEWSTYPE, char *newdata1, char *newdata2 )
+void News::SetData ( int newNEWSTYPE, const char *newdata1, char *newdata2 )
 {
 
 	NEWSTYPE = newNEWSTYPE;

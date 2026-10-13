@@ -595,7 +595,7 @@ void ContactScreenInterface::Create ( ComputerScreen *newcs )
 		// Add in the users
 
 		AddUser ( "System" );
-		AddUser ( game->GetWorld ()->GetPlayer ()->handle );
+		AddUser ( game->GetWorld ()->GetPlayer ()->handle.c_str () );
 
 	}
 

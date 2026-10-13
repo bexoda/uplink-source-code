@@ -41,7 +41,7 @@ public:
 	Connection();
 	virtual ~Connection();
 
-	void SetOwner ( char *newowner );
+	void SetOwner ( const char *newowner );
 
 	void AddVLocation ( const char *ip );
 	/********** Start code by François Gagné **********/

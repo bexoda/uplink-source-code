@@ -55,7 +55,7 @@ void Company::SetBoss ( const char *bossname )
 
 }
 
-void Company::SetAdmin ( char *adminname )
+void Company::SetAdmin ( const char *adminname )
 {
 
 	UplinkAssert ( strlen(adminname) < SIZE_PERSON_NAME );

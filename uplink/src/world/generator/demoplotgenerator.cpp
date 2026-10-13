@@ -246,7 +246,7 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	        char *personname = record->GetField ( RECORDBANK_NAME );
 	        UplinkAssert (personname);
 
-            if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle ) != 0 ) {
+            if ( strcmp ( personname, game->GetWorld ()->GetPlayer ()->handle.c_str () ) != 0 ) {
 
 		        person = game->GetWorld ()->GetPerson ( personname );
 		        UplinkAssert (person);
@@ -273,9 +273,9 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	UplinkSnprintf ( completionE, sizeof ( completionE ), "%d", newnumber );
 
 	UplinkStrncpy ( completionA, target->ip, sizeof ( completionA ) );
-	UplinkStrncpy ( completionB, person->name, sizeof ( completionB ) );
+	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
-    UplinkStrncpy ( arcmissiontarget, person->name, sizeof ( arcmissiontarget ) );
+    UplinkStrncpy ( arcmissiontarget, person->name.c_str (), sizeof ( arcmissiontarget ) );
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
 				<< "   NAME    : " << person->name << "\n"

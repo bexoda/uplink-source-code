@@ -40,7 +40,7 @@ public:
 	Rating ();
 	~Rating ();
 
-	void SetOwner ( char *newowner );
+	void SetOwner ( const char *newowner );
 	
 	void SetUplinkRating	  ( int rating );
 	void SetNeuromancerRating ( int rating );

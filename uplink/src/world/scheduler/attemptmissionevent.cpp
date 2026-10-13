@@ -37,7 +37,7 @@ void AttemptMissionEvent::Run ()
 
 }
 
-void AttemptMissionEvent::SetAgentName ( char *newagentname )
+void AttemptMissionEvent::SetAgentName ( const char *newagentname )
 {
 
 	UplinkAssert ( strlen (newagentname) < SIZE_PERSON_NAME );

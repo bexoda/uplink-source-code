@@ -701,7 +701,7 @@ void Computer::GenerateAccessCode( char *code, char *result, size_t resultsize )
     UplinkSnprintf( result, resultsize, "%s:'%s'", "CODE", code );
 }
 
-void Computer::GenerateAccessCode( char *name, const char *code, char *result, size_t resultsize )
+void Computer::GenerateAccessCode( const char *name, const char *code, char *result, size_t resultsize )
 {
     UplinkSnprintf( result, resultsize, "%s:'%s', %s:'%s'", "NAME", name, "CODE", code );
 }

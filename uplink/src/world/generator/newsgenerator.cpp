@@ -853,7 +853,7 @@ void NewsGenerator::Arrested ( Person *person, Computer *comp, char *reason )
 	News *news = new News ();
 	news->SetHeadline ( headline.str ().c_str () );
 	news->SetDetails ( details.str ().c_str () );
-	news->SetData ( NEWS_TYPE_ARREST, person->name, comp ? comp->ip : NULL );
+	news->SetData ( NEWS_TYPE_ARREST, person->name.c_str (), comp ? comp->ip : NULL );
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );

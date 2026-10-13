@@ -41,7 +41,7 @@ Connection::~Connection()
 
 }
 
-void Connection::SetOwner ( char *newowner )
+void Connection::SetOwner ( const char *newowner )
 {
 
 	UplinkAssert ( strlen (newowner) < 64 );
@@ -391,7 +391,7 @@ void Connection::Disconnect ()
 
 	}
 
-	GetOwner ()->SetRemoteHost ( GetOwner ()->localhost );	
+	GetOwner ()->SetRemoteHost ( GetOwner ()->localhost.c_str () );	
 	traceprogress = 0;
 	traceinprogress = false;
 
@@ -403,7 +403,7 @@ void Connection::Reset ()
 	DeleteLListData ( &vlocations );
     vlocations.Empty ();
 
-    AddVLocation ( GetOwner ()->localhost );
+    AddVLocation ( GetOwner ()->localhost.c_str () );
 
 	traceinprogress = false;
 	traceprogress = 0;
@@ -428,7 +428,7 @@ bool Connection::Traced ()
 bool Connection::Connected ()
 {
 
-	return ( strcmp ( GetOwner ()->localhost, GetOwner ()->remotehost ) != 0 );
+	return ( strcmp ( GetOwner ()->localhost.c_str (), GetOwner ()->remotehost.c_str () ) != 0 );
 
 }
 

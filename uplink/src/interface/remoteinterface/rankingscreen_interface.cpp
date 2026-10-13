@@ -197,7 +197,7 @@ void RankingScreenInterface::Create ( ComputerScreen *newcs )
 				Agent *agent = (Agent *) sorted.GetData (i);
 
 				char cname [128];
-				UplinkSnprintf ( cname, sizeof ( cname ), "%2d  :  Agent %s", i + 1, agent->handle );
+				UplinkSnprintf ( cname, sizeof ( cname ), "%2d  :  Agent %s", i + 1, agent->handle.c_str () );
 				
 				char cstatus [32];
 				if      ( agent->GetStatus () == PERSON_STATUS_NONE ) {			UplinkStrncpy ( cstatus, "Active", sizeof ( cstatus ) );
@@ -252,7 +252,7 @@ void RankingScreenInterface::Create ( ComputerScreen *newcs )
 			}
 
 			char cname [128];
-			UplinkSnprintf ( cname, sizeof ( cname ), "%2d  :  Agent %s", playerrank + 1, game->GetWorld ()->GetPlayer ()->handle );
+			UplinkSnprintf ( cname, sizeof ( cname ), "%2d  :  Agent %s", playerrank + 1, game->GetWorld ()->GetPlayer ()->handle.c_str () );
 
 			EclRegisterButton ( 60, 340, 170, 15, cname, "", "ranking_playerrank" );
 			EclRegisterButton ( 230, 340, 100, 15, "Active", "", "ranking_playerstatus" );

@@ -474,7 +474,7 @@ void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 
 			if ( target_acc ) {
 
-				if ( strcmp ( target_acc->name, game->GetWorld ()->GetPlayer ()->handle ) != 0 ) {		// Prevent transfers to player
+				if ( strcmp ( target_acc->name, game->GetWorld ()->GetPlayer ()->handle.c_str () ) != 0 ) {		// Prevent transfers to player
 
 					if ( target_acc != myaccount ) {			// Prevent transfers to my own account
 
@@ -491,17 +491,17 @@ void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 							UplinkSnprintf ( s_amount, sizeof ( s_amount ), "%d", amount );
 
 							AccessLog *source_log = new AccessLog ();
-							source_log->SetProperties ( &transferdate, bank->ip, person->name, LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
+							source_log->SetProperties ( &transferdate, bank->ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERTO );
 							source_log->SetData1 ( source_data );
 							source_log->SetData2 ( s_amount );
-							source_log->SetData3 ( person->name );
+							source_log->SetData3 ( person->name.c_str () );
 							myaccount->log.AddLog ( source_log );
 
 							AccessLog *target_log = new AccessLog ();
-							target_log->SetProperties ( &transferdate, bank->ip, person->name, LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
+							target_log->SetProperties ( &transferdate, bank->ip, person->name.c_str (), LOG_NOTSUSPICIOUS, LOG_TYPE_TRANSFERFROM );
 							target_log->SetData1 ( target_data );
 							target_log->SetData2 ( s_amount );
-							target_log->SetData3 ( person->name );
+							target_log->SetData3 ( person->name.c_str () );
 							target_acc->log.AddLog ( target_log );
 
 						}
@@ -528,8 +528,8 @@ Record *RecordGenerator::GetSocialSecurity ( char *personname )
 	Computer *comp = game->GetWorld ()->GetComputer ( "International Social Security Database" );
 	UplinkAssert ( comp );
 
-	char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
-							game->GetWorld ()->GetPlayer ()->handle :
+	const char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
+							game->GetWorld ()->GetPlayer ()->handle.c_str () :
 							personname );
 
 	Record *rec = comp->recordbank.GetRecordFromName ( name );
@@ -545,7 +545,7 @@ Record *RecordGenerator::GetCriminal ( const char *personname )
 	UplinkAssert ( comp );
 
 	const char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
-							game->GetWorld ()->GetPlayer ()->handle :
+							game->GetWorld ()->GetPlayer ()->handle.c_str () :
 							personname );
 
 	Record *rec = comp->recordbank.GetRecordFromName ( name );
@@ -560,8 +560,8 @@ Record *RecordGenerator::GetMedical ( char *personname )
 	Computer *comp = game->GetWorld ()->GetComputer ( "Central Medical Database" );
 	UplinkAssert ( comp );
 
-	char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
-							game->GetWorld ()->GetPlayer ()->handle :
+	const char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
+							game->GetWorld ()->GetPlayer ()->handle.c_str () :
 							personname );
 
 	Record *rec = comp->recordbank.GetRecordFromName ( name );
@@ -576,8 +576,8 @@ Record *RecordGenerator::GetAcademic ( char *personname )
 	Computer *comp = game->GetWorld ()->GetComputer ( "International Academic Database" );
 	UplinkAssert ( comp );
 
-	char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
-							game->GetWorld ()->GetPlayer ()->handle :
+	const char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
+							game->GetWorld ()->GetPlayer ()->handle.c_str () :
 							personname );
 
 	Record *rec = comp->recordbank.GetRecordFromName ( name );

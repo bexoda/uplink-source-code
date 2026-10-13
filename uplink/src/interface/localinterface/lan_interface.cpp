@@ -119,7 +119,7 @@ void LanInterface::LanBackgroundDraw ( Button *button, bool /*highlighted*/, boo
 	//
 	// Lookup computer details
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -511,7 +511,7 @@ void LanInterface::LanSystemDraw ( Button *button, bool /*highlighted*/, bool /*
     //
     // Look up the computer
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -574,7 +574,7 @@ void LanInterface::LanSystemClick ( Button *button )
     // 
     // Make this system the target for task programs
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -595,7 +595,7 @@ void LanInterface::LanSystemClick ( Button *button )
 void LanInterface::LanSystemMouseMove ( Button *button )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -635,7 +635,7 @@ void LanInterface::LanSystemMouseMove ( Button *button )
 void LanInterface::ConnectDraw ( Button *button, bool highlighted, bool clicked )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -654,7 +654,7 @@ void LanInterface::ConnectDraw ( Button *button, bool highlighted, bool clicked 
 void LanInterface::ConnectClick ( Button * /*button*/ )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -704,7 +704,7 @@ void LanInterface::ConnectClick ( Button * /*button*/ )
 void LanInterface::ConnectMouseMove	( Button *button )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -727,7 +727,7 @@ void LanInterface::CancelClick ( Button * /*button*/ )
 
     int currentSystem = LanMonitor::currentSystem;
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -752,7 +752,7 @@ void LanInterface::CancelClick ( Button * /*button*/ )
 void LanInterface::BackDraw ( Button *button, bool highlighted, bool clicked )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -770,7 +770,7 @@ void LanInterface::BackDraw ( Button *button, bool highlighted, bool clicked )
 void LanInterface::BackMouseMove ( Button *button )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -799,7 +799,7 @@ void LanInterface::GenerateClick ( Button *button )
     int size;
     sscanf ( button->name, "%s %d", unused, &size );
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -888,7 +888,7 @@ LanInterface::~LanInterface ()
 void LanInterface::SelectSystem ( int systemIndex )
 {
 
-    char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+    const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -985,7 +985,7 @@ void LanInterface::CreateLayout ()
 
     if ( IsVisible () ) {
 
-        char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+        const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	    VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	    UplinkAssert (vl);
 	    Computer *comp = vl->GetComputer ();
@@ -1076,7 +1076,7 @@ void LanInterface::PositionLayout ()
 
     if ( IsVisible () ) {
 
-        char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
+        const char *remotehost = game->GetWorld()->GetPlayer()->remotehost.c_str ();
   	    VLocation *vl = game->GetWorld ()->GetVLocation ( remotehost );
 	    UplinkAssert (vl);
 	    Computer *comp = vl->GetComputer ();
@@ -1166,7 +1166,7 @@ void LanInterface::Create ()
         EclRegisterButton ( 5, 30, SX(440), SY(370), " ", " ", "lan_background" );
         EclRegisterButtonCallbacks ( "lan_background", LanBackgroundDraw, NULL, NULL, NULL );
 
-        UplinkStrncpy ( ip, game->GetWorld ()->GetPlayer ()->remotehost, sizeof ( ip ) );
+        UplinkStrncpy ( ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( ip ) );
 
 #ifdef TESTGAME
         EclRegisterButton ( 10, 35, 15, 15, "L0", "Generate a new Level 0 Gateway", "lan_generate 0" );
@@ -1245,7 +1245,7 @@ void LanInterface::Update ()
     //
     // Shut down if we aren't looking at our LAN anymore
 
-    char *currentIP = game->GetWorld ()->GetPlayer ()->remotehost;
+    const char *currentIP = game->GetWorld ()->GetPlayer ()->remotehost.c_str ();
     if ( strcmp ( ip, currentIP ) != 0 ) {
         game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
         return;

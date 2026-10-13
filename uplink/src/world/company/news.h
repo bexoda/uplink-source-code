@@ -59,7 +59,7 @@ public:
 
 	char *GetDetails ();
 
-	void SetData ( int newNEWSTYPE, char *newdata1 = NULL, char *newdata2 = NULL );
+	void SetData ( int newNEWSTYPE, const char *newdata1 = NULL, char *newdata2 = NULL );
 
 	// Common functions
 

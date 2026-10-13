@@ -260,11 +260,11 @@ void AnalyserInterface::Update ()
 	// Has our remotehost changed since we last updated?
 	//
 
-	if ( strcmp ( remotehost, game->GetWorld ()->GetPlayer ()->remotehost ) != 0 ) {
+	if ( strcmp ( remotehost, game->GetWorld ()->GetPlayer ()->remotehost.c_str () ) != 0 ) {
 
 		// Yes it has - redo everything
 	
-		UplinkStrncpy ( remotehost, game->GetWorld ()->GetPlayer ()->remotehost, sizeof ( remotehost ) );
+		UplinkStrncpy ( remotehost, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( remotehost ) );
 
 		// Remove the old remote host button
 

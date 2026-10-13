@@ -71,7 +71,7 @@ void Agent::SetHandle ( const char *newhandle )
 {
 
 	UplinkAssert ( strlen(newhandle) < SIZE_AGENT_HANDLE );
-	UplinkStrncpy ( handle, newhandle, sizeof ( handle ) );
+	handle = newhandle;
 
 }
 
@@ -202,8 +202,8 @@ void Agent::GiveLink ( const char *newip )
         // If this was the player and he is looking at his links screen
         // Update it now
 
-        if ( strcmp ( name, "PLAYER" ) == 0 &&
-             strcmp ( game->GetWorld ()->GetPlayer ()->remotehost, IP_LOCALHOST ) == 0 &&
+        if ( strcmp ( name.c_str (), "PLAYER" ) == 0 &&
+             strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), IP_LOCALHOST ) == 0 &&
              game->GetInterface ()->GetRemoteInterface ()->currentscreenindex == 0 ) {
 
             ((LinksScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->SetFullList ( &links );
@@ -738,7 +738,7 @@ void Agent::AttemptMission_TraceUser ()
 						// Trace successful
 						// Does the guilty person live at this IP?
 
-						if ( strcmp ( hacker->localhost, traced_ip ) == 0 ) {
+						if ( strcmp ( hacker->localhost.c_str (), traced_ip ) == 0 ) {
 
 							// Mission successful
 
@@ -766,7 +766,7 @@ void Agent::AttemptMission_TraceUser ()
 							for ( int ip = 0; ip < people->Size (); ++ip ) {
 								if ( people->ValidIndex (ip) ) {
 									if ( people->GetData (ip) ) {
-										if ( strcmp ( people->GetData (ip)->localhost, traced_ip ) == 0 ) {
+										if ( strcmp ( people->GetData (ip)->localhost.c_str (), traced_ip ) == 0 ) {
 											framed = people->GetData (ip);
 											break;
 										}
@@ -782,7 +782,7 @@ void Agent::AttemptMission_TraceUser ()
 								printf ( "Agent %s traced %s (probably framed)\n", name, framed->name );
 	#endif
 
-								UplinkStrncpy ( m->completionA, framed->name, sizeof ( m->completionA ) );
+								UplinkStrncpy ( m->completionA, framed->name.c_str (), sizeof ( m->completionA ) );
 
 								ConsequenceGenerator::MissionCompleted ( m, this );
 								return;
@@ -892,7 +892,7 @@ void Agent::EstablishConnection ( char *ip )
 	for ( int il = 0; il < comp->logbank.logs.Size (); ++il ) {
 		if ( comp->logbank.logs.ValidIndex (il) ) {
 
-			if ( strcmp ( comp->logbank.logs.GetData (il)->fromname, name ) == 0 &&
+			if ( strcmp ( comp->logbank.logs.GetData (il)->fromname, name.c_str () ) == 0 &&
 				 strcmp ( comp->logbank.logs.GetData (il)->fromip, fromip ) == 0 ) {
 
 				Date logdate;
@@ -944,7 +944,7 @@ void Agent::EstablishConnection ( char *ip )
 
 					// Blank the log
 					AccessLog *al = new AccessLog ();
-					al->SetProperties ( &logdate, "Unknown", name,
+					al->SetProperties ( &logdate, "Unknown", name.c_str (),
 										LOG_NOTSUSPICIOUS, LOG_TYPE_DELETED);
 					comp->logbank.logs.PutData ( al, il );
 
@@ -955,7 +955,7 @@ void Agent::EstablishConnection ( char *ip )
 
 					// Delete the log, leave marker
 					AccessLog *al = new AccessLog ();
-					al->SetProperties ( &logdate, "Unknown", name,
+					al->SetProperties ( &logdate, "Unknown", name.c_str (),
 										LOG_NOTSUSPICIOUS, LOG_TYPE_DELETED);
 					comp->logbank.logs.PutData ( al, il );
 
@@ -1055,7 +1055,7 @@ void Agent::Save ( FILE *file )
 void Agent::Print ()
 {
 
-	printf ( "Uplink Agent : Handle %s\n", handle );
+	printf ( "Uplink Agent : Handle %s\n", handle.c_str () );
 	Person::Print ();
 
 	PrintLList ( &links );

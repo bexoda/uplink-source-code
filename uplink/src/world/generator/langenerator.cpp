@@ -124,8 +124,8 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
     Person *admin = WorldGenerator::GetRandomPerson ();
     UplinkAssert (ceo);
     UplinkAssert (admin);
-	company->SetBoss ( ceo->name );
-	company->SetAdmin ( admin->name );
+	company->SetBoss ( ceo->name.c_str () );
+	company->SetAdmin ( admin->name.c_str () );
 
 	LanComputer *comp = new LanComputer ();
 	comp->SetTYPE ( COMPUTER_TYPE_LAN );

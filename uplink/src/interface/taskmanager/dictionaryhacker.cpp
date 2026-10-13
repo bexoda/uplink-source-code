@@ -133,7 +133,7 @@ void DictionaryHacker::Tick ( int n )
                                 if ( username ) Computer::GenerateAccessCode( username, password, newcode, sizeof ( newcode ) );
                                 else			Computer::GenerateAccessCode( password, newcode, sizeof ( newcode ) );
 
-								game->GetWorld ()->GetPlayer ()->GiveCode ( game->GetWorld ()->GetPlayer ()->remotehost, newcode );
+								game->GetWorld ()->GetPlayer ()->GiveCode ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), newcode );
 
 								SvbRemoveTask ( this );
 
