@@ -23,10 +23,10 @@
 Gateway::Gateway ()
 {
 
-	curgatewaydef = NULL;
+	curgatewaydef.reset ();
 
 	id = 0;
-	newgatewaydef = NULL;
+	newgatewaydef.reset ();
 	nuked = false;
 	proximity = 0;
 
@@ -42,10 +42,8 @@ Gateway::~Gateway ()
 {
 
     DeleteLListData ( &hardware );
-	if ( curgatewaydef )
-		delete curgatewaydef;
-	if ( newgatewaydef )
-		delete newgatewaydef;
+	curgatewaydef.reset ();
+	newgatewaydef.reset ();
 
 }
 
@@ -125,7 +123,7 @@ void Gateway::SetGatewayStart ()
 
     UplinkAssert (newgateway);
 
-	curgatewaydef = new GatewayDef ( *newgateway );
+	curgatewaydef.reset ( new GatewayDef ( *newgateway ) );
 
 }
 
@@ -133,20 +131,19 @@ void Gateway::SetGateway ( GatewayDef *newgd )
 {
 
 	UplinkAssert ( newgd );
-	curgatewaydef = new GatewayDef ( *newgd );
+	curgatewaydef.reset ( new GatewayDef ( *newgd ) );
 
 }
 
 void Gateway::ExchangeGateway ( GatewayDef *newgd )
 {
 
-	if ( newgatewaydef )
-		delete newgatewaydef;
+	newgatewaydef.reset ();
 
 	if ( newgd )
-		newgatewaydef = new GatewayDef ( *newgd );
+		newgatewaydef.reset ( new GatewayDef ( *newgd ) );
 	else
-		newgatewaydef = NULL;
+		newgatewaydef.reset ();
 
 }
 
@@ -159,12 +156,9 @@ void Gateway::ExchangeGatewayComplete ()
 	if ( !newgatewaydef )
 		printf ( "WARNING: Gateway::ExchangeGatewayComplete, cannot find exchange gateway\n" );
 	else
-		SetGateway ( newgatewaydef );
+		SetGateway ( newgatewaydef.get () );
 
-	if ( newgatewaydef ) {
-		delete newgatewaydef;
-		newgatewaydef = NULL;
-	}
+	newgatewaydef.reset ();
 	nuked = false;
 	GenerateNewID ();
 
@@ -176,7 +170,7 @@ void Gateway::ExchangeGatewayComplete ()
 	// Handle loss of hardware or software
 	//
 
-	GatewayDef *newgateway = curgatewaydef;
+	GatewayDef *newgateway = curgatewaydef.get ();
 	UplinkAssert (newgateway);
 
 	std::vector <std::string> removedItems;
@@ -349,7 +343,7 @@ bool Gateway::HasAnyHUDUpgrade ()
 void Gateway::GiveCPU ( const char *CPUName )
 {
 
-	GatewayDef *gatewaydef = curgatewaydef;
+	GatewayDef *gatewaydef = curgatewaydef.get ();
 	UplinkAssert (gatewaydef);
 
     char *cpucopy = new char [strlen(CPUName)+1];
@@ -457,7 +451,7 @@ LList <const char *> *Gateway::GetCPUs ()
 int Gateway::GetBandwidth ()
 {
 
-	GatewayDef *gatewaydef = curgatewaydef;
+	GatewayDef *gatewaydef = curgatewaydef.get ();
 	UplinkAssert (gatewaydef);
 
 	if ( modemspeed < gatewaydef->bandwidth )
@@ -633,8 +627,8 @@ bool Gateway::Load  ( FILE *file )
 
 	LoadID ( file );
 
-	curgatewaydef = NULL;
-	newgatewaydef = NULL;
+	curgatewaydef.reset ();
+	newgatewaydef.reset ();
 
 	if ( !databank.Load ( file ) ) return false;
 
@@ -645,13 +639,13 @@ bool Gateway::Load  ( FILE *file )
 	char old_name [SIZE_GATEWAY_NAME] = {0};
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV61" ) >= 0 ) {
-		curgatewaydef = new GatewayDef ();
+		curgatewaydef.reset ( new GatewayDef () );
 		if ( !curgatewaydef->Load ( file ) ) return false;
 
 		int exists;
 		if ( !FileReadData ( &exists, sizeof(exists), 1, file ) ) return false;
 		if ( exists != 0 ) {
-			newgatewaydef = new GatewayDef ();
+			newgatewaydef.reset ( new GatewayDef () );
 			if ( !newgatewaydef->Load ( file ) ) return false;
 		}
 	}

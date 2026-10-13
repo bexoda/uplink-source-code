@@ -14,15 +14,14 @@
 ChangeGatewayEvent::ChangeGatewayEvent ()
 {
 
-	newgatewaydef = NULL;
+	newgatewaydef.reset ();
 
 }
 
 ChangeGatewayEvent::~ChangeGatewayEvent ()
 {
 
-	if ( newgatewaydef )
-		delete newgatewaydef;
+	newgatewaydef.reset ();
 
 }
 
@@ -31,10 +30,9 @@ void ChangeGatewayEvent::SetNewGateway ( GatewayDef *value )
 
 	UplinkAssert ( value );
 
-	if ( newgatewaydef )
-		delete newgatewaydef;
+	newgatewaydef.reset ();
 
-	newgatewaydef = new GatewayDef ( *value );
+	newgatewaydef.reset ( new GatewayDef ( *value ) );
 
 }
 
@@ -44,7 +42,7 @@ void ChangeGatewayEvent::Run ()
 	// Do the exchange
 
 	if ( newgatewaydef )
-		game->GetWorld ()->GetPlayer ()->gateway.ExchangeGateway ( newgatewaydef );
+		game->GetWorld ()->GetPlayer ()->gateway.ExchangeGateway ( newgatewaydef.get () );
 
 
 	// Send a mail to the player
@@ -94,7 +92,7 @@ bool ChangeGatewayEvent::Load  ( FILE *file )
 
 	LoadID ( file );
 
-	newgatewaydef = NULL;
+	newgatewaydef.reset ();
 
 	if ( !UplinkEvent::Load ( file ) ) return false;
 
@@ -102,7 +100,7 @@ bool ChangeGatewayEvent::Load  ( FILE *file )
 		int exists;
 		if ( !FileReadData ( &exists, sizeof(exists), 1, file ) ) return false;
 		if ( exists != 0 ) {
-			newgatewaydef = new GatewayDef ();
+			newgatewaydef.reset ( new GatewayDef () );
 			if ( !newgatewaydef->Load ( file ) ) return false;
 		}
 	}
@@ -110,7 +108,7 @@ bool ChangeGatewayEvent::Load  ( FILE *file )
 		int old_newtype = -1;
 		if ( !FileReadData ( &old_newtype, sizeof(old_newtype), 1, file ) ) return false;
 		if ( game->GetWorld ()->gatewaydefs.ValidIndex ( old_newtype ) ) {
-			newgatewaydef = new GatewayDef ( *game->GetWorld ()->gatewaydefs.GetData ( old_newtype ) );
+			newgatewaydef.reset ( new GatewayDef ( *game->GetWorld ()->gatewaydefs.GetData ( old_newtype ) ) );
 		}
 	}
 

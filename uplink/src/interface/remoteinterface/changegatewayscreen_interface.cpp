@@ -362,7 +362,7 @@ void ChangeGatewayScreenInterface::ShowGateway ( int index )
 int ChangeGatewayScreenInterface::GetGatewayPrice ( int index )
 {
 
-	GatewayDef *oldgateway = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef;
+	GatewayDef *oldgateway = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef.get ();
 	UplinkAssert (oldgateway);
 
 	GatewayDef *newgateway = NULL;
@@ -457,7 +457,7 @@ void ChangeGatewayScreenInterface::Create ( ComputerScreen *newcs )
 
 		// Select your gateway
 
-        GatewayDef *gd = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef;
+        GatewayDef *gd = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef.get ();
 		UplinkAssert( gd );
 
 		int sizegatewaydefs = game->GetWorld ()->gatewaydefs.Size ();
@@ -498,7 +498,7 @@ void ChangeGatewayScreenInterface::CreateAreYouSure ()
 	EclRegisterButton ( 40, 130, 400, 250, " ", " ", "changegateway_text" );
 	EclRegisterButtonCallbacks ( "changegateway_text", textbutton_draw, NULL, NULL, NULL );
 
-	GatewayDef *oldgateway = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef;
+	GatewayDef *oldgateway = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef.get ();
 	UplinkAssert (oldgateway);
 
 	GatewayDef *newgateway = game->GetWorld ()->gatewaydefs.GetData ( currentselect );

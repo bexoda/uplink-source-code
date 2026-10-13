@@ -14,6 +14,8 @@
 #ifndef _included_changegatewayevent_h
 #define _included_changegatewayevent_h
 
+#include <memory>
+
 
 #include "world/scheduler/uplinkevent.h"
 
@@ -26,7 +28,7 @@ class ChangeGatewayEvent : public UplinkEvent
 
 public:
 
-	GatewayDef* newgatewaydef;
+	std::unique_ptr<GatewayDef> newgatewaydef;
 
 public:
 

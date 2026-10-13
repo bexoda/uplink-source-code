@@ -11,6 +11,8 @@
 #ifndef _included_gateway_h
 #define _included_gateway_h
 
+#include <memory>
+
 #include <string>
 
 // ============================================================================
@@ -49,10 +51,10 @@ public:
 
 	DataBank databank;
 
-	GatewayDef* curgatewaydef;				// GatewayDef of the current Gateway
+	std::unique_ptr<GatewayDef> curgatewaydef;				// GatewayDef of the current Gateway
 
 	int id;									// Unique ID number
-    GatewayDef* newgatewaydef;				// New gateway recently purchased, awaiting log out.  Or NULL.
+    std::unique_ptr<GatewayDef> newgatewaydef;				// New gateway recently purchased, awaiting log out.  Or NULL.
 	bool nuked;								// Has the player blown it up?
 	int proximity;							// Number of people nearby
 	

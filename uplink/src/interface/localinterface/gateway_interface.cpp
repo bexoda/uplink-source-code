@@ -107,7 +107,7 @@ void GatewayInterface::Create ()
 		game->GetInterface ()->GetLocalInterface ()->GetHUD ()->wmi.Remove ();
 
 		Gateway *gateway = &(game->GetWorld ()->GetPlayer ()->gateway);
-		GatewayDef *gatewaydef = gateway->curgatewaydef;
+		GatewayDef *gatewaydef = gateway->curgatewaydef.get ();
 		UplinkAssert (gatewaydef);
 
 		EclRegisterButton ( 20, 50, SX(600), SY(350), "", "", "gateway_background" );
@@ -274,7 +274,7 @@ void GatewayInterface::Remove ()
 		// Remove the chips
 
 		Gateway *gateway = &(game->GetWorld ()->GetPlayer ()->gateway);
-		GatewayDef *gatewaydef = gateway->curgatewaydef;
+		GatewayDef *gatewaydef = gateway->curgatewaydef.get ();
 		UplinkAssert (gatewaydef);
 
 		for ( int ic = 0; ic < gatewaydef->maxcpus; ++ic ) {

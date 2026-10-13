@@ -85,7 +85,7 @@ void GameObituary::Evaluate ()
 	score_systemsfucked = game->GetWorld ()->GetPlayer ()->score_systemsfucked;
 	score_highsecurityhacks = game->GetWorld ()->GetPlayer ()->score_highsecurityhacks;
 
-    GatewayDef *gatewaydef = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef;
+    GatewayDef *gatewaydef = game->GetWorld ()->GetPlayer ()->gateway.curgatewaydef.get ();
     UplinkAssert (gatewaydef);
     int gatewayvalue = gatewaydef->cost;
 

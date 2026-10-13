@@ -284,7 +284,7 @@ void HWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 
 			Gateway *gateway = &(game->GetWorld ()->GetPlayer ()->gateway);
 			UplinkAssert (gateway);
-			GatewayDef *gd = gateway->curgatewaydef;
+			GatewayDef *gd = gateway->curgatewaydef.get ();
 			UplinkAssert (gd);
 
 			if ( gateway->memorysize + sv->data > gd->maxmemory * 8 ) {
@@ -301,7 +301,7 @@ void HWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 
 			Gateway *gateway = &(game->GetWorld ()->GetPlayer ()->gateway);
 			UplinkAssert (gateway);
-			GatewayDef *gd = gateway->curgatewaydef;
+			GatewayDef *gd = gateway->curgatewaydef.get ();
 			UplinkAssert (gd);
 
 			if ( gateway->GetNumSecurity () + 1 > gd->maxsecurity ) {
@@ -334,7 +334,7 @@ void HWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 
 			Gateway *gateway = &(game->GetWorld ()->GetPlayer ()->gateway);
 			UplinkAssert (gateway);
-			GatewayDef *gd = gateway->curgatewaydef;
+			GatewayDef *gd = gateway->curgatewaydef.get ();
 			UplinkAssert (gd);
         
             if ( gd->bandwidth < sv->data ) {
