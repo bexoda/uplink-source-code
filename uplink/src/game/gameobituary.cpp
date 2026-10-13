@@ -20,7 +20,7 @@ GameObituary::GameObituary ()
 {
 
 	gameoverreason = NULL;
-	UplinkStrncpy ( name, " ", sizeof ( name ) );
+	name = " ";
 	money = 0;
 	uplinkrating = 0;
 	neuromancerrating = 0;
@@ -78,7 +78,7 @@ void GameObituary::SetWarezGameOver ( bool newvalue )
 void GameObituary::Evaluate ()
 {
 
-	UplinkStrncpy ( name, game->GetWorld ()->GetPlayer ()->handle.c_str (), sizeof ( name ) );
+	name = game->GetWorld ()->GetPlayer ()->handle.c_str ();
 	money = game->GetWorld ()->GetPlayer ()->GetBalance ();
 	uplinkrating = game->GetWorld ()->GetPlayer ()->rating.uplinkrating;	
 	neuromancerrating = game->GetWorld ()->GetPlayer ()->rating.neuromancerrating;
@@ -119,14 +119,10 @@ bool GameObituary::Load   ( FILE *file )
 	LoadID ( file );
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( name, sizeof(name), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( name, sizeof(name), 1, file ) ) {
-			name [ sizeof(name) - 1 ] = '\0';
-			return false;
-		}
-		name [ sizeof(name) - 1 ] = '\0';
+		if ( !LoadFixedString ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	if ( !FileReadData ( &money, sizeof(money), 1, file ) ) return false;
 	if ( !FileReadData ( &uplinkrating, sizeof(uplinkrating), 1, file ) ) return false;
@@ -154,7 +150,7 @@ void GameObituary::Save   ( FILE *file )
 
 	SaveID ( file );
 
-	SaveDynamicString ( name, sizeof(name), file );
+	SaveDynamicString ( name, SIZE_PERSON_NAME, file );
 	fwrite ( &money, sizeof(money), 1, file );
 	fwrite ( &uplinkrating, sizeof(uplinkrating), 1, file );	
 	fwrite ( &neuromancerrating, sizeof(neuromancerrating), 1, file );
@@ -178,7 +174,7 @@ void GameObituary::Print  ()
 {
 	
 	printf ( "Game obituary: \n" );
-	printf ( "Name : %s\n", name );
+	printf ( "Name : %s\n", name.c_str () );
 	printf ( "Money %d, Uplink %d, Neuromancer %d\n", money, uplinkrating, neuromancerrating );
 	printf ( "SpecialMissionsCompleted : %d\n", specialmissionscompleted );
 

@@ -256,7 +256,7 @@ int FileServerScreenInterface::GetInfoRowDisplayDataBank ( DataBank *db, int fil
 
 }
 
-void FileServerScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void FileServerScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

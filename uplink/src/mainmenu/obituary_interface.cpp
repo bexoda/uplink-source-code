@@ -143,7 +143,7 @@ void ObituaryInterface::Create ()
 		UplinkSnprintf ( finances, sizeof ( finances ), "%d credits", gob->money );
 
 		char name [128];
-		UplinkSnprintf ( name, sizeof ( name ), "Agent %s", gob->name );
+		UplinkSnprintf ( name, sizeof ( name ), "Agent %s", gob->name.c_str () );
 
 		EclRegisterButton ( 20, 200, 200, 40, name, "", "obituary_name" );
 		EclRegisterButtonCallbacks ( "obituary_name", LargeTextDraw, NULL, NULL, NULL );

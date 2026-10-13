@@ -267,7 +267,7 @@ void DialogScreenInterface::Create ( ComputerScreen *newcs )
 												{
 													EclRegisterButtonCallbacks ( name, textbutton_draw, NULL, NULL, NULL );
 													EclMakeButtonEditable ( name );
-													Record *rec = ds->GetComputer ()->recordbank.GetRecordFromName ( game->GetInterface ()->GetRemoteInterface ()->security_name );
+													Record *rec = ds->GetComputer ()->recordbank.GetRecordFromName ( game->GetInterface ()->GetRemoteInterface ()->security_name.c_str () );
 													if ( rec ) {
 														char *value = rec->GetField ( dsw->GetStringData1 () );
 														if ( value ) EclGetButton ( name )->SetCaption ( value );

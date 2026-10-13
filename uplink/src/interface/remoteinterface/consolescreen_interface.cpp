@@ -828,7 +828,7 @@ void ConsoleScreenInterface::Create ( ComputerScreen *newcs )
 		// Set up the console
 
 		AddUser ( "System" );
-		AddUser ( game->GetInterface ()->GetRemoteInterface ()->security_name );
+		AddUser ( game->GetInterface ()->GetRemoteInterface ()->security_name.c_str () );
 
 
 		// Log this access

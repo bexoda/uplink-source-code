@@ -88,7 +88,7 @@ RemoteInterface::RemoteInterface ()
 	previousscreenindex = 0;
 	screen = NULL;
 	security_level = 10;
-	UplinkStrncpy ( security_name, " ", sizeof ( security_name ) );
+	security_name = " ";
 
 }
 
@@ -111,7 +111,7 @@ void RemoteInterface::RunNewLocation ()
 
 	previousscreenindex = 0;
 	currentscreenindex = 0;
-	UplinkStrncpy ( security_name, "Guest", sizeof ( security_name ) );
+	security_name = "Guest";
 	security_level = 10;
 
     if ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->GetOBJECTID () == OID_VLOCATIONSPECIAL ) {
@@ -214,7 +214,7 @@ void RemoteInterface::SetSecurity ( const char *newname, int newvalue )
 	
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
 
-	UplinkStrncpy ( security_name, newname, sizeof ( security_name ) );
+	security_name = newname;
 	security_level = newvalue;
 
 }
@@ -462,14 +462,10 @@ bool RemoteInterface::Load ( FILE *file )
 	if ( !FileReadData ( &previousscreenindex, sizeof(previousscreenindex), 1, file ) ) return false;
 	if ( !FileReadData ( &currentscreenindex, sizeof(currentscreenindex), 1, file ) ) return false;
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( security_name, sizeof(security_name), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( security_name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( security_name, sizeof(security_name), 1, file ) ) {
-			security_name [ sizeof(security_name) - 1 ] = '\0';
-			return false;
-		}
-		security_name [ sizeof(security_name) - 1 ] = '\0';
+		if ( !LoadFixedString ( security_name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	if ( !FileReadData ( &security_level, sizeof(security_level), 1, file ) ) return false;
 
@@ -491,7 +487,7 @@ void RemoteInterface::Save ( FILE *file )
 
 	fwrite ( &previousscreenindex, sizeof(previousscreenindex), 1, file );
 	fwrite ( &currentscreenindex, sizeof(currentscreenindex), 1, file );
-	SaveDynamicString ( security_name, sizeof(security_name), file );
+	SaveDynamicString ( security_name, SIZE_PERSON_NAME, file );
 	fwrite ( &security_level, sizeof(security_level), 1, file );
 
 	SaveID_END ( file );
@@ -503,7 +499,7 @@ void RemoteInterface::Print ()
 
 	printf ( "RemoteInterface : CurrentScreenIndex = %d\n, PreviousScreenIndex = %d\n, "
 			 "Security_Name = %s, Security_Level = %d\n", 
-			 currentscreenindex, previousscreenindex, security_name, security_level );
+			 currentscreenindex, previousscreenindex, security_name.c_str (), security_level );
 
 }
 

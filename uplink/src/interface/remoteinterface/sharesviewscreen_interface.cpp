@@ -27,7 +27,7 @@
 SharesViewScreenInterface::SharesViewScreenInterface ()
 {
 
-	UplinkStrncpy ( companyname, " ", sizeof ( companyname ) );
+	companyname = " ";
 
 	for ( int i = 0; i < 12; ++i )
 		sharehistory [i] = 0;
@@ -132,7 +132,7 @@ void SharesViewScreenInterface::BuyClick ( Button * /*button*/ )
 
 	if ( thisint->companyname [0] != ' ' ) {
 
-		game->GetWorld ()->GetPlayer ()->TradeShares ( thisint->companyname, 10 );
+		game->GetWorld ()->GetPlayer ()->TradeShares ( thisint->companyname.c_str (), 10 );
 		
 		UpdateStatus ();
 
@@ -148,7 +148,7 @@ void SharesViewScreenInterface::SellClick ( Button * /*button*/ )
 
 	if ( thisint->companyname [0] != ' ' ) {
 
-		game->GetWorld ()->GetPlayer ()->TradeShares ( thisint->companyname, -10 );
+		game->GetWorld ()->GetPlayer ()->TradeShares ( thisint->companyname.c_str (), -10 );
 		
 		UpdateStatus ();
 
@@ -175,10 +175,10 @@ void SharesViewScreenInterface::UpdateStatus ()
 
 	if ( thisint->companyname [0] != ' ' ) {
 
-		Company *company = game->GetWorld ()->GetCompany ( thisint->companyname );
+		Company *company = game->GetWorld ()->GetCompany ( thisint->companyname.c_str () );
 		
-		int numowned = game->GetWorld ()->GetPlayer ()->NumSharesOwned ( thisint->companyname );
-		int pricepaid = game->GetWorld ()->GetPlayer ()->SharesPricePaid ( thisint->companyname );
+		int numowned = game->GetWorld ()->GetPlayer ()->NumSharesOwned ( thisint->companyname.c_str () );
+		int pricepaid = game->GetWorld ()->GetPlayer ()->SharesPricePaid ( thisint->companyname.c_str () );
 		int currentprice = company->GetSharePrice ();
 		int profit = (numowned * currentprice) - pricepaid;
 
@@ -202,14 +202,14 @@ void SharesViewScreenInterface::SetCompanyName ( const char *newcompanyname )
 {
 
 	UplinkAssert ( strlen(newcompanyname) < SIZE_COMPANY_NAME );
-	UplinkStrncpy ( companyname, newcompanyname, sizeof ( companyname ) );
+	companyname = newcompanyname;
 
 	//
 	// Look up the company
 	// and copy the share prices
 	//
 
-	Company *company = game->GetWorld ()->GetCompany ( companyname );
+	Company *company = game->GetWorld ()->GetCompany ( companyname.c_str () );
 	UplinkAssert (company);
 
 	for ( int i = 0; i < 12; ++i )
@@ -217,7 +217,7 @@ void SharesViewScreenInterface::SetCompanyName ( const char *newcompanyname )
 
 	lastmonthset = company->GetShareLastMonthSet ();
 
-	EclGetButton ( "sharesviewscreen_subtitle" )->SetCaption ( companyname );
+	EclGetButton ( "sharesviewscreen_subtitle" )->SetCaption ( companyname.c_str () );
 
 	//
 	// Put those share prices into the text boxes

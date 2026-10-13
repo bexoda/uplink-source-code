@@ -406,7 +406,7 @@ void SWSalesScreenInterface::PrevVersionClick ( Button * /*button*/ )
 
 }
 
-void SWSalesScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void SWSalesScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

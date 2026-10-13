@@ -1289,7 +1289,7 @@ void draw_scrollbox  ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void stextbox_scroll ( char *name, int /*newValue*/ )
+void stextbox_scroll ( const char *name, int /*newValue*/ )
 {
 
     char name_box [256];

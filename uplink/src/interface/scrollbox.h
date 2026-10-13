@@ -9,6 +9,8 @@
 #ifndef _included_scrollbox_h
 #define _included_scrollbox_h
 
+#include <string>
+
 #include "tosser.h"
 
 
@@ -20,7 +22,7 @@ class ScrollBox
 
 public:
 
-    char name [SIZE_SCROLLBOX_NAME];
+    std::string name;
     int x;
     int y;
     int w;
@@ -32,7 +34,7 @@ public:
 
 protected:
 
-    void (*callback) ( char *, int );         // Function callback for when value is changed
+    void (*callback) ( const char *, int );         // Function callback for when value is changed
 
 public:
 
@@ -44,7 +46,7 @@ public:
     void SetNumItems        ( int newNumItems );
     void SetWindowSize      ( int newWindowSize );
     void SetCurrentIndex    ( int newCurrentIndex );
-    void SetCallback        ( void (*newcallback) (char *, int) );
+    void SetCallback        ( void (*newcallback) (const char *, int) );
 
 protected:
 
@@ -74,7 +76,7 @@ public:
     static void CreateScrollBox ( const char *name, 
                                   int x, int y, int w, int h,
                                   int numItems, int windowSize, int currentIndex,
-                                  void (*callback)(char *, int) = NULL );
+                                  void (*callback)(const char *, int) = NULL );
 
     static void RemoveScrollBox ( const char *name );
     static ScrollBox *GetScrollBox ( const char *name );

@@ -12,6 +12,8 @@
 #ifndef _included_gameobituary_h
 #define _included_gameobituary_h
 
+#include <string>
+
 #include "app/uplinkobject.h"
 #include "world/person.h"
 
@@ -25,7 +27,7 @@ protected:
 
 public:
 
-	char name [SIZE_PERSON_NAME];
+	std::string name;
 	int money;
 	int uplinkrating;
 	int neuromancerrating;

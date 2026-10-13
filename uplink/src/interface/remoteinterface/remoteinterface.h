@@ -12,6 +12,8 @@
 #ifndef _included_remoteinterface_h
 #define _included_remoteinterface_h
 
+#include <string>
+
 
 #include "app/uplinkobject.h"
 
@@ -78,7 +80,7 @@ public:
 
 	int previousscreenindex;
 	int currentscreenindex;
-	char security_name [SIZE_PERSON_NAME];
+	std::string security_name;
 	int  security_level;
 
 public:

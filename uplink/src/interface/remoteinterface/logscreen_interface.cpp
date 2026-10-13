@@ -170,7 +170,7 @@ int LogScreenInterface::GetLastItem ( DArray<class AccessLog *> *logs )
 
 }
 
-void LogScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void LogScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
 	ComputerScreen *compscreen = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->GetComputerScreen ();

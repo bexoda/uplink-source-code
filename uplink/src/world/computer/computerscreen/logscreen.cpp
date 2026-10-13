@@ -81,7 +81,7 @@ LogBank *LogScreen::GetTargetLogBank ()
 
 			// Get the account number
 
-			Record *rec = bank->recordbank.GetRecordFromName ( game->GetInterface ()->GetRemoteInterface ()->security_name );
+			Record *rec = bank->recordbank.GetRecordFromName ( game->GetInterface ()->GetRemoteInterface ()->security_name.c_str () );
 			UplinkAssert (rec);
 			char *accno = rec->GetField ( RECORDBANK_ACCNO );
 			UplinkAssert (accno);

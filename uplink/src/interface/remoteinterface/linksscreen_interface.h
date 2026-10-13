@@ -57,7 +57,7 @@ protected:
 
 	static void CloseClick ( Button *button );
 
-    static void ScrollChange ( char *scrollname, int newValue );
+    static void ScrollChange ( const char *scrollname, int newValue );
 
     static int NumLinksOnScreen ();
 

@@ -14,6 +14,8 @@
 #ifndef _included_sharesviewscreeninterface_h
 #define _included_sharesviewscreeninterface_h
 
+#include <string>
+
 #include "world/company/company.h"
 #include "world/computer/computerscreen/genericscreen.h"
 
@@ -25,7 +27,7 @@ class SharesViewScreenInterface : public RemoteInterfaceScreen
 
 protected:
 
-	char companyname [SIZE_COMPANY_NAME];
+	std::string companyname;
 	int sharehistory [12];
 	int lastmonthset;
 

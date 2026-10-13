@@ -101,7 +101,7 @@ int Player::NumSharesOwned	( const char *companyname )
 
 }
 
-int Player::SharesPricePaid ( char *companyname )
+int Player::SharesPricePaid ( const char *companyname )
 {
 
 	char *stringdata = shares.GetData ( companyname );
@@ -120,7 +120,7 @@ int Player::SharesPricePaid ( char *companyname )
 
 }
 
-void Player::TradeShares ( char *companyname, int howmany )
+void Player::TradeShares ( const char *companyname, int howmany )
 {
 
 	// Look up all neccisary data on company

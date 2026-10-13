@@ -45,8 +45,8 @@ public:
 	void GiveMessage ( Message *message );
 
 	int NumSharesOwned	( const char *companyname );
-	int SharesPricePaid ( char *companyname );
-	void TradeShares	( char *companyname, int howmany );
+	int SharesPricePaid ( const char *companyname );
+	void TradeShares	( const char *companyname, int howmany );
 
     static int TimeToTrace ( const char *tracerIP, char *routerIP );                     // How long for the people at tracerIP to trace through routerIP
     int TimeRemaining ();                                                          // How long remaining in this trace?

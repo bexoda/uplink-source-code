@@ -319,7 +319,7 @@ void BBSScreenInterface::ContactClick ( [[maybe_unused]] Button *button )
 
 }
 
-void BBSScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void BBSScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

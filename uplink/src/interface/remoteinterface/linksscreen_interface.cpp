@@ -499,7 +499,7 @@ void LinksScreenInterface::FilterClick ( Button *button )
 
 }
 
-void LinksScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void LinksScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

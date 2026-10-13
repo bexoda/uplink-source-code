@@ -241,7 +241,7 @@ void MemoryInterface::MemoryBlockClick ( Button *button )
 
 }
 
-void MemoryInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void MemoryInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

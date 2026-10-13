@@ -372,7 +372,7 @@ void ScriptLibrary::Script13 ()
 	BankComputer *bank = (BankComputer *) comp;
 
 	// Look up the account number based on the log in name
-	Record *rec = bank->recordbank.GetRecordFromName (game->GetInterface ()->GetRemoteInterface ()->security_name);
+	Record *rec = bank->recordbank.GetRecordFromName (game->GetInterface ()->GetRemoteInterface ()->security_name.c_str ());
     UplinkAssert (rec);
 
 	char *accno = rec->GetField ( RECORDBANK_ACCNO );

@@ -28,7 +28,7 @@ ScrollBox::ScrollBox()
 {
 
 	interfaceCreated = false;
-    UplinkStrncpy ( name, "NewScrollBox", sizeof ( name ) );
+    name = "NewScrollBox";
     x = y = w = h = 0;
     numItems = windowSize = currentIndex = 0;
     callback = NULL;
@@ -43,7 +43,7 @@ void ScrollBox::SetName ( const char *newname )
 {
     
     UplinkAssert (strlen(newname) < SIZE_SCROLLBOX_NAME );
-    UplinkStrncpy ( name, newname, sizeof ( name ) );
+    name = newname;
 
 }
 
@@ -64,7 +64,7 @@ void ScrollBox::SetNumItems ( int newNumItems )
     if ( currentIndex > (numItems - windowSize) ) {
         currentIndex = numItems - windowSize;
         if ( currentIndex < 0 ) currentIndex = 0;
-        if ( callback ) callback( name, currentIndex );
+        if ( callback ) callback( name.c_str (), currentIndex );
     }
 
     UpdateInterface ();
@@ -82,7 +82,7 @@ void ScrollBox::SetCurrentIndex ( int newCurrentIndex )
     UpdateInterface ();
 }
 
-void ScrollBox::SetCallback ( void (*newcallback) (char *, int) )
+void ScrollBox::SetCallback ( void (*newcallback) (const char *, int) )
 {
     callback = newcallback;
 }
@@ -139,7 +139,7 @@ void ScrollBox::ScrollUp ()
     if (currentIndex > 0) {
         currentIndex--;
         UpdateInterface ();
-        if ( callback ) callback(name, currentIndex);
+        if ( callback ) callback(name.c_str (), currentIndex);
     }
         
 }
@@ -150,7 +150,7 @@ void ScrollBox::ScrollDown ()
     if (currentIndex < (numItems - windowSize) ) {
         ++currentIndex;
         UpdateInterface ();
-        if ( callback ) callback(name, currentIndex);
+        if ( callback ) callback(name.c_str (), currentIndex);
     }
 
 }
@@ -295,7 +295,7 @@ void ScrollBox::UpdateGrabScroll ()
             thisBox->SetCurrentIndex( thisBox->numItems - thisBox->windowSize );
         }
 
-        if ( thisBox->callback ) thisBox->callback(thisBox->name, thisBox->currentIndex);
+        if ( thisBox->callback ) thisBox->callback(thisBox->name.c_str (), thisBox->currentIndex);
 
     }
     else {
@@ -311,9 +311,9 @@ void ScrollBox::CreateInterface ()
     char scrollBarName[256];
     char scrollDownName[256];
 
-    UplinkSnprintf ( scrollUpName, sizeof ( scrollUpName ), "scrollup %s", name );
-    UplinkSnprintf ( scrollDownName, sizeof ( scrollDownName ), "scrolldown %s", name );
-    UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name );
+    UplinkSnprintf ( scrollUpName, sizeof ( scrollUpName ), "scrollup %s", name.c_str () );
+    UplinkSnprintf ( scrollDownName, sizeof ( scrollDownName ), "scrolldown %s", name.c_str () );
+    UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name.c_str () );
 
     EclRegisterButton ( x, y, 15, 15, "^", scrollUpName );
     EclRegisterButton ( x, y + 15, 15, h - 30, " ", scrollBarName );
@@ -338,9 +338,9 @@ void ScrollBox::RemoveInterface ()
     char scrollBarName[256];
     char scrollDownName[256];
 
-    UplinkSnprintf ( scrollUpName, sizeof ( scrollUpName ), "scrollup %s", name );
-    UplinkSnprintf ( scrollDownName, sizeof ( scrollDownName ), "scrolldown %s", name );
-    UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name );
+    UplinkSnprintf ( scrollUpName, sizeof ( scrollUpName ), "scrollup %s", name.c_str () );
+    UplinkSnprintf ( scrollDownName, sizeof ( scrollDownName ), "scrolldown %s", name.c_str () );
+    UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name.c_str () );
 
     EclRemoveButton ( scrollUpName );
     EclRemoveButton ( scrollBarName );
@@ -357,7 +357,7 @@ void ScrollBox::UpdateInterface ()
 
 	if (interfaceCreated) {
 	    char scrollBarName [256];
-		UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name );
+		UplinkSnprintf ( scrollBarName, sizeof ( scrollBarName ), "scrollbar %s", name.c_str () );
 		EclDirtyButton ( scrollBarName );
 	}
 
@@ -371,7 +371,7 @@ bool ScrollBox::IsInterfaceVisible ()
 void ScrollBox::CreateScrollBox ( const char *name, 
                        int x, int y, int w, int h,
                        int numItems, int windowSize, int currentIndex,
-                       void (*callback)(char *, int) )
+                       void (*callback)(const char *, int) )
 {
 
     ScrollBox *sb = new ScrollBox ();
@@ -394,7 +394,7 @@ void ScrollBox::RemoveScrollBox ( const char *name )
         
         ScrollBox *sb = scrollBoxes.GetData(i);
 
-        if ( strcmp ( sb->name, name ) == 0 ) {
+        if ( strcmp ( sb->name.c_str (), name ) == 0 ) {
             sb->RemoveInterface ();
             delete sb;
             scrollBoxes.RemoveData(i);
@@ -409,7 +409,7 @@ ScrollBox *ScrollBox::GetScrollBox ( const char *name )
 {
 
     for ( int i = 0; i < scrollBoxes.Size(); ++i )
-        if ( strcmp ( scrollBoxes.GetData(i)->name, name ) == 0 )
+        if ( strcmp ( scrollBoxes.GetData(i)->name.c_str (), name ) == 0 )
             return scrollBoxes.GetData(i);
 
     return NULL;

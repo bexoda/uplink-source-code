@@ -302,7 +302,7 @@ bool NewsScreenInterface::EscapeKeyPressed ()
 }
 
 
-void NewsScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
+void NewsScreenInterface::ScrollChange ( const char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;
