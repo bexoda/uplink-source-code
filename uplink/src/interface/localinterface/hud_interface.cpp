@@ -55,7 +55,6 @@ HUDInterface::HUDInterface ()
 {
 	
 	previoushighlight = NULL;
-	previousimage = NULL;
 
     for ( int i = 0; i < 8; ++i )
         visibleUpgrades[i] = 0;
@@ -65,7 +64,7 @@ HUDInterface::HUDInterface ()
 HUDInterface::~HUDInterface ()
 {
 
-	if ( previousimage ) delete previousimage;
+	previousimage.reset ();
 
 }
 
@@ -432,7 +431,7 @@ void HUDInterface::HighlightToolbarButton   ( const char *bname )
 
 		// Swap the highlighted/unhighlighted/clicked graphics around
 
-		GetHUD ()->previousimage = button->image_highlighted;
+		GetHUD ()->previousimage.reset ( button->image_highlighted );	// the HUD holds it until UnHighlight
 		Image *new_standard      = button->image_clicked;
 		Image *new_highlighted   = button->image_clicked;
 		Image *new_clicked       = button->image_standard;
@@ -470,10 +469,8 @@ void HUDInterface::UnHighlightToolbarButton ()
 		    // Swap the highlighted/unhighlighted/clicked graphics around
 
 		    Image *new_standard    = button->image_clicked;
-		    Image *new_highlighted = GetHUD ()->previousimage;
+		    Image *new_highlighted = GetHUD ()->previousimage.release ();	// back to the button
 		    Image *new_clicked     = button->image_standard;
-
-		    GetHUD ()->previousimage = NULL;
 
 		    button->image_standard    = new_standard;
 		    button->image_highlighted = new_highlighted;

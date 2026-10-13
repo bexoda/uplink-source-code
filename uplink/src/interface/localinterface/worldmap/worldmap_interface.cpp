@@ -1371,14 +1371,14 @@ int WorldMapInterface::GetScaledY ( int y, int SIZE )
 }
 
 WorldMapInterface::WorldMapInterface ()
-    : layout (NULL), nbmissions(0), nbmessages(0), nbcolored(0)
+    : layout (), nbmissions(0), nbmessages(0), nbcolored(0)
 {
 }
 
 WorldMapInterface::~WorldMapInterface ()
 {
 
-    if ( layout ) delete layout;
+    layout.reset ();
 
 }
 
@@ -1393,7 +1393,7 @@ void WorldMapInterface::Create ( int SIZE )
 {
 //    cout << "Creating Worldmap Interface\n";
     
-    layout = new WorldMapLayout(GetLargeMapRect());
+    layout.reset ( new WorldMapLayout(GetLargeMapRect()) );
     ProgramLayoutEngine();
     
     CreateWorldMapInterface ( SIZE );

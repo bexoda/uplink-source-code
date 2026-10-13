@@ -11,6 +11,8 @@
 #ifndef _included_networkclient_h
 #define _included_networkclient_h
 
+#include <memory>
+
 #include <tcp4u.h>
 
 #include "app/uplinkobject.h"
@@ -38,7 +40,7 @@ protected:
 	int clienttype;
 
 	int currentscreencode;
-	NetworkScreen *screen;
+	std::unique_ptr<NetworkScreen> screen;
 
 protected:
 

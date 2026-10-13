@@ -39,14 +39,14 @@ NetworkClient::NetworkClient()
 
     clienttype = CLIENT_NONE;
     currentscreencode = CLIENT_NONE;
-    screen = NULL;
+    screen.reset ();
 
 }
 
 NetworkClient::~NetworkClient()
 {
 
-    if ( screen ) delete screen;
+    screen.reset ();
 
 }
 
@@ -114,8 +114,7 @@ void NetworkClient::RunScreen ( int SCREENCODE )
     // Get rid of the current interface
     if ( screen ) {
 	screen->Remove ();
-	delete screen;
-	screen = NULL;
+	screen.reset ();
     }
 
     currentscreencode = SCREENCODE;
@@ -123,8 +122,8 @@ void NetworkClient::RunScreen ( int SCREENCODE )
     switch ( currentscreencode ) {
 
 
-	case CLIENT_COMMS:			screen = new ClientCommsInterface ();				break;
-	case CLIENT_STATUS:			screen = new ClientStatusInterface ();				break;
+	case CLIENT_COMMS:			screen.reset ( new ClientCommsInterface () );				break;
+	case CLIENT_STATUS:			screen.reset ( new ClientStatusInterface () );				break;
 
 	case CLIENT_NONE:			return;
 	default:
@@ -140,7 +139,7 @@ NetworkScreen *NetworkClient::GetNetworkScreen ()
 {
 
     UplinkAssert (screen);
-    return screen;
+    return screen.get ();
 
 }
 
@@ -178,7 +177,7 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 	UplinkAssert ( screen );
 	UplinkAssert ( screen->ScreenID () == CLIENT_COMMS );
 
-	((ClientCommsInterface *) screen)->connection.Empty ();
+	((ClientCommsInterface *) screen.get ())->connection.Empty ();
 
 	int numrelays;
 	msgstream >> numrelays;
@@ -205,9 +204,9 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 
 	    }
 */
-	    UplinkAssert ( ((ClientCommsInterface *) screen)->locations.LookupTree (ip) );
+	    UplinkAssert ( ((ClientCommsInterface *) screen.get ())->locations.LookupTree (ip) );
 
-	    ((ClientCommsInterface *) screen)->connection.PutData ( ip );
+	    ((ClientCommsInterface *) screen.get ())->connection.PutData ( ip );
 	}
 
     }
@@ -217,7 +216,7 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 
 	int traceprogress;
 	msgstream >> traceprogress;
-	((ClientCommsInterface *) screen)->traceprogress = traceprogress;
+	((ClientCommsInterface *) screen.get ())->traceprogress = traceprogress;
 
 	printf ( "Traceprogress is now %d\n", traceprogress );
 
@@ -240,12 +239,12 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 	msgstream.getline (compname, SIZE_COMPUTER_NAME );
 	cout << "'" << compname << "'\n";
 
-	BTree <VLocation *> *locations = & (((ClientCommsInterface *) screen)->locations);
+	BTree <VLocation *> *locations = & (((ClientCommsInterface *) screen.get ())->locations);
 	VLocation *vl = locations->GetData (ip);
 	if ( vl ) {
 	    vl->SetComputer ( compname );
 	    vl->SetPLocation ( x, y );
-	    ((ClientCommsInterface *) screen)->LayoutLabels();
+	    ((ClientCommsInterface *) screen.get ())->LayoutLabels();
 	}
 	else {
 
@@ -253,8 +252,8 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 	    vl->SetPLocation ( x, y );
 	    vl->SetIP ( ip );
 	    vl->SetComputer ( compname );
-	    ((ClientCommsInterface *) screen)->locations.PutData ( ip, vl );
-	    ((ClientCommsInterface *) screen)->LayoutLabels();
+	    ((ClientCommsInterface *) screen.get ())->locations.PutData ( ip, vl );
+	    ((ClientCommsInterface *) screen.get ())->LayoutLabels();
 
 	}
 
@@ -280,37 +279,37 @@ void NetworkClient::Handle_ClientStatusData ( char *buffer )
 
     if ( strcmp ( msgtype, "CLIENTSTATUS-NEWS" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->AddNewsStory ( data );
+	((ClientStatusInterface *) screen.get ())->AddNewsStory ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-RATING" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetRating ( data );
+	((ClientStatusInterface *) screen.get ())->SetRating ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-FINANCE" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetFinancial ( data );
+	((ClientStatusInterface *) screen.get ())->SetFinancial ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-CRIMINAL" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetCriminal ( data );
+	((ClientStatusInterface *) screen.get ())->SetCriminal ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-HUD" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetHUDUpgrades ( data );
+	((ClientStatusInterface *) screen.get ())->SetHUDUpgrades ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-HW" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetHardware ( data );
+	((ClientStatusInterface *) screen.get ())->SetHardware ( data );
 
     }
     else if ( strcmp ( msgtype, "CLIENTSTATUS-IP" ) == 0 ) {
 
-	((ClientStatusInterface *) screen)->SetConnection ( data );
+	((ClientStatusInterface *) screen.get ())->SetConnection ( data );
 
     }
     else {

@@ -10,6 +10,8 @@
 #ifndef _included_hudinterface_h
 #define _included_hudinterface_h
 
+#include <memory>
+
 #include "app/optstring.h"
 
 // ============================================================================
@@ -48,7 +50,7 @@ public:
 protected:
 
   	OptString previoushighlight;
-	Image *previousimage;
+	std::unique_ptr<Image> previousimage;
     
     char visibleUpgrades[8];                                    // Entries corrispond to visual position on screen. 
     static HUDInterfaceUpgrade hudUpgrades[8];

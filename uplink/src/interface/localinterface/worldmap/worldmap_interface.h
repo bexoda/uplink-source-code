@@ -8,6 +8,8 @@
 #ifndef _included_worldmapinterface_h
 #define _included_worldmapinterface_h
 
+#include <memory>
+
 
 #include "eclipse.h"
 
@@ -73,7 +75,7 @@ protected:
 
     // This stuff handles the pre-cached text and lines
     
-    WorldMapLayout *layout;
+    std::unique_ptr<WorldMapLayout> layout;
 
     void ProgramLayoutEngine();
 	void ProgramLayoutEnginePartial();
