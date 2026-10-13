@@ -2834,7 +2834,7 @@ Computer *WorldGenerator::GenerateComputer ( const char *companyname )
 	comp->SetTraceSpeed ( 20 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
 	MessageScreen *ms = new MessageScreen ();
 	ms->SetMainTitle ( companyname );
@@ -2883,7 +2883,7 @@ Computer *WorldGenerator::GeneratePublicAccessServer ( const char *companyname )
 	comp->SetCompanyName ( companyname );
 	comp->SetTraceSpeed ( (int) NumberGenerator::RandomNormalNumber ( TRACESPEED_PUBLICACCESSSERVER,
 	                                                                  (float) ( TRACESPEED_PUBLICACCESSSERVER * TRACESPEED_VARIANCE ) ) );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
 	MessageScreen *ms = new MessageScreen ();
 	ms->SetMainTitle ( companyname );
@@ -2932,7 +2932,7 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyn
 	comp->SetCompanyName ( companyname );
 	comp->SetTraceSpeed ( (int) NumberGenerator::RandomNormalNumber ( TRACESPEED_INTERNALSERVICESMACHINE,
 	                                                                  (float) ( TRACESPEED_INTERNALSERVICESMACHINE * TRACESPEED_VARIANCE ) ) );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
     //delete computername;
 
@@ -3078,7 +3078,7 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyn
 	for ( i = 0; i < numlogs; ++i ) {
 
 		AccessLog *al = new AccessLog ();
-		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 		al->SetData1 ( "Accessed File" );
 		comp->logbank.AddLog (al);
 
@@ -3123,7 +3123,7 @@ Computer *WorldGenerator::GenerateCentralMainframe ( const char *companyname )
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT |
 						   COMPUTER_TRACEACTION_LEGAL );
 
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
     //delete computername;
 
@@ -3235,7 +3235,7 @@ Computer *WorldGenerator::GenerateCentralMainframe ( const char *companyname )
 	for ( i = 0; i < numlogs; ++i ) {
 
 		AccessLog *al = new AccessLog ();
-		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 		al->SetData1 ( "Accessed File" );
 		comp->logbank.AddLog (al);
 
@@ -3275,7 +3275,7 @@ Computer *WorldGenerator::GeneratePublicBankServer ( const char *companyname )
 						   COMPUTER_TRACEACTION_LEGAL );
 	comp->security.AddSystem ( SECURITY_TYPE_PROXY, 5 );
 	comp->security.AddSystem ( SECURITY_TYPE_MONITOR, 5 );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
     //delete computername;
 
@@ -3538,7 +3538,7 @@ Computer *WorldGenerator::GenerateEmptyFileServer ( const char *companyname )
 	comp->SetTraceSpeed ( 0 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 	comp->databank.SetSize ( 100 );
 
     //delete computername;
@@ -3604,7 +3604,7 @@ Computer *WorldGenerator::GeneratePersonalComputer ( const char *personname )
 	comp->SetTraceSpeed ( 0 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
     //delete computername;
 
@@ -3649,7 +3649,7 @@ Computer *WorldGenerator::GenerateVoicePhoneSystem ( const char *personname )
 	comp->SetTraceSpeed ( 0 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
     //delete computername;
 

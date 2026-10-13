@@ -19,8 +19,8 @@
 VLocation::VLocation()
 {
 	
-	UplinkStrncpy ( ip, "0.0.0.0", sizeof ( ip ) );
-	UplinkStrncpy ( computer, "", sizeof ( computer ) );
+	ip = "0.0.0.0";
+	computer = "";
 
 	x = y = 0;
 	listed = true;
@@ -37,7 +37,7 @@ void VLocation::SetIP ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
-	UplinkStrncpy ( ip, newip, sizeof ( ip ) );
+	ip = newip;
 
 }
 
@@ -58,7 +58,7 @@ void VLocation::SetComputer ( const char *newcomputer )
 {
 
 	UplinkAssert ( strlen (newcomputer) < SIZE_COMPUTER_NAME );
-	UplinkStrncpy ( computer, newcomputer, sizeof ( computer ) );
+	computer = newcomputer;
 
 //	UplinkAssert ( game->GetWorld ()->GetComputer ( computer ) );
 
@@ -137,12 +137,12 @@ Computer *VLocation::GetComputer ()
      
     while(tree)
     {
-        tree = tree->LookupTree( computer );
+        tree = tree->LookupTree( computer.c_str () );
 
         if( tree )
         {
             Computer *comp = tree->data;
-            if( comp && strcmp( comp->ip, ip ) == 0 ) 
+            if( comp && strcmp( comp->ip, ip.c_str () ) == 0 ) 
             {
                 return comp;
             }
@@ -210,7 +210,7 @@ void VLocation::Print ()
 {
 
 	printf ( "VLocation : " );
-	printf ( "\tIP = %s, Computer = %s, x = %d, y = %d\n",ip, computer, x, y );
+	printf ( "\tIP = %s, Computer = %s, x = %d, y = %d\n",ip.c_str (), computer.c_str (), x, y );
 	printf ( "\tlisted = %d, displayed = %d, colored = %d\n", listed, displayed, colored );
 
 }

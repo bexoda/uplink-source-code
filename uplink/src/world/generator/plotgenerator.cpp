@@ -221,7 +221,7 @@ void PlotGenerator::Initialise_Andromeda ()
 	comp->SetTraceSpeed ( 20 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 
 	game->GetWorld ()->CreateComputer ( comp );
 
@@ -1339,17 +1339,17 @@ void PlotGenerator::Run_Act1Scene4 ()
 		return;
 
 	AccessLog *al1 = new AccessLog ();
-	al1->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+	al1->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 	al1->SetData1 ( "Deleted file RevelationCoreV0.7" );
 	comp->logbank.AddLog ( al1 );
 
 	AccessLog *al2 = new AccessLog ();
-	al2->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+	al2->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 	al2->SetData1 ( "Deleted file RevelationDataV0.7" );
 	comp->logbank.AddLog ( al2 );
 
 	AccessLog *al3 = new AccessLog ();
-	al3->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+	al3->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 	al3->SetData1 ( "Deleted file RevelationSpecV0.7" );
 	comp->logbank.AddLog ( al3 );
 

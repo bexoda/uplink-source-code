@@ -382,7 +382,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 	// Send latest location
 	//
 
-	if ( strcmp ( player->GetRemoteHost ()->ip, ip ) != 0 ) {
+	if ( strcmp ( player->GetRemoteHost ()->ip.c_str (), ip ) != 0 ) {
 
 		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-IP ";
@@ -406,7 +406,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
 
-		UplinkStrncpy ( ip, player->GetRemoteHost ()->ip, sizeof ( ip ) );
+		UplinkStrncpy ( ip, player->GetRemoteHost ()->ip.c_str (), sizeof ( ip ) );
 
 	}
 

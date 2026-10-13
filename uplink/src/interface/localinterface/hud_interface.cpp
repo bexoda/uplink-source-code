@@ -678,7 +678,7 @@ void HUDInterface::Update ()
 		char caption [128];
 		char *date = game->GetWorld ()->date.GetLongString ();
 
-        UplinkStrncpy ( caption, game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, sizeof ( caption ) );
+        UplinkStrncpy ( caption, game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), sizeof ( caption ) );
 
 		EclGetButton ( "hud_location" )->SetCaption ( caption );
 		EclGetButton ( "hud_date" )->SetCaption ( date );

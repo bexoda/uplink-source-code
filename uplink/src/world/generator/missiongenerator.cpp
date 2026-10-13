@@ -281,7 +281,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
     target->databank.InsertData ( data );
 	//target->databank.PutData ( data );
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	// Infer the internal services contact address
@@ -466,7 +466,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 
 	}
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	/********** Patch by François Gagné **********/
@@ -692,7 +692,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
     target->databank.InsertData ( data );
 	//target->databank.PutData ( data );
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	// Infer the internal services contact address
@@ -865,7 +865,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 
 	}
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, target->ip ) != 0 )
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), target->ip ) != 0 )
 		target->databank.RandomizeDataPlacement ();
 
 	/*

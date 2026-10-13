@@ -203,7 +203,7 @@ void MissionInterface::Create ()
 				}
 				else {
 
-					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer );
+					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 
 					if ( !computer )
 						details << "- " << mission->links.GetData (i) << "(Invalid)\n";
@@ -241,7 +241,7 @@ void MissionInterface::Create ()
 				}
 				else {
 
-					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer );
+					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 
 					if ( !computer ) 
 						details << "[" << mission->links.GetData (i) << "(Invalid)]\n";					

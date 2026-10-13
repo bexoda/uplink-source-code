@@ -231,7 +231,7 @@ void WorldMapInterface::CancelClick ( Button * /*button*/ )
 	//
 	// Close the screen if we are at home without any half set up connection
 
-	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_LOCALHOST ) == 0 &&
+	if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_LOCALHOST ) == 0 &&
 		 strcmp ( game->GetWorld ()->GetPlayer ()->GetConnection ()->GetTarget (), IP_LOCALHOST ) == 0 ) 
 	
 		 CloseClick ( NULL );
@@ -942,11 +942,11 @@ void WorldMapInterface::ProgramLayoutEngine()
             scrollX = 0.0;
             scrollY = 0.0;
 
-			bool notDisplayed = i != 0 && ( !vl->displayed || !player->HasLink ( vl->ip ) );
+			bool notDisplayed = i != 0 && ( !vl->displayed || !player->HasLink ( vl->ip.c_str () ) );
 
             layout->AddLocation ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + GetLargeMapX1() - 3, 
 		            		      GetScaledY ( vl->y, WORLDMAP_LARGE ) + GetLargeMapY1() - 3,
-        			    	      vl->computer, vl->ip, notDisplayed );
+        			    	      vl->computer.c_str (), vl->ip.c_str (), notDisplayed );
 
             zoom = oldZoom;
             scrollX = oldScrollX;
@@ -964,8 +964,8 @@ void WorldMapInterface::ProgramLayoutEngine()
 					char caption [128];
 					char tooltip [128];
 					UplinkSnprintf ( name, sizeof ( name ), "worldmaptempcon %d", numtempconbutton );
-					UplinkStrncpy ( caption, vl->ip, sizeof ( caption ) );
-					UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip );
+					UplinkStrncpy ( caption, vl->ip.c_str (), sizeof ( caption ) );
+					UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip.c_str () );
 					EclRegisterButton ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + x1 - 3, GetScaledY ( vl->y, WORLDMAP_LARGE ) + y1 - 3, 7, 7, caption, tooltip, name );
 					EclRegisterButtonCallbacks ( name, DrawLocation, LocationClick, button_click, button_highlight );
 				}
@@ -985,7 +985,7 @@ void WorldMapInterface::ProgramLayoutEngine()
         VLocation *vl = game->GetWorld ()->GetVLocation ( links.GetData (j) );
         UplinkAssert ( vl );
 
-        if ( !player->connection.LocationIncluded(vl->ip) && vl->displayed ) {
+        if ( !player->connection.LocationIncluded(vl->ip.c_str ()) && vl->displayed ) {
 
             float oldZoom = zoom;
             float oldScrollX = scrollX;
@@ -997,7 +997,7 @@ void WorldMapInterface::ProgramLayoutEngine()
 
             layout->AddLocation ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + GetLargeMapX1() - 3, 
                                   GetScaledY ( vl->y, WORLDMAP_LARGE ) + GetLargeMapY1() - 3,
-                                  vl->computer, vl->ip );
+                                  vl->computer.c_str (), vl->ip.c_str () );
 
             zoom = oldZoom;
             scrollX = oldScrollX;
@@ -1031,7 +1031,7 @@ void WorldMapInterface::ProgramLayoutEnginePartial()
         VLocation *vl = game->GetWorld ()->GetVLocation ( conn.GetData (i) );
         UplinkAssert ( vl );
 	
-        if ( i != 0 && ( !vl->displayed || !player->HasLink ( vl->ip ) ) ) {
+        if ( i != 0 && ( !vl->displayed || !player->HasLink ( vl->ip.c_str () ) ) ) {
 
             float oldZoom = zoom;
             float oldScrollX = scrollX;
@@ -1043,7 +1043,7 @@ void WorldMapInterface::ProgramLayoutEnginePartial()
 
             layout->AddLocation ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + GetLargeMapX1() - 3, 
 		            		      GetScaledY ( vl->y, WORLDMAP_LARGE ) + GetLargeMapY1() - 3,
-        			    	      vl->computer, vl->ip, true );
+        			    	      vl->computer.c_str (), vl->ip.c_str (), true );
 
             zoom = oldZoom;
             scrollX = oldScrollX;
@@ -1060,8 +1060,8 @@ void WorldMapInterface::ProgramLayoutEnginePartial()
 				char caption [128];
 				char tooltip [128];
 				UplinkSnprintf ( name, sizeof ( name ), "worldmaptempcon %d", numtempconbutton );
-				UplinkStrncpy ( caption, vl->ip, sizeof ( caption ) );
-				UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip );
+				UplinkStrncpy ( caption, vl->ip.c_str (), sizeof ( caption ) );
+				UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip.c_str () );
 				EclRegisterButton ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + x1 - 3, GetScaledY ( vl->y, WORLDMAP_LARGE ) + y1 - 3, 7, 7, caption, tooltip, name );
 				EclRegisterButtonCallbacks ( name, DrawLocation, LocationClick, button_click, button_highlight );
 
@@ -1210,15 +1210,15 @@ void WorldMapInterface::CreateWorldMapInterface_Large ()
         UplinkAssert ( vl );
 
         if ( vl->displayed || 
-             game->GetWorld ()->GetPlayer ()->connection.LocationIncluded (vl->ip) ) {
+             game->GetWorld ()->GetPlayer ()->connection.LocationIncluded (vl->ip.c_str ()) ) {
 
             char name [128];
             char caption [128];
             char tooltip [128];
             //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-            UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
-            UplinkStrncpy ( caption, vl->ip, sizeof ( caption ) );
-            UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip );
+            UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
+            UplinkStrncpy ( caption, vl->ip.c_str (), sizeof ( caption ) );
+            UplinkSnprintf ( tooltip, sizeof ( tooltip ), "Connect to IP address %s", vl->ip.c_str () );
             EclRegisterButton ( GetScaledX ( vl->x, WORLDMAP_LARGE ) + x1 - 3, GetScaledY ( vl->y, WORLDMAP_LARGE ) + y1 - 3, 7, 7, caption, tooltip, name );
             EclRegisterButtonCallbacks ( name, DrawLocation, LocationClick, button_click, button_highlight );
 
@@ -1293,7 +1293,7 @@ void WorldMapInterface::RemoveWorldMapInterface ()
                     
                 char name [128];
                 //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-                UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
+                UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
                 EclRemoveButton ( name );
 
             }
@@ -1427,7 +1427,7 @@ void WorldMapInterface::ScrollX ( float x )
         UplinkAssert ( vl );
         char name [128];
         //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
+        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
 
         Button *button = EclGetButton ( name );
         if ( button ) {
@@ -1489,7 +1489,7 @@ void WorldMapInterface::ScrollY ( float y )
         UplinkAssert ( vl );
         char name [128];
         //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
+        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
 
         Button *button = EclGetButton ( name );
         if ( button ) {
@@ -1562,7 +1562,7 @@ void WorldMapInterface::SetZoom ( float z )
         UplinkAssert ( vl );
         char name [128];
         //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
+        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
 
         Button *button = EclGetButton ( name );
         if ( button ) {
@@ -1683,11 +1683,11 @@ void WorldMapInterface::UpdateAccessLevel ()
         UplinkAssert ( vl );
         char name [128];
         //UplinkSnprintf ( name, sizeof ( name ), "worldmap %s %d", vl->ip, i );
-        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip );
+        UplinkSnprintf ( name, sizeof ( name ), "worldmap %s", vl->ip.c_str () );
 
         Button *button = EclGetButton ( name );
         if ( button ) {
-			button->userinfo = game->GetWorld ()->GetPlayer ()->HasAccount ( vl->ip );
+			button->userinfo = game->GetWorld ()->GetPlayer ()->HasAccount ( vl->ip.c_str () );
         }
         
     }
@@ -1706,7 +1706,7 @@ void WorldMapInterface::UpdateAccessLevel ()
 		if ( button ) {
 	        VLocation *vl = game->GetWorld ()->GetVLocation ( button->caption );
 			if ( vl ) {
-				button->userinfo = game->GetWorld ()->GetPlayer ()->HasAccount ( vl->ip );
+				button->userinfo = game->GetWorld ()->GetPlayer ()->HasAccount ( vl->ip.c_str () );
 			}
         }
 

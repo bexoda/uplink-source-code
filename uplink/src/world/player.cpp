@@ -47,7 +47,7 @@ void Player::GiveAllLinks ()
 
 	for ( int i = 0; i < locs->Size (); ++i )
 		if ( locs->ValidIndex (i) )
-			GiveLink ( locs->GetData (i)->ip );
+			GiveLink ( locs->GetData (i)->ip.c_str () );
 
 	delete locs;
 
@@ -260,7 +260,7 @@ int Player::TimeRemaining ()
 
         char *thisip = GetConnection ()->vlocations.GetData ( i );
         UplinkAssert (thisip);
-        timeremaining += TimeToTrace ( GetRemoteHost ()->ip, thisip );
+        timeremaining += TimeToTrace ( GetRemoteHost ()->ip.c_str (), thisip );
 
     }
 
@@ -268,7 +268,7 @@ int Player::TimeRemaining ()
 
 }
 
-int Player::TimeToTrace ( char *tracerIP, char *routerIP )
+int Player::TimeToTrace ( const char *tracerIP, char *routerIP )
 {
 
     VLocation *tracer = game->GetWorld ()->GetVLocation (tracerIP);
@@ -342,7 +342,7 @@ void Player::Update ()
                 char *thisip = GetConnection ()->vlocations.GetData ( GetConnection ()->GetSize () - GetConnection ()->traceprogress - 1 );
                 UplinkAssert (thisip);
 
-                int timetonexttrace = TimeToTrace ( GetRemoteHost ()->ip, thisip );
+                int timetonexttrace = TimeToTrace ( GetRemoteHost ()->ip.c_str (), thisip );
                 timetonexttrace = NumberGenerator::ApplyVariance ( timetonexttrace, (int) ( TRACESPEED_VARIANCE * 100 ) );
 
 				GetConnection ()->nexttrace.SetDate ( &(game->GetWorld ()->date) );

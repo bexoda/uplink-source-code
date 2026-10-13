@@ -198,7 +198,7 @@ void LinksScreenInterface::LinkDraw ( Button *button, bool highlighted, bool /*c
 		char caption [SIZE_COMPUTER_NAME];
 			
 		if ( game->GetWorld ()->GetVLocation ( link ) ) {
-			UplinkStrncpy ( caption, game->GetWorld ()->GetVLocation ( link )->computer, sizeof ( caption ) );
+			UplinkStrncpy ( caption, game->GetWorld ()->GetVLocation ( link )->computer.c_str (), sizeof ( caption ) );
 		} else {
 			UplinkStrncpy ( caption, "This link has expired", sizeof ( caption ) );
 		}
@@ -540,6 +540,17 @@ void LinksScreenInterface::SetFullList ( LList <char *> *newfulllist )
 {
 
 	UplinkAssert (newfulllist);
+	LList <const char *> view;
+	for ( int i = 0; i < newfulllist->Size (); ++i )
+		view.PutData ( newfulllist->GetData (i) );
+	SetFullList ( &view );
+
+}
+
+void LinksScreenInterface::SetFullList ( LList <const char *> *newfulllist )
+{
+
+	UplinkAssert (newfulllist);
 
     DeleteLListData ( &fulllist );
     DeleteLListData ( &filteredlist );
@@ -601,7 +612,7 @@ void LinksScreenInterface::ApplyFilter ( char *filter )
 				UplinkAbortArgs ( "Cannot find location for ip %s", fulllist.GetData (i) );
 			}
 
-			char *computername = vl->computer;
+			const char *computername = vl->computer.c_str ();
 			char *lowercasename = LowerCaseString ( computername );
 
             if ( strstr ( lowercasename, lowercasefilter ) != NULL) {
@@ -769,13 +780,13 @@ void LinksScreenInterface::Create ( ComputerScreen *newcs )
 		}
 		else if ( GetComputerScreen ()->SCREENTYPE == LINKSSCREENTYPE_ALLLINKS ) {
 
-			LList <char *> alllinks;
+			LList <const char *> alllinks;
 			DArray <VLocation *> *locs = game->GetWorld ()->locations.ConvertToDArray ();
 
 			for ( int i = 0; i < locs->Size (); ++i )
 				if ( locs->ValidIndex (i) )
 					if ( locs->GetData (i)->listed )
-						alllinks.PutData ( locs->GetData (i)->ip );
+						alllinks.PutData ( locs->GetData (i)->ip.c_str () );
 
 			delete locs;
 
@@ -786,13 +797,13 @@ void LinksScreenInterface::Create ( ComputerScreen *newcs )
 
 			char *companyname = GetComputerScreen ()->GetComputer ()->companyname;
 
-			LList <char *> alllinks;
+			LList <const char *> alllinks;
 			DArray <VLocation *> *locs = game->GetWorld ()->locations.ConvertToDArray ();
 
 			for ( int i = 0; i < locs->Size (); ++i )
 				if ( locs->ValidIndex (i) )		
                     if ( locs->GetData (i)->GetOBJECTID () != OID_VLOCATIONSPECIAL )
-					    alllinks.PutData ( locs->GetData (i)->ip );
+					    alllinks.PutData ( locs->GetData (i)->ip.c_str () );
 
 			delete locs;
 

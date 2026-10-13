@@ -220,7 +220,7 @@ bool ClientCommsInterface::InConnection( const char *computerName )
 	VLocation *vl = locations.GetData ( connection.GetData (i) );
 	UplinkAssert (vl);
 	
-	if ( strcmp ( vl->computer, computerName ) == 0 )
+	if ( strcmp ( vl->computer.c_str (), computerName ) == 0 )
 	    return true;
 	
     }
@@ -297,7 +297,7 @@ void ClientCommsInterface::LayoutLabels()
 			if ( vl ) {
 
 		//	    cout << "  : AddLocation " << 20 + vl->x << ", " << 50 + vl->y << ", " << vl->computer << "\n";
-				layout->AddLocation( 20 + vl->x, 50 + vl->y, vl->computer, vl->ip );
+				layout->AddLocation( 20 + vl->x, 50 + vl->y, vl->computer.c_str (), vl->ip.c_str () );
 		        
 			}
 

@@ -1039,7 +1039,7 @@ void Tutorial::RunTutorial2 ( int part )
 
         // We are connected somewhere, but are we at the right spot?
 
-        if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 ) {
+        if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 ) {
 
             EclRegisterCaptionChange ( text, "We're now dialled in to the Test Machine.\n"
                                              "You should read the opening text message\n"
@@ -2040,21 +2040,21 @@ bool Tutorial::HasCompletedCurrentSection ()
         if      ( current_part == 2 )                   return ( game->GetInterface ()->GetLocalInterface ()->InScreen () == SCREEN_MISSION );
         else if ( current_part == 4 )                   return ( !game->GetWorld ()->GetPlayer ()->IsConnected () );
         else if ( current_part == 5 )                   return ( game->GetWorld ()->GetPlayer ()->IsConnected () );
-        else if ( current_part == 7 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 &&
+        else if ( current_part == 7 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_USERIDSCREEN );
         else if ( current_part == 10 )                  return ( !game->GetWorld ()->GetPlayer ()->IsConnected () );
-        else if ( current_part == 11 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 );
-        else if ( current_part == 13 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 11 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 );
+        else if ( current_part == 13 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_MENUSCREEN );
-        else if ( current_part == 17 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 17 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_SWSALESSCREEN );
         else if ( current_part == 20 )                  return ( game->GetWorld ()->GetPlayer ()->gateway.databank.GetData ( "Password_Breaker" ) != NULL );
-        else if ( current_part == 22 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 &&
+        else if ( current_part == 22 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_USERIDSCREEN );
         else if ( current_part == 24 )                  return ( game->GetInterface ()->GetLocalInterface ()->GetHUD ()->si.IsVisibleSoftwareMenu () );
         else if ( current_part == 25 )                  return ( SvbGetTask ("Password_Breaker") != NULL );
         else if ( current_part == 27 )                  return ( !game->GetWorld ()->GetPlayer ()->IsConnected () );
-        else if ( current_part == 33 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 33 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_SWSALESSCREEN );
         else if ( current_part == 36 )                  return ( game->GetWorld ()->GetPlayer ()->gateway.databank.ContainsData ( "Trace_Tracker", 2.0f ) );
         else if ( current_part == 37 )                  return ( SvbGetTask ("Trace_Tracker") != NULL );
@@ -2067,13 +2067,13 @@ bool Tutorial::HasCompletedCurrentSection ()
                                                                  game->GetWorld ()->GetPlayer ()->GetConnection ()->GetSize () == 1 );                
         else if ( current_part == 47 )                  return ( game->GetWorld ()->GetPlayer ()->GetConnection ()->LocationIncluded (IP_UPLINKTESTMACHINE) ||
                                                                  game->GetWorld ()->GetPlayer ()->GetConnection ()->GetSize () == 1 );        
-        else if ( current_part == 49 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 );                                                                 
-        else if ( current_part == 50 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 &&
+        else if ( current_part == 49 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 );                                                                 
+        else if ( current_part == 50 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_USERIDSCREEN );
         else if ( current_part == 51 )                  return ( SvbGetTask ("Password_Breaker") != NULL );
-        else if ( current_part == 52 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 &&
+        else if ( current_part == 52 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_MENUSCREEN );
-        else if ( current_part == 54 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKTESTMACHINE ) == 0 &&
+        else if ( current_part == 54 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKTESTMACHINE ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_FILESERVERSCREEN );
         else if ( current_part == 56 )                  return ( SvbGetTask ("File_Copier") != NULL );
         else if ( current_part == 57 )                  return ( SvbGetTask ("File_Copier") != NULL &&
@@ -2098,19 +2098,19 @@ bool Tutorial::HasCompletedCurrentSection ()
     }
     else if ( current_tutorial == 3 ) {
 
-        if      ( current_part == 2 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 );
-        else if ( current_part == 3 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        if      ( current_part == 2 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 );
+        else if ( current_part == 3 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_MENUSCREEN );
-        else if ( current_part == 4 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 4 )                   return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_BBSSCREEN );
 
-        else if ( current_part == 11 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 11 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetOBJECTID () == OID_MENUSCREEN );
-        else if ( current_part == 13 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 13 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle, "Help/" ) == 0 );
-        else if ( current_part == 17 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 17 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  strcmp ( game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->subtitle, "Internal Services Main Menu" ) == 0 );
-        else if ( current_part == 20 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, IP_UPLINKINTERNALSERVICES ) == 0 &&
+        else if ( current_part == 20 )                  return ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), IP_UPLINKINTERNALSERVICES ) == 0 &&
                                                                  game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->ScreenID () == SCREEN_CHANGEGATEWAY );
         else                                            return nextclicked;
 

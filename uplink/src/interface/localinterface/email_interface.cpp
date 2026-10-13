@@ -182,7 +182,7 @@ void EmailInterface::Create ()
 				}
 				else {
 
-					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer );
+					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 
 					if ( !computer )
 						body << "- " << message->links.GetData (i) << "(Invalid)\n";
@@ -218,7 +218,7 @@ void EmailInterface::Create ()
 				}
 				else {
 
-					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer );
+					Computer *computer = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 
 					if ( !computer ) 
 						body << "[" << message->links.GetData (i) << "(Invalid)]\n";					

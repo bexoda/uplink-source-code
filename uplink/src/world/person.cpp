@@ -245,7 +245,7 @@ int Person::CreateNewAccount ( char *bankip, char *accname, const char *password
 
 	VLocation *vl = game->GetWorld ()->GetVLocation ( bankip );
 	UplinkAssert (vl);
-	Computer *comp = game->GetWorld ()->GetComputer ( vl->computer );
+	Computer *comp = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 	UplinkAssert (comp);
 	BankComputer *bank = (BankComputer *) comp;
 

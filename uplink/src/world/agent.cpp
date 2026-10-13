@@ -221,7 +221,7 @@ void Agent::GiveLink ( const char *newip )
 
 }
 
-int Agent::HasAccount  ( char *ip )
+int Agent::HasAccount  ( const char *ip )
 {
 
 	int securityLevel = -1;
@@ -930,7 +930,7 @@ void Agent::EstablishConnection ( char *ip )
 						// So make up a new one
 
 						AccessLog *al = new AccessLog ();
-						al->SetProperties ( &logdate, WorldGenerator::GetRandomLocation ()->ip, " ",
+						al->SetProperties ( &logdate, WorldGenerator::GetRandomLocation ()->ip.c_str (), " ",
 											LOG_NOTSUSPICIOUS, LOG_TYPE_TEXT );
 						al->SetData1 ( "Accessed File" );
 						comp->logbank.logs.PutData ( al, il );

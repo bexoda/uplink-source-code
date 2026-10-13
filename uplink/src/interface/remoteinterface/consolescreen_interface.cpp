@@ -841,7 +841,7 @@ void ConsoleScreenInterface::Create ( ComputerScreen *newcs )
 
 		VLocation *vl = game->GetWorld ()->GetVLocation ( game->GetWorld ()->GetPlayer ()->remotehost );
 		UplinkAssert ( vl );
-		Computer *comp = game->GetWorld ()->GetComputer ( vl->computer );
+		Computer *comp = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
 		UplinkAssert ( comp );
 		comp->logbank.AddLog ( log );
 

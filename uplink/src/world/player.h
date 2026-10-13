@@ -48,7 +48,7 @@ public:
 	int SharesPricePaid ( char *companyname );
 	void TradeShares	( char *companyname, int howmany );
 
-    static int TimeToTrace ( char *tracerIP, char *routerIP );                     // How long for the people at tracerIP to trace through routerIP
+    static int TimeToTrace ( const char *tracerIP, char *routerIP );                     // How long for the people at tracerIP to trace through routerIP
     int TimeRemaining ();                                                          // How long remaining in this trace?
 
 	// Common functions

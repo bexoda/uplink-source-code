@@ -69,6 +69,7 @@ public:
     ~LinksScreenInterface ();
 
 	void SetFullList ( LList <char *> *newfulllist );						            // The list is copied
+	void SetFullList ( LList <const char *> *newfulllist );						            // The list is copied
 	void SetFullList ();										            			// Uses current filtered list
 	void ApplyFilter ( char *filter );
 

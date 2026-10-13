@@ -431,7 +431,7 @@ void LogDeleter::Tick ( int n )
 								// So make up a new one
 
 								AccessLog *al = new AccessLog ();
-								al->SetProperties ( &logdate, WorldGenerator::GetRandomLocation ()->ip, " ",
+								al->SetProperties ( &logdate, WorldGenerator::GetRandomLocation ()->ip.c_str (), " ",
 													LOG_NOTSUSPICIOUS, LOG_TYPE_TEXT );
 								al->SetData1 ( "Accessed File" );
 								source->logs.PutData ( al, sourceindex );

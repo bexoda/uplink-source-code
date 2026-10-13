@@ -54,7 +54,7 @@ public:
 
 	void GiveCode    ( const char *newip, char *newcode );
 	void GiveMessage ( Message *message );
-    int HasAccount  ( char *ip );                           // Returns access level or -1
+    int HasAccount  ( const char *ip );                           // Returns access level or -1
 
 	int  CreateNewAccount ( char *bankip, char *accname, const char *password, 
 							int balance, int loan );			// Returns account number	

@@ -129,7 +129,7 @@ void RemoteInterface::RunNewLocation ()
 
         VLocation *vl = game->GetWorld ()->GetPlayer ()->GetRemoteHost ();
         if ( vl ) {
-            Computer *comp = game->GetWorld ()->GetComputer ( vl->computer );
+            Computer *comp = game->GetWorld ()->GetComputer ( vl->computer.c_str () );
             if ( comp && comp->GetOBJECTID () == OID_LANCOMPUTER ) {
 
                 LanComputer *lanComp = (LanComputer *) comp;

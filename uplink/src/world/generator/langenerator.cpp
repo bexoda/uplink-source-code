@@ -333,7 +333,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 	for ( i = 0; i < numlogs; ++i ) {
 
 		AccessLog *al = new AccessLog ();
-		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 		al->SetData1 ( "Accessed File" );
 		comp->logbank.AddLog (al);
 
@@ -384,7 +384,7 @@ Computer  *LanGenerator::GenerateLAN ( const char *companyname, int difficulty )
 						   COMPUTER_TRACEACTION_LEGAL );
 	comp->security.AddSystem ( SECURITY_TYPE_PROXY, 5 );
 	comp->security.AddSystem ( SECURITY_TYPE_MONITOR, 5 );
-	comp->SetIP ( vl->ip );
+	comp->SetIP ( vl->ip.c_str () );
 	game->GetWorld ()->CreateComputer ( comp );
 
     //delete computername;
@@ -431,7 +431,7 @@ Computer  *LanGenerator::GenerateLAN ( const char *companyname, int difficulty )
 	for ( i = 0; i < numlogs; ++i ) {
 
 		AccessLog *al = new AccessLog ();
-		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 		al->SetData1 ( "Accessed File" );
 		comp->logbank.AddLog (al);
 
@@ -2107,7 +2107,7 @@ void LanCluster::Merge ( LanCluster *target, LanComputer *comp )
 							if ( locations->GetData(i)->GetOBJECTID() == OID_VLOCATIONSPECIAL ) {
 
 								VLocationSpecial *vl = (VLocationSpecial *) locations->GetData(i);
-								if ( strcmp ( vl->computer, comp->name ) == 0 &&
+								if ( strcmp ( vl->computer.c_str (), comp->name ) == 0 &&
 									 vl->screenIndex == targetScreenIndex &&
 									 vl->securitySystemIndex < systems.Size () ) {
 
@@ -2210,7 +2210,7 @@ void LanCluster::Merge ( LanComputer *target )
 							if ( locations->GetData(i)->GetOBJECTID() == OID_VLOCATIONSPECIAL ) {
 
 								VLocationSpecial *vl = (VLocationSpecial *) locations->GetData(i);
-								if ( strcmp ( vl->computer, target->name ) == 0 &&
+								if ( strcmp ( vl->computer.c_str (), target->name ) == 0 &&
 									 vl->screenIndex == targetScreenIndex &&
 									 vl->securitySystemIndex < systems.Size () ) {
 

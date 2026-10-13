@@ -9,6 +9,8 @@
 #ifndef _included_vlocation_h
 #define _included_vlocation_h
 
+#include <string>
+
 // ============================================================================
 
 #include <stdio.h>
@@ -31,8 +33,8 @@ class VLocation : public UplinkObject
 
 public:
 
-	char ip       [SIZE_VLOCATION_IP];				// Unique
-	char computer [SIZE_COMPUTER_NAME];
+	std::string ip;				// Unique
+	std::string computer;
 
 	int x, y;					// Physical location on map
 	bool listed;				// Am I publicly listed?

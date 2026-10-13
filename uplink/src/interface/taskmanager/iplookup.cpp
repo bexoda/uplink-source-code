@@ -115,7 +115,7 @@ void IPLookup::Tick ( int /*n*/ )
 			if ( vl ) {
 
 				// Found - add to links
-				EclRegisterCaptionChange ( name_display, vl->computer );
+				EclRegisterCaptionChange ( name_display, vl->computer.c_str () );
 				game->GetWorld ()->GetPlayer ()->GiveLink ( ip );
 
 			}

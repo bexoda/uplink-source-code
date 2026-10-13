@@ -652,7 +652,7 @@ void Computer::Update ()
             //
             // Disconnect the player if he is connected
 
-            if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip, ip ) == 0 ) {
+            if ( strcmp ( game->GetWorld ()->GetPlayer ()->GetRemoteHost ()->ip.c_str (), ip ) == 0 ) {
 
 	            game->GetWorld ()->GetPlayer ()->connection.Disconnect ();
 	            game->GetWorld ()->GetPlayer ()->connection.Reset ();
@@ -688,7 +688,7 @@ void Computer::Update ()
 	if ( NumberGenerator::RandomNumber ( 1000 ) == 0 ) {
 
 		AccessLog *al = new AccessLog ();
-		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip, " " );
+		al->SetProperties ( &(game->GetWorld ()->date), WorldGenerator::GetRandomLocation ()->ip.c_str (), " " );
 		al->SetData1 ( "Accessed File" );
 		logbank.AddLog (al);
 

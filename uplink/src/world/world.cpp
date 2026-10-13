@@ -218,9 +218,9 @@ void World::CreateVLocation ( VLocation *vlocation )
 {
 	
 	UplinkAssert (vlocation);
-	UplinkAssert (vlocation->ip);
+	UplinkAssert (vlocation->ip.c_str ());
 
-	locations.PutData ( vlocation->ip, vlocation );
+	locations.PutData ( vlocation->ip.c_str (), vlocation );
 
 }
 
