@@ -87,7 +87,7 @@ void ScrollBox::SetCallback ( void (*newcallback) (char *, int) )
     callback = newcallback;
 }
 
-void ScrollBox::DrawScrollBar ( Button *button, bool highlighted, bool clicked )
+void ScrollBox::DrawScrollBar ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     //

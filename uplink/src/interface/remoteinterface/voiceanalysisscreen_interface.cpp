@@ -43,7 +43,7 @@ VoiceAnalysisScreenInterface::~VoiceAnalysisScreenInterface ()
 {
 }
 
-void VoiceAnalysisScreenInterface::ClickAccess ( Button *button )
+void VoiceAnalysisScreenInterface::ClickAccess ( Button * /*button*/ )
 {
 
 	VoiceAnalysisScreenInterface *thisint = (VoiceAnalysisScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -91,7 +91,7 @@ void VoiceAnalysisScreenInterface::FinishVoicePlayback ( char *voicename )
 
 }
 
-void VoiceAnalysisScreenInterface::DrawAnalysis ( Button *button, bool highlighted, bool clicked )
+void VoiceAnalysisScreenInterface::DrawAnalysis ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	VoiceAnalysisScreenInterface *thisint = (VoiceAnalysisScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -119,7 +119,7 @@ void VoiceAnalysisScreenInterface::DrawAnalysis ( Button *button, bool highlight
 
 }
 
-void VoiceAnalysisScreenInterface::DrawBackground ( Button *button, bool highlighted, bool clicked )
+void VoiceAnalysisScreenInterface::DrawBackground ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glBegin ( GL_QUADS );		

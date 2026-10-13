@@ -33,6 +33,12 @@ Options:
 macOS (Homebrew `sdl12-compat sdl_mixer freetype libtiff jpeg catch2`) and Windows (vcpkg)
 are not yet verified with this build.
 
+## Warnings
+
+The build uses `-Wall -Wextra -Woverloaded-virtual=1` and is expected to stay warning-free;
+vendored code under `contrib/` is built with `-w` and included as system headers. A new
+warning is a bug report: fix it rather than silence it.
+
 ## Tests
 
     cd build && ctest --output-on-failure

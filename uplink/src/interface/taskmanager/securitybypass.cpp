@@ -70,7 +70,7 @@ void SecurityBypass::BypassClick ( Button *button )
 
 }
 
-void SecurityBypass::StatusLightDraw ( Button *button, bool highlighted, bool clicked )
+void SecurityBypass::StatusLightDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	char name [32];
@@ -335,7 +335,7 @@ void SecurityBypass::Initialise ()
 {
 }
 
-void SecurityBypass::Tick ( int n )
+void SecurityBypass::Tick ( int /*n*/ )
 {
 
 	//

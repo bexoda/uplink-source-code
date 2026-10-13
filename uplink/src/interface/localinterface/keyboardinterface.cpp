@@ -36,7 +36,7 @@ KeyboardInterface::~KeyboardInterface()
 
 }
 
-void KeyboardInterface::RemoveKeyboardInterface ( Button *button )
+void KeyboardInterface::RemoveKeyboardInterface ( Button * /*button*/ )
 {
 
 	for ( int dy = 0; dy < 3; ++dy ) {

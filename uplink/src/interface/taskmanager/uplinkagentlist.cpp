@@ -60,7 +60,7 @@ void UplinkAgentList::Initialise ()
 {
 }
 
-void UplinkAgentList::Tick ( int n )
+void UplinkAgentList::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {
@@ -70,7 +70,7 @@ void UplinkAgentList::Tick ( int n )
 
 }
 
-void UplinkAgentList::UplinkAgentListDraw ( Button *button, bool highlighted, bool clicked )
+void UplinkAgentList::UplinkAgentListDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int pid;
@@ -132,7 +132,7 @@ void UplinkAgentList::UplinkAgentListDraw ( Button *button, bool highlighted, bo
 
 }
 
-void UplinkAgentList::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void UplinkAgentList::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 
 

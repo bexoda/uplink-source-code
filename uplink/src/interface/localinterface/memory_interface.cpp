@@ -45,14 +45,14 @@ int MemoryInterface::currentprogramindex = -1;
 int MemoryInterface::specialHighlight = -1;
 
 
-void MemoryInterface::TitleClick ( Button *button )
+void MemoryInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void MemoryInterface::MemoryBlockDraw ( Button *button, bool highlighted, bool clicked )
+void MemoryInterface::MemoryBlockDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -241,7 +241,7 @@ void MemoryInterface::MemoryBlockClick ( Button *button )
 
 }
 
-void MemoryInterface::ScrollChange ( char *scrollname, int newValue )
+void MemoryInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

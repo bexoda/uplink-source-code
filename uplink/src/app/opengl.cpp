@@ -385,7 +385,7 @@ void display(void)
 }
 
 
-void keyboard(unsigned char key, int x, int y)
+void keyboard(unsigned char key, int /*x*/, int /*y*/)
 {
 
     if ( app->Closed () ) return;
@@ -457,7 +457,7 @@ void keyboard(unsigned char key, int x, int y)
 
 }
 
-void specialkeyboard (int key, int x, int y)
+void specialkeyboard (int key, int /*x*/, int /*y*/)
 {
 
     if ( app->Closed () ) return;
@@ -595,7 +595,7 @@ void mouse ( int button, int state, int x, int y )
 
 }
 
-local void mousedraw ( Button *button, bool highlighted, bool clicked )
+local void mousedraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);

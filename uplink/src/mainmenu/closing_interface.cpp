@@ -38,7 +38,7 @@ ClosingInterface::~ClosingInterface ()
 {
 }
 
-void ClosingInterface::LargeTextDraw ( Button *button, bool highlighted, bool clicked )
+void ClosingInterface::LargeTextDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     UplinkAssert (button);

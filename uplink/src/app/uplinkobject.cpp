@@ -27,12 +27,12 @@ UplinkObject::~UplinkObject()
 {
 }
 
-bool UplinkObject::Load ( FILE *file )
+bool UplinkObject::Load ( FILE * /*file*/ )
 {
 	return true;
 }
 
-void UplinkObject::Save ( FILE *file )
+void UplinkObject::Save ( FILE * /*file*/ )
 {
 }
 
@@ -66,7 +66,7 @@ int UplinkObject::GetOBJECTID ()
 
 }
 
-void UplinkObject::LoadID ( FILE *file )
+void UplinkObject::LoadID ( [[maybe_unused]] FILE *file )
 {
 	
 #ifdef SAVEFILE_PRINTPROGRESS
@@ -83,7 +83,7 @@ void UplinkObject::LoadID ( FILE *file )
 
 }
 
-void UplinkObject::SaveID ( FILE *file )
+void UplinkObject::SaveID ( [[maybe_unused]] FILE *file )
 {
 
 #ifdef SAVEFILE_PRINTPROGRESS
@@ -97,7 +97,7 @@ void UplinkObject::SaveID ( FILE *file )
 
 }
 
-void UplinkObject::LoadID_END ( FILE *file )
+void UplinkObject::LoadID_END ( [[maybe_unused]] FILE *file )
 {
 
 #ifdef SAVEFILE_PRINTPROGRESS
@@ -114,7 +114,7 @@ void UplinkObject::LoadID_END ( FILE *file )
 
 }
 
-void UplinkObject::SaveID_END ( FILE *file )
+void UplinkObject::SaveID_END ( [[maybe_unused]] FILE *file )
 {
 
 #ifdef SAVEFILE_PRINTPROGRESS

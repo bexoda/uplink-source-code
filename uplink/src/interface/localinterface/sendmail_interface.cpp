@@ -59,7 +59,7 @@ Message *SendMailInterface::sGetMessage ()
 
 }
 
-void SendMailInterface::TitleClick ( Button *button )
+void SendMailInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
@@ -260,7 +260,7 @@ void SendMailInterface::AddressClick ( Button *button )
 
 }
 
-void SendMailInterface::ClearClick ( Button *button )
+void SendMailInterface::ClearClick ( Button * /*button*/ )
 {
 	
 	if ( m ) {
@@ -271,7 +271,7 @@ void SendMailInterface::ClearClick ( Button *button )
 	
 }
 
-void SendMailInterface::SendClick ( Button *button )
+void SendMailInterface::SendClick ( Button * /*button*/ )
 {
  
 	UplinkAssert (m);

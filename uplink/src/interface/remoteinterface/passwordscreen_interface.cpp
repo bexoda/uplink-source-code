@@ -83,7 +83,7 @@ void PasswordScreenInterface::AccessCodeClick ( Button *button )
 
 }
 
-void PasswordScreenInterface::BypassClick ( Button *button )
+void PasswordScreenInterface::BypassClick ( Button * /*button*/ )
 {
 
 

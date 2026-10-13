@@ -34,7 +34,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void GatewayInterface::CloseClick ( Button *button )
+void GatewayInterface::CloseClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->GetHUD ()->gw.Remove ();
@@ -55,13 +55,13 @@ void GatewayInterface::DrawPopulatedItem ( Button *button, bool highlighted, boo
 
 }
 
-void GatewayInterface::DrawUnPopulatedItem ( Button *button, bool highlighted, bool clicked )
+void GatewayInterface::DrawUnPopulatedItem ( Button * /*button*/, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 }
 
 
-void GatewayInterface::DrawGatewayBackground ( Button *button, bool highlighted, bool clicked )
+void GatewayInterface::DrawGatewayBackground ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 //	glBegin ( GL_QUADS );		
@@ -86,7 +86,7 @@ void GatewayInterface::DrawGatewayPicture ( Button *button, bool highlighted, bo
 
 }
 
-void GatewayInterface::DrawMainTitle ( Button *button, bool highlighted, bool clicked )
+void GatewayInterface::DrawMainTitle ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );

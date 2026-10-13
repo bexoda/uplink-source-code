@@ -30,7 +30,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void LocalInterfaceScreen::BackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void LocalInterfaceScreen::BackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
    
 	glBegin ( GL_QUADS );		

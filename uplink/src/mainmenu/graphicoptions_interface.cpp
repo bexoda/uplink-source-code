@@ -33,14 +33,14 @@ int GraphicOptionsInterface::newRefresh = 0;
 bool GraphicOptionsInterface::screenSettingsChanged = false;
 
 
-void GraphicOptionsInterface::ReturnToMainMenuClick ( Button *button )
+void GraphicOptionsInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_OPTIONS );
 
 }
 
-void GraphicOptionsInterface::ApplyClick ( Button *button )
+void GraphicOptionsInterface::ApplyClick ( [[maybe_unused]] Button *button )
 {
 
 	GraphicOptionsInterface *thisint = (GraphicOptionsInterface *) app->GetMainMenu ()->GetMenuScreen ();
@@ -109,7 +109,7 @@ void GraphicOptionsInterface::ApplyClick ( Button *button )
 
 }
 
-void GraphicOptionsInterface::ToggleBoxDraw ( Button *button, bool highlighted, bool clicked )
+void GraphicOptionsInterface::ToggleBoxDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -339,7 +339,7 @@ void GraphicOptionsInterface::ScreenOptionClick ( Button *button )
 
 }
 
-void GraphicOptionsInterface::ExitGameClick ( Button *button )
+void GraphicOptionsInterface::ExitGameClick ( Button * /*button*/ )
 {
 
 	app->Close ();

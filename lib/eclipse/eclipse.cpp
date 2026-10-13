@@ -167,7 +167,7 @@ void EclRegisterButton ( int x, int y, int width, int height,
 }
 
 void EclRegisterImageButton ( int x, int y, int width, int height,
-							  char *caption, char *tooltip, char *name )
+							  char *caption, char * /*tooltip*/, char *name )
 {
 
 #ifdef _DEBUG
@@ -477,7 +477,7 @@ bool EclIsOccupied ( int x, int y, int w, int h )
 
 }
 
-void EclDirtyButton ( const char *name )
+void EclDirtyButton ( [[maybe_unused]] const char *name )
 {
 
 /********************************************************************
@@ -516,7 +516,7 @@ void EclDirtyButton ( const char *name )
 
 }
 
-void EclDirtyRectangle ( int x, int y, int w, int h )
+void EclDirtyRectangle ( [[maybe_unused]] int x, [[maybe_unused]] int y, [[maybe_unused]] int w, [[maybe_unused]] int h )
 {
 /*
 	dirtyrect *d = new dirtyrect ();

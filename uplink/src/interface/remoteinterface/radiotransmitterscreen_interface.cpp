@@ -33,7 +33,7 @@ int RadioTransmitterScreenInterface::frequencyGhz = 160;
 int RadioTransmitterScreenInterface::frequencyMhz = 0;
 
 
-void RadioTransmitterScreenInterface::BackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void RadioTransmitterScreenInterface::BackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     glColor3f ( 0.0f, 0.0f, 0.0f );
@@ -64,7 +64,7 @@ void RadioTransmitterScreenInterface::FrequencyDraw ( Button *button, bool highl
 
 }
 
-void RadioTransmitterScreenInterface::DownClick ( Button *button )
+void RadioTransmitterScreenInterface::DownClick ( Button * /*button*/ )
 {
 
     frequencyMhz -= 1;
@@ -83,7 +83,7 @@ void RadioTransmitterScreenInterface::DownClick ( Button *button )
 
 }
 
-void RadioTransmitterScreenInterface::BigDownClick ( Button *button )
+void RadioTransmitterScreenInterface::BigDownClick ( Button * /*button*/ )
 {
     
     frequencyGhz -= 1;
@@ -97,7 +97,7 @@ void RadioTransmitterScreenInterface::BigDownClick ( Button *button )
 
 }
 
-void RadioTransmitterScreenInterface::UpClick ( Button *button )
+void RadioTransmitterScreenInterface::UpClick ( Button * /*button*/ )
 {
 
     frequencyMhz += 1;
@@ -116,7 +116,7 @@ void RadioTransmitterScreenInterface::UpClick ( Button *button )
 
 }
 
-void RadioTransmitterScreenInterface::BigUpClick ( Button *button )
+void RadioTransmitterScreenInterface::BigUpClick ( Button * /*button*/ )
 {
     
     frequencyGhz += 1;
@@ -130,7 +130,7 @@ void RadioTransmitterScreenInterface::BigUpClick ( Button *button )
 
 }
 
-void RadioTransmitterScreenInterface::ConnectClick ( Button *button )
+void RadioTransmitterScreenInterface::ConnectClick ( Button * /*button*/ )
 {
 
     ScriptLibrary::RunScript( 85 );

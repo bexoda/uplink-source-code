@@ -88,7 +88,7 @@ void IPLookup::Initialise ()
 {
 }
 
-void IPLookup::Tick ( int n )
+void IPLookup::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {

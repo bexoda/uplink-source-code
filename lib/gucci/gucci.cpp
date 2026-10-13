@@ -89,12 +89,12 @@ void GciDisableTrueTypeSupport ()
 
 }
 
-bool GciRegisterTrueTypeFont( const char *filename )
+bool GciRegisterTrueTypeFont( const char * /*filename*/ )
 {
     return true;
 }
 
-bool GciUnregisterTrueTypeFont( const char *filename )
+bool GciUnregisterTrueTypeFont( const char * /*filename*/ )
 {
     return true;
 }

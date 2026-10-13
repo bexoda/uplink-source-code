@@ -400,7 +400,7 @@ void Options::ApplyShutdownChanges ()
 
 }
 
-bool Options::Load ( FILE *file )
+bool Options::Load ( [[maybe_unused]] FILE *file )
 {
 
 	// Read from our own options file
@@ -488,7 +488,7 @@ bool Options::Load ( FILE *file )
 
 }
 
-void Options::Save ( FILE *file )
+void Options::Save ( [[maybe_unused]] FILE *file )
 {
 
 	// Write to our own options file

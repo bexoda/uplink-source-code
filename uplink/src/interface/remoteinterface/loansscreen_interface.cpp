@@ -42,7 +42,7 @@ bool LoansScreenInterface::EscapeKeyPressed ()
 
 }
 
-void LoansScreenInterface::IncreaseLoanClick ( Button *button )
+void LoansScreenInterface::IncreaseLoanClick ( Button * /*button*/ )
 {
 
 	LoansScreenInterface *thisint = (LoansScreenInterface *) GetInterfaceScreen ( SCREEN_LOANSSCREEN );
@@ -93,7 +93,7 @@ void LoansScreenInterface::IncreaseLoanClick ( Button *button )
 
 }
 
-void LoansScreenInterface::DecreaseLoanClick ( Button *button )
+void LoansScreenInterface::DecreaseLoanClick ( Button * /*button*/ )
 {
 
 	LoansScreenInterface *thisint = (LoansScreenInterface *) GetInterfaceScreen ( SCREEN_LOANSSCREEN );
@@ -135,7 +135,7 @@ void LoansScreenInterface::DecreaseLoanClick ( Button *button )
 
 }
 
-void LoansScreenInterface::CloseClick ( Button *button )
+void LoansScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	// Update the account if changed

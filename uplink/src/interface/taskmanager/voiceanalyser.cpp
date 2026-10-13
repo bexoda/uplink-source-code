@@ -186,7 +186,7 @@ void VoiceAnalyser::PlayMouseDown ( Button *button )
 
 }
 
-void VoiceAnalyser::DrawAnalysis ( Button *button, bool highlighted, bool clicked )
+void VoiceAnalyser::DrawAnalysis ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);

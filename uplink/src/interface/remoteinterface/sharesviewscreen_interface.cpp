@@ -53,7 +53,7 @@ bool SharesViewScreenInterface::EscapeKeyPressed ()
 
 }
 
-void SharesViewScreenInterface::DrawPriceGraph ( Button *button, bool highlighted, bool clicked )
+void SharesViewScreenInterface::DrawPriceGraph ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -124,7 +124,7 @@ void SharesViewScreenInterface::DrawProfit ( Button *button, bool highlighted, b
 
 }
 
-void SharesViewScreenInterface::BuyClick ( Button *button )
+void SharesViewScreenInterface::BuyClick ( Button * /*button*/ )
 {
 
 	SharesViewScreenInterface *thisint = (SharesViewScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -140,7 +140,7 @@ void SharesViewScreenInterface::BuyClick ( Button *button )
 
 }
 
-void SharesViewScreenInterface::SellClick ( Button *button )
+void SharesViewScreenInterface::SellClick ( Button * /*button*/ )
 {
 
 	SharesViewScreenInterface *thisint = (SharesViewScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -156,7 +156,7 @@ void SharesViewScreenInterface::SellClick ( Button *button )
 
 }
 
-void SharesViewScreenInterface::CloseClick ( Button *button )
+void SharesViewScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
     GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

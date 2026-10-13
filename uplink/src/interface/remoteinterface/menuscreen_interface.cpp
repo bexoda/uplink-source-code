@@ -29,7 +29,7 @@
 
 
 
-void MenuScreenInterface::DrawMenuOption ( Button *button, bool highlighted, bool clicked )
+void MenuScreenInterface::DrawMenuOption ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     SetColour ( "MenuText" );
@@ -37,7 +37,7 @@ void MenuScreenInterface::DrawMenuOption ( Button *button, bool highlighted, boo
 
 }
 
-void MenuScreenInterface::DrawMenuOptionDimmed ( Button *button, bool highlighted, bool clicked )
+void MenuScreenInterface::DrawMenuOptionDimmed ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	SetColour ( "DimmedText" );

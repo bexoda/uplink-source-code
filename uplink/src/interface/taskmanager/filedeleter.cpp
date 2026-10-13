@@ -155,7 +155,7 @@ void FileDeleter::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void FileDeleter::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void FileDeleter::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

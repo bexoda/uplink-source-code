@@ -77,7 +77,7 @@ void Decypher::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void Decypher::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void Decypher::SetTarget ( UplinkObject *uo, const char *uos, [[maybe_unused]] int uoi )
 {
 
 	/*
@@ -158,7 +158,7 @@ void Decypher::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void Decypher::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void Decypher::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

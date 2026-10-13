@@ -77,7 +77,7 @@ void WorldMapInterface::CycleStipplePattern ( int periodms )
 
 }
 
-void WorldMapInterface::FullScreenClick ( Button *button )
+void WorldMapInterface::FullScreenClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
@@ -116,7 +116,7 @@ void WorldMapInterface::LocationClick ( Button *button )
 
 }
 
-void WorldMapInterface::ConnectClick ( Button *button )
+void WorldMapInterface::ConnectClick ( Button * /*button*/ )
 {
 
     if ( game->GetWorld ()->GetPlayer ()->IsConnected () ) {
@@ -156,7 +156,7 @@ void WorldMapInterface::ConnectClick ( Button *button )
 
 }
 
-void WorldMapInterface::AfterPhoneDialler ( char *ip, char *info )
+void WorldMapInterface::AfterPhoneDialler ( char * /*ip*/, char * /*info*/ )
 {
 
     game->GetWorld ()->GetPlayer ()->GetConnection ()->Connect ();
@@ -217,7 +217,7 @@ void WorldMapInterface::ConnectDraw ( Button *button, bool highlighted, bool cli
 
 }
 
-void WorldMapInterface::CancelClick ( Button *button )
+void WorldMapInterface::CancelClick ( Button * /*button*/ )
 {
 
 	// Close the screen if a connection is set up to somewhere else
@@ -245,7 +245,7 @@ void WorldMapInterface::CancelClick ( Button *button )
  
 }
 
-void WorldMapInterface::CloseClick ( Button *button )
+void WorldMapInterface::CloseClick ( Button * /*button*/ )
 {
 
     CreateWorldMapInterface ( WORLDMAP_SMALL );
@@ -253,7 +253,7 @@ void WorldMapInterface::CloseClick ( Button *button )
 
 }
 
-void WorldMapInterface::SaveConnectionClick ( Button *button )
+void WorldMapInterface::SaveConnectionClick ( Button * /*button*/ )
 {
     
     WorldMapInterface *wmi = &(game->GetInterface ()->GetLocalInterface ()->GetHUD ()->wmi);
@@ -263,7 +263,7 @@ void WorldMapInterface::SaveConnectionClick ( Button *button )
 
 }
 
-void WorldMapInterface::LoadConnectionClick ( Button *button )
+void WorldMapInterface::LoadConnectionClick ( Button * /*button*/ )
 {
 
     WorldMapInterface *wmi = &(game->GetInterface ()->GetLocalInterface ()->GetHUD ()->wmi);
@@ -460,7 +460,7 @@ private:
   unsigned frameDuration;
 };
 
-void WorldMapInterface::DrawWorldMapLarge ( Button *button, bool highlighted, bool clicked )
+void WorldMapInterface::DrawWorldMapLarge ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 #ifdef LIMIT_FRAMERATE
   static FrameRate frameRate(10); /* 1 times a second */
@@ -801,7 +801,7 @@ void WorldMapInterface::CreateWorldMapInterface_Small ()
 
 }
 
-void WorldMapInterface::ZoomInClick ( Button *button )
+void WorldMapInterface::ZoomInClick ( Button * /*button*/ )
 {
 
     WorldMapInterface *thisint = (WorldMapInterface *) &(game->GetInterface ()->GetLocalInterface ()->GetHUD ()->wmi);
@@ -809,7 +809,7 @@ void WorldMapInterface::ZoomInClick ( Button *button )
     thisint->ChangeZoom ( 0.1f );
 }
 
-void WorldMapInterface::ZoomOutClick ( Button *button )
+void WorldMapInterface::ZoomOutClick ( Button * /*button*/ )
 {
     WorldMapInterface *thisint = (WorldMapInterface *) &(game->GetInterface ()->GetLocalInterface ()->GetHUD ()->wmi);
     UplinkAssert (thisint);
@@ -826,7 +826,7 @@ void WorldMapInterface::ZoomButtonClick ( Button *button )
     thisint->SetZoom( 1.0f + fractionX * (MAXZOOM - 1.0f) );
 }
 
-void WorldMapInterface::ZoomButtonDraw ( Button *button, bool highlighted, bool clicked )
+void WorldMapInterface::ZoomButtonDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     clear_draw ( button->x, button->y, button->width, button->height );

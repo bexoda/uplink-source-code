@@ -59,7 +59,7 @@ void SharesListScreenInterface::ShareClick ( Button *button )
 
 }
 
-void SharesListScreenInterface::ShareDraw ( Button *button, bool highlighted, bool clicked )
+void SharesListScreenInterface::ShareDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -215,7 +215,7 @@ void SharesListScreenInterface::FilterClick ( Button *button )
 
 }
 
-void SharesListScreenInterface::ScrollUpClick ( Button *button )
+void SharesListScreenInterface::ScrollUpClick ( Button * /*button*/ )
 {
 
 	--baseoffset;
@@ -231,7 +231,7 @@ void SharesListScreenInterface::ScrollUpClick ( Button *button )
 
 }
 
-void SharesListScreenInterface::ScrollDownClick ( Button *button )
+void SharesListScreenInterface::ScrollDownClick ( Button * /*button*/ )
 {
 
 	++baseoffset;
@@ -246,7 +246,7 @@ void SharesListScreenInterface::ScrollDownClick ( Button *button )
 
 }
 
-void SharesListScreenInterface::CloseClick ( Button *button )
+void SharesListScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	SharesListScreenInterface *lsi = (SharesListScreenInterface *) GetInterfaceScreen ( SCREEN_SHARESLISTSCREEN );

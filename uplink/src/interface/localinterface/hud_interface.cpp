@@ -70,7 +70,7 @@ HUDInterface::~HUDInterface ()
 
 }
 
-void HUDInterface::MainMenuClick ( Button *button )
+void HUDInterface::MainMenuClick ( Button * /*button*/ )
 {
 
 	CloseGame ();
@@ -102,7 +102,7 @@ void HUDInterface::CloseGame ()
 
 }
 
-void HUDInterface::SoftwareClick ( Button *button )
+void HUDInterface::SoftwareClick ( Button * /*button*/ )
 {
 
 	GetHUD ()->si.ToggleSoftwareMenu ();
@@ -330,7 +330,7 @@ void HUDInterface::SpeedButtonClick ( Button *button )
 
 }
 
-void HUDInterface::UnPauseClick ( Button *button )
+void HUDInterface::UnPauseClick ( Button * /*button*/ )
 {
 
     remove_msgbox ();
@@ -347,7 +347,7 @@ void HUDInterface::UnPauseClick ( Button *button )
 
 }
 
-void HUDInterface::PauseButtonClick  ( Button *button )
+void HUDInterface::PauseButtonClick  ( [[maybe_unused]] Button *button )
 {
 
     game->SetGameSpeed ( GAMESPEED_PAUSED );
@@ -643,7 +643,7 @@ void HUDInterface::AddUpgrade ( char upgrade )
 
 }
 
-void HUDInterface::RemoveUpgrade ( char upgrade )
+void HUDInterface::RemoveUpgrade ( char /*upgrade*/ )
 {
 
     UplinkAbort ( "You said this was never needed!" );

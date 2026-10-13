@@ -190,7 +190,7 @@ void App::UnRegisterPhoneDialler ( PhoneDialler *phoneDiallerScreen )
 
 }
 
-void CopyGame ( char *username, char *filename )
+void CopyGame ( char * /*username*/, char *filename )
 {
 
 	char filenametmp [256];
@@ -550,12 +550,12 @@ bool App::Closed ()
 
 }
 
-bool App::Load ( FILE *file )
+bool App::Load ( FILE * /*file*/ )
 {
 	return true;
 }
 
-void App::Save ( FILE *file )
+void App::Save ( FILE * /*file*/ )
 {
 }
 

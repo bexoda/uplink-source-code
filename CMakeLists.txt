@@ -42,6 +42,9 @@ add_library(uplink_flags INTERFACE)
 target_compile_definitions(uplink_flags INTERFACE
   _REENTRANT USE_SDL USE_FTGL
   $<IF:$<BOOL:${UPLINK_DEMO}>,DEMOGAME=1,FULLGAME=1>)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  target_compile_options(uplink_flags INTERFACE -Wall -Wextra)
+endif()
 # A derived function whose signature drifts from the base virtual silently stops overriding
 # it (a const change once disabled every hacking tool's SetTarget). Level 1 flags only those.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -71,7 +74,7 @@ add_library(irclib STATIC
   ${CONTRIB}/irclib/CrossThreadsMessagingDevice.cpp
   ${CONTRIB}/irclib/linux/windows.cpp ${CONTRIB}/irclib/linux/missing.cpp
   ${CONTRIB}/irclib/linux/winsock.cpp)
-target_include_directories(irclib PUBLIC ${CONTRIB}/irclib ${CONTRIB}/irclib/linux)
+target_include_directories(irclib SYSTEM PUBLIC ${CONTRIB}/irclib ${CONTRIB}/irclib/linux)
 target_link_libraries(irclib PRIVATE uplink_flags Threads::Threads)
 target_compile_options(irclib PRIVATE -w)
 
@@ -80,7 +83,7 @@ file(GLOB FTGL_SOURCES ${CONTRIB}/FTGL-2.1.2/src/*.cpp)
 add_library(ftgl_uplink STATIC ${FTGL_SOURCES})
 file(GLOB FTGL_HEADERS ${CONTRIB}/FTGL-2.1.2/include/*.h)
 file(COPY ${FTGL_HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/ftgl-include/ftgl)
-target_include_directories(ftgl_uplink
+target_include_directories(ftgl_uplink SYSTEM
   PUBLIC ${CMAKE_BINARY_DIR}/ftgl-include ${CONTRIB}/FTGL-2.1.2/include)
 target_link_libraries(ftgl_uplink PUBLIC Freetype::Freetype OpenGL::GL OpenGL::GLU)
 target_compile_options(ftgl_uplink PRIVATE -w)

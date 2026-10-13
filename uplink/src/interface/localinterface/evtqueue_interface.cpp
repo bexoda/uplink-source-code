@@ -29,14 +29,14 @@ int EventQueueInterface::baseoffset = 0;
 int EventQueueInterface::previousupdate = 0;
 
 
-void EventQueueInterface::TitleClick ( Button *button )
+void EventQueueInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void EventQueueInterface::ScrollUpClick ( Button *button )
+void EventQueueInterface::ScrollUpClick ( Button * /*button*/ )
 {
 	
 	--baseoffset;	
@@ -54,7 +54,7 @@ void EventQueueInterface::ScrollUpClick ( Button *button )
 
 }
 
-void EventQueueInterface::ScrollDownClick ( Button *button )
+void EventQueueInterface::ScrollDownClick ( Button * /*button*/ )
 {
 
 	++baseoffset;
@@ -71,7 +71,7 @@ void EventQueueInterface::ScrollDownClick ( Button *button )
 
 }
 
-void EventQueueInterface::FullDetailsCloseClick ( Button *button )
+void EventQueueInterface::FullDetailsCloseClick ( Button * /*button*/ )
 {
 
 	EclRemoveButton ( "evtqueue_fulldate" );

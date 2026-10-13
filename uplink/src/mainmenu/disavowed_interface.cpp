@@ -24,7 +24,7 @@ DisavowedInterface::~DisavowedInterface ()
 {
 }
 
-void DisavowedInterface::ReturnToMainMenuClick ( Button *button )
+void DisavowedInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

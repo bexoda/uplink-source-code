@@ -44,10 +44,10 @@ void UplinkTask::SetFollowMouse ( bool newfollowmouse )
 
 }
 
-void UplinkTask::SetTarget ( UplinkObject *newtargetobject, const char *newtargetstring, int targetint )
+void UplinkTask::SetTarget ( UplinkObject * /*newtargetobject*/, const char * /*newtargetstring*/, int /*targetint*/ )
 {
 }
 
-void UplinkTask::MoveTo ( int x, int y, int time_ms )
+void UplinkTask::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }

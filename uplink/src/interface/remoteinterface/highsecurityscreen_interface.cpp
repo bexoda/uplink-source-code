@@ -36,7 +36,7 @@ HighSecurityScreenInterface::~HighSecurityScreenInterface ()
 {
 }
 
-void HighSecurityScreenInterface::SystemTitleDraw ( Button *button, bool highlighted, bool clicked )
+void HighSecurityScreenInterface::SystemTitleDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int index;
@@ -94,7 +94,7 @@ void HighSecurityScreenInterface::SystemClick ( Button *button )
 
 }
 
-void HighSecurityScreenInterface::BypassClick ( Button *button )
+void HighSecurityScreenInterface::BypassClick ( Button * /*button*/ )
 {
 
 	// Give admin access

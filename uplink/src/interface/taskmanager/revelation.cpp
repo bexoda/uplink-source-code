@@ -53,7 +53,7 @@ void Revelation::Initialise ()
 {
 }
 
-void Revelation::Tick ( int n )
+void Revelation::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {
@@ -132,7 +132,7 @@ void Revelation::Tick ( int n )
 
 }
 
-void Revelation::DrawRevelation ( Button *button, bool highlighted, bool clicked )
+void Revelation::DrawRevelation ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     char unused [64];

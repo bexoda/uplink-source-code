@@ -63,7 +63,7 @@ void FirewallDisable::BorderDraw ( Button *button, bool highlighted, bool clicke
 
 }
 
-void FirewallDisable::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void FirewallDisable::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -152,7 +152,7 @@ FirewallDisable::~FirewallDisable ()
 }
 
 
-void FirewallDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void FirewallDisable::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 
 	/*
@@ -163,7 +163,7 @@ void FirewallDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 }
 
-void FirewallDisable::MoveTo ( int x, int y, int time_ms )
+void FirewallDisable::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }
 
@@ -171,7 +171,7 @@ void FirewallDisable::Initialise ()
 {
 }
 
-void FirewallDisable::Tick ( int n )
+void FirewallDisable::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {

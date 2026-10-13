@@ -14,7 +14,7 @@
 
 
 
-void FaithScreenInterface::CloseClick ( Button *button )
+void FaithScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
     GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

@@ -258,7 +258,7 @@ void RecordGenerator::GenerateRecord_Criminal ( char *personname, int age )
 
 }
 
-void RecordGenerator::GenerateRecord_Medical ( char *personname, int age )
+void RecordGenerator::GenerateRecord_Medical ( char *personname, int /*age*/ )
 {
 
 	Record *rec = new Record ();
@@ -419,7 +419,7 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 }
 
-void RecordGenerator::GenerateRecord_Financial ( char *personname, int age )
+void RecordGenerator::GenerateRecord_Financial ( char *personname, int /*age*/ )
 {
 
 	// Find a financial computer - owned by one of the banks of course

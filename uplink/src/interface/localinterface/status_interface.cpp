@@ -39,14 +39,14 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void StatusInterface::TitleClick ( Button *button )
+void StatusInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void StatusInterface::MiniTitleDraw ( Button *button, bool highlighted, bool clicked )
+void StatusInterface::MiniTitleDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	SetColour ( "TitleText" );

@@ -92,7 +92,7 @@ void NewsScreenInterface::ClickNewsButton ( Button *button )
 	
 }
 
-void NewsScreenInterface::DrawNewsButton ( Button *button, bool highlighted, bool clicked )
+void NewsScreenInterface::DrawNewsButton ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	int index;
@@ -192,7 +192,7 @@ void NewsScreenInterface::DrawNewsButton ( Button *button, bool highlighted, boo
 	
 }
 
-void NewsScreenInterface::DrawDetails ( Button *button, bool highlighted, bool clicked )
+void NewsScreenInterface::DrawDetails ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -284,7 +284,7 @@ void NewsScreenInterface::HighlightNewsButton ( Button *button )
 
 }
 
-void NewsScreenInterface::ExitClick ( Button *button )
+void NewsScreenInterface::ExitClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -302,7 +302,7 @@ bool NewsScreenInterface::EscapeKeyPressed ()
 }
 
 
-void NewsScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void NewsScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

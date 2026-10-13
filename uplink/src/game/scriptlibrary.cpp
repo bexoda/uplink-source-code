@@ -601,7 +601,7 @@ void ScriptLibrary::Script31 ()
 }
 
 
-void ScriptLibrary::DrawConnection ( Button *button, bool highlighted, bool clicked )
+void ScriptLibrary::DrawConnection ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int screenheight = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
@@ -1269,21 +1269,21 @@ void ScriptLibrary::Script45 ()
 
 }
 
-void ShowRecommendationsClick ( Button *button )
+void ShowRecommendationsClick ( Button * /*button*/ )
 {
 
     ScriptLibrary::RunScript ( 47 );
 
 }
 
-void ExitGameClick ( Button *button )
+void ExitGameClick ( Button * /*button*/ )
 {
 
 	app->Close ();
 
 }
 
-void NewPatchOKClick ( Button *button )
+void NewPatchOKClick ( Button * /*button*/ )
 {
 
 //    EclReset ( app->GetOptions ()->GetOptionValue ("graphics_screenwidth"),
@@ -1349,12 +1349,12 @@ void ScriptLibrary::Script46 ()
 
 }
 
-void DrawMainTitle ( Button *button, bool highlighted, bool clicked )
+void DrawMainTitle ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 	GciDrawText ( button->x, button->y, button->caption, HELVETICA_18 );
 }
 
-void ToggleBoxDraw ( Button *button, bool highlighted, bool clicked )
+void ToggleBoxDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);

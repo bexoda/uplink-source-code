@@ -129,13 +129,13 @@ void NetworkServer::StopListening ()
 
 }
 
-bool NetworkServer::Load ( FILE *file )
+bool NetworkServer::Load ( FILE * /*file*/ )
 {
 	// not needed
 	return true;
 }
 
-void NetworkServer::Save ( FILE *file )
+void NetworkServer::Save ( FILE * /*file*/ )
 {
 	// not needed
 }

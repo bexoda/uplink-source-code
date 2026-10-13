@@ -73,7 +73,7 @@ void CompanyInfoScreenInterface::AdminAddClick ( Button *button )
 
 }
 
-void CompanyInfoScreenInterface::BackClick ( Button *button )
+void CompanyInfoScreenInterface::BackClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

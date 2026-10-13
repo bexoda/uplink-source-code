@@ -31,7 +31,7 @@
 #define for if(1) for
 
 
-void RankingScreenInterface::ExitClick ( Button *button )
+void RankingScreenInterface::ExitClick ( Button * /*button*/ )
 {
 
 	GenericScreen *sss = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -41,7 +41,7 @@ void RankingScreenInterface::ExitClick ( Button *button )
 
 }
 
-void RankingScreenInterface::ActiveAgentDraw ( Button *button, bool highlighted, bool clicked )
+void RankingScreenInterface::ActiveAgentDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 		
 	clear_draw ( button->x, button->y, button->width, button->height );
@@ -55,7 +55,7 @@ void RankingScreenInterface::ActiveAgentDraw ( Button *button, bool highlighted,
 
 }
 
-void RankingScreenInterface::PlayerDraw ( Button *button, bool highlighted, bool clicked )
+void RankingScreenInterface::PlayerDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 		
 	glBegin ( GL_QUADS );
@@ -77,7 +77,7 @@ void RankingScreenInterface::PlayerDraw ( Button *button, bool highlighted, bool
 
 }
 
-void RankingScreenInterface::NonActiveAgentDraw ( Button *button, bool highlighted, bool clicked )
+void RankingScreenInterface::NonActiveAgentDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	clear_draw ( button->x, button->y, button->width, button->height );

@@ -46,7 +46,7 @@ ChangeGatewayScreenInterface::~ChangeGatewayScreenInterface ()
 {
 }
 
-void ChangeGatewayScreenInterface::GatewayButtonDraw ( Button *button, bool highlighted, bool clicked )
+void ChangeGatewayScreenInterface::GatewayButtonDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -136,7 +136,7 @@ void ChangeGatewayScreenInterface::GatewayButtonDraw ( Button *button, bool high
 
 }
 
-void ChangeGatewayScreenInterface::InfoTextDraw ( Button *button, bool highlighted, bool clicked )
+void ChangeGatewayScreenInterface::InfoTextDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	textbutton_draw ( button, true, true );
@@ -160,7 +160,7 @@ void ChangeGatewayScreenInterface::GatewayButtonClick ( Button *button )
 
 }
 
-void ChangeGatewayScreenInterface::CloseClick ( Button *button )
+void ChangeGatewayScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs= (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -171,7 +171,7 @@ void ChangeGatewayScreenInterface::CloseClick ( Button *button )
 
 }
 
-void ChangeGatewayScreenInterface::BuyClick ( Button *button )
+void ChangeGatewayScreenInterface::BuyClick ( Button * /*button*/ )
 {
 
 	ChangeGatewayScreenInterface *thisint = (ChangeGatewayScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -209,7 +209,7 @@ void ChangeGatewayScreenInterface::BuyClick ( Button *button )
 
 }
 
-void ChangeGatewayScreenInterface::BuyConfirmClick ( Button *button )
+void ChangeGatewayScreenInterface::BuyConfirmClick ( Button * /*button*/ )
 {
 
 	ChangeGatewayScreenInterface *thisint = (ChangeGatewayScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -260,7 +260,7 @@ void ChangeGatewayScreenInterface::BuyConfirmClick ( Button *button )
 
 }
 
-void ChangeGatewayScreenInterface::BuyCancelClick ( Button *button )
+void ChangeGatewayScreenInterface::BuyCancelClick ( Button * /*button*/ )
 {
 
 	ChangeGatewayScreenInterface *thisint = (ChangeGatewayScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -292,7 +292,7 @@ void ChangeGatewayScreenInterface::GatewayPictureDraw ( Button *button, bool hig
 
 }
 
-void ChangeGatewayScreenInterface::ScrollChange ( char *scrollname, int newIndex )
+void ChangeGatewayScreenInterface::ScrollChange ( char * /*scrollname*/, int newIndex )
 {
 
     baseOffset = newIndex;

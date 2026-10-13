@@ -36,7 +36,7 @@ RemoteInterfaceScreen::~RemoteInterfaceScreen()
 {
 }
 
-void RemoteInterfaceScreen::DrawMainTitle ( Button *button, bool highlighted, bool clicked )
+void RemoteInterfaceScreen::DrawMainTitle ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int screenheight = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
@@ -53,7 +53,7 @@ void RemoteInterfaceScreen::DrawMainTitle ( Button *button, bool highlighted, bo
 
 }
 
-void RemoteInterfaceScreen::DrawSubTitle ( Button *button, bool highlighted, bool clicked )
+void RemoteInterfaceScreen::DrawSubTitle ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int screenheight = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );

@@ -90,7 +90,7 @@ static bool isSteamInit = false;
 
 static FILE *file_stdout = NULL;
 
-void hSignalSIGSEGV ( int n )
+void hSignalSIGSEGV ( [[maybe_unused]] int n )
 {
 
 	printf ( "\nAn Uplink Internal Error has occured: segmentation violation (SIGSEGV)\n" );
@@ -103,7 +103,7 @@ void hSignalSIGSEGV ( int n )
 
 }
 
-void hSignalSIGFPE ( int n )
+void hSignalSIGFPE ( [[maybe_unused]] int n )
 {
 
 	printf ( "\nAn Uplink Internal Error has occured: erroneous arithmetic operation (SIGFPE)\n" );
@@ -116,7 +116,7 @@ void hSignalSIGFPE ( int n )
 
 }
 
-void hSignalSIGPIPE ( int n )
+void hSignalSIGPIPE ( [[maybe_unused]] int n )
 {
 
 	printf ( "\nAn Uplink Internal Error has occured: write to pipe with no one reading (SIGPIPE)\n" );

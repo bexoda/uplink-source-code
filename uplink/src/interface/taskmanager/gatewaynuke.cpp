@@ -164,14 +164,14 @@ GatewayNuke::~GatewayNuke ()
 {
 }
 
-void GatewayNuke::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void GatewayNuke::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 
 	// This doesn't need to be called
 
 }
 
-void GatewayNuke::MoveTo ( int x, int y, int time_ms )
+void GatewayNuke::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }
 
@@ -182,7 +182,7 @@ void GatewayNuke::Initialise ()
 
 }
 
-void GatewayNuke::Tick ( int n )
+void GatewayNuke::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {

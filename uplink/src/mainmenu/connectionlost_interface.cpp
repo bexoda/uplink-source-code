@@ -27,7 +27,7 @@ ConnectionLostInterface::~ConnectionLostInterface ()
 {
 }
 
-void ConnectionLostInterface::ReturnToMainMenuClick ( Button *button )
+void ConnectionLostInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

@@ -24,7 +24,7 @@ RevelationLostInterface::~RevelationLostInterface ()
 {
 }
 
-void RevelationLostInterface::ReturnToMainMenuClick ( Button *button )
+void RevelationLostInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

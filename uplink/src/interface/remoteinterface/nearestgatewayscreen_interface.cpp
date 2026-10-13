@@ -36,7 +36,7 @@ NearestGatewayScreenInterface::~NearestGatewayScreenInterface ()
 {
 }
 
-void NearestGatewayScreenInterface::DrawBlack ( Button *button, bool highlighted, bool clicked )
+void NearestGatewayScreenInterface::DrawBlack ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -44,7 +44,7 @@ void NearestGatewayScreenInterface::DrawBlack ( Button *button, bool highlighted
 
 }
 
-void NearestGatewayScreenInterface::DrawLocation ( Button *button, bool highlighted, bool clicked )
+void NearestGatewayScreenInterface::DrawLocation ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);

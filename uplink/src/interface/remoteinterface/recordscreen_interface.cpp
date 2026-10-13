@@ -37,7 +37,7 @@ void RecordScreenInterface::CloseClick ( Button *button )
 
 }
 
-void RecordScreenInterface::CommitClick ( Button *button )
+void RecordScreenInterface::CommitClick ( [[maybe_unused]] Button *button )
 {
 
 	// Go through each button-pair on screen, updating each
@@ -93,14 +93,14 @@ void RecordScreenInterface::CommitClick ( Button *button )
 
 }
 
-void RecordScreenInterface::ScrollLeftClick ( Button *button )
+void RecordScreenInterface::ScrollLeftClick ( Button * /*button*/ )
 {
 
 	if ( recordindex > 0 )	CreateRecord ( recordindex - 1 );
 		
 }
 
-void RecordScreenInterface::ScrollRightClick ( Button *button )
+void RecordScreenInterface::ScrollRightClick ( Button * /*button*/ )
 {
 
 	ComputerScreen *cs = game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

@@ -41,7 +41,7 @@ SocialSecurityScreenInterface::~SocialSecurityScreenInterface ()
 
 }
 
-void SocialSecurityScreenInterface::CommitClick ( Button *button )
+void SocialSecurityScreenInterface::CommitClick ( Button * /*button*/ )
 {
 
 	SocialSecurityScreenInterface *sssi = (SocialSecurityScreenInterface *) GetInterfaceScreen ( SCREEN_SOCSECSCREEN );
@@ -71,7 +71,7 @@ void SocialSecurityScreenInterface::CommitClick ( Button *button )
 
 }
 
-void SocialSecurityScreenInterface::CloseClick ( Button *button )
+void SocialSecurityScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -89,7 +89,7 @@ bool SocialSecurityScreenInterface::EscapeKeyPressed ()
 
 }
 
-void SocialSecurityScreenInterface::DetailsDraw ( Button *button, bool highlighted, bool clicked )
+void SocialSecurityScreenInterface::DetailsDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	textbutton_draw ( button, highlighted, true );

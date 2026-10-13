@@ -60,7 +60,7 @@ Image *IRCInterface::imgSmileyWink = NULL;
 #define COLOUR_MODE         1.0f, 0.8f, 0.8f
 
 
-void IRCInterface::MainTextDraw ( Button *button, bool highlighted, bool clicked )
+void IRCInterface::MainTextDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -181,7 +181,7 @@ void IRCInterface::ConnectDraw ( Button *button, bool highlighted, bool clicked 
 
 }
 
-void IRCInterface::BackBlackoutDraw ( Button *button, bool highlighted, bool clicked )
+void IRCInterface::BackBlackoutDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     clear_draw( button->x, button->y, button->width, button->height );
@@ -229,7 +229,7 @@ void IRCInterface::UserListDraw ( Button *button, bool highlighted, bool clicked
 
 }
 
-void IRCInterface::ConnectClick ( Button *button )
+void IRCInterface::ConnectClick ( Button * /*button*/ )
 {
 
     IRCInterface *thisint = (IRCInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen ();
@@ -302,7 +302,7 @@ void IRCInterface::ConnectClick ( Button *button )
 
 }
 
-void IRCInterface::PostClick ( Button *button )
+void IRCInterface::PostClick ( Button * /*button*/ )
 {
 
     if ( !connected ) return;
@@ -344,14 +344,14 @@ void IRCInterface::PostClick ( Button *button )
 
 }
 
-void IRCInterface::TextScrollChange ( char *name, int newValue )
+void IRCInterface::TextScrollChange ( char * /*name*/, int /*newValue*/ )
 {
     
     EclDirtyButton ( "irc_maintext" );
 
 }
 
-void IRCInterface::UserScrollChange ( char *name, int newValue )
+void IRCInterface::UserScrollChange ( char * /*name*/, int /*newValue*/ )
 {
 
     EclDirtyButton ( "irc_userlist" );
@@ -869,7 +869,7 @@ void UplinkIRCMonitor::OnIrcDefault( const CIrcMessage* pmsg )
 }
 
 
-bool UplinkIRCMonitor::Received_RPL_WELCOME(const CIrcMessage* pmsg)
+bool UplinkIRCMonitor::Received_RPL_WELCOME(const CIrcMessage* /*pmsg*/)
 {
 
     // We can now join the channel
@@ -1037,7 +1037,7 @@ bool UplinkIRCMonitor::Received_RPL_NAMREPLY (const CIrcMessage* pmsg)
 
 }
 
-bool UplinkIRCMonitor::Received_RPL_ENDOFNAMES (const CIrcMessage* pmsg)
+bool UplinkIRCMonitor::Received_RPL_ENDOFNAMES (const CIrcMessage* /*pmsg*/)
 {
 
 	// Useless message?

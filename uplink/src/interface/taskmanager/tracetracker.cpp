@@ -125,7 +125,7 @@ void TraceTracker::TraceDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void TraceTracker::AudioDraw ( Button *button, bool highlighted, bool clicked )
+void TraceTracker::AudioDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int pid;
@@ -210,7 +210,7 @@ void TraceTracker::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void TraceTracker::Tick ( int n )
+void TraceTracker::Tick ( [[maybe_unused]] int n )
 {
 
 	if ( IsInterfaceVisible () ) {

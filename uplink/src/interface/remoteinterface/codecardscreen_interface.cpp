@@ -193,7 +193,7 @@ bool CodeCardScreenInterface::ReturnKeyPressed ()
 
 }
 
-void CodeCardScreenInterface::ProceedClick ( Button *button )
+void CodeCardScreenInterface::ProceedClick ( Button * /*button*/ )
 {
 
     // Is the code correct?

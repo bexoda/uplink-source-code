@@ -26,7 +26,7 @@ OptionsInterface::~OptionsInterface()
 
 }
 
-void OptionsInterface::GameOptionsClick ( Button *button )
+void OptionsInterface::GameOptionsClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_GENERICOPTIONS );
@@ -35,7 +35,7 @@ void OptionsInterface::GameOptionsClick ( Button *button )
 
 }
 
-void OptionsInterface::GraphicsOptionsClick	( Button *button )
+void OptionsInterface::GraphicsOptionsClick	( Button * /*button*/ )
 {
 
 //	app->GetMainMenu ()->RunScreen ( MAINMENU_GENERICOPTIONS );
@@ -46,7 +46,7 @@ void OptionsInterface::GraphicsOptionsClick	( Button *button )
 
 }
 
-void OptionsInterface::SoundOptionsClick ( Button *button )
+void OptionsInterface::SoundOptionsClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_GENERICOPTIONS );
@@ -55,21 +55,21 @@ void OptionsInterface::SoundOptionsClick ( Button *button )
 
 }
 
-void OptionsInterface::ThemeOptionsClick ( Button *button )
+void OptionsInterface::ThemeOptionsClick ( Button * /*button*/ )
 {
 
     app->GetMainMenu ()->RunScreen ( MAINMENU_THEME );
 
 }
 
-void OptionsInterface::NetworkOptionsClick ( Button *button )
+void OptionsInterface::NetworkOptionsClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_NETWORKOPTIONS );
 
 }
 
-void OptionsInterface::ReturnToMainMenuClick ( Button *button )
+void OptionsInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

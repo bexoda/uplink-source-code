@@ -64,7 +64,7 @@ void Svb_button_draw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void Svb_textbutton_draw ( Button *button, bool highlighted, bool clicked )
+void Svb_textbutton_draw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	assert ( button );
@@ -88,7 +88,7 @@ void Svb_textbutton_draw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void Svb_column_draw ( Button *button, bool highlighted, bool clicked )
+void Svb_column_draw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	assert ( button );

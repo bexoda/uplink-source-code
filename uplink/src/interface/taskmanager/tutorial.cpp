@@ -213,7 +213,7 @@ void Tutorial::Initialise ()
 {
 }
 
-void Tutorial::Tick ( int n )
+void Tutorial::Tick ( int /*n*/ )
 {
 
 	if ( !menu && HasCompletedCurrentSection () ) {

@@ -530,7 +530,7 @@ void LanGenerator::GenerateLANCluster ( LanComputer *comp, int difficulty )
 
 }
 
-void LanGenerator::GenerateLAN_Level0Cluster ( LanComputer *comp, LanCluster *cluster, LList <int> *usedRadioFrenquencies, int x, int y, int width, int height )
+void LanGenerator::GenerateLAN_Level0Cluster ( LanComputer *comp, LanCluster *cluster, LList <int> * /*usedRadioFrenquencies*/, int x, int y, int width, int height )
 {
 
     cluster->centreX = x + width / 2;
@@ -1301,7 +1301,7 @@ void LanGenerator::GenerateLAN_Level4Cluster ( LanComputer *comp, LanCluster *cl
 
 }
 
-void LanGenerator::GenerateLAN_BoundingBox ( LanComputer *comp, LanCluster *cluster, int x, int y, int width, int height )
+void LanGenerator::GenerateLAN_BoundingBox ( [[maybe_unused]] LanComputer *comp, [[maybe_unused]] LanCluster *cluster, [[maybe_unused]] int x, [[maybe_unused]] int y, [[maybe_unused]] int width, [[maybe_unused]] int height )
 {
 
 #ifdef TESTGAME

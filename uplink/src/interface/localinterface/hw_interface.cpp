@@ -33,21 +33,21 @@
 
 
 
-void HWInterface::TitleClick ( Button *button )
+void HWInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void HWInterface::ShowGatewayClick ( Button *button )
+void HWInterface::ShowGatewayClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->GetHUD ()->gw.Create ();
 
 }
 
-void HWInterface::MiniTitleDraw ( Button *button, bool highlighted, bool clicked )
+void HWInterface::MiniTitleDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	SetColour ( "TitleText" );

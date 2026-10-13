@@ -153,7 +153,7 @@ void SgShutdown()
   Mix_CloseAudio();
 }
 
-void SgPlaySound ( char *fullfilename, const char *id, bool synchronised )
+void SgPlaySound ( char *fullfilename, const char *id, bool /*synchronised*/ )
 {
   if (!SgInitialised)
     return;

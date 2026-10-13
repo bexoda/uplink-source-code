@@ -88,11 +88,11 @@ MotionSensor::~MotionSensor ()
 {
 }
 
-void MotionSensor::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void MotionSensor::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 }
 
-void MotionSensor::MoveTo ( int x, int y, int time_ms )
+void MotionSensor::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }
 
@@ -101,7 +101,7 @@ void MotionSensor::Initialise ()
 {
 }
 
-void MotionSensor::Tick ( int n )
+void MotionSensor::Tick ( [[maybe_unused]] int n )
 {
 
 	if ( IsInterfaceVisible () ) {

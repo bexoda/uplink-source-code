@@ -124,7 +124,7 @@ void CypherScreenInterface::ClickCypher ( Button *button )
 
 }
 
-void CypherScreenInterface::BypassClick ( Button *button )
+void CypherScreenInterface::BypassClick ( Button * /*button*/ )
 {
 
 	RemoteInterfaceScreen *ris = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -140,7 +140,7 @@ void CypherScreenInterface::BypassClick ( Button *button )
 
 }
 
-void CypherScreenInterface::ProceedClick ( Button *button )
+void CypherScreenInterface::ProceedClick ( Button * /*button*/ )
 {
 
 	RemoteInterfaceScreen *ris = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();

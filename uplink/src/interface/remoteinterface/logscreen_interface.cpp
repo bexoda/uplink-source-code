@@ -38,7 +38,7 @@ int LogScreenInterface::baseoffset = 0;
 int LogScreenInterface::previousnumlogs = 0;
 
 
-void LogScreenInterface::CloseClick ( Button *button )
+void LogScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	ComputerScreen *compscreen = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->GetComputerScreen ();
@@ -170,7 +170,7 @@ int LogScreenInterface::GetLastItem ( DArray<class AccessLog *> *logs )
 
 }
 
-void LogScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void LogScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
 	ComputerScreen *compscreen = game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ()->GetComputerScreen ();
@@ -191,7 +191,7 @@ void LogScreenInterface::ScrollChange ( char *scrollname, int newValue )
 
 }
 
-void LogScreenInterface::LogDraw ( Button *button, bool highlighted, bool clicked )
+void LogScreenInterface::LogDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

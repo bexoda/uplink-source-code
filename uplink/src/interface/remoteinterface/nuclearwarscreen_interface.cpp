@@ -42,7 +42,7 @@ NuclearWarScreenInterface::~NuclearWarScreenInterface ()
 {
 }
 
-void NuclearWarScreenInterface::DrawBlack ( Button *button, bool highlighted, bool clicked )
+void NuclearWarScreenInterface::DrawBlack ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -50,7 +50,7 @@ void NuclearWarScreenInterface::DrawBlack ( Button *button, bool highlighted, bo
 
 }
 
-void NuclearWarScreenInterface::DrawLocation ( Button *button, bool highlighted, bool clicked )
+void NuclearWarScreenInterface::DrawLocation ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -222,7 +222,7 @@ bool NuclearWarScreenInterface::ReturnKeyPressed ()
 
 }
 
-void NuclearWarScreenInterface::CloseClick ( Button *button )
+void NuclearWarScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
     if ( !game->GetWorld ()->plotgenerator.PlayerCompletedSpecialMission (SPECIALMISSION_WARGAMES) ) {

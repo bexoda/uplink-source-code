@@ -122,7 +122,7 @@ void HWSalesScreenInterface::ClickHWButton ( Button *button )
 	
 }
 
-void HWSalesScreenInterface::DrawHWButton ( Button *button, bool highlighted, bool clicked )
+void HWSalesScreenInterface::DrawHWButton ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -225,7 +225,7 @@ void HWSalesScreenInterface::HighlightHWButton ( Button *button )
 
 }
 
-void HWSalesScreenInterface::ExitClick ( Button *button )
+void HWSalesScreenInterface::ExitClick ( Button * /*button*/ )
 {
 
 	HWSalesScreenInterface *thisint = (HWSalesScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -254,7 +254,7 @@ void HWSalesScreenInterface::ExitClick ( Button *button )
 
 }
 
-void HWSalesScreenInterface::AcceptClick ( Button *button )
+void HWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 {
 
 	HWSalesScreenInterface *thisint = (HWSalesScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -387,7 +387,7 @@ void HWSalesScreenInterface::AcceptClick ( Button *button )
 
 }
 
-void HWSalesScreenInterface::ScrollUpClick ( Button *button )
+void HWSalesScreenInterface::ScrollUpClick ( Button * /*button*/ )
 {
 	
 	--baseoffset;	
@@ -404,7 +404,7 @@ void HWSalesScreenInterface::ScrollUpClick ( Button *button )
 
 }
 
-void HWSalesScreenInterface::ScrollDownClick ( Button *button )
+void HWSalesScreenInterface::ScrollDownClick ( Button * /*button*/ )
 {
 
 	++baseoffset;

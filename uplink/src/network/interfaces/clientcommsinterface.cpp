@@ -77,7 +77,7 @@ ClientCommsInterface::~ClientCommsInterface()
     
 }
 
-void ClientCommsInterface::MainMenuClick ( Button *button )
+void ClientCommsInterface::MainMenuClick ( Button * /*button*/ )
 {
 
     UplinkAssert ( app->GetNetwork ()->STATUS == NETWORK_CLIENT );

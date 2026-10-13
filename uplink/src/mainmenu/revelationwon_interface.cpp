@@ -24,7 +24,7 @@ RevelationWonInterface::~RevelationWonInterface ()
 {
 }
 
-void RevelationWonInterface::ReturnToMainMenuClick ( Button *button )
+void RevelationWonInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

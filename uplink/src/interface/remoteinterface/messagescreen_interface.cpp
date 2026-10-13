@@ -32,7 +32,7 @@ void MessageScreenInterface::Click ( Button *button )
 
 }
 
-void MessageScreenInterface::MailMeClick ( Button *button )
+void MessageScreenInterface::MailMeClick ( Button * /*button*/ )
 {
 
 	MessageScreen *msi = (MessageScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

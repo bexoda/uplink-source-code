@@ -48,7 +48,7 @@ bool CriminalScreenInterface::EscapeKeyPressed ()
 
 }
 
-void CriminalScreenInterface::HistoryDraw ( Button *button, bool highlighted, bool clicked )
+void CriminalScreenInterface::HistoryDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	textbutton_draw ( button, highlighted, true );
@@ -63,14 +63,14 @@ void CriminalScreenInterface::NameDraw ( Button *button, bool highlighted, bool 
 
 }
 
-void CriminalScreenInterface::NameBorderDraw ( Button *button, bool highlighted, bool clicked )
+void CriminalScreenInterface::NameBorderDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     border_draw ( button );
 
 }
 
-void CriminalScreenInterface::CloseClick ( Button *button )
+void CriminalScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -80,7 +80,7 @@ void CriminalScreenInterface::CloseClick ( Button *button )
 
 }
 
-void CriminalScreenInterface::AddConvictionClick ( Button *button )
+void CriminalScreenInterface::AddConvictionClick ( Button * /*button*/ )
 {
 
 	CriminalScreenInterface *csi = (CriminalScreenInterface *) GetInterfaceScreen ( SCREEN_CRIMINALSCREEN );
@@ -126,7 +126,7 @@ void CriminalScreenInterface::AddConvictionClick ( Button *button )
 
 }
 
-void CriminalScreenInterface::ClearClick ( Button *button )
+void CriminalScreenInterface::ClearClick ( Button * /*button*/ )
 {
 
 	CriminalScreenInterface *csi = (CriminalScreenInterface *) GetInterfaceScreen ( SCREEN_CRIMINALSCREEN );
@@ -152,7 +152,7 @@ void CriminalScreenInterface::ClearClick ( Button *button )
 
 }
 
-void CriminalScreenInterface::ArrestClick ( Button *button )
+void CriminalScreenInterface::ArrestClick ( Button * /*button*/ )
 {
 
 	CriminalScreenInterface *csi = (CriminalScreenInterface *) GetInterfaceScreen ( SCREEN_CRIMINALSCREEN );

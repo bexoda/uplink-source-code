@@ -27,14 +27,14 @@ DArray <char *> *ThemeInterface::themes = NULL;
 int ThemeInterface::currentSelect = -1;
 
 
-void ThemeInterface::ReturnToMainMenuClick ( Button *button )
+void ThemeInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_OPTIONS );
 
 }
 
-void ThemeInterface::ApplyClick ( Button *button )
+void ThemeInterface::ApplyClick ( Button * /*button*/ )
 {
 
     DArray <char *> *themes = ListAvailableThemes ();
@@ -50,7 +50,7 @@ void ThemeInterface::ApplyClick ( Button *button )
 
 }
 
-void ThemeInterface::DefaultClick ( Button *button )
+void ThemeInterface::DefaultClick ( Button * /*button*/ )
 {
 
     app->GetOptions ()->SetThemeName ( "graphics" );

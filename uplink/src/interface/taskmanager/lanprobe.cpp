@@ -83,7 +83,7 @@ void LanProbe::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LanProbe::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LanProbe::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

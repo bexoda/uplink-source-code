@@ -75,14 +75,14 @@ void ObituaryInterface::LargeTextDraw  ( Button *button, bool highlighted, bool 
 }
 
 
-void ObituaryInterface::ReturnToMainMenuClick ( Button *button )
+void ObituaryInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );
 
 }
 
-void ObituaryInterface::PiClick ( Button *button )
+void ObituaryInterface::PiClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_THETEAM );

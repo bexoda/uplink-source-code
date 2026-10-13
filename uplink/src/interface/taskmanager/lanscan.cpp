@@ -80,7 +80,7 @@ void LanScan::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LanScan::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LanScan::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -146,7 +146,7 @@ void LanScan::CloseClick ( Button *button )
 
 }
 
-void LanScan::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void LanScan::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 
 	/*
@@ -157,7 +157,7 @@ void LanScan::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 }
 
-void LanScan::MoveTo ( int x, int y, int time_ms )
+void LanScan::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }
 

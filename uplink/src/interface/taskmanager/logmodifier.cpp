@@ -66,7 +66,7 @@ void LogModifier::BorderClick ( Button *button )
 
 }
 
-void LogModifier::BackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void LogModifier::BackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glBegin ( GL_QUADS );
@@ -206,7 +206,7 @@ void LogModifier::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LogModifier::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LogModifier::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

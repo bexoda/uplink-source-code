@@ -398,7 +398,7 @@ void PasswordBreaker::CloseClick ( Button *button )
 
 }
 
-void PasswordBreaker::BackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void PasswordBreaker::BackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glBegin ( GL_QUADS );		

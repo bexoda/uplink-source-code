@@ -208,7 +208,7 @@ void FileCopier::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void FileCopier::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void FileCopier::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

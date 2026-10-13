@@ -99,7 +99,7 @@ void IPProbe::Initialise ()
 {
 }
 
-void IPProbe::Tick ( int n )
+void IPProbe::Tick ( [[maybe_unused]] int n )
 {
 
 	if ( IsInterfaceVisible () ) {

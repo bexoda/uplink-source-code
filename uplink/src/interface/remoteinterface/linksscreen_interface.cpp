@@ -125,7 +125,7 @@ void LinksScreenInterface::LinkClick ( Button *button )
 
 }
 
-void LinksScreenInterface::AfterPhoneDialler ( char *ip, char *info )
+void LinksScreenInterface::AfterPhoneDialler ( char *ip, char * /*info*/ )
 {
 
 	UplinkAssert ( ip );
@@ -140,7 +140,7 @@ void LinksScreenInterface::AfterPhoneDialler ( char *ip, char *info )
 
 }
 
-void LinksScreenInterface::LinkDraw ( Button *button, bool highlighted, bool clicked )
+void LinksScreenInterface::LinkDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -499,7 +499,7 @@ void LinksScreenInterface::FilterClick ( Button *button )
 
 }
 
-void LinksScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void LinksScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;
@@ -523,7 +523,7 @@ void LinksScreenInterface::ScrollChange ( char *scrollname, int newValue )
 
 }
 
-void LinksScreenInterface::CloseClick ( Button *button )
+void LinksScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	LinksScreenInterface *lsi = (LinksScreenInterface *) GetInterfaceScreen ( SCREEN_LINKSSCREEN );

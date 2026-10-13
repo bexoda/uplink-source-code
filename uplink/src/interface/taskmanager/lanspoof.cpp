@@ -67,7 +67,7 @@ void LanSpoof::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LanSpoof::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LanSpoof::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

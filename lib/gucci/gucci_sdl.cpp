@@ -101,7 +101,7 @@ char *GciInitGraphicsLibrary ( int graphics_flags )
 }
 
 char *GciInitGraphics( const char *caption, int graphics_flags, int screenWidth, int screenHeight, 
-		      int screenDepth, int screenRefresh, int argc, char *argv[] )
+		      int screenDepth, int /*screenRefresh*/, int /*argc*/, char * /*argv*/[] )
 {
   bool debugging = (graphics_flags & GCI_DEBUGSTART) != 0;
 
@@ -204,7 +204,7 @@ char *GciInitGraphics( const char *caption, int graphics_flags, int screenWidth,
 
 extern int gci_defaultfont; // The default Gucci style
 
-void GciFallbackDrawText ( int x, int y, const char *text, int STYLE )
+void GciFallbackDrawText ( int x, int y, const char *text, int /*STYLE*/ )
 {
   static bool inside = false;
 
@@ -220,7 +220,7 @@ void GciFallbackDrawText ( int x, int y, const char *text, int STYLE )
   }
 }
 
-int GciFallbackTextWidth ( const char *text, int STYLE )
+int GciFallbackTextWidth ( const char *text, int /*STYLE*/ )
 {
   static bool inside = false;
 
@@ -441,13 +441,13 @@ void GciStoreScreenSize ()
 {
 }
 
-bool GciSetScreenSize ( int width, int height,
-                        int bpp, int refresh )
+bool GciSetScreenSize ( int /*width*/, int /*height*/,
+                        int /*bpp*/, int /*refresh*/ )
 {
   return true;
 }
 
-void GciResizeGlut ( int width, int height )
+void GciResizeGlut ( int /*width*/, int /*height*/ )
 {
 }
 

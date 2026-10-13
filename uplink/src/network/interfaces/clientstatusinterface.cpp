@@ -48,7 +48,7 @@ ClientStatusInterface::~ClientStatusInterface()
 
 }
 
-void ClientStatusInterface::BackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void ClientStatusInterface::BackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 	
 	glBegin ( GL_QUADS );		
@@ -160,7 +160,7 @@ void ClientStatusInterface::WorldPanelDraw ( Button *button, bool highlighted, b
 
 }
 
-void ClientStatusInterface::MainMenuClick ( Button *button )
+void ClientStatusInterface::MainMenuClick ( Button * /*button*/ )
 {
 
 	UplinkAssert ( app->GetNetwork ()->STATUS == NETWORK_CLIENT );

@@ -117,7 +117,7 @@ TheTeamInterface::~TheTeamInterface()
 
 }
 
-void TheTeamInterface::NameDraw ( Button *button, bool highlighted, bool clicked )
+void TheTeamInterface::NameDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
     
     glScissor ( button->x, 480 - (button->y + button->height), button->width, button->height );    
@@ -138,7 +138,7 @@ void TheTeamInterface::NameDraw ( Button *button, bool highlighted, bool clicked
 
 }
 
-void TheTeamInterface::TextDraw ( Button *button, bool highlighted, bool clicked )
+void TheTeamInterface::TextDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     glScissor ( button->x, 480 - (button->y + button->height), button->width, button->height );    
@@ -191,7 +191,7 @@ void TheTeamInterface::TeamMemberHighlight ( Button *button )
 	
 }
 
-void TheTeamInterface::ExitClick ( Button *button ) 
+void TheTeamInterface::ExitClick ( Button * /*button*/ ) 
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

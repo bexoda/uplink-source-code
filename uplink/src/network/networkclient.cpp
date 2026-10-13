@@ -144,13 +144,13 @@ NetworkScreen *NetworkClient::GetNetworkScreen ()
 
 }
 
-bool NetworkClient::Load ( FILE *file )
+bool NetworkClient::Load ( FILE * /*file*/ )
 {
     // not needed
 	return true;
 }
 
-void NetworkClient::Save ( FILE *file )
+void NetworkClient::Save ( FILE * /*file*/ )
 {
     // not needed
 }

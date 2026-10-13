@@ -512,7 +512,7 @@ void text_draw	( int x, int y, const char *string, int linesize )
 
 }
 
-void text_draw ( Button *button, bool highlighted, bool clicked ) 
+void text_draw ( Button *button, bool highlighted, bool /*clicked*/ ) 
 {
 
 	UplinkAssert (button);
@@ -705,7 +705,7 @@ void textbox_draw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void buttonborder_draw ( Button *button, bool highlighted, bool clicked )
+void buttonborder_draw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glBegin ( GL_QUADS );
@@ -785,7 +785,7 @@ void superhighlight_draw ( Button *button, bool highlighted, bool clicked )
 
 }
 */
-void superhighlight_draw ( Button *button, bool highlighted, bool clicked )
+void superhighlight_draw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (  button );
@@ -1289,7 +1289,7 @@ void draw_scrollbox  ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void stextbox_scroll ( char *name, int newValue )
+void stextbox_scroll ( char *name, int /*newValue*/ )
 {
 
     char name_box [256];
@@ -1298,7 +1298,7 @@ void stextbox_scroll ( char *name, int newValue )
   
 }
 
-void draw_msgboxbackground ( Button *button, bool highlighted, bool clicked )
+void draw_msgboxbackground ( [[maybe_unused]] Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 /*
 	glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
@@ -1318,7 +1318,7 @@ void draw_msgboxbackground ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void draw_msgboxbox ( Button *button, bool highlighted, bool clicked )
+void draw_msgboxbox ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glBegin ( GL_QUADS );
@@ -1333,7 +1333,7 @@ void draw_msgboxbox ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void closeclick_msgbox ( Button *button )
+void closeclick_msgbox ( Button * /*button*/ )
 {
 
 	remove_msgbox ();

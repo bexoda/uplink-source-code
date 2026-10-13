@@ -1850,7 +1850,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer )
 
 }
 
-Mission *MissionGenerator::Generate_TraceUser ( Company *employer )
+Mission *MissionGenerator::Generate_TraceUser ( Company * /*employer*/ )
 {
 
 	/*
@@ -2631,7 +2631,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 
 }
 
-Mission *MissionGenerator::Generate_RemoveCompany ( Company *employer )
+Mission *MissionGenerator::Generate_RemoveCompany ( Company * /*employer*/ )
 {
 	return NULL;
 }
@@ -3562,7 +3562,7 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 
 }
 
-bool MissionGenerator::IsMissionComplete_RemoveCompany ( Mission *mission, Person *person, Message *message )
+bool MissionGenerator::IsMissionComplete_RemoveCompany ( Mission * /*mission*/, Person * /*person*/, Message * /*message*/ )
 {
 	return false;
 }
@@ -3924,7 +3924,7 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
 
 }
 
-void MissionGenerator::MissionNotCompleted ( Mission *mission, Person *person, Message *message, const char *reason )
+void MissionGenerator::MissionNotCompleted ( Mission * /*mission*/, Person *person, Message *message, const char *reason )
 {
 
     std::ostringstream body;

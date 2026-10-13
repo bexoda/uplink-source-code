@@ -63,7 +63,7 @@ void ProxyDisable::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void ProxyDisable::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void ProxyDisable::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -153,7 +153,7 @@ ProxyDisable::~ProxyDisable ()
 }
 
 
-void ProxyDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
+void ProxyDisable::SetTarget ( UplinkObject * /*uo*/, const char * /*uos*/, int /*uoi*/ )
 {
 
 	/*
@@ -164,7 +164,7 @@ void ProxyDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
 }
 
-void ProxyDisable::MoveTo ( int x, int y, int time_ms )
+void ProxyDisable::MoveTo ( int /*x*/, int /*y*/, int /*time_ms*/ )
 {
 }
 
@@ -172,7 +172,7 @@ void ProxyDisable::Initialise ()
 {
 }
 
-void ProxyDisable::Tick ( int n )
+void ProxyDisable::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {

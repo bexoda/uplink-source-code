@@ -61,7 +61,7 @@ void AnalyserInterface::CycleStipplePattern ()
 }
 
 
-void AnalyserInterface::TitleClick ( Button *button )
+void AnalyserInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
@@ -83,7 +83,7 @@ void AnalyserInterface::SystemClick ( Button *button )
 
 }
 
-void AnalyserInterface::ConnectionDraw ( Button *button, bool highlighted, bool clicked )
+void AnalyserInterface::ConnectionDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int screenw = app->GetOptions ()->GetOptionValue ("graphics_screenwidth");

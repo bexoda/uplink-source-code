@@ -153,7 +153,7 @@ void Decrypter::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void Decrypter::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void Decrypter::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

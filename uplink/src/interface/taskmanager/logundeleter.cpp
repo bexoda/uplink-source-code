@@ -158,7 +158,7 @@ void LogUnDeleter::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LogUnDeleter::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LogUnDeleter::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

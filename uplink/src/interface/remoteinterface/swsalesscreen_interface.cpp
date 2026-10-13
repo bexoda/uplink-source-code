@@ -74,7 +74,7 @@ void SWSalesScreenInterface::ClickSWButton ( Button *button )
 	
 }
 
-void SWSalesScreenInterface::DrawSWButton ( Button *button, bool highlighted, bool clicked )
+void SWSalesScreenInterface::DrawSWButton ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -193,7 +193,7 @@ void SWSalesScreenInterface::HighlightSWButton ( Button *button )
 
 }
 
-void SWSalesScreenInterface::ExitClick ( Button *button )
+void SWSalesScreenInterface::ExitClick ( Button * /*button*/ )
 {
 
 	GenericScreen *sss = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -211,7 +211,7 @@ bool SWSalesScreenInterface::EscapeKeyPressed ()
 
 }
 
-void SWSalesScreenInterface::AcceptClick ( Button *button )
+void SWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 {
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -352,7 +352,7 @@ void SWSalesScreenInterface::AcceptClick ( Button *button )
 
 }
 
-void SWSalesScreenInterface::NextVersionClick ( Button *button )
+void SWSalesScreenInterface::NextVersionClick ( Button * /*button*/ )
 {
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -379,7 +379,7 @@ void SWSalesScreenInterface::NextVersionClick ( Button *button )
 
 }
 
-void SWSalesScreenInterface::PrevVersionClick ( Button *button )
+void SWSalesScreenInterface::PrevVersionClick ( Button * /*button*/ )
 {
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -406,7 +406,7 @@ void SWSalesScreenInterface::PrevVersionClick ( Button *button )
 
 }
 
-void SWSalesScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void SWSalesScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

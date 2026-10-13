@@ -24,7 +24,7 @@ WarezGameOverInterface::~WarezGameOverInterface ()
 {
 }
 
-void WarezGameOverInterface::ReturnToMainMenuClick ( Button *button )
+void WarezGameOverInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

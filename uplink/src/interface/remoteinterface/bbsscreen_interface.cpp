@@ -77,7 +77,7 @@ void BBSScreenInterface::ClickBBSButton ( Button *button )
 	
 }
 
-void BBSScreenInterface::DrawBBSButton ( Button *button, bool highlighted, bool clicked )
+void BBSScreenInterface::DrawBBSButton ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	int index;
@@ -199,7 +199,7 @@ void BBSScreenInterface::HighlightBBSButton ( Button *button )
 
 }
 
-void BBSScreenInterface::ExitClick ( Button *button )
+void BBSScreenInterface::ExitClick ( Button * /*button*/ )
 {
 
 	BBSScreen *bbs = (BBSScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -209,7 +209,7 @@ void BBSScreenInterface::ExitClick ( Button *button )
 
 }
 
-void BBSScreenInterface::AcceptClick ( Button *button )
+void BBSScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 {
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -265,7 +265,7 @@ void BBSScreenInterface::AcceptClick ( Button *button )
 
 }
 
-void BBSScreenInterface::ContactClick ( Button *button )
+void BBSScreenInterface::ContactClick ( [[maybe_unused]] Button *button )
 {
 
 	// Get the currently selected mission
@@ -319,7 +319,7 @@ void BBSScreenInterface::ContactClick ( Button *button )
 
 }
 
-void BBSScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void BBSScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;

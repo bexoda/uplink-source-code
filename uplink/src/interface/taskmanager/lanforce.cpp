@@ -81,7 +81,7 @@ void LanForce::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LanForce::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void LanForce::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

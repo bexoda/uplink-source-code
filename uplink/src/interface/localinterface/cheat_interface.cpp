@@ -32,21 +32,21 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void CheatInterface::TitleClick ( Button *button )
+void CheatInterface::TitleClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 #endif
 }
 
-void CheatInterface::AllLinksClick ( Button *button )
+void CheatInterface::AllLinksClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->GiveAllLinks ();
 #endif
 }
 
-void CheatInterface::AllSoftwareClick ( Button *button )
+void CheatInterface::AllSoftwareClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->gateway.SetMemorySize ( 256 );
@@ -54,21 +54,21 @@ void CheatInterface::AllSoftwareClick ( Button *button )
 #endif
 }
 
-void CheatInterface::AllHardwareClick ( Button *button )
+void CheatInterface::AllHardwareClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
     game->GetWorld ()->GetPlayer ()->gateway.GiveAllHardware ();
 #endif
 }
 
-void CheatInterface::LotsOfMoneyClick ( Button *button )
+void CheatInterface::LotsOfMoneyClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->ChangeBalance ( 10000, "You cheating motherfucker!" );
 #endif
 }
 
-void CheatInterface::MaxRatingsClick ( Button *button )
+void CheatInterface::MaxRatingsClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->rating.SetUplinkRating ( NUM_UPLINKRATINGS-1 );
@@ -76,7 +76,7 @@ void CheatInterface::MaxRatingsClick ( Button *button )
 #endif
 }
 
-void CheatInterface::NextRatingClick ( Button *button )
+void CheatInterface::NextRatingClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->rating.SetUplinkRating ( game->GetWorld ()->GetPlayer ()->rating.uplinkrating + 1 );
@@ -84,14 +84,14 @@ void CheatInterface::NextRatingClick ( Button *button )
 #endif
 }
 
-void CheatInterface::EventQueueClick ( Button *button )
+void CheatInterface::EventQueueClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_EVTQUEUE );
 #endif
 }
 
-void CheatInterface::RevelationClick ( Button *button )
+void CheatInterface::RevelationClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
     for ( int i = 0; i < 5; ++i ) {
@@ -103,7 +103,7 @@ void CheatInterface::RevelationClick ( Button *button )
 #endif
 }
 
-void CheatInterface::EndGameClick ( Button *button )
+void CheatInterface::EndGameClick ( [[maybe_unused]] Button *button )
 {
 #ifdef TESTGAME
 	// Simulate a "shot by feds" event in 5 seconds
@@ -121,7 +121,7 @@ void CheatInterface::EndGameClick ( Button *button )
 #endif
 }
 
-void CheatInterface::ShowLANClick ( Button *button )
+void CheatInterface::ShowLANClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME	
 	VLocation *vl = game->GetWorld()->GetPlayer()->GetRemoteHost();
@@ -156,14 +156,14 @@ void CheatInterface::ShowLANClick ( Button *button )
 #endif
 }
 
-void CheatInterface::CancelTraceClick ( Button *button )
+void CheatInterface::CancelTraceClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	game->GetWorld ()->GetPlayer ()->GetConnection ()->EndTrace ();
 #endif
 }
 
-void CheatInterface::DebugPrintClick ( Button *button )
+void CheatInterface::DebugPrintClick ( Button * /*button*/ )
 {
 #ifdef TESTGAME
 	app->Print ();

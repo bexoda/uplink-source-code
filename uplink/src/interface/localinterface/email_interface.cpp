@@ -32,21 +32,21 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void EmailInterface::TitleClick ( Button *button )
+void EmailInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void EmailInterface::EmailClose ( Button *button )
+void EmailInterface::EmailClose ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void EmailInterface::EmailReply ( Button *button )
+void EmailInterface::EmailReply ( Button * /*button*/ )
 {
 
 	EmailInterface *em = (EmailInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen ();

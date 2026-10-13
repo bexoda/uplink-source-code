@@ -54,7 +54,7 @@ bool ConsoleScreenInterface::IsVisibleInterface ()
 
 }
 
-void ConsoleScreenInterface::BorderDraw ( Button *button, bool highlighted, bool clicked )
+void ConsoleScreenInterface::BorderDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	glColor3f ( 1.0f, 1.0f, 1.0f );
@@ -72,7 +72,7 @@ void ConsoleScreenInterface::MessageDraw ( Button *button, bool highlighted, boo
 
 }
 
-void ConsoleScreenInterface::PostClick ( Button *button )
+void ConsoleScreenInterface::PostClick ( [[maybe_unused]] Button *button )
 {
 
 	Button *b = EclGetButton ( "console_typehere" );

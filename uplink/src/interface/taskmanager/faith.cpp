@@ -24,7 +24,7 @@ void Faith::Initialise ()
 {
 }
 
-void Faith::Tick ( int n )
+void Faith::Tick ( int /*n*/ )
 {
 
     // Is revelation running?

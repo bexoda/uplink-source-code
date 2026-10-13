@@ -24,7 +24,7 @@ DemoGameOverInterface::~DemoGameOverInterface ()
 {
 }
 
-void DemoGameOverInterface::ReturnToMainMenuClick ( Button *button )
+void DemoGameOverInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_LOGIN );

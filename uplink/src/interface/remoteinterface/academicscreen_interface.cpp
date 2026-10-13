@@ -49,7 +49,7 @@ bool AcademicScreenInterface::EscapeKeyPressed ()
 
 }
 
-void AcademicScreenInterface::CommitClick ( Button *button )
+void AcademicScreenInterface::CommitClick ( Button * /*button*/ )
 {
 
 	AcademicScreenInterface *asi = (AcademicScreenInterface *) GetInterfaceScreen ( SCREEN_ACADEMICSCREEN );
@@ -78,7 +78,7 @@ void AcademicScreenInterface::CommitClick ( Button *button )
 
 }
 
-void AcademicScreenInterface::CloseClick ( Button *button )
+void AcademicScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
 	GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
@@ -88,7 +88,7 @@ void AcademicScreenInterface::CloseClick ( Button *button )
 
 }
 
-void AcademicScreenInterface::DetailsDraw ( Button *button, bool highlighted, bool clicked )
+void AcademicScreenInterface::DetailsDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	textbutton_draw ( button, highlighted, true );

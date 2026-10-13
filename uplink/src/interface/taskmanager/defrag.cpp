@@ -67,7 +67,7 @@ void Defrag::BorderDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void Defrag::ProgressDraw ( Button *button, bool highlighted, bool clicked )
+void Defrag::ProgressDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );
@@ -270,7 +270,7 @@ void Defrag::HandleNewMemorySlot ( int index )
 
 }
 
-void Defrag::Tick ( int n )
+void Defrag::Tick ( int /*n*/ )
 {
 
 	if ( IsInterfaceVisible () ) {

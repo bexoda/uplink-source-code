@@ -198,7 +198,7 @@ void LocalInterface::RunScreen ( int SCREENCODE, int index )
 
 }
 
-bool LocalInterface::VerifyScreen ( int SCREENCODE, int index )
+bool LocalInterface::VerifyScreen ( int SCREENCODE, int /*index*/ )
 {
 
 	switch ( SCREENCODE ) {

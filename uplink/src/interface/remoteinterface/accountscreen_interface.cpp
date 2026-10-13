@@ -37,7 +37,7 @@ bool AccountScreenInterface::EscapeKeyPressed ()
 
 }
 
-void AccountScreenInterface::CloseClick ( Button *button )
+void AccountScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
     GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

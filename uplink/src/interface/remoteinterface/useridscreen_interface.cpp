@@ -38,7 +38,7 @@
 #include "world/computer/computerscreen/useridscreen.h"
 
 
-void UserIDScreenInterface::BypassClick ( Button *button )
+void UserIDScreenInterface::BypassClick ( Button * /*button*/ )
 {
 
 	// Give admin access
@@ -138,7 +138,7 @@ void UserIDScreenInterface::AccessCodeClick ( Button *button )
 
 }
 
-void UserIDScreenInterface::ProceedClick ( Button *button )
+void UserIDScreenInterface::ProceedClick ( Button * /*button*/ )
 {
 
 	// If disconnected which can happend when dialling.

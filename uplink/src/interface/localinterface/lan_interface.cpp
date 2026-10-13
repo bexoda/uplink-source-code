@@ -94,14 +94,14 @@ LanInterfaceObject *LanInterface::GetLanInterfaceObject( int TYPE )
 
 }
 
-void LanInterface::TitleClick ( Button *button )
+void LanInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-void LanInterface::LanBackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void LanInterface::LanBackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	int screenheight = app->GetOptions ()->GetOptionValue ( "graphics_screenheight" );
@@ -495,7 +495,7 @@ void LanInterface::DrawLink ( LanComputerLink *link,
 }
 
 
-void LanInterface::LanSystemDraw ( Button *button, bool highlighted, bool clicked )
+void LanInterface::LanSystemDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     //
@@ -651,7 +651,7 @@ void LanInterface::ConnectDraw ( Button *button, bool highlighted, bool clicked 
 
 }
 
-void LanInterface::ConnectClick ( Button *button )
+void LanInterface::ConnectClick ( Button * /*button*/ )
 {
 
     char *remotehost = game->GetWorld()->GetPlayer()->remotehost;
@@ -720,7 +720,7 @@ void LanInterface::ConnectMouseMove	( Button *button )
 
 }
 
-void LanInterface::CancelClick ( Button *button )
+void LanInterface::CancelClick ( Button * /*button*/ )
 {
 
 	LanMonitor::BeginAttack();
@@ -785,7 +785,7 @@ void LanInterface::BackMouseMove ( Button *button )
 
 }
 
-void LanInterface::BackClick ( Button *button )
+void LanInterface::BackClick ( Button * /*button*/ )
 {
 
     LanMonitor::RetractConnection ();
@@ -829,7 +829,7 @@ void LanInterface::GenerateClick ( Button *button )
 
 }
 
-void LanInterface::TitleDraw ( Button *button, bool highlighted, bool clicked )
+void LanInterface::TitleDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	SetColour ( "TitleText" );
@@ -837,7 +837,7 @@ void LanInterface::TitleDraw ( Button *button, bool highlighted, bool clicked )
 
 }
 
-void LanInterface::PanelBackgroundDraw ( Button *button, bool highlighted, bool clicked )
+void LanInterface::PanelBackgroundDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
     glColor4f ( 0.0f, 0.0f, 0.0f, 1.0f );

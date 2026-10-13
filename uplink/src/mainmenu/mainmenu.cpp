@@ -142,12 +142,12 @@ MainMenuScreen *MainMenu::GetMenuScreen ()
 
 }
 
-bool MainMenu::Load ( FILE *file )
+bool MainMenu::Load ( FILE * /*file*/ )
 {
 	return true;
 }
 
-void MainMenu::Save ( FILE *file )
+void MainMenu::Save ( FILE * /*file*/ )
 {
 }
 

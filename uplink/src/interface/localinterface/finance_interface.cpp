@@ -53,14 +53,14 @@ FinanceInterface::~FinanceInterface ()
 }
 
 
-void FinanceInterface::TitleClick ( Button *button )
+void FinanceInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 }
 
-static void FinanceInterfaceTextDrawSplit ( Button *button, bool highlighted, bool clicked )
+static void FinanceInterfaceTextDrawSplit ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);

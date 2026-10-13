@@ -895,7 +895,7 @@ void PlotGenerator::RunRevelation ( char *ip, float version, bool playerresponsi
 
 }
 
-void PlotGenerator::RunFaith ( char *ip, float version, bool playerresponsible )
+void PlotGenerator::RunFaith ( char *ip, float version, bool /*playerresponsible*/ )
 {
 
 #ifndef DEMOGAME
@@ -937,7 +937,7 @@ void PlotGenerator::RunFaith ( char *ip, float version, bool playerresponsible )
 
 }
 
-void PlotGenerator::RunRevelation ( char *ip, float version, bool playerresponsible, int success )
+void PlotGenerator::RunRevelation ( char *ip, float version, bool /*playerresponsible*/, int success )
 {
 
 #ifndef DEMOGAME

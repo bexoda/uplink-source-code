@@ -50,7 +50,7 @@ MissionInterface::~MissionInterface ()
 {
 }
 
-void MissionInterface::TitleClick ( Button *button )
+void MissionInterface::TitleClick ( Button * /*button*/ )
 {
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
@@ -103,7 +103,7 @@ void MissionInterface::AbandonClick ( Button *button )
 
 }
 
-void MissionInterface::ReplyClick ( Button *button )
+void MissionInterface::ReplyClick ( Button * /*button*/ )
 {
 
 	// Get the mission that this interface is looking at

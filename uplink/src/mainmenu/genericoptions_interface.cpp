@@ -23,14 +23,14 @@
 
 
 
-void GenericOptionsInterface::ReturnToMainMenuClick ( Button *button )
+void GenericOptionsInterface::ReturnToMainMenuClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_OPTIONS );
 
 }
 
-void GenericOptionsInterface::ApplyClick ( Button *button )
+void GenericOptionsInterface::ApplyClick ( [[maybe_unused]] Button *button )
 {
 
 	GenericOptionsInterface *thisint = (GenericOptionsInterface *) app->GetMainMenu ()->GetMenuScreen ();
@@ -76,7 +76,7 @@ void GenericOptionsInterface::ApplyClick ( Button *button )
 
 }
 
-void GenericOptionsInterface::ToggleBoxDraw ( Button *button, bool highlighted, bool clicked )
+void GenericOptionsInterface::ToggleBoxDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	UplinkAssert (button);
@@ -144,7 +144,7 @@ void GenericOptionsInterface::ChangeOptionValue ( char *option, int newvalue )
 
 }
 
-void GenericOptionsInterface::ExitGameClick ( Button *button )
+void GenericOptionsInterface::ExitGameClick ( Button * /*button*/ )
 {
 
 	app->Close ();

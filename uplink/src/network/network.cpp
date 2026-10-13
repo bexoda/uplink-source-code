@@ -236,13 +236,13 @@ bool Network::IsActive ()
 
 }
 
-bool Network::Load ( FILE *file )
+bool Network::Load ( FILE * /*file*/ )
 {
 	// not needed
 	return true;
 }
 
-void Network::Save ( FILE *file )
+void Network::Save ( FILE * /*file*/ )
 {
 
 	// not needed

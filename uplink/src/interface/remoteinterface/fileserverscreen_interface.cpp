@@ -256,7 +256,7 @@ int FileServerScreenInterface::GetInfoRowDisplayDataBank ( DataBank *db, int fil
 
 }
 
-void FileServerScreenInterface::ScrollChange ( char *scrollname, int newValue )
+void FileServerScreenInterface::ScrollChange ( char * /*scrollname*/, int newValue )
 {
 
     baseoffset = newValue;
@@ -271,7 +271,7 @@ void FileServerScreenInterface::ScrollChange ( char *scrollname, int newValue )
 
 }
 
-void FileServerScreenInterface::FileDraw ( Button *button, bool highlighted, bool clicked )
+void FileServerScreenInterface::FileDraw ( Button *button, bool highlighted, bool /*clicked*/ )
 {
 
 	UplinkAssert ( button );

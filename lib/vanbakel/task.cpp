@@ -39,7 +39,7 @@ void Task::Tick ()
 	Tick ( 1 );
 }
 
-void Task::Tick ( int n ) 
+void Task::Tick ( int /*n*/ ) 
 {
 }
 

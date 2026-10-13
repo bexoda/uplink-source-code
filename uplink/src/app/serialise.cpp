@@ -661,7 +661,7 @@ void UpdateDArray ( DArray <UplinkObject *> *darray )
 
 }
 
-void DeleteDArrayDataD( DArray <UplinkObject *> *darray, const char * file, int line )
+void DeleteDArrayDataD( DArray <UplinkObject *> *darray, [[maybe_unused]] const char * file, [[maybe_unused]] int line )
 {
 
 	UplinkAssert ( darray );
@@ -682,7 +682,7 @@ void DeleteDArrayDataD( DArray <UplinkObject *> *darray, const char * file, int 
 
 }
 
-void DeleteDArrayDataD( DArray <char *> *darray, const char * file, int line )
+void DeleteDArrayDataD( DArray <char *> *darray, [[maybe_unused]] const char * file, [[maybe_unused]] int line )
 {
 
 	UplinkAssert ( darray );

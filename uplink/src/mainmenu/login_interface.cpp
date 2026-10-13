@@ -86,7 +86,7 @@ void LoginInterface::RemoveExistingGames ()
 
 }
 
-void LoginInterface::NewGameClick ( Button *button )
+void LoginInterface::NewGameClick ( Button * /*button*/ )
 {
 
 	tooltip_update ( " " );
@@ -117,7 +117,7 @@ void LoginInterface::NewGameClick ( Button *button )
 
 }
 
-void LoginInterface::RetireAgentMsgboxClick ( Button *button )
+void LoginInterface::RetireAgentMsgboxClick ( Button * /*button*/ )
 {
 
 	remove_msgbox ();
@@ -133,7 +133,7 @@ void LoginInterface::RetireAgentMsgboxClick ( Button *button )
 
 }
 
-void LoginInterface::RetireAgentClick ( Button *button )
+void LoginInterface::RetireAgentClick ( Button * /*button*/ )
 {
 
 	UplinkAssert ( EclGetButton ( "userid_name" ) );
@@ -170,7 +170,7 @@ void LoginInterface::RetireAgentClick ( Button *button )
 
 }
 
-void LoginInterface::ProceedClick ( Button *button )
+void LoginInterface::ProceedClick ( Button * /*button*/ )
 {
 
 	UplinkAssert ( EclGetButton ( "userid_name" ) );	
@@ -190,7 +190,7 @@ void LoginInterface::ProceedClick ( Button *button )
 
 }
 
-void LoginInterface::OptionsClick ( Button *button )
+void LoginInterface::OptionsClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_OPTIONS );
@@ -198,7 +198,7 @@ void LoginInterface::OptionsClick ( Button *button )
 
 }
 
-void LoginInterface::ExitGameClick ( Button *button )
+void LoginInterface::ExitGameClick ( Button * /*button*/ )
 {
 
 #ifdef DEMOGAME
@@ -213,7 +213,7 @@ void LoginInterface::ExitGameClick ( Button *button )
 
 }
 
-void LoginInterface::LargeTextBoxDraw ( Button *button, bool highlighted, bool clicked )
+void LoginInterface::LargeTextBoxDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	SetColour ( "TitleText" );
@@ -311,7 +311,7 @@ void LoginInterface::UserNameClick ( Button *button )
 
 }
 
-void LoginInterface::CommsClick ( Button *button )
+void LoginInterface::CommsClick ( Button * /*button*/ )
 {
 
 	UplinkAssert ( app->GetNetwork ()->STATUS == NETWORK_CLIENT );
@@ -323,7 +323,7 @@ void LoginInterface::CommsClick ( Button *button )
 	
 }
 
-void LoginInterface::StatusClick	( Button *button )
+void LoginInterface::StatusClick	( Button * /*button*/ )
 {
 
 	UplinkAssert ( app->GetNetwork ()->STATUS == NETWORK_CLIENT );

@@ -37,14 +37,14 @@ NetworkOptionsInterface::~NetworkOptionsInterface()
 
 }
 
-void NetworkOptionsInterface::CloseClick ( Button *button )
+void NetworkOptionsInterface::CloseClick ( Button * /*button*/ )
 {
 
 	app->GetMainMenu ()->RunScreen ( MAINMENU_OPTIONS );
 
 }
 
-void NetworkOptionsInterface::ServerButtonClick ( Button *button )
+void NetworkOptionsInterface::ServerButtonClick ( Button * /*button*/ )
 {
 
 	if ( app->GetNetwork ()->STATUS == NETWORK_NONE ) {
@@ -59,7 +59,7 @@ void NetworkOptionsInterface::ServerButtonClick ( Button *button )
 
 }
 
-void NetworkOptionsInterface::ClientButtonClick ( Button *button )
+void NetworkOptionsInterface::ClientButtonClick ( Button * /*button*/ )
 {
 
 	if ( app->GetNetwork ()->STATUS == NETWORK_SERVER ) {

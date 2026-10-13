@@ -46,7 +46,7 @@ void RevelationTracker::Initialise ()
 {
 }
 
-void RevelationTracker::Tick ( int n )
+void RevelationTracker::Tick ( [[maybe_unused]] int n )
 {
 
 	if ( IsInterfaceVisible () ) {

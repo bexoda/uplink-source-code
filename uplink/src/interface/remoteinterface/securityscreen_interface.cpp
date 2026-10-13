@@ -28,7 +28,7 @@ time_t SecurityScreenInterface::lastupdate = 0;
 
 
 
-void SecurityScreenInterface::SystemTitleDraw ( Button *button, bool highlighted, bool clicked )
+void SecurityScreenInterface::SystemTitleDraw ( Button *button, bool /*highlighted*/, bool /*clicked*/ )
 {
 
 	clear_draw ( button->x + 1, button->y, button->width, button->height );
@@ -97,7 +97,7 @@ void SecurityScreenInterface::StatusClick ( Button *button )
 
 }
 
-void SecurityScreenInterface::CloseClick ( Button *button )
+void SecurityScreenInterface::CloseClick ( Button * /*button*/ )
 {
 
     GenericScreen *gs = (GenericScreen *) game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();

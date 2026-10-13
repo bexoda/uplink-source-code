@@ -469,13 +469,13 @@ void ClientConnection::Handle_ClientStatusInterface ()
 }
 
 
-bool ClientConnection::Load ( FILE *file )
+bool ClientConnection::Load ( FILE * /*file*/ )
 {
 	// Not needed
 	return true;
 }
 
-void ClientConnection::Save ( FILE *file )
+void ClientConnection::Save ( FILE * /*file*/ )
 {
 	// Not needed
 }
