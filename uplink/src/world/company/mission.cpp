@@ -141,39 +141,21 @@ void Mission::SetFullDetails ( const char *newdetails )
 void Mission::SetWhySoMuchMoney	( const char *answer )
 {
 
-	whysomuchmoney = NULL;
-
-	if ( answer ) {
-
-		whysomuchmoney = answer;
-
-	}
+	whysomuchmoney = answer;
 
 }
 
 void Mission::SetHowSecure ( const char *answer )
 {
 
-	howsecure = NULL;
-
-	if ( answer ) {
-
-		howsecure = answer;
-
-	}
+	howsecure = answer;
 
 }
 
 void Mission::SetWhoIsTheTarget ( const char *answer )
 {
 
-	whoisthetarget = NULL;
-
-	if ( answer ) {
-
-		whoisthetarget = answer;
-
-	}
+	whoisthetarget = answer;
 
 }
 
