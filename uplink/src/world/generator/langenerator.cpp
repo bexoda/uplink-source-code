@@ -50,7 +50,7 @@ static int ModemNextPage ( ComputerScreen *screen )
 
 
 
-class dos2unix : public filebuf {
+class dos2unix : public std::filebuf {
 };
 
 void LanGenerator::Initialise ()
@@ -79,13 +79,13 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 
 	char buffer [256];
 
-    thefile >> buffer >> ws;
+    thefile >> buffer >> std::ws;
     thefile.getline( computerName, SIZE_COMPUTER_NAME );
 
-	thefile >> buffer >> ws;
+	thefile >> buffer >> std::ws;
     thefile.getline( companyName, SIZE_COMPANY_NAME );
 
-    thefile >> buffer >> ws;
+    thefile >> buffer >> std::ws;
     thefile.getline( ip, SIZE_VLOCATION_IP );
 
 	thefile.getline( buffer, 256 );
@@ -161,7 +161,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		bool haveModemPhoneNumber = true;
         char dataX[256];
 		std::istringstream thisLine ( fullLine );
-		thisLine >> index >> systemName >> x >> y >> security >> data1 >> data2 >> data3 >> ws;
+		thisLine >> index >> systemName >> x >> y >> security >> data1 >> data2 >> data3 >> std::ws;
         if ( strstr(systemName, "MODEM") ) {
             thisLine.getline(dataX, 256);
             if ( strlen(dataX) < 3 ) {
@@ -224,7 +224,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		float fromX, fromY, toX, toY;
 
 		std::istringstream thisLine ( fullLine );
-		thisLine >> linkName >> from >> fromX >> fromY >> to >> toX >> toY >> security >> ws;
+		thisLine >> linkName >> from >> fromX >> fromY >> to >> toX >> toY >> security >> std::ws;
 		linkName[ sizeof(linkName) - 1 ] = '\0';
 
 		if ( !cluster->VerifyLanLink ( from, fromX, fromY, to, toX, toY, security ) ) {
@@ -255,7 +255,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		int validIndex;
 
 		std::istringstream thisLine ( fullLine );
-		thisLine >> name >> systemIndex >> validIndex >> ws;
+		thisLine >> name >> systemIndex >> validIndex >> std::ws;
 
 		if ( cluster->systems.ValidIndex ( systemIndex ) ) {
 			LanComputerSystem *system = cluster->systems.GetData(systemIndex);
@@ -290,7 +290,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		char allData[256];
 
 		std::istringstream thisLine ( fullLine );
-		thisLine >> dataName >> index >> ws;
+		thisLine >> dataName >> index >> std::ws;
         thisLine.getline( allData, 256 );
 
         LanGenerator::HideData( comp, index, allData );

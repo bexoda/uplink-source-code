@@ -3,14 +3,13 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
 
-class dos2unixbuf : public streambuf {
+class dos2unixbuf : public std::streambuf {
 public:
 #ifdef WIN32
-	typedef ios::open_mode openmode;
+	typedef std::ios::open_mode openmode;
 #else
-	typedef ios::openmode openmode;
+	typedef std::ios::openmode openmode;
 #endif
 
   dos2unixbuf(const char *filename, openmode mode);
@@ -26,15 +25,15 @@ protected:
   virtual int sync();
   
 private:
-  filebuf inner;
+  std::filebuf inner;
   char *buffer;
 };
 
 class idos2unixstream
-  : public istream {
+  : public std::istream {
 public:
   idos2unixstream(const char *filename)
-    : istream(new dos2unixbuf(filename, ios::in))
+    : std::istream(new dos2unixbuf(filename, std::ios::in))
     {
     }
 

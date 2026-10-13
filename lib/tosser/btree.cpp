@@ -285,7 +285,7 @@ void BTree <T> :: Print ()
 {
     
     if (ltree) ltree->Print ();
-    if (id) cout << id << " : " << data << "\n";       
+    if (id) std::cout << id << " : " << data << "\n";       
     if (rtree) rtree->Print ();
     
 }

@@ -231,13 +231,13 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 
 	char compname [SIZE_COMPUTER_NAME];
 
-	msgstream  >> ip >> x >> y >> ws;
+	msgstream  >> ip >> x >> y >> std::ws;
 
 //	compname = buffer + strlen("CLIENTCOMMS_IPNAME") + strlen(ip) + 1;
 //	*(compname + strlen(compname) - 2) = '\x0';
 
 	msgstream.getline (compname, SIZE_COMPUTER_NAME );
-	cout << "'" << compname << "'\n";
+	std::cout << "'" << compname << "'\n";
 
 	BTree <VLocation *> *locations = & (((ClientCommsInterface *) screen.get ())->locations);
 	VLocation *vl = locations->GetData (ip);

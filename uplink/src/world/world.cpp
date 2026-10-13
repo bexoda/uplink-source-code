@@ -93,7 +93,7 @@ World::World()
 	char unused [256];
 	int numgateways;
 	thefile.getline ( unused, 256 );
-	thefile >> unused >> numgateways >> ws;
+	thefile >> unused >> numgateways >> std::ws;
 
 	for ( int i = 0; i < numgateways; ++i ) {
 	

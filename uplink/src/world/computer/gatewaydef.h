@@ -3,6 +3,8 @@
 #ifndef _included_gatewaydef_h
 #define _included_gatewaydef_h
 
+#include <iosfwd>
+
 #include <string>
 
 /*
@@ -94,7 +96,7 @@ public:
 
 	// Loaders
 
-	void LoadGatewayDefinition ( istream &thefile );
+	void LoadGatewayDefinition ( std::istream &thefile );
 
 	// Basic data set functions
 

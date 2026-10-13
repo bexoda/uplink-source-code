@@ -98,7 +98,7 @@ GatewayDef::~GatewayDef ()
         
 }
 
-void GatewayDef::LoadGatewayDefinition ( istream &thefile )
+void GatewayDef::LoadGatewayDefinition ( std::istream &thefile )
 {
 
 	// Basics
@@ -108,7 +108,7 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
     name = line;
 
 	thefile >> cost >> maxcpus >> maxmemory >> maxupgrades 
-			>> maxsecurity >> bandwidth >> width >> height >> ws;
+			>> maxsecurity >> bandwidth >> width >> height >> std::ws;
 
 	thefile.getline ( line, SIZE_GATEWAY_DESCRIPTION );
 	description = line;
@@ -124,12 +124,12 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 	if ( maxcpus > 0 ) {
 
 		char unused [8];
-		thefile >> unused >> ws;
+		thefile >> unused >> std::ws;
 
 		for ( int ic = 0; ic < maxcpus; ++ic ) {
 		
 			GatewayDefLocation *gdl = new GatewayDefLocation ();
-			thefile >> gdl->x >> gdl->y >> ws;
+			thefile >> gdl->x >> gdl->y >> std::ws;
 			cpus.PutData ( gdl, ic );
 			
 		}
@@ -143,12 +143,12 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 		memory.SetSize ( maxmemory );
 		
 		char unused [8];
-		thefile >> unused >> ws;
+		thefile >> unused >> std::ws;
 
 		for ( int i = 0; i < maxmemory; ++i ) {
 
 			GatewayDefLocation *gdl = new GatewayDefLocation ();
-			thefile >> gdl->x >> gdl->y >> ws;
+			thefile >> gdl->x >> gdl->y >> std::ws;
 			memory.PutData ( gdl, i );
 
 		}
@@ -162,12 +162,12 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 		security.SetSize ( maxsecurity );
 		
 		char unused [8];
-		thefile >> unused >> ws;
+		thefile >> unused >> std::ws;
 
 		for ( int i = 0; i < maxsecurity; ++i ) {
 
 			GatewayDefLocation *gdl = new GatewayDefLocation ();
-			thefile >> gdl->x >> gdl->y >> ws;
+			thefile >> gdl->x >> gdl->y >> std::ws;
 			security.PutData ( gdl, i );
 
 		}
@@ -177,11 +177,11 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 	// Modem position
 
 	char unused [8];
-	thefile >> unused >> modemX >> modemY >> ws;
+	thefile >> unused >> modemX >> modemY >> std::ws;
 
 	// Power position
 
-	thefile >> unused >> powerX >> powerY >> ws;
+	thefile >> unused >> powerX >> powerY >> std::ws;
 
 }
 

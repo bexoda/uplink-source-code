@@ -268,15 +268,15 @@ void Options::SetThemeName ( const char *newThemeName )
 
         char unused [64];
         char line [1024];
-	    thefile >> unused >> ws;
+	    thefile >> unused >> std::ws;
         thefile.getline ( line, 128 );
         themeTitle = line;
 
-        thefile >> unused >> ws;
+        thefile >> unused >> std::ws;
         thefile.getline ( line, 128 );
         themeAuthor = line;
 
-        thefile >> unused >> ws;
+        thefile >> unused >> std::ws;
         thefile.getline ( line, 1024 );
         themeDescription = line;
 
@@ -293,7 +293,7 @@ void Options::SetThemeName ( const char *newThemeName )
             char colourName[64];
             float r, g, b;
     		std::istringstream thisLine ( lineBuffer );
-            thisLine >> colourName >> ws >> r >> g >> b >> ws;
+            thisLine >> colourName >> std::ws >> r >> g >> b >> std::ws;
 
             BTree <ColourOption *> *exists = colours.LookupTree( colourName );
             if ( !exists ) {

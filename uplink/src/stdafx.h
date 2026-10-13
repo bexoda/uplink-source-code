@@ -16,7 +16,6 @@
 #ifndef OLD_HEADERS
 #  include <iostream>
 #  include <sstream>
-   using namespace std;
 #else
 #  include <iostream.h>
 #  include <sstream>
