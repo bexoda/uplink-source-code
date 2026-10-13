@@ -11,6 +11,8 @@
 #ifndef _included_lanscan_h
 #define _included_lanscan_h
 
+#include <string>
+
 #include "world/vlocation.h"
 #include "interface/taskmanager/uplinktask.h"
 
@@ -33,7 +35,7 @@ protected:
 	int progress;
 	int numticksrequired;
 
-	char ip [SIZE_VLOCATION_IP];
+	std::string ip;
 
 protected:
 

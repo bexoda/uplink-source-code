@@ -54,7 +54,7 @@ public:
 	~VoiceAnalysisScreenInterface ();
 
 	void StartVoicePlayback ();
-	void FinishVoicePlayback ( char *voicename );
+	void FinishVoicePlayback ( const char *voicename );
 
 	bool ReturnKeyPressed ();
 

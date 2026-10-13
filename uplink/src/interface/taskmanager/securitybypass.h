@@ -15,6 +15,8 @@
 #ifndef _included_proxybypass_h
 #define _included_proxybypass_h
 
+#include <string>
+
 #include "world/vlocation.h"
 
 #include "interface/taskmanager/uplinktask.h"
@@ -36,7 +38,7 @@ protected:
 
 protected:
 
-	char ip [SIZE_VLOCATION_IP];				// Target IP
+	std::string ip;				// Target IP
 
 public:
 

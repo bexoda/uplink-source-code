@@ -263,7 +263,7 @@ void SecurityBypass::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 			targetobject = uo;
 			targetint = uoi;
 
-			UplinkStrncpy ( ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( ip ) );
+			ip = game->GetWorld ()->GetPlayer ()->remotehost.c_str ();
 
 
 			//
@@ -344,7 +344,7 @@ void SecurityBypass::Tick ( int /*n*/ )
 
 	if ( status > 0 ) {
 
-		if ( strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip ) != 0 ) {
+		if ( strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip.c_str () ) != 0 ) {
 
 			EndCurrentBypass ();
 

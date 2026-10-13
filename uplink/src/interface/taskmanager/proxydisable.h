@@ -11,6 +11,8 @@
 #ifndef _included_proxydisable_h
 #define _included_proxydisable_h
 
+#include <string>
+
 #include "eclipse.h"
 
 #include "world/vlocation.h"
@@ -32,7 +34,7 @@ protected:
 
 protected:
 
-	char ip [SIZE_VLOCATION_IP];				// Target IP
+	std::string ip;				// Target IP
 
 	int progress;								// 0 = static, 1 = analysing, 2 = disabling, 3 = unable to proceed, 4 = done
 	

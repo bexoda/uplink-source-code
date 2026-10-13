@@ -68,7 +68,7 @@ void VoiceAnalysisScreenInterface::StartVoicePlayback ()
 
 }
 
-void VoiceAnalysisScreenInterface::FinishVoicePlayback ( char *voicename )
+void VoiceAnalysisScreenInterface::FinishVoicePlayback ( const char *voicename )
 {
 
 	STATUS = VOICEANALYSISSCREEN_ANALYSING;

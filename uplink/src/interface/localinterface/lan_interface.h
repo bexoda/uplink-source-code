@@ -12,6 +12,8 @@
 #ifndef _included_laninterface_h
 #define _included_laninterface_h
 
+#include <string>
+
 // ============================================================================
 
 #include "world/computer/lancomputer.h"
@@ -40,11 +42,11 @@ public:
     LanInterfaceHighlight ( int _systemIndex, const char *_text ) 
         : systemIndex(_systemIndex) 
         {
-            UplinkStrncpy ( text, _text, sizeof ( text ) );
+            text = _text;
         }
     
     int systemIndex;
-    char text[64];
+    std::string text;
 };
 
 
@@ -89,7 +91,7 @@ protected:
 
 protected:
 
-    char ip[SIZE_VLOCATION_IP];
+    std::string ip;
     LList <LanInterfaceHighlight *> highlights;
 
     static int offsetX;

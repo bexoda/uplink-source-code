@@ -109,11 +109,11 @@ void ProxyDisable::GoClick ( Button *button )
 
 	thistask->progress = 1;
 
-	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( thistask->ip ) );
+	thistask->ip = game->GetWorld ()->GetPlayer ()->remotehost.c_str ();
 	
 	// Look up the target
 
-	VLocation *vl = game->GetWorld ()->GetVLocation ( thistask->ip );
+	VLocation *vl = game->GetWorld ()->GetVLocation ( thistask->ip.c_str () );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
 	UplinkAssert (comp);
@@ -180,7 +180,7 @@ void ProxyDisable::Tick ( int /*n*/ )
 		// Stop the task if we've disconnected and we were running
 
 		if ( progress > 0 &&
-		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip ) != 0 ) {
+		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip.c_str () ) != 0 ) {
 
 			SvbRemoveTask ( SvbLookupPID ( this ) );
             return;
@@ -212,7 +212,7 @@ void ProxyDisable::Tick ( int /*n*/ )
 
 				// Look up the target
 
-				VLocation *vl = game->GetWorld ()->GetVLocation ( ip );
+				VLocation *vl = game->GetWorld ()->GetVLocation ( ip.c_str () );
 				UplinkAssert (vl);
 				Computer *comp = vl->GetComputer ();
 				UplinkAssert (comp);
@@ -244,7 +244,7 @@ void ProxyDisable::Tick ( int /*n*/ )
 				// Finished - decide if we were successful or not
 				// First Look up the target
 
-				VLocation *vl = game->GetWorld ()->GetVLocation ( ip );
+				VLocation *vl = game->GetWorld ()->GetVLocation ( ip.c_str () );
 				UplinkAssert (vl);
 				Computer *comp = vl->GetComputer ();
 				UplinkAssert (comp);

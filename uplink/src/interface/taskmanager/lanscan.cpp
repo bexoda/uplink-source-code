@@ -37,7 +37,7 @@ LanScan::LanScan() : UplinkTask()
 	status = LANSCAN_UNUSED;
 	progress = 0;
 	numticksrequired = 0;
-	UplinkStrncpy ( ip, "N", sizeof ( ip ) );
+	ip = "N";
 }
 
 LanScan::~LanScan()
@@ -124,7 +124,7 @@ void LanScan::GoClick ( Button *button )
 		
 	// Set it going
 
-	UplinkStrncpy ( thistask->ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( thistask->ip ) );
+	thistask->ip = game->GetWorld ()->GetPlayer ()->remotehost;
 	thistask->numticksrequired = TICKSREQUIRED_LANSCAN;
 	thistask->progress = 0;
 	thistask->status = LANSCAN_SCANNING;
@@ -173,7 +173,7 @@ void LanScan::Tick ( int n )
 		// Stop the task if we've disconnected and we were running
 
 		if ( progress > 0 &&
-		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip ) != 0 ) {
+		     strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), ip.c_str () ) != 0 ) {
 
 			SvbRemoveTask ( SvbLookupPID ( this ) );
             return;
@@ -186,7 +186,7 @@ void LanScan::Tick ( int n )
 		if ( status == LANSCAN_SCANNING ) {
 
 
-			VLocation *vl = game->GetWorld ()->GetVLocation ( ip );
+			VLocation *vl = game->GetWorld ()->GetVLocation ( ip.c_str () );
 			UplinkAssert (vl);
 			Computer *comp = vl->GetComputer ();
 			UplinkAssert (comp);

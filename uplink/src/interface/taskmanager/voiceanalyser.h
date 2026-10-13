@@ -13,6 +13,8 @@
 #ifndef _included_voiceanalyser_h
 #define _included_voiceanalyser_h
 
+#include <string>
+
 // ============================================================================
 
 #include "eclipse.h"
@@ -54,8 +56,8 @@ protected:
 
 	int STATUS;
 	int sample[VOICEANALYSER_NUMSAMPLES];
-	char personname [SIZE_PERSON_NAME];
-	char personip [SIZE_VLOCATION_IP];
+	std::string personname;
+	std::string personip;
 	int timesync;
 	int animsync;
 

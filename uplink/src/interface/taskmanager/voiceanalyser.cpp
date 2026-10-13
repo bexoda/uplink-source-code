@@ -46,8 +46,8 @@ VoiceAnalyser::VoiceAnalyser ()
 		sample [i] = 0;
 
 	STATUS = VOICEANALYSER_STATUS_NONE;
-	UplinkStrncpy ( personname, " ", sizeof ( personname ) );
-	UplinkStrncpy ( personip, " ", sizeof ( personip ) );
+	personname = " ";
+	personip = " ";
 	timesync = 0;
 	animsync = 0;
 
@@ -123,7 +123,7 @@ void VoiceAnalyser::PlayClick ( Button *button )
 
 //#ifndef DEMOGAME
 
-        Person *person = game->GetWorld ()->GetPerson ( thistask->personname );
+        Person *person = game->GetWorld ()->GetPerson ( thistask->personname.c_str () );
         UplinkAssert (person);
         char filename [256];
         UplinkSnprintf ( filename, sizeof ( filename ), "sounds/analyser/verifyme%d.wav", person->voiceindex );
@@ -279,8 +279,8 @@ void VoiceAnalyser::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 
                   STATUS = VOICEANALYSER_STATUS_NOTDOWNLOADING;
 
-                  UplinkStrncpy ( personname, comp->companyname.c_str (), sizeof ( personname ) );
-                  UplinkStrncpy ( personip, comp->ip.c_str (), sizeof ( personip ) );
+                  personname = comp->companyname.c_str ();
+                  personip = comp->ip.c_str ();
 
                   numticksrequired = (int) ( TICKSREQUIRED_COPY * ((float) data->size / (float) game->GetWorld ()->GetPlayer ()->gateway.GetBandwidth ()) );
                   progress = 0;
@@ -304,7 +304,7 @@ void VoiceAnalyser::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
          Data *datacopy = new Data ();
 
          char datatitle[ max ( SIZE_VLOCATION_IP + 1 + SIZE_PERSON_NAME, SIZE_DATA_TITLE ) + 1 ];
-         UplinkSnprintf ( datatitle, sizeof ( datatitle ), "%s %s", personip, personname );
+         UplinkSnprintf ( datatitle, sizeof ( datatitle ), "%s %s", personip.c_str (), personname.c_str () );
          datatitle[ SIZE_DATA_TITLE - 1 ] = '\0';
 
          datacopy->SetTitle ( datatitle );
@@ -359,8 +359,8 @@ void VoiceAnalyser::Tick ( int n )
 					if ( vps->STATUS == VOICESTATUS_TALKING ) {
 						EclRegisterCaptionChange ( textbutton, "Recording voice pattern..." );
 						STATUS = VOICEANALYSER_STATUS_RECORDING;
-						UplinkStrncpy ( personname, vps->GetComputerScreen ()->GetComputer ()->companyname.c_str (), sizeof ( personname ) );
-						UplinkStrncpy ( personip, vps->GetComputerScreen ()->GetComputer ()->ip.c_str (), sizeof ( personip ) );
+						personname = vps->GetComputerScreen ()->GetComputer ()->companyname.c_str ();
+						personip = vps->GetComputerScreen ()->GetComputer ()->ip.c_str ();
 					}
 
 				}
@@ -450,7 +450,7 @@ void VoiceAnalyser::Tick ( int n )
 						VoiceAnalysisScreenInterface *vas = (VoiceAnalysisScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
 						UplinkAssert (vas);
 
-						vas->FinishVoicePlayback ( personname );
+						vas->FinishVoicePlayback ( personname.c_str () );
 
 					}
 

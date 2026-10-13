@@ -357,7 +357,7 @@ void LanInterface::LanBackgroundDraw ( Button *button, bool /*highlighted*/, boo
             glDisable ( GL_LINE_STIPPLE );
             glLineWidth ( 1.0 );
 
-            GciDrawText ( x - 10, y + height + 15, lih->text );
+            GciDrawText ( x - 10, y + height + 15, lih->text.c_str () );
 
         }
 
@@ -878,7 +878,7 @@ void LanInterface::ScrollClick ( Button *button )
 
 LanInterface::LanInterface ()
 {
-    UplinkStrncpy ( ip, "None", sizeof ( ip ) );
+    ip = "None";
 }
 
 LanInterface::~LanInterface ()
@@ -1166,7 +1166,7 @@ void LanInterface::Create ()
         EclRegisterButton ( 5, 30, SX(440), SY(370), " ", " ", "lan_background" );
         EclRegisterButtonCallbacks ( "lan_background", LanBackgroundDraw, NULL, NULL, NULL );
 
-        UplinkStrncpy ( ip, game->GetWorld ()->GetPlayer ()->remotehost.c_str (), sizeof ( ip ) );
+        ip = game->GetWorld ()->GetPlayer ()->remotehost.c_str ();
 
 #ifdef TESTGAME
         EclRegisterButton ( 10, 35, 15, 15, "L0", "Generate a new Level 0 Gateway", "lan_generate 0" );
@@ -1246,7 +1246,7 @@ void LanInterface::Update ()
     // Shut down if we aren't looking at our LAN anymore
 
     const char *currentIP = game->GetWorld ()->GetPlayer ()->remotehost.c_str ();
-    if ( strcmp ( ip, currentIP ) != 0 ) {
+    if ( strcmp ( ip.c_str (), currentIP ) != 0 ) {
         game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
         return;
     }
