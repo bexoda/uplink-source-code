@@ -254,7 +254,9 @@ void Options::CreateDefaultOptions ()
 
 void Options::SetThemeName ( char *newThemeName )
 {
-    UplinkStrncpy ( themeName, newThemeName, sizeof ( themeName ) );
+    // Called with GetThemeName() to re-read the current theme; copying a buffer onto itself is UB.
+    if ( newThemeName != themeName )
+        UplinkStrncpy ( themeName, newThemeName, sizeof ( themeName ) );
 
     //
     // Parse the theme.txt file

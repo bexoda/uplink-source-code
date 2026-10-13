@@ -104,8 +104,11 @@ void Game::NewGame ()
 
 	}
 
-	// Initialise the world
+	// Initialise the world. Its clock is held while the world is generated and fast-forwarded
+	// below: Date::Update adds a second whenever a second of real time passes, which made the
+	// generated world depend on how fast the machine was.
 	world = new World ();
+	world->date.DeActivate ();
 	WorldGenerator::LoadDynamicsGatewayDefs ();
 
 	NotificationEvent::ScheduleStartingEvents ();
@@ -143,6 +146,8 @@ void Game::NewGame ()
 		if ( NumberGenerator::RandomNumber (5) == 0 ) 	WorldGenerator::GenerateSimpleStartingMissionB ();
 
 	} while ( GetWorld ()->date.Before ( &gamestart ) );
+
+	GetWorld ()->date.Activate ();
 
 }
 

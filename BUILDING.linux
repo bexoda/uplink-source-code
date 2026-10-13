@@ -1,3 +1,6 @@
+NOTE (2026): these 2006 instructions need the defunct autopackage toolchain.
+Use the CMake build described in BUILDING.md instead.
+
 *** BUILDING UPLINK ***
 
 Contents:

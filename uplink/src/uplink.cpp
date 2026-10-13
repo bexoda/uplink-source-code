@@ -72,36 +72,7 @@
 
 #include "mmgr.h"
 
-// ============================================================================
-// Initialisation functions
-
-void RunUplink ( int argc, char **argv );
-int RunUplinkExceptionHandling ();
-
-void Init_App      ( char *apppath );
-void Init_Options  ( int argc, char **argv );
-
-bool Load_Data	   ();
-void Init_Game     ();
-void Init_Sound    ();
-void Init_Music    ();
-void Init_Graphics ();
-void Init_OpenGL   ( int argc, char **argv );
-void Init_Fonts	   ();
-
-void Run_MainMenu  ();
-void Run_Game      ();
-
-void Cleanup_Uplink();
-
-#if defined(FULLGAME) || defined(TESTGAME)
-#if defined(WIN32)
-bool Init_Steam    ();
-bool Cleanup_Steam ();
-#endif
-
-bool VerifyLegitAndCodeCardCheck();
-#endif
+#include "uplink.h"
 
 // ============================================================================
 // Static variables
@@ -162,20 +133,6 @@ void hSignalSIGPIPE ( int n )
 #endif
 
 
-int main ( int argc, char **argv )
-{
-
-	// Standard C++ entry point
-
-#if !defined(WIN32) && !defined(_DEBUG)
-	signal ( SIGSEGV, hSignalSIGSEGV );  // segmentation violation
-	signal ( SIGFPE, hSignalSIGFPE );    // floating point exception: "erroneous arithmetic operation"
-	signal ( SIGPIPE, hSignalSIGPIPE );  // write to pipe with no one reading
-#endif
-	
-	RunUplink ( argc, argv );
-	return 0;
-}
 
 
 //#ifdef _WINDOWS

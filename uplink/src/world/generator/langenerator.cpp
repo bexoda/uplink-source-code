@@ -37,6 +37,19 @@
 
 #include "mmgr.h"
 
+// The page a LAN modem's login screen leads to. The generator makes PasswordScreens; this used
+// to cast to UserIDScreen, which only worked because both keep nextpage at the same offset.
+static int ModemNextPage ( ComputerScreen *screen )
+{
+	switch ( screen->GetOBJECTID () ) {
+		case OID_PASSWORDSCREEN:	return ( (PasswordScreen *) screen )->nextpage;
+		case OID_USERIDSCREEN:		return ( (UserIDScreen *) screen )->nextpage;
+	}
+	UplinkAbort ( "LAN modem screen is neither a password nor a user ID screen" );
+	return -1;
+}
+
+
 
 class dos2unix : public filebuf {
 };
@@ -2089,7 +2102,7 @@ void LanCluster::Merge ( LanCluster *target, LanComputer *comp )
             if ( system->TYPE == LANSYSTEM_MODEM ) {
 
 				if ( comp->screens.ValidIndex ( system->screenIndex ) ) {
-					int targetScreenIndex = ((UserIDScreen *) comp->screens.GetData( system->screenIndex ))->nextpage;
+					int targetScreenIndex = ModemNextPage ( comp->screens.GetData( system->screenIndex ) );
 					DArray <VLocation *> *locations = game->GetWorld ()->locations.ConvertToDArray();
 					for ( int i = 0; i < locations->Size(); ++i ) {
 						if ( locations->ValidIndex(i) ) {
@@ -2192,7 +2205,7 @@ void LanCluster::Merge ( LanComputer *target )
             if ( system->TYPE == LANSYSTEM_MODEM ) {
 
 				if ( target->screens.ValidIndex ( system->screenIndex ) ) {
-					int targetScreenIndex = ((UserIDScreen *) target->screens.GetData( system->screenIndex ))->nextpage;
+					int targetScreenIndex = ModemNextPage ( target->screens.GetData( system->screenIndex ) );
 					DArray <VLocation *> *locations = game->GetWorld ()->locations.ConvertToDArray();
 					for ( int i = 0; i < locations->Size(); ++i ) {
 						if ( locations->ValidIndex(i) ) {

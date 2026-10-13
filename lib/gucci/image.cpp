@@ -17,6 +17,7 @@
 #include "tiffio.h"
 
 #include "image.h"
+#include "scale.h"
 
 #include "mmgr.h"
 
@@ -258,21 +259,7 @@ void Image::Scale ( int newwidth, int newheight )
 
 		unsigned char *newpixels = new unsigned char [newwidth * newheight * 4];
 
-/*
-		for ( int x = 0; x < newwidth; ++x ) {
-			for ( int y = 0; y < newheight; ++y ) {
-
-				int scaleX = ((float) x / (float) newwidth) * width;
-				int scaleY = ((float) y / (float) newheight) * height;
-
-				for ( int i = 0; i < 4; ++i )
-					newpixels [ (y * newwidth + x) * 4 + i ] = pixels [ (scaleY * width + scaleX) * 4 + i ];
-
-			}
-		}
-*/
-		int result = gluScaleImage ( GL_RGBA, width, height, GL_UNSIGNED_BYTE, pixels, newwidth, newheight, GL_UNSIGNED_BYTE, newpixels );
-		char *resultc = (char *) gluErrorString ( (GLenum) result );
+		GciScaleRGBA ( width, height, pixels, newwidth, newheight, newpixels );
 
 		if ( rgb_pixels ) {
 			delete [] rgb_pixels;
