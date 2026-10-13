@@ -87,7 +87,7 @@ void Show ( Computer *comp, int screenindex )
 	Connection *conn = game->GetWorld ()->GetPlayer ()->GetConnection ();
 	conn->Disconnect ();
 	conn->Reset ();
-	conn->AddVLocation ( comp->ip );
+	conn->AddVLocation ( comp->ip.c_str () );
 	conn->Connect ();
 	game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
 	game->GetInterface ()->GetRemoteInterface ()->RunScreen ( screenindex, comp );
@@ -228,14 +228,14 @@ TEST_CASE ( "Password_Breaker breaks a password and gives the player the code", 
 	Computer *comp = Setup ();
 	int ps = FindScreen ( comp, OID_PASSWORDSCREEN );
 	Show ( comp, ps );
-	REQUIRE_FALSE ( PlayerHasCodeFor ( comp->ip ) );
+	REQUIRE_FALSE ( PlayerHasCodeFor ( comp->ip.c_str () ) );
 
 	RunOn ( "Password_Breaker", 1.0f, comp->screens.GetData ( ps ), "passwordscreen_password", -1 );
 	Step ( 6000 );
 
-	CHECK ( PlayerHasCodeFor ( comp->ip ) );
+	CHECK ( PlayerHasCodeFor ( comp->ip.c_str () ) );
 	CHECK ( strcmp ( EclGetButton ( "passwordscreen_password" )->caption,
-	                 ((PasswordScreen *) comp->screens.GetData ( ps ))->password ) == 0 );
+	                 ((PasswordScreen *) comp->screens.GetData ( ps ))->password.c_str () ) == 0 );
 }
 
 TEST_CASE ( "Log_UnDeleter restores a deleted log", "[tools]" )
