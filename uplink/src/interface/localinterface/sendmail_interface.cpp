@@ -36,8 +36,8 @@ SendMailInterface::SendMailInterface ()
 {
 
 	//if ( m )
-	//	m.reset ();
-	//m.reset ( new Message () );       // The message being built up
+	//	delete m;
+	//m = new Message ();       // The message being built up
 	//changed = false;          // Has m changed?
 
 }
@@ -46,8 +46,8 @@ SendMailInterface::~SendMailInterface ()
 {
 
 	//if ( m ) {
-	//	m.reset ();
-	//	m.reset ();
+	//	delete m;
+	//	m = NULL;
 	//}
 
 }
@@ -264,7 +264,6 @@ void SendMailInterface::ClearClick ( Button * /*button*/ )
 {
 	
 	if ( m ) {
-		m.reset ();	
 		m.reset ( new Message () );
 		changed = true;
 	}
@@ -290,7 +289,8 @@ void SendMailInterface::SendClick ( Button * /*button*/ )
 
 	m->Send ();
 
-	// We can't delete the old message m - it is in use elsewhere now
+	// We can't delete the old message m - Send gave it to the recipient
+	m.release ();
 	m.reset ( new Message () );
 	changed = true;
 	game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen ()->Update ();
