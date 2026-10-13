@@ -50,6 +50,10 @@ warning is a bug report: fix it rather than silence it.
 - the hacking tools work as the player uses them (launched from the task manager, clicked
   onto a remote screen, ticked to completion): Log_Deleter, Log_UnDeleter, File_Copier,
   File_Deleter, Decrypter, Password_Breaker;
+- mail sent from the Send Mail screen reaches the recipient and is saved;
+- the options file keeps its byte format (`uplink/tests/fixtures/options_default.bin`);
+- `OptString` saves and loads exactly like the nullable `char *` it replaced, and the task
+  scheduler frees every task on reset;
 - a golden SAV62 save (`uplink/tests/fixtures/`) loads and writes back unchanged, and
   generating seed 1 and simulating one day still reproduces it exactly (glibc only).
 
@@ -87,5 +91,25 @@ committing it.
     cd build-asan && ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure
 
 The game redirects stderr into `debug.log`, so sanitizer reports land there; add
-`ASAN_OPTIONS=log_path=/tmp/asan` to get them in separate files. Leak checking is off
-because the 2003 code frees little at exit; leaks are dealt with during the cleanup.
+`ASAN_OPTIONS=log_path=/tmp/asan` to get them in separate files.
+
+The test runner frees the game, its buttons and its tasks at exit, so leak checking works:
+
+    ASAN_OPTIONS=detect_leaks=1:log_path=/tmp/lsan ./uplink_tests "[tools]"
+
+Expect no *direct* leaks. The indirect ones left are glyph caches FTGL keeps for the
+process. `ctest` runs with `detect_leaks=0` because those make every test exit non-zero.
+
+## Strings and ownership
+
+- Text members are `std::string`. Where a field was a fixed `char[N]` saved by
+  `SaveDynamicString`, the old N is still passed as the maximum size, so saves validate as
+  before. Pre-SAV59 saves stored raw blocks: `LoadFixedString` / `SaveFixedString`.
+- A text member that can be absent is an `OptString` (`app/optstring.h`): `c_str ()` returns
+  NULL when unset and it is saved as length -1, exactly as a NULL `char *` was. Don't use
+  `std::string` there: the save format tells NULL and "" apart.
+- A pointer member the class deletes is a `std::unique_ptr`. When the object is handed to
+  someone else (a message given to its recipient, an image given back to a button) the code
+  says `release ()`; a `reset ()` there frees memory still in use. Destructors keep explicit
+  `reset ()` calls where teardown order matters (`Game`, `Interface`).
+- Containers (`LList`, `BTree`, `DArray` holding owned pointers) are not converted yet.
