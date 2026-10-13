@@ -1,7 +1,4 @@
 
-#include "gucci.h"
-#include "eclipse.h"
-#include "soundgarden.h"
 #include "redshirt.h"
 
 #include "app/app.h"
@@ -24,9 +21,8 @@
 
 #include "world/scheduler/eventscheduler.h"
 #include "world/scheduler/attemptmissionevent.h"
+#include "world/worldlink.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
 
 
 
@@ -129,7 +125,7 @@ void LanMonitor::ResetAll ()
 	currentSelected = -1;
 	currentSpoof = -1;
 
-    EclSuperUnHighlight ( "hud_lanview" );
+    GetWorldLink ().SetLanAlarm ( false );
 
 }
 
@@ -140,7 +136,7 @@ void LanMonitor::SetCurrentSystem ( int newCurrentSystem )
 	//
 	// Reset our security level
 
-	game->GetInterface ()->GetRemoteInterface ()->SetSecurity( "Guest", 10 );
+	GetWorldLink ().SetRemoteSecurity ( "Guest", 10 );
 
 }
 
@@ -349,7 +345,7 @@ void LanMonitor::SysAdminAwaken ()
 
         sysAdminState = SYSADMIN_CURIOUS;
         int timeToDiscover = (int) NumberGenerator::RandomNormalNumber( 10, 5 );
-        sysAdminTimer = (int) ( EclGetAccurateTime() + timeToDiscover * 1000 );
+        sysAdminTimer = (int) ( GetWorldLink ().TimeMs () + timeToDiscover * 1000 );
     
     }
     
@@ -364,17 +360,7 @@ void LanMonitor::SysAdminSleep ()
 void LanMonitor::Update ()
 {
 
-    if ( sysAdminState < SYSADMIN_CURIOUS && EclIsSuperHighlighted( "hud_lanview" ) ) {
-
-        EclSuperUnHighlight ( "hud_lanview" );
-
-    }
-    else if ( sysAdminState >= SYSADMIN_CURIOUS && !EclIsSuperHighlighted ( "hud_lanview" ) ) {
-
-        EclSuperHighlight ( "hud_lanview" );
-        SgPlaySound ( RsArchiveFileOpen ( "sounds/siren.wav" ), "sounds/sirens.wav" );
-
-    }
+    GetWorldLink ().SetLanAlarm ( sysAdminState >= SYSADMIN_CURIOUS );
 
     
     if ( !currentlyActive ) return;
@@ -402,14 +388,14 @@ void LanMonitor::Update ()
 
         case SYSADMIN_CURIOUS:
         {
-            if ( EclGetAccurateTime() >= sysAdminTimer ) {
+            if ( GetWorldLink ().TimeMs () >= sysAdminTimer ) {
                 sysAdminState = SYSADMIN_SEARCHING;
                 if ( connection.ValidIndex(0) ) 
                     sysAdminCurrentSystem = connection.GetData(0);
                 else 
                     sysAdminState = SYSADMIN_ASLEEP;                    
                 int timeToDiscover = (int) NumberGenerator::RandomNormalNumber( 10, 5 );
-                sysAdminTimer = (int) ( EclGetAccurateTime() + timeToDiscover * 1000 );
+                sysAdminTimer = (int) ( GetWorldLink ().TimeMs () + timeToDiscover * 1000 );
                 game->GetWorld ()->GetPlayer ()->GetConnection ()->BeginTrace ();
             }
         }
@@ -422,7 +408,7 @@ void LanMonitor::Update ()
             }
             else {
 
-                if ( EclGetAccurateTime() >= sysAdminTimer ) {
+                if ( GetWorldLink ().TimeMs () >= sysAdminTimer ) {
                     int nodeIndex = GetNodeIndex( sysAdminCurrentSystem );
                     if ( nodeIndex == -1 ) 
                         sysAdminState = SYSADMIN_CURIOUS;
@@ -433,7 +419,7 @@ void LanMonitor::Update ()
                             sysAdminState = SYSADMIN_CURIOUS;
                     }
                     int timeToDiscover = (int) NumberGenerator::RandomNormalNumber( 10, 5 );
-                    sysAdminTimer = (int) ( EclGetAccurateTime() + timeToDiscover * 1000 );
+                    sysAdminTimer = (int) ( GetWorldLink ().TimeMs () + timeToDiscover * 1000 );
                 }
 
             }
@@ -487,8 +473,7 @@ void LanMonitor::Update ()
 
 			game->GetWorld ()->GetPlayer ()->GetConnection ()->Disconnect ();
 			game->GetWorld ()->GetPlayer ()->GetConnection ()->Reset ();
-			game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
-			game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2);		
+			GetWorldLink ().ShowDisconnected ();
             
         }
         break;

@@ -1,7 +1,6 @@
 
 #include <string.h>
 
-#include "gucci.h"
 
 #include "game/game.h"
 

@@ -2,7 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "gucci.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -10,8 +9,6 @@
 
 #include "game/game.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
 
 #include "world/world.h"
 #include "world/vlocation.h"
@@ -19,6 +16,7 @@
 #include "world/computer/computer.h"
 #include "world/computer/bankcomputer.h"
 #include "world/computer/computerscreen/logscreen.h"
+#include "world/worldlink.h"
 
 
 
@@ -63,7 +61,7 @@ LogBank *LogScreen::GetTargetLogBank ()
 
 		case LOGSCREEN_TARGET_ACCESSLOGS:
 		{
-			Computer *comp = game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetComputer ();
+			Computer *comp = GetWorldLink ().ScreenComputer ();
 			UplinkAssert ( comp );
 			logbank = &(comp->logbank);
 			break;
@@ -74,14 +72,14 @@ LogBank *LogScreen::GetTargetLogBank ()
 			
 			// Get the bank computer
 
-			Computer *comp = game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ()->GetComputer ();
+			Computer *comp = GetWorldLink ().ScreenComputer ();
 			UplinkAssert ( comp );
 			UplinkAssert ( comp->GetOBJECTID () == OID_BANKCOMPUTER );			
 			BankComputer *bank = (BankComputer *) comp;
 
 			// Get the account number
 
-			Record *rec = bank->recordbank.GetRecordFromName ( game->GetInterface ()->GetRemoteInterface ()->security_name.c_str () );
+			Record *rec = bank->recordbank.GetRecordFromName ( GetWorldLink ().ScreenSecurityName () );
 			UplinkAssert (rec);
 			char *accno = rec->GetField ( RECORDBANK_ACCNO );
 			UplinkAssert (accno);

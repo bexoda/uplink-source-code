@@ -5,7 +5,6 @@
 
 #include <sstream>
 
-#include "gucci.h"
 
 
 #include "app/app.h"

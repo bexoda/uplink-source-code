@@ -9,8 +9,6 @@
 
 #include "options/options.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
 
 #include "world/world.h"
 #include "world/message.h"
@@ -31,6 +29,7 @@
 #include "world/scheduler/arrestevent.h"
 #include "world/scheduler/shotbyfedsevent.h"
 #include "world/scheduler/seizegatewayevent.h"
+#include "world/worldlink.h"
 
 
 
@@ -76,8 +75,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 			person->GetConnection ()->Disconnect ();
 			person->GetConnection ()->Reset ();
-			game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
-			game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2);
+			GetWorldLink ().ShowDisconnected ();
 
         }
 
@@ -139,8 +137,7 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 			if ( strcmp ( person->name.c_str (), "PLAYER" ) == 0 ) {
 
-				game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
-				game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2);
+				GetWorldLink ().ShowDisconnected ();
 
 			}
 

@@ -1,7 +1,6 @@
 
 #include <sstream>
 
-#include "gucci.h"
 
 #include "app/globals.h"
 #include "app/app.h"

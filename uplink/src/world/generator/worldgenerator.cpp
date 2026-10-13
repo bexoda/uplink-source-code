@@ -6,7 +6,6 @@
 
 #include <sstream>
 
-#include "gucci.h"
 #include "redshirt.h"
 
 #include "game/game.h"
@@ -17,15 +16,11 @@
 #include "app/miscutils.h"
 #include "app/serialise.h"
 
-#include "interface/interface.h"
-#include "interface/localinterface/localinterface.h"
-#include "interface/localinterface/hud_interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
+#include "world/computer/computerscreen/screentypes.h"
 
 #include "options/options.h"
 
 #include "app/dos2unix.h"
-#include "app/opengl_interface.h"
 
 #include "world/world.h"
 #include "world/player.h"
@@ -59,6 +54,7 @@
 #include "world/computer/computerscreen/cypherscreen.h"
 #include "world/computer/computerscreen/highsecurityscreen.h"
 #include "world/computer/computerscreen/disconnectedscreen.h"
+#include "world/worldlink.h"
 
 
 
@@ -4218,7 +4214,7 @@ bool WorldGenerator::VerifyPlayerGateway ()
 		UplinkSnprintf ( message, sizeof ( message ), "This agent is using the following custom gateway '%s', but Uplink cannot find a definition for it.", plgatewaydef->name );
 		printf ( "WARNING : WorldGenerator::VerifyPlayerGateway : %s\n", message );
         //create_msgbox ( "Critical Error", message, WorldGenerator::VerifyPlayerGatewayCloseDialog );
-        create_msgbox ( "Critical Error", message );
+        GetWorldLink ().CriticalError ( message );
 		return false;
 
 	}

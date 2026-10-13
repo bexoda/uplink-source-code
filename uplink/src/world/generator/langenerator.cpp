@@ -33,7 +33,7 @@
 #include "world/computer/computerscreen/menuscreen.h"
 #include "world/computer/computerscreen/dialogscreen.h"
 
-#include "interface/remoteinterface/remoteinterface.h"
+#include "world/computer/computerscreen/screentypes.h"
 
 
 // The page a LAN modem's login screen leads to. The generator makes PasswordScreens; this used

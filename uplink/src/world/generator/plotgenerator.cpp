@@ -36,10 +36,9 @@
 #include "world/scheduler/notificationevent.h"
 #include "world/generator/langenerator.h"
 #include "world/generator/namegenerator.h"
+#include "world/worldlink.h"
 
-#include "interface/interface.h"
-#include "interface/taskmanager/taskmanager.h"
-#include "interface/remoteinterface/remoteinterface.h"
+#include "world/computer/computerscreen/screentypes.h"
 
 
 
@@ -886,8 +885,7 @@ void PlotGenerator::RunRevelation ( const char *ip, float version, bool playerre
 		game->GetWorld ()->GetPlayer ()->connection.Disconnect ();
 		game->GetWorld ()->GetPlayer ()->connection.Reset ();
 
-		game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
-		game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2 );
+		GetWorldLink ().ShowDisconnected ();
 
 	}
 
@@ -2606,10 +2604,7 @@ void PlotGenerator::Run_Act5Scene2 ()
         game->GetWorld ()->GetPlayer ()->GiveMission ( mission );
 
 		game->SetGameSpeed ( GAMESPEED_NORMAL );
-		EclDirtyButton ( "hud_speed 0" );
-        EclDirtyButton ( "hud_speed 1" );
-		EclDirtyButton ( "hud_speed 2" );
-		EclDirtyButton ( "hud_speed 3" );
+		GetWorldLink ().GameSpeedChanged ();
 
         //
         // Start the AI going
@@ -2652,10 +2647,7 @@ void PlotGenerator::Run_Act5Scene2 ()
 
 
 		game->SetGameSpeed ( GAMESPEED_NORMAL );
-		EclDirtyButton ( "hud_speed 0" );
-        EclDirtyButton ( "hud_speed 1" );
-		EclDirtyButton ( "hud_speed 2" );
-		EclDirtyButton ( "hud_speed 3" );
+		GetWorldLink ().GameSpeedChanged ();
 
         //
         // Start the AI going
@@ -4486,7 +4478,7 @@ void PlotGenerator::Revelation_ReleaseUncontrolled ()
 
     // Run revelation locally
 
-    game->GetInterface ()->GetTaskManager ()->RunSoftware ( "Revelation", version_revelation );
+    GetWorldLink ().RunPlayerSoftware ( "Revelation", version_revelation );
 
 }
 

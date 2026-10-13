@@ -2,8 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "gucci.h"
-#include "eclipse.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -17,6 +15,7 @@
 #include "world/company/company.h"
 
 #include "world/generator/numbergenerator.h"
+#include "world/worldlink.h"
 
 
 
@@ -348,14 +347,14 @@ void Date::Update ()
 
 	if ( updateme ) {									// Update the time
 
-		int nummilliseconds = (int)EclGetAccurateTime () - previousupdate;
+		int nummilliseconds = (int)GetWorldLink ().TimeMs () - previousupdate;
 		
 		if ( game->GameSpeed () == GAMESPEED_NORMAL ) {
 		
 			if ( nummilliseconds > 1000 ) {
 				
 				AdvanceSecond ( 1 );				
-				previousupdate = (int)EclGetAccurateTime ();
+				previousupdate = (int)GetWorldLink ().TimeMs ();
 
 			}
 				
@@ -405,7 +404,7 @@ void Date::Update ()
 				else
 					SetDate ( &newdate );
 
-				previousupdate = (int)EclGetAccurateTime ();
+				previousupdate = (int)GetWorldLink ().TimeMs ();
 
 			}
 

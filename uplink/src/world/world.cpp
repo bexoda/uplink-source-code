@@ -42,6 +42,7 @@
 
 #include "world/scheduler/eventscheduler.h"
 #include "world/scheduler/notificationevent.h"
+#include "world/worldlink.h"
 
 
 
@@ -478,7 +479,7 @@ void World::Update ()
 		
 #ifdef WAREZRELEASE
     
-        int timePlaying = EclGetAccurateTime() - app->starttime;
+        int timePlaying = GetWorldLink ().TimeMs () - app->starttime;
         if ( timePlaying > WAREZ_MAXPLAYTIME ) {
 
             Date rundate;

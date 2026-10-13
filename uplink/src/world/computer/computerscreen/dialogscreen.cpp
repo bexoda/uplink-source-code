@@ -2,7 +2,6 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "gucci.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -10,11 +9,9 @@
 
 #include "game/game.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
-#include "interface/remoteinterface/dialogscreen_interface.h"
 
 #include "world/computer/computerscreen/dialogscreen.h"
+#include "world/worldlink.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -83,10 +80,7 @@ void DialogScreen::RemoveWidget ( const char *name )
 
 		if ( strcmp ( dsw->GetName (), name ) == 0 ) {
 
-			ComputerScreen *cs = game->GetInterface ()->GetRemoteInterface ()->GetComputerScreen ();
-
-			if ( cs == this )
-				DialogScreenInterface::RemoveWidget ( dsw, GetComputer () );
+			GetWorldLink ().DialogWidgetRemoved ( this, dsw );
 
 			widgets.RemoveData (i);
             delete dsw;

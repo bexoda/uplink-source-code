@@ -17,7 +17,6 @@
 
 // ============================================================================
 
-#include "eclipse.h"
 
 #include "world/person.h"
 #include "world/scheduler/uplinkevent.h"

@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 
-#include "gucci.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -10,8 +9,6 @@
 #include "game/game.h"
 #include "game/data/data.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
 
 #include "world/world.h"
 #include "world/vlocation.h"

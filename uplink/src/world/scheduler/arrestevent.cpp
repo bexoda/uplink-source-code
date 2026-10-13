@@ -1,7 +1,6 @@
 
 #include <sstream>
 
-#include "soundgarden.h"
 
 #include "app/app.h"
 #include "app/globals.h"

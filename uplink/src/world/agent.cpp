@@ -16,7 +16,6 @@
 #endif
 
 
-#include "gucci.h"
 
 #include "game/game.h"
 #include "game/data/data.h"
@@ -25,9 +24,6 @@
 #include "app/globals.h"
 #include "app/serialise.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
-#include "interface/remoteinterface/linksscreen_interface.h"
 
 #include "world/world.h"
 #include "world/message.h"
@@ -45,6 +41,7 @@
 
 #include "world/scheduler/eventscheduler.h"
 #include "world/scheduler/notificationevent.h"
+#include "world/worldlink.h"
 
 
 
@@ -199,17 +196,10 @@ void Agent::GiveLink ( const char *newip )
 		UplinkStrncpy ( theip, newip, theipsize );
 		links.PutDataAtStart ( theip );
 
-        // If this was the player and he is looking at his links screen
-        // Update it now
+        // If this was the player, the links screen may be showing them
 
-        if ( strcmp ( name.c_str (), "PLAYER" ) == 0 &&
-             strcmp ( game->GetWorld ()->GetPlayer ()->remotehost.c_str (), IP_LOCALHOST ) == 0 &&
-             game->GetInterface ()->GetRemoteInterface ()->currentscreenindex == 0 ) {
-
-            ((LinksScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->SetFullList ( &links );
-            ((LinksScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->ApplyFilter (NULL);
-
-        }
+        if ( strcmp ( name.c_str (), "PLAYER" ) == 0 )
+        	GetWorldLink ().PlayerLinksChanged ( &links );
 
 	}
 

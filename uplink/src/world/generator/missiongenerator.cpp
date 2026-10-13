@@ -9,7 +9,6 @@
 
 #include <sstream>
 
-#include "soundgarden.h"
 #include "redshirt.h"
 
 #include "app/app.h"
@@ -42,6 +41,7 @@
 #include "world/generator/consequencegenerator.h"
 
 #include "world/scheduler/notificationevent.h"
+#include "world/worldlink.h"
 
 
 
@@ -3920,7 +3920,7 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
             vl->SetDisplayed ( false );
     }
 
-    SgPlaySound ( RsArchiveFileOpen ("sounds/success.wav"), "sounds/success.wav", false );
+    GetWorldLink ().PlaySound ( "sounds/success.wav", false );
 
 }
 

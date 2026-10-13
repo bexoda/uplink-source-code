@@ -15,6 +15,7 @@
 #include "options/options.h"
 
 #include "game/game.h"
+#include "game/gameworldlink.h"
 #include "game/gameobituary.h"
 #include "game/data/data.h"
 
@@ -34,8 +35,13 @@
 
 
 
+// The world reaches the screen, sound and clock through this while a game exists
+static GameWorldLink gameworldlink;
+
 Game::Game ()
 {
+
+	SetWorldLink ( &gameworldlink );
 
 	ui.reset ();
 	view.reset ();
@@ -59,6 +65,8 @@ Game::Game ()
 
 Game::~Game () 
 {
+
+	SetWorldLink ( NULL );
 
 	ui.reset ();
 	view.reset ();

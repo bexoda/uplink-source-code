@@ -1,7 +1,7 @@
 
 #include "app/serialise.h"
 
-#include "interface/remoteinterface/remoteinterface.h"
+#include "world/computer/computerscreen/screentypes.h"
 
 #include "world/computer/computerscreen/genericscreen.h"
 

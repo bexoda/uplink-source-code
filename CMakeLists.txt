@@ -181,6 +181,11 @@ if(UPLINK_TESTS)
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     PROPERTIES ENVIRONMENT "HOME=${CMAKE_BINARY_DIR}/test-home")
 
+  # The simulation must reach the UI only through WorldLink
+  add_test(NAME world_layering
+           COMMAND ${CMAKE_COMMAND} -DSRC=${CMAKE_SOURCE_DIR}/uplink/src
+                   -P ${CMAKE_SOURCE_DIR}/cmake/check_world_layering.cmake)
+
   # Screenshot tests need a window: they skip without DISPLAY. CI runs them under xvfb-run.
   find_package(PNG REQUIRED)
   add_executable(uplink_screen_tests

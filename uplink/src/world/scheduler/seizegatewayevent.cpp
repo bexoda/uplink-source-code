@@ -1,15 +1,11 @@
 
 #include <sstream>
 
-#include "soundgarden.h"
 
 #include "app/app.h"
 #include "app/globals.h"
 #include "app/serialise.h"
-#include "app/opengl.h"
-#include "app/opengl_interface.h"
 
-#include "mainmenu/mainmenu.h"
 
 #include "game/game.h"
 #include "game/data/data.h"

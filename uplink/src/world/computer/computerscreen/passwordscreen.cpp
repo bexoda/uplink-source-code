@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "gucci.h"
 
 #include "game/game.h"
 

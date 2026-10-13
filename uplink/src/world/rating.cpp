@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 
-#include "gucci.h"
 
 #include "app/app.h"
 #include "app/globals.h"

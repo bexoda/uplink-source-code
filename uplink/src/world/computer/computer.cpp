@@ -28,9 +28,8 @@
 #include "world/generator/missiongenerator.h"
 
 #include "world/scheduler/notificationevent.h"
+#include "world/worldlink.h"
 
-#include "interface/interface.h"
-#include "interface/remoteinterface/remoteinterface.h"
 
 
 
@@ -657,8 +656,7 @@ void Computer::Update ()
 	            game->GetWorld ()->GetPlayer ()->connection.Disconnect ();
 	            game->GetWorld ()->GetPlayer ()->connection.Reset ();
 
-	            game->GetInterface ()->GetRemoteInterface ()->RunNewLocation ();
-	            game->GetInterface ()->GetRemoteInterface ()->RunScreen ( 2 );
+	            GetWorldLink ().ShowDisconnected ();
 
             }
             
