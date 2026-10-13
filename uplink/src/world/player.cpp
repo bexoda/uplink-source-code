@@ -291,7 +291,7 @@ int Player::TimeToTrace ( const char *tracerIP, char *routerIP )
     }
 
     if ( playeraccesslevel != -1 && tracer->GetComputer ()->TYPE == COMPUTER_TYPE_CENTRALMAINFRAME ) {
-        timetonexttrace = (int) ( timetonexttrace * COMPUTER_TYPE_CENTRALMAINFRAME );
+        timetonexttrace = (int) ( timetonexttrace * TRACESPEED_MODIFIER_CENTRALMAINFRAME );
     }
 
     if ( playeraccesslevel == 1 && tracer->GetComputer ()->TYPE == COMPUTER_TYPE_PUBLICBANKSERVER ) {
