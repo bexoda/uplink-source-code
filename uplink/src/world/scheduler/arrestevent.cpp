@@ -36,7 +36,7 @@ ArrestEvent::~ArrestEvent ()
 
 }
 
-void ArrestEvent::SetName ( char *newname )
+void ArrestEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_PERSON_NAME );
@@ -54,7 +54,7 @@ void ArrestEvent::SetReason ( const char *newreason )
 
 }
 
-void ArrestEvent::SetIP ( char *newip )
+void ArrestEvent::SetIP ( const char *newip )
 {
 
 	if ( ip )
@@ -164,7 +164,7 @@ void ArrestEvent::Print ()
 
 }
 
-char *ArrestEvent::GetID ()
+const char *ArrestEvent::GetID ()
 {
 
 	return "EVT_ARR";

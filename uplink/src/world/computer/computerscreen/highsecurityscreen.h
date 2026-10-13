@@ -31,7 +31,7 @@ public:
 	HighSecurityScreen ();
 	~HighSecurityScreen ();
 
-	void AddSystem ( char *name, int page );
+	void AddSystem ( const char *name, int page );
 	void SetNextPage ( int newnextpage );
 
 	void ResetSecurity ();							// Sets all systems to "Enabled"
@@ -42,7 +42,7 @@ public:
 	void Save  ( FILE *file );			
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();				
 
 };

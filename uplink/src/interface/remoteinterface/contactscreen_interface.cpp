@@ -119,7 +119,7 @@ void ContactScreenInterface::QuestionClick ( Button *button )
 
 }
 
-void ContactScreenInterface::PutMessage ( int userid, char *message )
+void ContactScreenInterface::PutMessage ( int userid, const char *message )
 {
 
 	// Work out the full message
@@ -230,7 +230,7 @@ void ContactScreenInterface::SetMission ( Mission *newmission )
 
 }
 
-void ContactScreenInterface::AddUser ( char *name )
+void ContactScreenInterface::AddUser ( const char *name )
 {
 
 	users.PutDataAtEnd ( name );
@@ -254,7 +254,7 @@ void ContactScreenInterface::AddUser ( char *name )
 
 }
 
-void ContactScreenInterface::AddQuestion ( char *question, int index )
+void ContactScreenInterface::AddQuestion ( const char *question, int index )
 {
 
 	if ( index == -1 ) {

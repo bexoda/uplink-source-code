@@ -33,7 +33,7 @@
 
 static int numlogtypes = 9 - 1;					// (-1 to 7)
 
-static char *logtypes [] = {	"Deleted",
+static const char *logtypes [] = {	"Deleted",
 								"None",
 								"Text",
 								"ConectionOpened",
@@ -252,7 +252,7 @@ LogModifier::~LogModifier ()
 }
 
 
-void LogModifier::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LogModifier::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

@@ -48,7 +48,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };
@@ -123,7 +123,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };
@@ -163,7 +163,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

@@ -182,7 +182,7 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 
 }
 
-void GatewayDef::SetName ( char *newname )
+void GatewayDef::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_GATEWAY_NAME );
@@ -190,7 +190,7 @@ void GatewayDef::SetName ( char *newname )
 		
 }
 
-void GatewayDef::SetDescription ( char *newdescription )
+void GatewayDef::SetDescription ( const char *newdescription )
 {
 
 	UplinkAssert ( strlen (newdescription) < SIZE_GATEWAY_DESCRIPTION );
@@ -443,7 +443,7 @@ void GatewayDef::Save  ( FILE *file )
 
 }
 
-char *GatewayDef::GetID ()
+const char *GatewayDef::GetID ()
 {
 
 	return "GATEWAYDEF";

@@ -43,7 +43,7 @@
 
 
 
-char *MISSION_TITLE [] = {
+const char *MISSION_TITLE [] = {
                                 "Backfire",
                                 "Tracer",
                                 "TakeMeToYourLeader",
@@ -59,7 +59,7 @@ char *MISSION_TITLE [] = {
                             };
 
 
-char *MISSION_DESCRIPTION [] = {
+const char *MISSION_DESCRIPTION [] = {
                                     "Counter attack!",
 								    "Perform a covert installation of a Tracer",
 								    "Help bring the CEO of a major company into custody",
@@ -147,7 +147,7 @@ void PlotGenerator::Initialise ()
 void PlotGenerator::Initialise_ARC ()
 {
 
-	char *companyname = "ARC";
+	const char *companyname = "ARC";
 
 	Company *arc = new Company ();
 	arc->SetName ( companyname );
@@ -286,7 +286,7 @@ void PlotGenerator::Initialise_Andromeda ()
 void PlotGenerator::Initialise_ARUNMOR ()
 {
 
-	char *companyname = "Arunmor";
+	const char *companyname = "Arunmor";
 
 	Company *company = new Company ();
 	company->SetName ( companyname );
@@ -350,7 +350,7 @@ void PlotGenerator::Initialise_ARUNMOR ()
 void PlotGenerator::Initialise_DARWIN ()
 {
 
-    char *companyname = "Darwin Research Associates";
+    const char *companyname = "Darwin Research Associates";
 
     Company *company = new Company ();
     company->SetName ( companyname );
@@ -3016,7 +3016,7 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = "tracer";
+	const char *password = "tracer";
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 																	'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -3118,7 +3118,7 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = "takemetoyourleader";
+	const char *password = "takemetoyourleader";
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 										'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -3212,7 +3212,7 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = "infiltrate";
+	const char *password = "infiltrate";
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 																	'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -3355,7 +3355,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = "faithinchaos";
+	const char *password = "faithinchaos";
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 																	'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -3470,7 +3470,7 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = "darwin";
+	const char *password = "darwin";
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 																	'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -4621,7 +4621,7 @@ int PlotGenerator::GetSpecialMissionsCompleted ()
 
 }
 
-char *PlotGenerator::SpecialMissionTitle ( int missionID )
+const char *PlotGenerator::SpecialMissionTitle ( int missionID )
 {
 
     UplinkAssert (missionID >= 0);
@@ -4631,7 +4631,7 @@ char *PlotGenerator::SpecialMissionTitle ( int missionID )
 
 }
 
-char *PlotGenerator::SpecialMissionDescription ( int missionID )
+const char *PlotGenerator::SpecialMissionDescription ( int missionID )
 {
 
     UplinkAssert (missionID >= 0);
@@ -4873,7 +4873,7 @@ void PlotGenerator::Update ()
 }
 
 
-char *PlotGenerator::GetID ()
+const char *PlotGenerator::GetID ()
 {
 
 	return "PLOTGEN";

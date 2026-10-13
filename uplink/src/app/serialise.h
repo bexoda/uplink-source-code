@@ -130,8 +130,8 @@ UplinkObject *CreateUplinkObject ( int OBJECTID );
 
 void SaveDynamicString     ( char *string, FILE *file );					// Works with NULL
 void SaveDynamicString     ( char *string, int maxsize, FILE *file );		// Works with NULL
-bool LoadDynamicStringInt  ( char* _file, int _line, char **string, FILE *file );					// Assigns space for string
-bool LoadDynamicStringInt  ( char* _file, int _line, char *string, int maxsize, FILE *file );		// Does not allocate space
+bool LoadDynamicStringInt  ( const char* _file, int _line, char **string, FILE *file );					// Assigns space for string
+bool LoadDynamicStringInt  ( const char* _file, int _line, char *string, int maxsize, FILE *file );		// Does not allocate space
 
 #define LoadDynamicStringPtr(string,file) LoadDynamicStringInt(__FILE__,__LINE__,string,file)
 #define LoadDynamicStringStatic(string,maxsize,file) LoadDynamicStringInt(__FILE__,__LINE__,string,maxsize,file)
@@ -140,6 +140,6 @@ bool LoadDynamicStringInt  ( char* _file, int _line, char *string, int maxsize, 
 // ============================================================================
 // Function for reading data from a file
 
-bool FileReadDataInt     ( char* _file, int _line, void * _DstBuf, size_t _ElementSize, size_t _Count, FILE * _File );
+bool FileReadDataInt     ( const char* _file, int _line, void * _DstBuf, size_t _ElementSize, size_t _Count, FILE * _File );
 
 #define FileReadData(_DstBuf,_ElementSize,_Count,_File) FileReadDataInt(__FILE__,__LINE__,_DstBuf,_ElementSize,_Count,_File)

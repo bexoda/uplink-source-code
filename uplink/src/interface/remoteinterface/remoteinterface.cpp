@@ -223,7 +223,7 @@ void RemoteInterface::Remove ()
 
 }
 
-void RemoteInterface::SetSecurity ( char *newname, int newvalue )
+void RemoteInterface::SetSecurity ( const char *newname, int newvalue )
 {
 	
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
@@ -528,7 +528,7 @@ void RemoteInterface::Update ()
 
 }
 
-char *RemoteInterface::GetID ()
+const char *RemoteInterface::GetID ()
 {
 
 	return "RINT";

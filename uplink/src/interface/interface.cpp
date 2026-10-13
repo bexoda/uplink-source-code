@@ -118,7 +118,7 @@ void Interface::Print ()
 
 }
 
-char *Interface::GetID ()
+const char *Interface::GetID ()
 {
 
 	return "INTERFA";

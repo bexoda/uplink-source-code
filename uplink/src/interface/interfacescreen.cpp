@@ -54,7 +54,7 @@ int InterfaceScreen::ScreenID ()
 }
 
 void InterfaceScreen::RegisterButton ( int x, int y, int width, int height,
-									   char *caption, char *tooltip, char *newname ) {
+									   const char *caption, const char *tooltip, const char *newname ) {
 	EclRegisterButton ( x, y, width, height, caption, tooltip, newname );
 	char *name = new char [strlen (newname) + 1];
 	UplinkSafeStrcpy( name, newname );
@@ -62,7 +62,7 @@ void InterfaceScreen::RegisterButton ( int x, int y, int width, int height,
 }
 
 void InterfaceScreen::RegisterButton ( int x, int y, int width, int height,
-									   char *caption, char *newname ) {
+									   const char *caption, const char *newname ) {
 	EclRegisterButton ( x, y, width, height, caption, newname );
 	char *name = new char [strlen (newname) + 1];
 	UplinkSafeStrcpy( name, newname );

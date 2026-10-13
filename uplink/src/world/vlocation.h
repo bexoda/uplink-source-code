@@ -44,9 +44,9 @@ public:
 	VLocation();
 	virtual ~VLocation();
 
-	void SetIP ( char *newip );
+	void SetIP ( const char *newip );
 	static bool VerifyIP ( char *newip );
-	void SetComputer ( char *newcomputer );
+	void SetComputer ( const char *newcomputer );
 
 	void SetPLocation ( int newx, int newy );
 	static bool VerifyPLocation ( int newx, int newy );
@@ -62,7 +62,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };
@@ -97,7 +97,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

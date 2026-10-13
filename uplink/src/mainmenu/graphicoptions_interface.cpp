@@ -346,7 +346,7 @@ void GraphicOptionsInterface::ExitGameClick ( Button *button )
 
 }
 
-void GraphicOptionsInterface::SetOptionTYPE ( char *newtype )
+void GraphicOptionsInterface::SetOptionTYPE ( const char *newtype )
 {
 
 	UplinkStrncpy ( optionTYPE, newtype, sizeof ( optionTYPE ) );

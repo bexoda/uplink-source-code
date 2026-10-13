@@ -434,7 +434,7 @@ void Game::Print ()
 
 }
 
-char *Game::GetID ()
+const char *Game::GetID ()
 {
 
 	return "GAME";

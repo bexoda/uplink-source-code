@@ -28,21 +28,21 @@ public:
 	static char *GenerateAgentAlias ();
 	static char *GenerateBankName ();
 		
-	static char *GeneratePassword ();
-	static char *GenerateEasyPassword ();					// Guessable
+	static const char *GeneratePassword ();
+	static const char *GenerateEasyPassword ();					// Guessable
 	static char *GenerateComplexPassword ();				// Non dictionary hackable
 	
-	static char *GenerateDataName ( char *companyname, int DATATYPE );
+	static char *GenerateDataName ( const char *companyname, int DATATYPE );
 
-    static char *GeneratePublicAccessServerName     ( char *companyname );
-    static char *GenerateAccessTerminalName         ( char *companyname );
-    static char *GenerateInternalServicesServerName ( char *companyname );
-    static char *GenerateCentralMainframeName       ( char *companyname );
-    static char *GenerateInternationalBankName      ( char *companyname );
-    static char *GenerateFileServerName             ( char *companyname );
-    static char *GenerateLANName                    ( char *companyname );
-    static char *GeneratePersonalComputerName       ( char *personname );
-    static char *GenerateVoicePhoneSystemName       ( char *personname );
+    static char *GeneratePublicAccessServerName     ( const char *companyname );
+    static char *GenerateAccessTerminalName         ( const char *companyname );
+    static char *GenerateInternalServicesServerName ( const char *companyname );
+    static char *GenerateCentralMainframeName       ( const char *companyname );
+    static char *GenerateInternationalBankName      ( const char *companyname );
+    static char *GenerateFileServerName             ( const char *companyname );
+    static char *GenerateLANName                    ( const char *companyname );
+    static char *GeneratePersonalComputerName       ( const char *personname );
+    static char *GenerateVoicePhoneSystemName       ( const char *personname );
 };
 
 #endif

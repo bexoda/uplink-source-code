@@ -203,8 +203,8 @@ public:
     bool PlayerCompletedSpecialMission	( int missionID );
 	int GetSpecialMissionsCompleted ();
     
-    static char *SpecialMissionDescription ( int missionID );
-    static char *SpecialMissionTitle ( int missionID );
+    static const char *SpecialMissionDescription ( int missionID );
+    static const char *SpecialMissionTitle ( int missionID );
     
 	static bool IsPlotCompany ( const char *companyname ); 
 
@@ -216,7 +216,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 
 protected:
 

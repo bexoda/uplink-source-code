@@ -128,7 +128,7 @@ static void SgPrintActualSoundSettings()
     SgDebugPrintf("Mix_QuerySpec: %s\n",Mix_GetError());
   }
   else {
-    char *format_str="Unknown";
+    const char *format_str="Unknown";
     switch(format) {
     case AUDIO_U8: format_str="U8"; break;
     case AUDIO_S8: format_str="S8"; break;
@@ -154,13 +154,13 @@ void SgShutdown()
   Mix_CloseAudio();
 }
 
-void SgPlaySound ( char *fullfilename, char *id, bool synchronised )
+void SgPlaySound ( char *fullfilename, const char *id, bool synchronised )
 {
   if (!SgInitialised)
     return;
 
   Mix_Chunk *sample = NULL;
-  char *sampleid = id ? id : fullfilename;
+  const char *sampleid = id ? id : fullfilename;
 
   if ( cache.LookupTree ( sampleid ) ) {
 

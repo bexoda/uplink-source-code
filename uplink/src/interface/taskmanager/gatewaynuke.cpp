@@ -164,7 +164,7 @@ GatewayNuke::~GatewayNuke ()
 {
 }
 
-void GatewayNuke::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void GatewayNuke::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	// This doesn't need to be called

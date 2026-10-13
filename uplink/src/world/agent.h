@@ -43,20 +43,20 @@ public:
 	Agent ();
 	~Agent ();
 
-	void SetHandle ( char *newhandle );
+	void SetHandle ( const char *newhandle );
 
 	void GiveMission ( Mission *mission );
 	void CheckMissionDueDates ();						// Have any missions expired?
 
-	void GiveLink	 ( char *ip );
-	bool HasLink     ( char *ip );
+	void GiveLink	 ( const char *ip );
+	bool HasLink     ( const char *ip );
 	void RemoveLink  ( char *ip );
 
-	void GiveCode    ( char *newip, char *newcode );
+	void GiveCode    ( const char *newip, char *newcode );
 	void GiveMessage ( Message *message );
     int HasAccount  ( char *ip );                           // Returns access level or -1
 
-	int  CreateNewAccount ( char *bankip, char *accname, char *password, 
+	int  CreateNewAccount ( char *bankip, char *accname, const char *password, 
 							int balance, int loan );			// Returns account number	
 
 	bool HasMissionLink ( const char *ip );
@@ -79,7 +79,7 @@ public:
 	void Print  ();
 	void Update ();
 
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

@@ -83,7 +83,7 @@ void SharesListScreen::Print ()
 
 }
 	
-char *SharesListScreen::GetID ()
+const char *SharesListScreen::GetID ()
 {
 	
 	return "SCR_SHAR";

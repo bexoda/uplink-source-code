@@ -35,7 +35,7 @@ public:
 	void SetVersion ( float newversion );
 	void SetFollowMouse ( bool newfollowmouse );
 
-	virtual void SetTarget ( UplinkObject *newtargetobject, char *newtargetstring, int targetint );
+	virtual void SetTarget ( UplinkObject *newtargetobject, const char *newtargetstring, int targetint );
 	virtual void MoveTo ( int x, int y, int time_ms );	
 	
 };

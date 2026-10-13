@@ -39,7 +39,7 @@ Rating::~Rating ()
 {
 }
 
-char *Rating::GetUplinkRatingString ( int urating )
+const char *Rating::GetUplinkRatingString ( int urating )
 {
 
 	UplinkAssert ( urating >= 0 && urating < NUM_UPLINKRATINGS );
@@ -47,7 +47,7 @@ char *Rating::GetUplinkRatingString ( int urating )
 
 }
 
-char *Rating::GetNeuromancerRatingString ( int nrating )
+const char *Rating::GetNeuromancerRatingString ( int nrating )
 {
 
 	UplinkAssert ( nrating >= 0 && nrating < NUM_NEUROMANCERRATINGS );
@@ -75,7 +75,7 @@ void Rating::SetUplinkRating ( int rating )
 
 }
 
-char *Rating::GetUplinkRating ()
+const char *Rating::GetUplinkRating ()
 {
 
 	return GetUplinkRatingString ( uplinkrating );
@@ -91,7 +91,7 @@ void Rating::SetNeuromancerRating ( int rating )
 
 }
 
-char *Rating::GetNeuromancerRating ()
+const char *Rating::GetNeuromancerRating ()
 {
 
 	return GetNeuromancerRatingString ( neuromancerrating );
@@ -417,7 +417,7 @@ void Rating::Update ()
 }
 
 
-char *Rating::GetID ()
+const char *Rating::GetID ()
 {
 
 	return "RATING";

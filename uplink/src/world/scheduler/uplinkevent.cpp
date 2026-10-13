@@ -87,7 +87,7 @@ void UplinkEvent::Print ()
 
 }
 	
-char *UplinkEvent::GetID ()
+const char *UplinkEvent::GetID ()
 {
 
 	UplinkAbort ( "This MUST be overridden" );

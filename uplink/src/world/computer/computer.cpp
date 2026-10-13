@@ -69,7 +69,7 @@ void Computer::SetTYPE ( int newTYPE )
 
 }
 
-void Computer::SetName ( char *newname )
+void Computer::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen ( newname ) < SIZE_COMPUTER_NAME );
@@ -77,7 +77,7 @@ void Computer::SetName ( char *newname )
 
 }
 
-void Computer::SetCompanyName ( char *newname )
+void Computer::SetCompanyName ( const char *newname )
 {
 
 	if ( newname ) {
@@ -90,7 +90,7 @@ void Computer::SetCompanyName ( char *newname )
 
 }
 
-void Computer::SetIP ( char *newip )
+void Computer::SetIP ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
@@ -295,7 +295,7 @@ void Computer::CheckForSecurityBreaches ()
 
 	if ( databank.formatted ) {
 
-		char *softwaretype [4] = { "SCIENTIFIC", "CORPORATE", "CUSTOMER", "SOFTWARE" };
+		const char *softwaretype [4] = { "SCIENTIFIC", "CORPORATE", "CUSTOMER", "SOFTWARE" };
 		int softwareindex = NumberGenerator::RandomNumber ( 4 );
 
 		NewsGenerator::AllFilesDeleted ( this, softwaretype [softwareindex] );
@@ -700,17 +700,17 @@ void Computer::GenerateAccessCode( char *code, char *result, size_t resultsize )
     UplinkSnprintf( result, resultsize, "%s:'%s'", "CODE", code );
 }
 
-void Computer::GenerateAccessCode( char *name, char *code, char *result, size_t resultsize )
+void Computer::GenerateAccessCode( char *name, const char *code, char *result, size_t resultsize )
 {
     UplinkSnprintf( result, resultsize, "%s:'%s', %s:'%s'", "NAME", name, "CODE", code );
 }
 
-void Computer::GenerateAccessCode( int accNo, char *code, char *result, size_t resultsize )
+void Computer::GenerateAccessCode( int accNo, const char *code, char *result, size_t resultsize )
 {
     UplinkSnprintf( result, resultsize, "%s:'%d', %s:'%s'", "NAME", accNo, "CODE", code );
 }
 
-char *Computer::GetID ()
+const char *Computer::GetID ()
 {
 
 	return "COMPUT";

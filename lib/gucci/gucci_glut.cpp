@@ -111,7 +111,7 @@ void GciInitGraphics( const char *caption,
   }
 }
 
-void GciFallbackDrawText ( int x, int y, char *text, int STYLE )
+void GciFallbackDrawText ( int x, int y, const char *text, int STYLE )
 {
   void *glutStyle = gucciStyleToGlut(STYLE);
 
@@ -138,7 +138,7 @@ void GciFallbackDrawText ( int x, int y, char *text, int STYLE )
   }
 }
 
-int GciFallbackTextWidth ( char *text, int STYLE )
+int GciFallbackTextWidth ( const char *text, int STYLE )
 {
   return glutBitmapLength ( (void *) STYLE, (const unsigned char *) text );
 }

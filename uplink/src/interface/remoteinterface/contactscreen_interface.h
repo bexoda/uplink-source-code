@@ -34,7 +34,7 @@ class ContactScreenInterface : public RemoteInterfaceScreen
 protected:
 	
 	int TYPE;										// What type of conference is this?
-	LList <char *> users;							// 0 is system, 1 is player, 2+ are NPC's
+	LList <const char *> users;							// 0 is system, 1 is player, 2+ are NPC's
 
 	LList <char *> messagequeue;					// Messages NOT YET POSTED
 	bool waiting;									// True if waiting for message to "scroll" on
@@ -48,7 +48,7 @@ protected:
 
 protected:
 
-	static void PutMessage ( int userid, char *message );
+	static void PutMessage ( int userid, const char *message );
 	static void AskQuestion ( int index );
 	static void WaitingCallback ();							// Called when messagehas finished "scrolling" on
 
@@ -69,8 +69,8 @@ public:
 	void SetTYPE ( int newTYPE );
 	void SetMission  ( Mission *newmission );
 
-	void AddUser ( char *name );
-	void AddQuestion ( char *question, int index = -1 );
+	void AddUser ( const char *name );
+	void AddQuestion ( const char *question, int index = -1 );
 
 	bool ReturnKeyPressed ();
 

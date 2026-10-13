@@ -46,26 +46,26 @@ public:
 	void CreateDefaultOptions ();													// Fills in all options not yet created
 
 
-	Option *GetOption ( char *name );												// Returns NULL if not found
-	int     GetOptionValue ( char *name );											// asserts existence of name
-	bool    IsOptionEqualTo ( char *name, int value );
+	Option *GetOption ( const char *name );												// Returns NULL if not found
+	int     GetOptionValue ( const char *name );											// asserts existence of name
+	bool    IsOptionEqualTo ( const char *name, int value );
 	
-	void    SetOptionValue ( char *name, int newvalue );							// Does not create new 
-	void	SetOptionValue ( char *name, int newvalue, char *tooltip, 
+	void    SetOptionValue ( const char *name, int newvalue );							// Does not create new 
+	void	SetOptionValue ( const char *name, int newvalue, const char *tooltip, 
 							 bool yesorno = false, bool visible = true );			// Creates new if neccisary
 
-	LList <Option *> *GetAllOptions ( char *searchstring, bool returnhidden );		// String can be NULL - will return ALL
+	LList <Option *> *GetAllOptions ( const char *searchstring, bool returnhidden );		// String can be NULL - will return ALL
 
-    void SetThemeName ( char *newThemeName );
+    void SetThemeName ( const char *newThemeName );
     char *GetThemeName ();
     char *GetThemeTitle ();
     char *GetThemeDescription ();
     
-    ColourOption *GetColour     ( char *colourName );                                   // Always safe - returns BLACK if not found
+    ColourOption *GetColour     ( const char *colourName );                                   // Always safe - returns BLACK if not found
 
-    char *ThemeFilename ( char *filename );
+    char *ThemeFilename ( const char *filename );
 
-    void RequestShutdownChange ( char *optionName, int newValue );
+    void RequestShutdownChange ( const char *optionName, int newValue );
     void ApplyShutdownChanges ();
 
 	// Common functions
@@ -74,7 +74,7 @@ public:
 	void Save   ( FILE *file );														// "" ""
 	void Print  ();
 	void Update ();
-	char *GetID ();
+	const char *GetID ();
 
 };
 
@@ -102,8 +102,8 @@ public:
 	Option();
 	virtual ~Option();
 
-	void SetName    ( char *newname );
-	void SetTooltip ( char *newtooltip );
+	void SetName    ( const char *newname );
+	void SetTooltip ( const char *newtooltip );
 	void SetYesOrNo	( bool newyesorno );
 	void SetVisible ( bool newvisible );
 	void SetValue   ( int newvalue );
@@ -115,7 +115,7 @@ public:
 	void Save   ( FILE *file );
 	void Print  ();
 	void Update ();
-	char *GetID ();
+	const char *GetID ();
 	int  GetOBJECTID ();
 
 };

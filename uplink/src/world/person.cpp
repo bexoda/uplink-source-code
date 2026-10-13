@@ -53,7 +53,7 @@ Person::~Person()
 
 }
 
-void Person::SetName ( char *newname )
+void Person::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
@@ -85,7 +85,7 @@ void Person::SetVoiceIndex  ( int newindex )
 
 }
 
-void Person::SetLocalHost ( char *newip )
+void Person::SetLocalHost ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
@@ -95,7 +95,7 @@ void Person::SetLocalHost ( char *newip )
 
 }
 
-void Person::SetRemoteHost ( char *newip )
+void Person::SetRemoteHost ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
@@ -181,7 +181,7 @@ void Person::SetCurrentAccount ( int index )
 
 }
 
-void Person::ChangeBalance ( int amount, char *description )
+void Person::ChangeBalance ( int amount, const char *description )
 {
 
 	if ( accounts.Size () > 0 ) {
@@ -238,7 +238,7 @@ void Person::ChangeBalance ( int amount, char *description )
 
 }
 
-int Person::CreateNewAccount ( char *bankip, char *accname, char *password, int balance, int loan )
+int Person::CreateNewAccount ( char *bankip, char *accname, const char *password, int balance, int loan )
 {
 
 	// Get the bank in question
@@ -467,7 +467,7 @@ void Person::Update ()
 
 }
 
-char *Person::GetID ()
+const char *Person::GetID ()
 {
 
 	return "PERSON";

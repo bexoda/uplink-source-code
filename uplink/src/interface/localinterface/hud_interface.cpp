@@ -422,7 +422,7 @@ void HUDInterface::MoveSelecter ( int screenID, int screenindex )
 
 }
 
-void HUDInterface::HighlightToolbarButton   ( char *bname )
+void HUDInterface::HighlightToolbarButton   ( const char *bname )
 {
 
 	// Get the button
@@ -828,7 +828,7 @@ void HUDInterface::Print ()
 
 }
 	
-char *HUDInterface::GetID ()
+const char *HUDInterface::GetID ()
 {
 	
 	return "HUD_INT";

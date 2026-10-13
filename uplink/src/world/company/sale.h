@@ -42,11 +42,11 @@ public:
 	Sale ();
 	virtual ~Sale ();
 
-	void SetTitle ( char *newtitle );
+	void SetTitle ( const char *newtitle );
 	void SetSaleTYPE ( int newTYPE );
 	void SetSwhwTYPE ( int newSwhwTYPE );
 
-	void AddVersion ( char *details, int cost, int size, int data );
+	void AddVersion ( const char *details, int cost, int size, int data );
 	SaleVersion *GetVersion ( int index );								// Can return NULL
 
 	// Common functions
@@ -56,7 +56,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };
@@ -80,7 +80,7 @@ public:
 	SaleVersion ();
 	~SaleVersion ();
 
-	void Set ( char *newdetails, int newcost, int newsize, int newdata );
+	void Set ( const char *newdetails, int newcost, int newsize, int newdata );
 	char *GetDetails ();
 
 	// Common functions
@@ -90,7 +90,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

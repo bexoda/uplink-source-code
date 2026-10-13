@@ -197,7 +197,7 @@ void CompanyUplink::Update ()
 {
 }
 
-char *CompanyUplink::GetID ()
+const char *CompanyUplink::GetID ()
 {
 	
 	return "CPNY_UPL";

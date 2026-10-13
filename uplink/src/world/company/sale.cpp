@@ -26,7 +26,7 @@ Sale::~Sale ()
 
 }
 
-void Sale::SetTitle ( char *newtitle )
+void Sale::SetTitle ( const char *newtitle )
 {
 	
 	UplinkAssert ( strlen (newtitle) < SIZE_SALE_TITLE );
@@ -48,7 +48,7 @@ void Sale::SetSwhwTYPE ( int newSwhwTYPE )
 
 }
 
-void Sale::AddVersion ( char *details, int cost, int size, int data )
+void Sale::AddVersion ( const char *details, int cost, int size, int data )
 {
 
 	SaleVersion *sv = new SaleVersion ();
@@ -118,7 +118,7 @@ void Sale::Update ()
 {
 }
 	
-char *Sale::GetID ()
+const char *Sale::GetID ()
 {
 	
 	return "SALE";
@@ -154,7 +154,7 @@ SaleVersion::~SaleVersion ()
 
 }
 
-void SaleVersion::Set ( char *newdetails, int newcost, int newsize, int newdata )
+void SaleVersion::Set ( const char *newdetails, int newcost, int newsize, int newdata )
 {
 
 	if ( details ) delete [] details;
@@ -216,7 +216,7 @@ void SaleVersion::Update ()
 {
 }
 	
-char *SaleVersion::GetID ()
+const char *SaleVersion::GetID ()
 {
 
 	return "SALEVER";

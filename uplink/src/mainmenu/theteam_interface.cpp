@@ -36,7 +36,7 @@
 // (Symbols are set immediately - only text cycles)
 
 
-static char *teamnames[] = { 
+static const char *teamnames[] = { 
 							 "Chris Delay", 
 							 "Tom Arundel",
 							 "Mark Morris",
@@ -69,7 +69,7 @@ static char *teamwords[] = {
 							};
 */
 
-static char *teamwords[] = {
+static const char *teamwords[] = {
                                 "The last of the bedroom programmers\n"
                                 "The first of the children\n"
                                 "\n\n\n\n"
@@ -274,7 +274,7 @@ void TheTeamInterface::Update ()
 
 }
 
-void TheTeamInterface::MergeCaption ( char *buttonName, char *targetCaption )
+void TheTeamInterface::MergeCaption ( const char *buttonName, const char *targetCaption )
 {
 
 	UplinkAssert ( EclGetButton(buttonName) );

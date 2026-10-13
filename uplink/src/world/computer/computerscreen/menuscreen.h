@@ -35,7 +35,7 @@ public:
 	MenuScreen();
 	virtual ~MenuScreen();
 
-	void  AddOption	  ( char *caption, char *tooltip, int nextpage, int security = 10, int index = -1 );
+	void  AddOption	  ( const char *caption, const char *tooltip, int nextpage, int security = 10, int index = -1 );
 	int   NumOptions  ();
 	char *GetCaption  ( int index );
 	char *GetTooltip  ( int index );
@@ -49,7 +49,7 @@ public:
 	void Save  ( FILE *file );			
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();				
 
 };
@@ -76,8 +76,8 @@ public:
 	MenuScreenOption ();
 	~MenuScreenOption ();
 
-	void SetCaption ( char *newcaption );
-	void SetTooltip ( char *newtooltip );
+	void SetCaption ( const char *newcaption );
+	void SetTooltip ( const char *newtooltip );
 	void SetNextPage ( int newnextpage );
 	void SetSecurity ( int newsecurity );
 
@@ -89,7 +89,7 @@ public:
 	void Print ();
 	void Update ();
 
-	char *GetID ();
+	const char *GetID ();
 	int GetOBJECTID ();
 	
 };

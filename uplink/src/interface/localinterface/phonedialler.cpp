@@ -118,7 +118,7 @@ void PhoneDialler::Remove ()
 
 }
 
-void PhoneDialler::DialNumber ( int x, int y, char *number, int scenario, char *info /* = NULL */ )
+void PhoneDialler::DialNumber ( int x, int y, const char *number, int scenario, char *info /* = NULL */ )
 {
 
 	UplinkAssert ( number );

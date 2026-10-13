@@ -28,7 +28,7 @@ public:
 	virtual ~TaskWrapper();
 	
 	void SetPID ( int newpid );
-	void SetName ( char *newname );
+	void SetName ( const char *newname );
 	void SetTask ( Task *newtask );
 	void SetPriority ( double newpriority );
 	

@@ -45,7 +45,7 @@ protected:
 
     static void TextScrollChange    ( char *name, int newValue );
     static void UserScrollChange    ( char *name, int newValue );
-    static void AddEmoticons        ( int row, char *smiley, Image *imgSmiley );
+    static void AddEmoticons        ( int row, const char *smiley, Image *imgSmiley );
 
 protected:
 
@@ -76,13 +76,13 @@ public:
 
     bool ReturnKeyPressed ();
 
-	static void AddText ( char *user, const char *text, 
+	static void AddText ( const char *user, const char *text, 
 						  float r = 1.0, float g = 1.0, float b = 1.0 );
 
     static void ResetUsers          ();
-    static void AddUser             ( char *name );
+    static void AddUser             ( const char *name );
     static void RemoveUser          ( char *name );    
-    static UplinkIRCUser *GetUser   ( char *name );
+    static UplinkIRCUser *GetUser   ( const char *name );
 
 	void Create ();
 	void Remove ();
@@ -102,7 +102,7 @@ public:
 	UplinkIRCMessage ();
 	~UplinkIRCMessage ();
 
-	void Set ( char *newuser, char *newtext, float r, float g, float b );
+	void Set ( const char *newuser, char *newtext, float r, float g, float b );
 
 public:
 
@@ -122,7 +122,7 @@ public:
     UplinkIRCUser ();
     ~UplinkIRCUser ();
 
-    void Set ( char *newname );
+    void Set ( const char *newname );
 
 public:
 

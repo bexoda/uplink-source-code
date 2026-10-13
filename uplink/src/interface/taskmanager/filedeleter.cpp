@@ -75,7 +75,7 @@ void FileDeleter::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void FileDeleter::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void FileDeleter::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

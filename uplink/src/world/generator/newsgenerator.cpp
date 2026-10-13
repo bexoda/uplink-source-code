@@ -613,7 +613,7 @@ void NewsGenerator::AllFilesStolen ( Computer *comp, char *filetype, int totalfi
 
 }
 
-void NewsGenerator::AllFilesDeleted ( Computer *comp, char *filetype )
+void NewsGenerator::AllFilesDeleted ( Computer *comp, const char *filetype )
 {
 
 	// Filetype is SCIENTIFIC, CORPORATE, CUSTOMER or SOFTWARE

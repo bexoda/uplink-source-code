@@ -42,7 +42,7 @@ void MessageScreen::SetTextMessage ( const char *newtextmessage )
 
 }
 
-void MessageScreen::SetButtonMessage ( char *newbuttonmessage )
+void MessageScreen::SetButtonMessage ( const char *newbuttonmessage )
 {
 
 	if ( buttonmessage ) delete [] buttonmessage;
@@ -102,7 +102,7 @@ void MessageScreen::Print ()
 
 }
 	
-char *MessageScreen::GetID ()
+const char *MessageScreen::GetID ()
 {
 
 	return "SCR_MESS";

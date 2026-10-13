@@ -75,7 +75,7 @@ void SgShutdown()
     MikMod_Exit();
 }
 
-void SgPlaySound ( char *fullfilename, char *id, bool synchronised )
+void SgPlaySound ( char *fullfilename, const char *id, bool synchronised )
 {
     SAMPLE *sample = NULL;
     char *sampleid = id ? id : fullfilename;

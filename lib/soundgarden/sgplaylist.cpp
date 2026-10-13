@@ -25,14 +25,14 @@ SgPlaylist::~SgPlaylist ()
 }
 
 
-void SgPlaylist::SetName ( char *newname )
+void SgPlaylist::SetName ( const char *newname )
 {
 
     strcpy ( name, newname );
 
 }
 
-void SgPlaylist::AddSong ( char *name )
+void SgPlaylist::AddSong ( const char *name )
 {
 
     char *namecopy = new char [strlen(name)+1];

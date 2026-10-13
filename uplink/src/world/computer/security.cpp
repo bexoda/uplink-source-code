@@ -189,7 +189,7 @@ void Security::Update ()
 	
 }
 
-char *Security::GetID ()
+const char *Security::GetID ()
 {
 
 	return "SECUR";

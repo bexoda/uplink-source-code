@@ -63,8 +63,8 @@ public:
     App ();
     ~App ();
     
-    void Set ( char *newpath, char *newversion, char *newtype,
-			   char *newdate, char *newtitle );
+    void Set ( const char *newpath, const char *newversion, const char *newtype,
+			   const char *newdate, const char *newtitle );
     
 	void Initialise ();	
 	void Close ();			// Shuts down the app	
@@ -91,7 +91,7 @@ public:
 	void Save   ( FILE *file );
 	void Print  ();
 	void Update ();
-	char *GetID ();
+	const char *GetID ();
 
 };
 

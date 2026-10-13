@@ -106,7 +106,7 @@ void HWInterface::CreateHWInterface ()
 
 		std::ostringstream hardware;	
 		hardware << "DEVICES\n";
-        LList <char *> *security = gateway->GetSecurity ();
+        LList <const char *> *security = gateway->GetSecurity ();
         if ( security->Size () == 0 ) 
             hardware << "None";
 

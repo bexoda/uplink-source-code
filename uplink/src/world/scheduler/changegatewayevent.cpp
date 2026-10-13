@@ -151,7 +151,7 @@ void ChangeGatewayEvent::Print ()
 
 }
 	
-char *ChangeGatewayEvent::GetID ()
+const char *ChangeGatewayEvent::GetID ()
 {
 
 	return "EVT_CGE";

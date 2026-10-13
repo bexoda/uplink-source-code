@@ -48,14 +48,14 @@ public:
 	Message();
 	virtual ~Message();
 
-	void SetTo		( char *newto );
-	void SetFrom	( char *newfrom );
-	void SetSubject ( char *newsubject );
+	void SetTo		( const char *newto );
+	void SetFrom	( const char *newfrom );
+	void SetSubject ( const char *newsubject );
 	void SetBody	( const char *newbody );
 	void SetDate    ( Date *newdate );
 
-	void GiveLink ( char *ip );
-	void GiveCode ( char *ip, char *code );
+	void GiveLink ( const char *ip );
+	void GiveCode ( const char *ip, char *code );
 
 	void AttachData ( Data *newdata );
 	Data *GetData ();
@@ -72,7 +72,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

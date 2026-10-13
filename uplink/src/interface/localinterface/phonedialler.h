@@ -28,12 +28,13 @@ public:
     PhoneDialler ();
     ~PhoneDialler ();
 
+	using LocalInterfaceScreen::Create;			// adds a positioned Create, keeps the base one
 	void Create ( int x, int y );
 	void Remove ();
 	bool UpdateSpecial ();
 	bool IsVisible ();
 
-	void DialNumber ( int x, int y, char *number, int scenario, char *info = NULL );
+	void DialNumber ( int x, int y, const char *number, int scenario, char *info = NULL );
 
 };
 

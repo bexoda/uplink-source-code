@@ -135,7 +135,7 @@ void LanForce::BorderClick ( Button *button )
 
 }
 
-void LanForce::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LanForce::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

@@ -41,7 +41,7 @@ public:
 	GenericOptionsInterface ();
 	~GenericOptionsInterface ();
 
-	void SetOptionTYPE ( char *newtype );						// eg GAME, SOUND etc
+	void SetOptionTYPE ( const char *newtype );						// eg GAME, SOUND etc
 	void ChangeOptionValue ( char *option, int newvalue );
 
 	void Create ();

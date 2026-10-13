@@ -81,7 +81,7 @@ void ClosingInterface::Update ()
         Button *button = EclGetButton ( "closing_text" );
         UplinkAssert (button);
 
-        char *captions [] = { "Judgement", "Perception",
+        const char *captions [] = { "Judgement", "Perception",
                               "Thinking", "Feeling",
                               "Sensation", "Intuition",
                               "Extraversion" };

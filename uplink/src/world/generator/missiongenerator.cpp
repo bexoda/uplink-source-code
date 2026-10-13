@@ -406,7 +406,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	// Add in a new account for the player to use
 	//
 
-	char *password = NameGenerator::GeneratePassword ();
+	const char *password = NameGenerator::GeneratePassword ();
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 																	'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -433,7 +433,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 
 		*/
 
-	char *missiontypestring [4] = { "rsrch", "corp", "custmr", "softw" };
+	const char *missiontypestring [4] = { "rsrch", "corp", "custmr", "softw" };
 
 	//
 	// Generate around 10 files to be stolen,
@@ -837,7 +837,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	// All fairly large
 	//
 
-	char *missiontypestring [4] = { "rsrch", "corp", "custmr", "softw" };
+	const char *missiontypestring [4] = { "rsrch", "corp", "custmr", "softw" };
 	int numfiles = (int) NumberGenerator::RandomNormalNumber ( 10, 5 );
 	int encrypted = (int) NumberGenerator::RandomNormalNumber ( (float) difficulty, (float) difficulty );
 	int totalsize = 0;
@@ -2284,7 +2284,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 
 	bool provideaccount = (hacked->TYPE == COMPUTER_TYPE_INTERNALSERVICESMACHINE);
 
-	char *password = NULL;
+	const char *password = NULL;
 	char username [12];
 
 	if ( provideaccount ) {
@@ -3942,7 +3942,7 @@ void MissionGenerator::MissionNotCompleted ( Mission *mission, Person *person, M
 
 }
 
-void MissionGenerator::MissionFailed ( Mission *mission, Person *person, char *reason )
+void MissionGenerator::MissionFailed ( Mission *mission, Person *person, const char *reason )
 {
 
 	UplinkAssert (mission);

@@ -242,7 +242,7 @@ void VoiceAnalyser::Initialise ()
 {
 }
 
-void VoiceAnalyser::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void VoiceAnalyser::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	if ( version < 2.0 ) return; // This function not available for version 1.0

@@ -943,7 +943,7 @@ void Init_Options ( int argc, char **argv )
 
 }
 
-static bool TestRsLoadArchive ( char *filename )
+static bool TestRsLoadArchive ( const char *filename )
 {
 
 	if ( !RsLoadArchive ( filename ) ) {

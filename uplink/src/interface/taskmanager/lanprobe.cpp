@@ -137,7 +137,7 @@ void LanProbe::BorderClick ( Button *button )
 
 }
 
-void LanProbe::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LanProbe::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

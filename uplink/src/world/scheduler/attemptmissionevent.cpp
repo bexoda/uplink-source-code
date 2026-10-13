@@ -120,7 +120,7 @@ void AttemptMissionEvent::Print ()
 
 }
 
-char *AttemptMissionEvent::GetID ()
+const char *AttemptMissionEvent::GetID ()
 {
 
 	return "EVT_AME";

@@ -63,7 +63,7 @@ void BglSlashify ( char *string )
 
 }
 
-bool BglOpenZipFile ( char *zipfile, char *apppath, char *id )
+bool BglOpenZipFile ( char *zipfile, char *apppath, const char *id )
 {
 
 	FILE *file = fopen ( zipfile, "rb" );
@@ -77,7 +77,7 @@ bool BglOpenZipFile ( char *zipfile, char *apppath, char *id )
 
 }
 
-bool BglOpenZipFile ( FILE *file, char *apppath, char *id )
+bool BglOpenZipFile ( FILE *file, char *apppath, const char *id )
 {
 	
 	if ( !file ) return false;
@@ -302,7 +302,7 @@ bool BglExtractFile ( char *filename, char *target )
 
 
 
-DArray <char *> *BglListFiles ( char *path, char *directory, char *filter )
+DArray <char *> *BglListFiles ( char *path, const char *directory, const char *filter )
 {
 
     char dirCopy [256];

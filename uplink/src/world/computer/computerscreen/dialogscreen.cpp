@@ -39,7 +39,7 @@ DialogScreen::~DialogScreen()
 
 }
 
-void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip )
+void DialogScreen::AddWidget ( const char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, const char *tooltip )
 {
 
 	DialogScreenWidget *dsw = new DialogScreenWidget ();
@@ -55,8 +55,8 @@ void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int wid
 
 }
 
-void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip, 
-							   int data1, int data2, char *stringdata1, char *stringdata2 )
+void DialogScreen::AddWidget ( const char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, const char *tooltip, 
+							   int data1, int data2, const char *stringdata1, const char *stringdata2 )
 {
 
 	DialogScreenWidget *dsw = new DialogScreenWidget ();
@@ -75,7 +75,7 @@ void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int wid
 
 }
 
-void DialogScreen::RemoveWidget ( char *name )
+void DialogScreen::RemoveWidget ( const char *name )
 {
 
 	for ( int i = 0; i < widgets.Size (); ++i ) {
@@ -99,7 +99,7 @@ void DialogScreen::RemoveWidget ( char *name )
 
 }
 
-void DialogScreen::SetReturnKeyButton ( char *name )
+void DialogScreen::SetReturnKeyButton ( const char *name )
 {
 
 	if ( returnkeybutton ) delete [] returnkeybutton;
@@ -108,7 +108,7 @@ void DialogScreen::SetReturnKeyButton ( char *name )
 	
 }
 
-void DialogScreen::SetEscapeKeyButton ( char *name )
+void DialogScreen::SetEscapeKeyButton ( const char *name )
 {
 
     if ( escapekeybutton ) delete [] escapekeybutton;
@@ -162,7 +162,7 @@ void DialogScreen::Print ()
 
 }
 	
-char *DialogScreen::GetID ()
+const char *DialogScreen::GetID ()
 {
 	
 	return "SCR_DLG";
@@ -205,7 +205,7 @@ DialogScreenWidget::~DialogScreenWidget ()
 
 }
 
-void DialogScreenWidget::SetName ( char *newname )
+void DialogScreenWidget::SetName ( const char *newname )
 {
 
 	if ( name ) delete [] name;
@@ -237,7 +237,7 @@ void DialogScreenWidget::SetSize ( int newwidth, int newheight )
 
 }
 
-void DialogScreenWidget::SetTooltip ( char *newtooltip )
+void DialogScreenWidget::SetTooltip ( const char *newtooltip )
 {
 
 	if ( tooltip ) delete [] tooltip;
@@ -285,7 +285,7 @@ void DialogScreenWidget::SetData ( int newdata1, int newdata2 )
 
 }
 
-void DialogScreenWidget::SetStringData ( char *newstringdata1, char *newstringdata2 )
+void DialogScreenWidget::SetStringData ( const char *newstringdata1, const char *newstringdata2 )
 {
 
 	if ( stringdata1 ) delete [] stringdata1;
@@ -384,7 +384,7 @@ void DialogScreenWidget::Print ()
 
 }
 	
-char *DialogScreenWidget::GetID ()
+const char *DialogScreenWidget::GetID ()
 {
 
 	return "DLG_WIDG";

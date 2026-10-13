@@ -40,7 +40,7 @@ public:
 	// All return NULL on failure
 
 	static Record *GetSocialSecurity			( char *personname );
-	static Record *GetCriminal					( char *personname );
+	static Record *GetCriminal					( const char *personname );
 	static Record *GetMedical					( char *personname );
 	static Record *GetAcademic					( char *personname );
 	static BankAccount *GetFinancial			( char *personname );

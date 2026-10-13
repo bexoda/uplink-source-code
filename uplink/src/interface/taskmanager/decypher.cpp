@@ -77,7 +77,7 @@ void Decypher::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void Decypher::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void Decypher::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

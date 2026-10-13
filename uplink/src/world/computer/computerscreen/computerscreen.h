@@ -46,8 +46,8 @@ public:
 	virtual ~ComputerScreen();
 
 
-	void SetMainTitle ( char *newmaintitle );
-	void SetSubTitle  ( char *newsubtitle );
+	void SetMainTitle ( const char *newmaintitle );
+	void SetSubTitle  ( const char *newsubtitle );
 	void SetComputer  ( char *newcomputer );
 
 	Computer *GetComputer ();
@@ -60,7 +60,7 @@ public:
 	virtual void Print ();		
 	virtual void Update ();			
 	
-	virtual char *GetID ();	
+	virtual const char *GetID ();	
 	virtual int GetOBJECTID ();
 
 };

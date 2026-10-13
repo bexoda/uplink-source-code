@@ -268,7 +268,7 @@ void WorldGenerator::GenerateSimpleStartingMissionB ()
 
 }
 
-Player *WorldGenerator::GeneratePlayer ( char *handle )
+Player *WorldGenerator::GeneratePlayer ( const char *handle )
 {
 
 	// Initialise the player
@@ -2736,7 +2736,7 @@ VLocation *WorldGenerator::GenerateLocation ()
 
 }
 
-Company *WorldGenerator::GenerateCompany ( char *companyname, int size, int TYPE, int growth, int alignment )
+Company *WorldGenerator::GenerateCompany ( const char *companyname, int size, int TYPE, int growth, int alignment )
 {
 
 	Company *company = new Company ();
@@ -2818,7 +2818,7 @@ Company *WorldGenerator::GenerateCompany_Bank ()
 
 }
 
-Computer *WorldGenerator::GenerateComputer ( char *companyname )
+Computer *WorldGenerator::GenerateComputer ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateAccessTerminalName( companyname ) );
@@ -2852,7 +2852,7 @@ Computer *WorldGenerator::GenerateComputer ( char *companyname )
 
 }
 
-Computer  *WorldGenerator::GenerateComputer ( char *companyName, int TYPE )
+Computer  *WorldGenerator::GenerateComputer ( const char *companyName, int TYPE )
 {
 
     if ( TYPE & COMPUTER_TYPE_PUBLICACCESSSERVER )                  return GeneratePublicAccessServer ( companyName );
@@ -2867,7 +2867,7 @@ Computer  *WorldGenerator::GenerateComputer ( char *companyName, int TYPE )
 
 }
 
-Computer *WorldGenerator::GeneratePublicAccessServer ( char *companyname )
+Computer *WorldGenerator::GeneratePublicAccessServer ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GeneratePublicAccessServerName( companyname ) );
@@ -2911,7 +2911,7 @@ Computer *WorldGenerator::GeneratePublicAccessServer ( char *companyname )
 
 }
 
-Computer *WorldGenerator::GenerateInternalServicesMachine ( char *companyname )
+Computer *WorldGenerator::GenerateInternalServicesMachine ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateInternalServicesServerName( companyname ) );
@@ -3101,7 +3101,7 @@ Computer *WorldGenerator::GenerateInternalServicesMachine ( char *companyname )
 
 }
 
-Computer *WorldGenerator::GenerateCentralMainframe ( char *companyname )
+Computer *WorldGenerator::GenerateCentralMainframe ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateCentralMainframeName(companyname) );
@@ -3259,7 +3259,7 @@ Computer *WorldGenerator::GenerateCentralMainframe ( char *companyname )
 
 }
 
-Computer *WorldGenerator::GeneratePublicBankServer ( char *companyname )
+Computer *WorldGenerator::GeneratePublicBankServer ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateInternationalBankName( companyname ) );
@@ -3521,7 +3521,7 @@ Computer *WorldGenerator::GeneratePublicBankServer ( char *companyname )
 
 }
 
-Computer *WorldGenerator::GenerateEmptyFileServer ( char *companyname )
+Computer *WorldGenerator::GenerateEmptyFileServer ( const char *companyname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateFileServerName( companyname ) );
@@ -3572,7 +3572,7 @@ Computer *WorldGenerator::GenerateEmptyFileServer ( char *companyname )
 
 }
 
-Computer  *WorldGenerator::GenerateLAN ( char *companyname )
+Computer  *WorldGenerator::GenerateLAN ( const char *companyname )
 {
 
 	Company *company = game->GetWorld()->GetCompany( companyname );
@@ -3590,7 +3590,7 @@ Computer  *WorldGenerator::GenerateLAN ( char *companyname )
 	return NULL;
 }
 
-Computer *WorldGenerator::GeneratePersonalComputer ( char *personname )
+Computer *WorldGenerator::GeneratePersonalComputer ( const char *personname )
 {
 
     //char *computername = strdup( NameGenerator::GeneratePersonalComputerName( personname ) );
@@ -3629,7 +3629,7 @@ Computer *WorldGenerator::GeneratePersonalComputer ( char *personname )
 
 }
 
-Computer *WorldGenerator::GenerateVoicePhoneSystem ( char *personname )
+Computer *WorldGenerator::GenerateVoicePhoneSystem ( const char *personname )
 {
 
     //char *computername = strdup( NameGenerator::GenerateVoicePhoneSystemName( personname ) );

@@ -43,13 +43,13 @@ public:
 
 	void SetOwner ( char *newowner );
 
-	void AddVLocation ( char *ip );
+	void AddVLocation ( const char *ip );
 	/********** Start code by François Gagné **********/
 	void AddOrRemoveVLocation ( char *ip );   // If the ip is not currently in, add it else remove it 
 	/********** End code by François Gagné **********/
 	void RemoveLastLocation ();				// Removes the most recently added
 	
-	bool LocationIncluded ( char *ip );
+	bool LocationIncluded ( const char *ip );
 
 	Person *GetOwner ();
 	char *GetSource ();						// Returns first ip (source machine) or NULL
@@ -75,7 +75,7 @@ public:
 	virtual void Save  ( FILE *file );
 	virtual void Print ();
 	
-	virtual char *GetID ();
+	virtual const char *GetID ();
 
 };
 

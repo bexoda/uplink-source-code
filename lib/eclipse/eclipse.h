@@ -42,42 +42,42 @@
 void EclReset ( int width, int height );
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 const char *caption, char *name );
+						 const char *caption, const char *name );
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 const char *caption, char *tooltip, char *name );
+						 const char *caption, const char *tooltip, const char *name );
 
 void EclRegisterImageButton ( int x, int y, int width, int height,
 							  char *caption, char *tooltip, char *name );
 
-void EclRemoveButton ( char *name );
+void EclRemoveButton ( const char *name );
 
-void EclButtonBringToFront ( char *name );
-void EclButtonSendToBack   ( char *name );
+void EclButtonBringToFront ( const char *name );
+void EclButtonSendToBack   ( const char *name );
 
 void EclRegisterDefaultButtonCallbacks ( void (*draw) (Button *, bool, bool),
 										 void (*mouseup) (Button *),
 										 void (*mousedown) (Button *),
 										 void (*mousemove) (Button *) );
 
-void EclRegisterButtonCallbacks ( char *name, 
+void EclRegisterButtonCallbacks ( const char *name, 
 								  void (*draw) (Button *, bool, bool), 
 								  void (*mouseup) (Button *),
 								  void (*mousedown) (Button *),
 								  void (*mousemove) (Button *) );
 
-void EclRegisterButtonCallback ( char *name, 
+void EclRegisterButtonCallback ( const char *name, 
 								 void (*mouseup) (Button *) );
 
 
-void EclMakeButtonEditable ( char *name );
-void EclMakeButtonUnEditable ( char *name );
-bool EclIsButtonEditable ( char *name );
+void EclMakeButtonEditable ( const char *name );
+void EclMakeButtonUnEditable ( const char *name );
+bool EclIsButtonEditable ( const char *name );
 void EclHighlightNextEditableButton ();
 
 // Graphical functions ========================================================
 
-void EclDirtyButton		  ( char *name );					// Tells eclipse that this needs re-drawing
+void EclDirtyButton		  ( const char *name );					// Tells eclipse that this needs re-drawing
 void EclDirtyRectangle	  ( int x, int y, int w, int h );	// Tells eclipse to blank this area
 void EclDirtyClear        ();								// Clears all dirty buttons / rectangles
 void EclClearRectangle    ( int x, int y, int w, int h );   // Tells eclipse to blank this area (now)
@@ -89,16 +89,16 @@ void EclDrawButton        ( char *name );
 void EclDrawButton        ( int index );
 
 void EclHighlightButton   ( char *name );
-bool EclIsHighlighted     ( char *name );
+bool EclIsHighlighted     ( const char *name );
 void EclUnHighlightButton ();
 
 void EclClickButton       ( char *name );
-bool EclIsClicked         ( char *name );
+bool EclIsClicked         ( const char *name );
 void EclUnClickButton     ();
 
-void EclSuperHighlight        ( char *name );			
-bool EclIsSuperHighlighted    ( char *name );
-void EclSuperUnHighlight      ( char *name );
+void EclSuperHighlight        ( const char *name );			
+bool EclIsSuperHighlighted    ( const char *name );
+void EclSuperUnHighlight      ( const char *name );
 void EclSuperUnHighlightAll	  ();
 void EclUpdateSuperHighlights ( char *name );
 
@@ -109,10 +109,10 @@ void EclRegisterSuperHighlightFunction ( int borderwidth, void (*draw) (Button *
 // Lookup functions ===========================================================
 
 
-int  EclLookupIndex ( char *name );				// Can change
+int  EclLookupIndex ( const char *name );				// Can change
 char *EclGetButtonAtCoord ( int x, int y );
 char *EclGetHighlightedButton ();
-Button *EclGetButton ( char *name );
+Button *EclGetButton ( const char *name );
 
 
 // Animation functions ========================================================
@@ -131,27 +131,27 @@ void EclEnableFasterAnimations ( double speed = ECL_FASTER_ANIMATION_SPEED );
 void EclDisableFasterAnimations ();			// Default
 
 
-int  EclRegisterMovement  ( char *bname, int targetX, int targetY, int time_ms,
+int  EclRegisterMovement  ( const char *bname, int targetX, int targetY, int time_ms,
 							void (*callback) () = NULL );
-int  EclRegisterMovement  ( char *bname, int targetX, int targetY, int time_ms, int MOVETYPE,
+int  EclRegisterMovement  ( const char *bname, int targetX, int targetY, int time_ms, int MOVETYPE,
 						    void (*callback) () = NULL );
-int  EclRegisterResize    ( char *bname, int targetW, int targetH, int time_ms,
+int  EclRegisterResize    ( const char *bname, int targetW, int targetH, int time_ms,
 						    void (*callback) () = NULL );
-int  EclRegisterAnimation ( char *bname, int targetX, int targetY, 
+int  EclRegisterAnimation ( const char *bname, int targetX, int targetY, 
 							int targetW, int targetH, int time_ms,
 							void (*callback) () = NULL );
 
-int  EclRegisterCaptionChange ( char *bname, const char *targetC, int time_ms,
+int  EclRegisterCaptionChange ( const char *bname, const char *targetC, int time_ms,
 							    void (*callback) () = NULL );
-int  EclRegisterCaptionChange ( char *bname, const char *targetC,				// Determines time_ms from 							   
+int  EclRegisterCaptionChange ( const char *bname, const char *targetC,				// Determines time_ms from 							   
 							    void (*callback) () = NULL );			// length of caption
 
-int  EclRegisterAnimation ( char *bname, int targetX, int targetY, int MOVETYPE, 
+int  EclRegisterAnimation ( const char *bname, int targetX, int targetY, int MOVETYPE, 
 							int targetW, int targetH, const char *targetC, int time_ms,
 							void (*callback) () = NULL );
 
 int EclIsAnimationActive ( char *bname );					// Returns ID number of anim, or -1
-int EclIsCaptionChangeActive ( char *bname );
+int EclIsCaptionChangeActive ( const char *bname );
 int EclIsNoCaptionChangeActive ( char *bname );
 
 void EclRemoveAnimation ( int idnumber );

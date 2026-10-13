@@ -132,7 +132,7 @@ void UplinkAgentList::UplinkAgentListDraw ( Button *button, bool highlighted, bo
 
 }
 
-void UplinkAgentList::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void UplinkAgentList::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 
@@ -248,7 +248,7 @@ void UplinkAgentList::UpdateLists ()
 
 	int foundsize = 0;
     int numfiles = 10;
-    char *datatitle = "Uplink_Agent_Data";
+    const char *datatitle = "Uplink_Agent_Data";
     int *filefound = new int [numfiles];            // 0 = not found, 1 = found, -1 = encrypted
 	for ( int fi = 0; fi < numfiles; ++fi )
 		filefound [fi] = 0;

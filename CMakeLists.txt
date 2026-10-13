@@ -42,10 +42,12 @@ add_library(uplink_flags INTERFACE)
 target_compile_definitions(uplink_flags INTERFACE
   _REENTRANT USE_SDL USE_FTGL
   $<IF:$<BOOL:${UPLINK_DEMO}>,DEMOGAME=1,FULLGAME=1>)
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  # The 2003 code passes string literals to char* parameters throughout (7000+ sites; ill-formed
-  # since C++11). Silenced until those APIs take const char*.
-  target_compile_options(uplink_flags INTERFACE $<$<COMPILE_LANGUAGE:CXX>:-Wno-write-strings>)
+# A derived function whose signature drifts from the base virtual silently stops overriding
+# it (a const change once disabled every hacking tool's SetTarget). Level 1 flags only those.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  target_compile_options(uplink_flags INTERFACE $<$<COMPILE_LANGUAGE:CXX>:-Woverloaded-virtual=1>)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  target_compile_options(uplink_flags INTERFACE $<$<COMPILE_LANGUAGE:CXX>:-Woverloaded-virtual>)
 endif()
 if(UPLINK_SANITIZE)
   target_compile_options(uplink_flags INTERFACE -fsanitize=address,undefined -fno-omit-frame-pointer)

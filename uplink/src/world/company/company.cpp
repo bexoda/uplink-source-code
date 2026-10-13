@@ -39,7 +39,7 @@ Company::~Company()
 
 }
 
-void Company::SetName ( char *newname )
+void Company::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_COMPANY_NAME );
@@ -47,7 +47,7 @@ void Company::SetName ( char *newname )
 
 }
 
-void Company::SetBoss ( char *bossname )
+void Company::SetBoss ( const char *bossname )
 {
 
 	UplinkAssert ( strlen (bossname) < SIZE_PERSON_NAME );
@@ -236,7 +236,7 @@ void Company::Update ()
 {
 }
 	
-char *Company::GetID ()
+const char *Company::GetID ()
 {
 
 	return "COMPANY";

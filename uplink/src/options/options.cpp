@@ -49,7 +49,7 @@ Options::~Options()
 
 }
 
-Option *Options::GetOption ( char *name )
+Option *Options::GetOption ( const char *name )
 {
 
 	BTree <Option *> *btree = options.LookupTree ( name );
@@ -62,7 +62,7 @@ Option *Options::GetOption ( char *name )
 
 }
 
-int Options::GetOptionValue ( char *name )
+int Options::GetOptionValue ( const char *name )
 {
 
 	Option *option = GetOption ( name );
@@ -77,7 +77,7 @@ int Options::GetOptionValue ( char *name )
 
 }
 
-bool Options::IsOptionEqualTo ( char *name, int value )
+bool Options::IsOptionEqualTo ( const char *name, int value )
 {
 
 	Option *option = GetOption ( name );
@@ -90,7 +90,7 @@ bool Options::IsOptionEqualTo ( char *name, int value )
 
 }
 
-void Options::SetOptionValue ( char *name, int newvalue )
+void Options::SetOptionValue ( const char *name, int newvalue )
 {
 
 	BTree <Option *> *btree = options.LookupTree ( name );
@@ -110,7 +110,7 @@ void Options::SetOptionValue ( char *name, int newvalue )
 
 }
 
-void Options::SetOptionValue ( char *name, int newvalue, char *tooltip, bool yesorno, bool visible )
+void Options::SetOptionValue ( const char *name, int newvalue, const char *tooltip, bool yesorno, bool visible )
 {
 
 	BTree <Option *> *btree = options.LookupTree ( name );
@@ -142,7 +142,7 @@ void Options::SetOptionValue ( char *name, int newvalue, char *tooltip, bool yes
 
 }
 
-LList <Option *> *Options::GetAllOptions ( char *searchstring, bool returnhidden )
+LList <Option *> *Options::GetAllOptions ( const char *searchstring, bool returnhidden )
 {
 
 	DArray <Option *> *alloptions = options.ConvertToDArray ();
@@ -251,7 +251,7 @@ void Options::CreateDefaultOptions ()
 
 }
 
-void Options::SetThemeName ( char *newThemeName )
+void Options::SetThemeName ( const char *newThemeName )
 {
     // Called with GetThemeName() to re-read the current theme; copying a buffer onto itself is UB.
     if ( newThemeName != themeName )
@@ -328,7 +328,7 @@ char *Options::GetThemeDescription ()
     return themeDescription;
 }
 
-ColourOption *Options::GetColour ( char *colourName )
+ColourOption *Options::GetColour ( const char *colourName )
 {
 
     ColourOption *result = colours.GetData (colourName);
@@ -345,7 +345,7 @@ ColourOption *Options::GetColour ( char *colourName )
 
 }
 
-char *Options::ThemeFilename ( char *filename )
+char *Options::ThemeFilename ( const char *filename )
 {
 
 	size_t resultsize = 256;
@@ -373,7 +373,7 @@ char *Options::ThemeFilename ( char *filename )
 
 }
 
-void Options::RequestShutdownChange ( char *optionName, int newValue )
+void Options::RequestShutdownChange ( const char *optionName, int newValue )
 {
 
     OptionChange *oc = new OptionChange ();
@@ -545,7 +545,7 @@ void Options::Update ()
 {
 }
 
-char *Options::GetID ()
+const char *Options::GetID ()
 {
 
 	return "OPTIONS";
@@ -575,7 +575,7 @@ Option::~Option()
 
 }
 
-void Option::SetName ( char *newname )
+void Option::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_OPTION_NAME );
@@ -583,7 +583,7 @@ void Option::SetName ( char *newname )
 
 }
 
-void Option::SetTooltip ( char *newtooltip )
+void Option::SetTooltip ( const char *newtooltip )
 {
 
 	UplinkAssert ( strlen(newtooltip) < SIZE_OPTION_TOOLTIP );
@@ -666,7 +666,7 @@ void Option::Update ()
 {
 }
 
-char *Option::GetID ()
+const char *Option::GetID ()
 {
 
 	return "OPTION";

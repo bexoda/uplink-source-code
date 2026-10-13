@@ -51,7 +51,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();	
+	const char *GetID ();	
 	int GetOBJECTID ();
 
 };
@@ -109,17 +109,17 @@ public:
 	AccessLog();
 	virtual ~AccessLog();
 
-	void SetProperties ( Date *newdate, char *newfromip, char *newfromname,
+	void SetProperties ( Date *newdate, const char *newfromip, const char *newfromname,
 						 int newSUSPICIOUS = LOG_NOTSUSPICIOUS,
 						 int newTYPE = LOG_TYPE_TEXT );
 	
 	void SetProperties ( AccessLog *copyme );
 
 	void SetTYPE ( int newTYPE );
-	void SetFromIP ( char *newfromip );
+	void SetFromIP ( const char *newfromip );
 	void SetSuspicious ( int newSUSPICIOUS );
 
-	void SetData1 ( char *newdata );
+	void SetData1 ( const char *newdata );
 	void SetData2 ( char *newdata );
 	void SetData3 ( char *newdata );
 
@@ -131,7 +131,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

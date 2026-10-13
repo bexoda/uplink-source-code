@@ -44,11 +44,11 @@ void GciRestoreGlut();
 
 void GciSetDefaultFont ( int STYLE );
 
-void GciDrawText ( int x, int y, char *text );								// Uses default
-void GciDrawText ( int x, int y, char *text, int STYLE );					// STYLE can be a ttf index if ttf is enabled
+void GciDrawText ( int x, int y, const char *text );								// Uses default
+void GciDrawText ( int x, int y, const char *text, int STYLE );					// STYLE can be a ttf index if ttf is enabled
 
-int GciTextWidth ( char *text );                           
-int GciTextWidth ( char *text, int STYLE );
+int GciTextWidth ( const char *text );                           
+int GciTextWidth ( const char *text, int STYLE );
 
 bool GciRegisterTrueTypeFont( const char *filename );
 bool GciUnregisterTrueTypeFont( const char *filename );
@@ -58,7 +58,7 @@ bool GciUnregisterTrueTypeFont( const char *filename );
 void GciEnableTrueTypeSupport ();
 void GciDisableTrueTypeSupport ();
 
-bool GciLoadTrueTypeFont ( int index, char *fontname, char *filename, int size );
+bool GciLoadTrueTypeFont ( int index, const char *fontname, char *filename, int size );
 void GciDeleteTrueTypeFont ( int index );
 void GciDeleteAllTrueTypeFonts ();
 

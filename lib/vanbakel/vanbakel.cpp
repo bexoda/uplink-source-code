@@ -34,7 +34,7 @@ void SvbReset ()
 
 }
 
-int SvbRegisterTask ( char *name, Task *task )
+int SvbRegisterTask ( const char *name, Task *task )
 {
 
 	// Add the task to the list
@@ -324,7 +324,7 @@ Task *SvbGetTask ( int pid )
 
 }
 
-Task *SvbGetTask ( char *name )
+Task *SvbGetTask ( const char *name )
 {
 
     for ( int i = 0; i < tasklist.Size (); ++i ) {

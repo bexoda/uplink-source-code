@@ -136,7 +136,7 @@ LanSpoof::~LanSpoof()
 {
 }
 
-void LanSpoof::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LanSpoof::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

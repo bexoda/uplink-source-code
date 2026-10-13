@@ -132,7 +132,7 @@ void EclReset ( int width, int height )
 }
 
 void EclRegisterButton ( int x, int y, int width, int height, 
-  			 			 const char *caption, char *name )
+  			 			 const char *caption, const char *name )
 {
 
 	if ( EclGetButton ( name ) ) {
@@ -158,7 +158,7 @@ void EclRegisterButton ( int x, int y, int width, int height,
 }
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 const char *caption, char *tooltip, char *name )
+						 const char *caption, const char *tooltip, const char *name )
 {
 
 	EclRegisterButton ( x, y, width, height, caption, name );
@@ -186,7 +186,7 @@ void EclRegisterImageButton ( int x, int y, int width, int height,
 	}
 }
 
-void EclRemoveButton ( char *name )
+void EclRemoveButton ( const char *name )
 {
 
 	int index = EclLookupIndex ( name );
@@ -236,7 +236,7 @@ void EclRemoveButton ( char *name )
 
 }
 
-void EclButtonBringToFront ( char *name )
+void EclButtonBringToFront ( const char *name )
 {
 
 	int index = EclLookupIndex ( name );
@@ -259,7 +259,7 @@ void EclButtonBringToFront ( char *name )
 
 }
 
-void EclButtonSendToBack   ( char *name )
+void EclButtonSendToBack   ( const char *name )
 {
 
 	int index = EclLookupIndex ( name );
@@ -296,7 +296,7 @@ void EclRegisterDefaultButtonCallbacks ( void (*draw) (Button *, bool, bool),
 
 }
 
-void EclRegisterButtonCallbacks ( char *name, void (*draw) (Button *, bool, bool), 
+void EclRegisterButtonCallbacks ( const char *name, void (*draw) (Button *, bool, bool), 
 								  void (*mouseup) (Button *), 
 								  void (*mousedown) (Button *),
 								  void (*mousemove) (Button *) )
@@ -322,7 +322,7 @@ void EclRegisterButtonCallbacks ( char *name, void (*draw) (Button *, bool, bool
 
 }
 
-void EclRegisterButtonCallback ( char *name, 
+void EclRegisterButtonCallback ( const char *name, 
 								 void (*mouseup) (Button *) )
 {
 
@@ -338,7 +338,7 @@ void EclRegisterButtonCallback ( char *name,
 
 }
 
-void EclMakeButtonEditable ( char *name )
+void EclMakeButtonEditable ( const char *name )
 {
 
 	Button *button = EclGetButton ( name );
@@ -358,7 +358,7 @@ void EclMakeButtonEditable ( char *name )
 
 }
 
-void EclMakeButtonUnEditable ( char *name )
+void EclMakeButtonUnEditable ( const char *name )
 {
 
 	for ( int i = 0; i < editablebuttons.Size (); ++i ) {
@@ -373,7 +373,7 @@ void EclMakeButtonUnEditable ( char *name )
 				
 }
 
-bool EclIsButtonEditable ( char *name )
+bool EclIsButtonEditable ( const char *name )
 {
 
 	if ( !EclGetButton (name) ) 
@@ -426,7 +426,7 @@ void EclHighlightNextEditableButton ()
 	
 }
 
-int  EclLookupIndex ( char *name )
+int  EclLookupIndex ( const char *name )
 {
 
 	if ( name )
@@ -477,7 +477,7 @@ bool EclIsOccupied ( int x, int y, int w, int h )
 
 }
 
-void EclDirtyButton ( char *name )
+void EclDirtyButton ( const char *name )
 {
 
 /********************************************************************
@@ -693,14 +693,14 @@ void EclClickButton ( char *name )
 
 }
 
-bool EclIsHighlighted ( char *name )
+bool EclIsHighlighted ( const char *name )
 {
 
 	return ( currenthighlight && strcmp ( currenthighlight, name ) == 0 );
 
 }
 
-bool EclIsClicked ( char *name )
+bool EclIsClicked ( const char *name )
 {
 
 	return ( currentclick && strcmp ( currentclick, name ) == 0 );
@@ -729,7 +729,7 @@ void EclUnClickButton ()
 
 }
 
-void EclSuperHighlight ( char *name )
+void EclSuperHighlight ( const char *name )
 {
 
 	Button *button = EclGetButton ( name );
@@ -758,7 +758,7 @@ void EclSuperHighlight ( char *name )
 
 }
 
-void EclSuperUnHighlight ( char *name )
+void EclSuperUnHighlight ( const char *name )
 {
 
 	if ( superhighlightedbuttons.LookupTree ( name ) ) {
@@ -789,7 +789,7 @@ void EclSuperUnHighlightAll	()
 
 }
 
-bool EclIsSuperHighlighted ( char *name )
+bool EclIsSuperHighlighted ( const char *name )
 {
 
 	return ( superhighlightedbuttons.LookupTree (name) != NULL );
@@ -885,7 +885,7 @@ char *EclGetHighlightedButton ()
 
 }
 
-Button *EclGetButton ( char *name )
+Button *EclGetButton ( const char *name )
 {
 
 	int index = EclLookupIndex ( name );
@@ -926,7 +926,7 @@ void EclDisableFasterAnimations ()
 
 }
 
-int  EclRegisterMovement ( char *bname, int targetX, int targetY, int time_ms,
+int  EclRegisterMovement ( const char *bname, int targetX, int targetY, int time_ms,
 						   void (*callback) ())
 {
 
@@ -934,7 +934,7 @@ int  EclRegisterMovement ( char *bname, int targetX, int targetY, int time_ms,
 
 }
 
-int  EclRegisterMovement  ( char *bname, int targetX, int targetY, int time_ms, int MOVETYPE,
+int  EclRegisterMovement  ( const char *bname, int targetX, int targetY, int time_ms, int MOVETYPE,
 						    void (*callback) () )
 {
 
@@ -947,7 +947,7 @@ int  EclRegisterMovement  ( char *bname, int targetX, int targetY, int time_ms, 
 
 }
 
-int  EclRegisterResize ( char *bname, int targetW, int targetH, int time_ms, void (*callback) () )
+int  EclRegisterResize ( const char *bname, int targetW, int targetH, int time_ms, void (*callback) () )
 {
 
 	Button *button = EclGetButton ( bname );
@@ -958,7 +958,7 @@ int  EclRegisterResize ( char *bname, int targetW, int targetH, int time_ms, voi
 		return -1;
 }
 
-int  EclRegisterAnimation ( char *bname, int targetX, int targetY, 
+int  EclRegisterAnimation ( const char *bname, int targetX, int targetY, 
 							int targetW, int targetH, int time_ms,
 							void (*callback) () )
 {
@@ -967,7 +967,7 @@ int  EclRegisterAnimation ( char *bname, int targetX, int targetY,
 
 }
 
-int  EclRegisterCaptionChange ( char *bname, const char *targetC, int time_ms,
+int  EclRegisterCaptionChange ( const char *bname, const char *targetC, int time_ms,
 							    void (*callback) ())
 {
 
@@ -984,7 +984,7 @@ int  EclRegisterCaptionChange ( char *bname, const char *targetC, int time_ms,
 
 }
 
-int  EclRegisterCaptionChange ( char *bname, const char *targetC,				
+int  EclRegisterCaptionChange ( const char *bname, const char *targetC,				
 							    void (*callback) () )
 {
 
@@ -999,7 +999,7 @@ int EclAnimationsRunning()
 }
 
 
-int  EclRegisterAnimation ( char *bname, int targetX, int targetY, int MOVETYPE, 
+int  EclRegisterAnimation ( const char *bname, int targetX, int targetY, int MOVETYPE, 
 							int targetW, int targetH, const char *targetC, int time_ms,
 							void (*callback) () )
 {
@@ -1123,7 +1123,7 @@ int EclIsAnimationActive ( char *bname )
 
 }
 
-int EclIsCaptionChangeActive ( char *bname )
+int EclIsCaptionChangeActive ( const char *bname )
 {
 
 	for ( int i = 0; i < anims.Size (); ++i ) {

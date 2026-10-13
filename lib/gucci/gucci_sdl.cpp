@@ -206,7 +206,7 @@ char *GciInitGraphics( const char *caption, int graphics_flags, int screenWidth,
 
 extern int gci_defaultfont; // The default Gucci style
 
-void GciFallbackDrawText ( int x, int y, char *text, int STYLE )
+void GciFallbackDrawText ( int x, int y, const char *text, int STYLE )
 {
   static bool inside = false;
 
@@ -222,7 +222,7 @@ void GciFallbackDrawText ( int x, int y, char *text, int STYLE )
   }
 }
 
-int GciFallbackTextWidth ( char *text, int STYLE )
+int GciFallbackTextWidth ( const char *text, int STYLE )
 {
   static bool inside = false;
 

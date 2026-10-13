@@ -34,7 +34,7 @@ void RecordBank::AddRecord ( Record *newrecord )
 
 }
 
-void RecordBank::AddRecordSorted ( Record *newrecord, char *sortfield )
+void RecordBank::AddRecordSorted ( Record *newrecord, const char *sortfield )
 {
 
 	UplinkAssert (newrecord);
@@ -64,7 +64,7 @@ void RecordBank::AddRecordSorted ( Record *newrecord, char *sortfield )
 
 }
 
-char * RecordBank::MakeSafeField( char * fieldval )
+char * RecordBank::MakeSafeField( const char * fieldval )
 {
 	size_t len = strlen( fieldval );
 	char * val = new char[ len + 1 ];
@@ -121,7 +121,7 @@ Record *RecordBank::GetRecord ( char *query )
 
 }
 
-Record *RecordBank::GetRecordFromName( char *name )
+Record *RecordBank::GetRecordFromName( const char *name )
 {
     char query[256];
 	char * tempname = MakeSafeField( name );
@@ -161,7 +161,7 @@ Record *RecordBank::GetRecordFromAccountNumber ( char *accNo )
     return GetRecord( query );
 }
 
-LList <Record *> *RecordBank::GetRecords ( char *query )
+LList <Record *> *RecordBank::GetRecords ( const char *query )
 {
 
 	// Make a copy of the query
@@ -275,7 +275,7 @@ LList <Record *> *RecordBank::GetRecords ( char *query )
 
 }
 
-Record *RecordBank::GetRandomRecord ( char *query )
+Record *RecordBank::GetRandomRecord ( const char *query )
 {
 
 	LList <Record *> *records = GetRecords ( query );
@@ -331,7 +331,7 @@ void RecordBank::Update ()
 
 }
 	
-char *RecordBank::GetID ()
+const char *RecordBank::GetID ()
 {
 
 	return "RECBANK";
@@ -359,7 +359,7 @@ Record::~Record()
 
 }
 
-void Record::AddField ( char *name, const char *value )
+void Record::AddField ( const char *name, const char *value )
 {
 
 	char *newvalue = new char [strlen(value) + 1];
@@ -368,7 +368,7 @@ void Record::AddField ( char *name, const char *value )
 
 }
 
-void Record::AddField ( char *name, int value )
+void Record::AddField ( const char *name, int value )
 {
 
 	size_t newvaluesize = 16;
@@ -378,7 +378,7 @@ void Record::AddField ( char *name, int value )
 
 }
 
-void Record::ChangeField ( char *name, const char *newvalue )
+void Record::ChangeField ( const char *name, const char *newvalue )
 {
 
 	BTree <char *> *tree = fields.LookupTree ( name );
@@ -400,7 +400,7 @@ void Record::ChangeField ( char *name, const char *newvalue )
 
 }
 
-void Record::ChangeField ( char *name, int newvalue )
+void Record::ChangeField ( const char *name, int newvalue )
 {
 
 	BTree <char *> *tree = fields.LookupTree ( name );
@@ -422,7 +422,7 @@ void Record::ChangeField ( char *name, int newvalue )
 
 }
 
-char *Record::GetField ( char *name )
+char *Record::GetField ( const char *name )
 {
 
 	if ( !name ) return NULL;
@@ -528,7 +528,7 @@ void Record::Update ()
 {
 }
 	
-char *Record::GetID ()
+const char *Record::GetID ()
 {
 
 	return "RECORD";

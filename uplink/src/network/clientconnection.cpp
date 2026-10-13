@@ -10,6 +10,9 @@
 #include "app/app.h"
 #include "app/globals.h"
 
+// tcp4u takes the terminator as a (never written) LPSTR
+static char MESSAGE_TERMINATOR [] = "#";
+
 #include "game/game.h"
 #include "game/data/data.h"
 
@@ -494,7 +497,7 @@ void ClientConnection::Update ()
 
 		char thebuffer [128] = "";
 		UINT nLength = sizeof thebuffer;
-		int result = TcpRecvUntilStr ( socket, thebuffer, &nLength, "#", 2, false, -1, HFILE_ERROR );
+		int result = TcpRecvUntilStr ( socket, thebuffer, &nLength, MESSAGE_TERMINATOR, 2, false, -1, HFILE_ERROR );
 
 		switch ( result ) {
 
@@ -568,7 +571,7 @@ void ClientConnection::SetIndex ( int newindex )
 
 }
 
-char *ClientConnection::GetID ()
+const char *ClientConnection::GetID ()
 {
 
 	return "CL_CON";

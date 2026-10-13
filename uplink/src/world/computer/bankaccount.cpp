@@ -145,7 +145,7 @@ void BankAccount::SetOwner ( char *newname )
 
 }
 
-void BankAccount::SetSecurity ( char *newpassword, int newsecurity )
+void BankAccount::SetSecurity ( const char *newpassword, int newsecurity )
 {
 
 	UplinkAssert ( strlen(newpassword) < sizeof(password) );
@@ -162,7 +162,7 @@ void BankAccount::SetAccNumber ( int newaccnumber )
 
 }
 
-void BankAccount::ChangeBalance ( int amount, char *description )
+void BankAccount::ChangeBalance ( int amount, const char *description )
 {
 
 	balance += amount;
@@ -400,7 +400,7 @@ void BankAccount::Print ()
 }
 
 	
-char *BankAccount::GetID ()
+const char *BankAccount::GetID ()
 {
 
 	return "ACCOUNT";

@@ -74,7 +74,7 @@ void Decrypter::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void Decrypter::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void Decrypter::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

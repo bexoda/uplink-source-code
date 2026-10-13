@@ -70,12 +70,12 @@ public:
 	Person ();
 	virtual ~Person ();
 
-	void SetName	    ( char *newname );
+	void SetName	    ( const char *newname );
 	void SetAge	        ( int newage );
 	void SetPhotoIndex  ( int newindex );
     void SetVoiceIndex  ( int newindex );
-	void SetLocalHost   ( char *newip );
-	void SetRemoteHost  ( char *newip );
+	void SetLocalHost   ( const char *newip );
+	void SetRemoteHost  ( const char *newip );
 	void SetPhoneNumber ( char *newphone );	
 	void SetStatus	    ( int newSTATUS );
 	int  GetStatus	    ( );
@@ -87,11 +87,11 @@ public:
 	VLocation *GetLocalHost ();	
 	VLocation *GetRemoteHost ();						
 
-	virtual int  CreateNewAccount ( char *bankip, char *accname, char *password, 
+	virtual int  CreateNewAccount ( char *bankip, char *accname, const char *password, 
 									int balance, int loan );						// Returns account number	
 
 	int  GetBalance ();																// Overall bank balance
-	void ChangeBalance ( int amount, char *description );
+	void ChangeBalance ( int amount, const char *description );
 	void SetCurrentAccount ( int index );
 
 	void SetIsTargetable ( bool newvalue );
@@ -105,7 +105,7 @@ public:
 	virtual void Print ();
 	virtual void Update ();
 	
-	virtual char *GetID ();
+	virtual const char *GetID ();
 	virtual int   GetOBJECTID ();
 
 };

@@ -39,7 +39,7 @@ ScrollBox::~ScrollBox()
 {
 }
 
-void ScrollBox::SetName ( char *newname )
+void ScrollBox::SetName ( const char *newname )
 {
     
     UplinkAssert (strlen(newname) < SIZE_SCROLLBOX_NAME );
@@ -369,7 +369,7 @@ bool ScrollBox::IsInterfaceVisible ()
     return true;
 }
 
-void ScrollBox::CreateScrollBox ( char *name, 
+void ScrollBox::CreateScrollBox ( const char *name, 
                        int x, int y, int w, int h,
                        int numItems, int windowSize, int currentIndex,
                        void (*callback)(char *, int) )
@@ -388,7 +388,7 @@ void ScrollBox::CreateScrollBox ( char *name,
 
 }
 
-void ScrollBox::RemoveScrollBox ( char *name )
+void ScrollBox::RemoveScrollBox ( const char *name )
 {
 
     for ( int i = 0; i < scrollBoxes.Size(); ++i ) {
@@ -406,7 +406,7 @@ void ScrollBox::RemoveScrollBox ( char *name )
             
 }
 
-ScrollBox *ScrollBox::GetScrollBox ( char *name )
+ScrollBox *ScrollBox::GetScrollBox ( const char *name )
 {
 
     for ( int i = 0; i < scrollBoxes.Size(); ++i )

@@ -50,7 +50,7 @@ void SgPlaylist_Shutdown ()
 
 }
 
-void SgPlaylist_Create ( char *pname )
+void SgPlaylist_Create ( const char *pname )
 {
 
     SgPlaylist *playlist = new SgPlaylist ();
@@ -59,7 +59,7 @@ void SgPlaylist_Create ( char *pname )
 
 }
 
-SgPlaylist *SgPlaylist_GetPlaylist ( char *pname )
+SgPlaylist *SgPlaylist_GetPlaylist ( const char *pname )
 {
 
     for ( int i = 0; i < playlists.Size (); ++i ) 
@@ -71,7 +71,7 @@ SgPlaylist *SgPlaylist_GetPlaylist ( char *pname )
 
 }
 
-void SgPlaylist_AddSong ( char *pname, char *songname )
+void SgPlaylist_AddSong ( const char *pname, const char *songname )
 {
 
     SgPlaylist *playlist = SgPlaylist_GetPlaylist(pname);
@@ -84,7 +84,7 @@ void SgPlaylist_AddSong ( char *pname, char *songname )
 
 }
 
-void SgPlaylist_Play ( char *pname )
+void SgPlaylist_Play ( const char *pname )
 {
 
     if ( strcmp ( currentplaylist, "None" ) == 0 ) {

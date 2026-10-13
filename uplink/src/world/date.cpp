@@ -429,7 +429,7 @@ void Date::Update ()
 
 }
 
-char *Date::GetID ()
+const char *Date::GetID ()
 {
 
 	return "DATE";

@@ -41,7 +41,7 @@ SeizeGatewayEvent::~SeizeGatewayEvent ()
 
 }
 
-void SeizeGatewayEvent::SetName ( char *newname )
+void SeizeGatewayEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_PERSON_NAME );
@@ -204,7 +204,7 @@ void SeizeGatewayEvent::Print ()
 
 }
 
-char *SeizeGatewayEvent::GetID ()
+const char *SeizeGatewayEvent::GetID ()
 {
 
 	return "EVT_SEZ";

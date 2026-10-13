@@ -65,11 +65,11 @@ public:
 
 	// Database management functions
 
-	VLocation *CreateVLocation ( char *ip, int phys_x, int phys_y );
+	VLocation *CreateVLocation ( const char *ip, int phys_x, int phys_y );
 	bool       VerifyVLocation ( char *ip, int phys_x, int phys_y );
-	Company   *CreateCompany   ( char *name );
-	Computer  *CreateComputer  ( char *name, char *companyname, char *ip );
-	Person    *CreatePerson	   ( char *name, char *localhost );
+	Company   *CreateCompany   ( const char *name );
+	Computer  *CreateComputer  ( const char *name, const char *companyname, const char *ip );
+	Person    *CreatePerson	   ( const char *name, const char *localhost );
 	void	   CreatePassword  ( char *password );
 		
 	void CreateVLocation  ( VLocation  *vlocation );	
@@ -78,12 +78,12 @@ public:
 	void CreatePerson     ( Person     *person );	
 	void CreateGatewayDef ( GatewayDef *newdef );
 	
-	VLocation  *GetVLocation  ( char *ip );				//  These all return NULL  
-	Company    *GetCompany	  ( char *name );			//  if the specified object
-	Computer   *GetComputer   ( char *name );			//  is not found in the database
-	Person     *GetPerson     ( char *name );			//  (check before dereferencing) 
+	VLocation  *GetVLocation  ( const char *ip );				//  These all return NULL  
+	Company    *GetCompany	  ( const char *name );			//  if the specified object
+	Computer   *GetComputer   ( const char *name );			//  is not found in the database
+	Person     *GetPerson     ( const char *name );			//  (check before dereferencing) 
 	char	   *GetPassword   ( int index );					
-	GatewayDef *GetGatewayDef ( char *name );
+	GatewayDef *GetGatewayDef ( const char *name );
 
 	Player    *GetPlayer     ();						//  Asserts that player exists
 
@@ -94,7 +94,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 
 };
 

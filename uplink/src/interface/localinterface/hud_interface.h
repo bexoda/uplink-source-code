@@ -22,12 +22,12 @@
 struct HUDInterfaceUpgrade
 {
     char number;
-    char *name;
-    char *tooltip;
-    char *buttonName;
-    char *buttonFilename;
-    char *buttonFilename_h;
-    char *buttonFilename_c;
+    const char *name;
+    const char *tooltip;
+    const char *buttonName;
+    const char *buttonFilename;
+    const char *buttonFilename_h;
+    const char *buttonFilename_c;
     void (*callback) (Button *);
 };
 
@@ -76,7 +76,7 @@ protected:
     static void PauseButtonClick  ( Button *button );
     static void UnPauseClick      ( Button *button );
 
-	static void HighlightToolbarButton   ( char *bname );
+	static void HighlightToolbarButton   ( const char *bname );
 	static void UnHighlightToolbarButton ();
 
 public:
@@ -107,7 +107,7 @@ public:
 	virtual void Save  ( FILE *file );
 	virtual void Print ();
 	
-	virtual char *GetID ();
+	virtual const char *GetID ();
 
 };
 

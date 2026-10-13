@@ -67,7 +67,7 @@ TaskManager::~TaskManager ()
 }
 
 
-void TaskManager::RunSoftware ( char *name, float version )
+void TaskManager::RunSoftware ( const char *name, float version )
 {
 
 	UplinkTask *task = NULL;
@@ -136,7 +136,7 @@ void TaskManager::RunSoftware ( char *name, float version )
 }
 
 
-void TaskManager::SetProgramTarget ( UplinkObject *newprogramtarget, char *targetstring, int targetint )
+void TaskManager::SetProgramTarget ( UplinkObject *newprogramtarget, const char *targetstring, int targetint )
 {
 
 	programtarget = newprogramtarget;
@@ -260,7 +260,7 @@ void TaskManager::Update ()
 
 }
 
-char *TaskManager::GetID ()
+const char *TaskManager::GetID ()
 {
 
 	return "TASKMAN";

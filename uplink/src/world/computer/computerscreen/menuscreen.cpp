@@ -28,7 +28,7 @@ MenuScreen::~MenuScreen()
 
 }
 
-void MenuScreen::AddOption ( char *caption, char *tooltip, int nextpage, int security, int index )
+void MenuScreen::AddOption ( const char *caption, const char *tooltip, int nextpage, int security, int index )
 {
 
 	MenuScreenOption *mso = new MenuScreenOption ();
@@ -127,7 +127,7 @@ void MenuScreen::Print ()
 
 }
 
-char *MenuScreen::GetID ()
+const char *MenuScreen::GetID ()
 {
 
 	return "SCR_MENU";
@@ -161,7 +161,7 @@ MenuScreenOption::~MenuScreenOption ()
 {
 }
 
-void MenuScreenOption::SetCaption ( char *newcaption )
+void MenuScreenOption::SetCaption ( const char *newcaption )
 {
 
 	UplinkAssert ( strlen(newcaption) < SIZE_MENUSCREENOPTION_CAPTION );
@@ -169,7 +169,7 @@ void MenuScreenOption::SetCaption ( char *newcaption )
 
 }
 
-void MenuScreenOption::SetTooltip ( char *newtooltip )
+void MenuScreenOption::SetTooltip ( const char *newtooltip )
 {
 
 	UplinkAssert ( strlen(newtooltip) < SIZE_MENUSCREENOPTION_TOOLTIP );
@@ -236,7 +236,7 @@ void MenuScreenOption::Update ()
 {
 }
 
-char *MenuScreenOption::GetID ()
+const char *MenuScreenOption::GetID ()
 {
 
 	return "MNUOPT";

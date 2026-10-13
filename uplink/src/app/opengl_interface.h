@@ -38,18 +38,18 @@ void buttonborder_draw ( Button *button, bool highlighted, bool clicked );
 
 void superhighlight_draw ( Button *button, bool highlighted, bool clicked );
 
-void button_assignbitmap  ( char *name,	char *standard_f );
-void button_assignbitmap  ( char *name,	Image *standard_i_ref );
-void button_assignbitmaps ( char *name, char *standard_f, char *highlighted_f, char *clicked_f );
-void button_assignbitmaps ( char *name, Image *standard_i_ref, Image *highlighted_i_ref, Image *clicked_i_ref );
+void button_assignbitmap  ( const char *name,	const char *standard_f );
+void button_assignbitmap  ( const char *name,	Image *standard_i_ref );
+void button_assignbitmaps ( const char *name, const char *standard_f, const char *highlighted_f, const char *clicked_f );
+void button_assignbitmaps ( const char *name, Image *standard_i_ref, Image *highlighted_i_ref, Image *clicked_i_ref );
 
-void button_assignbitmap_blend ( char *name, char *standard_f );
-void button_assignbitmaps_blend ( char *name, char *standard_f, char *highlighted_f, char *clicked_f );
+void button_assignbitmap_blend ( const char *name, const char *standard_f );
+void button_assignbitmaps_blend ( const char *name, const char *standard_f, const char *highlighted_f, const char *clicked_f );
 
-Image *get_assignbitmap ( char *filename );
+Image *get_assignbitmap ( const char *filename );
 
 
-void tooltip_update ( char *newtooltip );
+void tooltip_update ( const char *newtooltip );
 
 Button *getcurrentbutton ();					// Returns button under mouse or NULL
 
@@ -58,8 +58,8 @@ Button *getcurrentbutton ();					// Returns button under mouse or NULL
 //
 
 void create_stextbox ( int x, int y, int width, int height, 
-                        const char *caption, char *name );
-void remove_stextbox ( char *name );
+                        const char *caption, const char *name );
+void remove_stextbox ( const char *name );
 
 void draw_stextbox	 ( Button *button, bool highlighted, bool clicked );
 void draw_scrollbox  ( Button *button, bool highlighted, bool clicked );
@@ -69,8 +69,8 @@ void stextbox_scroll ( char *name, int newValue );
 // Functions for modal message boxes
 //
 
-void create_msgbox      ( char *title, char *message, void (*closeclick) (Button *) = NULL );
-void create_yesnomsgbox ( char *title, char *message, void (*yesclick) (Button *) = NULL, void (*noclick) (Button *) = NULL );
+void create_msgbox      ( const char *title, const char *message, void (*closeclick) (Button *) = NULL );
+void create_yesnomsgbox ( const char *title, char *message, void (*yesclick) (Button *) = NULL, void (*noclick) (Button *) = NULL );
 void remove_msgbox      ();
 bool isvisible_msgbox   ();
 

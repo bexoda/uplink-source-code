@@ -61,7 +61,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 
 };
 

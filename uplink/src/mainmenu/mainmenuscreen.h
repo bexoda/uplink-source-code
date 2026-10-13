@@ -18,9 +18,9 @@ class MainMenuScreen
 protected:
 	DArray<char *> *interface_buttons;
 	virtual void RegisterButton ( int x, int y, int width, int height,
-								  char *caption, char *name );
+								  const char *caption, const char *name );
 	virtual void RegisterButton ( int x, int y, int width, int height,
-								  char *caption, char *tooltip, char *name );
+								  const char *caption, const char *tooltip, const char *name );
 public:
 
 	MainMenuScreen();

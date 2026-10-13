@@ -22,7 +22,7 @@ HighSecurityScreen::~HighSecurityScreen ()
 
 }
 
-void HighSecurityScreen::AddSystem ( char *name, int page )
+void HighSecurityScreen::AddSystem ( const char *name, int page )
 {
 
 	MenuScreenOption *mso = new MenuScreenOption ();
@@ -88,7 +88,7 @@ void HighSecurityScreen::Print ()
 	
 }
 	
-char *HighSecurityScreen::GetID ()
+const char *HighSecurityScreen::GetID ()
 {
 
 	return "SCR_HI";

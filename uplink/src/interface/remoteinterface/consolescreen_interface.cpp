@@ -117,7 +117,7 @@ void ConsoleScreenInterface::WaitingCallback ()
 
 }
 
-void ConsoleScreenInterface::AddUser ( char *name )
+void ConsoleScreenInterface::AddUser ( const char *name )
 {
 
 	users.PutDataAtEnd ( name );
@@ -138,7 +138,7 @@ void ConsoleScreenInterface::AddUser ( char *name )
 
 }
 
-void ConsoleScreenInterface::SetCurrentDir ( char *newcurrentdir )
+void ConsoleScreenInterface::SetCurrentDir ( const char *newcurrentdir )
 {
 
 	UplinkAssert (newcurrentdir);
@@ -174,7 +174,7 @@ void ConsoleScreenInterface::SetCurrentDir ( char *newcurrentdir )
 
 }
 
-void ConsoleScreenInterface::PutText ( int userid, char *text )
+void ConsoleScreenInterface::PutText ( int userid, const char *text )
 {
 
 	if ( userid == 0 ) {
@@ -192,7 +192,7 @@ void ConsoleScreenInterface::PutText ( int userid, char *text )
 
 }
 
-void ConsoleScreenInterface::PutTextAtStart ( int userid, char *text )
+void ConsoleScreenInterface::PutTextAtStart ( int userid, const char *text )
 {
 
 	if ( userid == 0 ) {
@@ -210,7 +210,7 @@ void ConsoleScreenInterface::PutTextAtStart ( int userid, char *text )
 
 }
 
-void ConsoleScreenInterface::RunCommand ( char *command )
+void ConsoleScreenInterface::RunCommand ( const char *command )
 {
 
 	UplinkAssert (command);
@@ -947,7 +947,7 @@ ConsoleCommand::ConsoleCommand ()
 
 }
 
-ConsoleCommand::ConsoleCommand ( int newTYPE, char *newdata1, int newtime )
+ConsoleCommand::ConsoleCommand ( int newTYPE, const char *newdata1, int newtime )
 {
 
 	TYPE = newTYPE;

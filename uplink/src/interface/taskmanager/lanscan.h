@@ -48,7 +48,7 @@ public:
 	LanScan();
 	~LanScan();
 
-	void SetTarget ( UplinkObject *uo, char *uos, int uoi );
+	void SetTarget ( UplinkObject *uo, const char *uos, int uoi ) override;
 	void MoveTo ( int x, int y, int time_ms );							// Origin top left		
 
 	void Initialise ();     

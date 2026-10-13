@@ -132,7 +132,7 @@ void News::Print ()
 		
 }
 	
-char *News::GetID ()
+const char *News::GetID ()
 {
 
 	return "NEWS";

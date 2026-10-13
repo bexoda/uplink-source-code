@@ -152,7 +152,7 @@ FirewallDisable::~FirewallDisable ()
 }
 
 
-void FirewallDisable::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void FirewallDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

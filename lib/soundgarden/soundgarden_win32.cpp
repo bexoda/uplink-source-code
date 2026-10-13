@@ -132,7 +132,7 @@ void SgShutdown ()
 
 }
 
-void SgPlaySound ( char *filename, char *id, bool synchronised )
+void SgPlaySound ( char *filename, const char *id, bool synchronised )
 {
 
     if ( !filename ) {

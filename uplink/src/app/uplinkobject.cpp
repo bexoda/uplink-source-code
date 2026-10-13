@@ -46,12 +46,12 @@ void UplinkObject::Update ()
 {
 }
 
-char *UplinkObject::GetID ()
+const char *UplinkObject::GetID ()
 {
 	return "UOBJ";
 }
 
-char *UplinkObject::GetID_END ()
+const char *UplinkObject::GetID_END ()
 {
 
 	size_t id_endsize = SIZE_SAVEID_END;

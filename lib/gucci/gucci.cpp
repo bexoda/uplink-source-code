@@ -61,14 +61,14 @@ void GciSetDefaultFont ( int STYLE )
 
 }
 
-void GciDrawText ( int x, int y, char *text )
+void GciDrawText ( int x, int y, const char *text )
 {
 
 	GciDrawText ( x, y, text, gci_defaultfont );
 
 }
 
-int GciTextWidth ( char *text )
+int GciTextWidth ( const char *text )
 {
 	
 	return GciTextWidth ( text, gci_defaultfont );
@@ -133,7 +133,7 @@ static void UnregisterFace( const char *familyname )
 }
 
 
-void GciDrawText ( int x, int y, char *text, int STYLE )
+void GciDrawText ( int x, int y, const char *text, int STYLE )
 {
 
     if ( gci_truetypeenabled && fonts[STYLE] ) {
@@ -160,7 +160,7 @@ void GciDrawText ( int x, int y, char *text, int STYLE )
     }
 }
 
-int GciTextWidth ( char *text, int STYLE )
+int GciTextWidth ( const char *text, int STYLE )
 {
   if (fonts[STYLE]) {
 #ifdef USE_GLTT
@@ -176,7 +176,7 @@ int GciTextWidth ( char *text, int STYLE )
     return GciFallbackTextWidth( text, STYLE );
 }
 
-bool GciLoadTrueTypeFont ( int index, char *fontname, char *filename, int size )
+bool GciLoadTrueTypeFont ( int index, const char *fontname, char *filename, int size )
 {
 
     if (gci_truetypeenabled) {

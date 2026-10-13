@@ -74,7 +74,7 @@ void PasswordBreaker::Initialise ()
 
 }
 
-void PasswordBreaker::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void PasswordBreaker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

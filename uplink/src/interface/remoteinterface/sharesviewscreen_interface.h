@@ -47,7 +47,7 @@ public:
 
     bool EscapeKeyPressed ();
 
-	void SetCompanyName ( char *newcompanyname );
+	void SetCompanyName ( const char *newcompanyname );
 
 	void Create ();
 	void Create ( ComputerScreen *newcs );

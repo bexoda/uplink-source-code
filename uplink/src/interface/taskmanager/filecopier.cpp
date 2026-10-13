@@ -84,7 +84,7 @@ void FileCopier::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void FileCopier::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void FileCopier::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	if ( downloading == FILECOPIER_NOTDOWNLOADING ) {

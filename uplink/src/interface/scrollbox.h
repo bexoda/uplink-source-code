@@ -39,7 +39,7 @@ public:
     ScrollBox();
     ~ScrollBox();
 
-    void SetName            ( char *newname );
+    void SetName            ( const char *newname );
     void SetDimensions      ( int newx, int newy, int neww, int newh );
     void SetNumItems        ( int newNumItems );
     void SetWindowSize      ( int newWindowSize );
@@ -71,13 +71,13 @@ public:
 
     // These manage the set of all scroll boxes in existence
 
-    static void CreateScrollBox ( char *name, 
+    static void CreateScrollBox ( const char *name, 
                                   int x, int y, int w, int h,
                                   int numItems, int windowSize, int currentIndex,
                                   void (*callback)(char *, int) = NULL );
 
-    static void RemoveScrollBox ( char *name );
-    static ScrollBox *GetScrollBox ( char *name );
+    static void RemoveScrollBox ( const char *name );
+    static ScrollBox *GetScrollBox ( const char *name );
     static LList <ScrollBox *> scrollBoxes;
 
     // Grabbing stuff

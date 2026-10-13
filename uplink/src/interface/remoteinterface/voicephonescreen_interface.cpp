@@ -44,7 +44,7 @@ bool VoicePhoneScreenInterface::ReturnKeyPressed ()
 
 }
 
-void VoicePhoneScreenInterface::AddToText ( char *newtext )
+void VoicePhoneScreenInterface::AddToText ( const char *newtext )
 {
 		
 	UplinkAssert (newtext);

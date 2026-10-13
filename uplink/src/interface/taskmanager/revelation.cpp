@@ -32,7 +32,7 @@
 
 
 int numRevelationTexts = 13;
-char *revelationText[] = {   
+const char *revelationText[] = {   
                              "YOU ARE NOT A SLAVE",
                              "YOU DESERVE MORE THAN THIS",
                              "THE TIME IS NEAR",
@@ -82,7 +82,7 @@ void Revelation::Tick ( int n )
 				int y = NumberGenerator::RandomNumber ( 480 );
 	            
 				int captionIndex = NumberGenerator::RandomNumber ( numRevelationTexts );
-				char *caption = revelationText[captionIndex];
+				const char *caption = revelationText[captionIndex];
 
 				EclRegisterButton ( x, y, 200, 15, caption, " ", bname );
 				EclRegisterButtonCallbacks ( bname, DrawRevelation, NULL, NULL, NULL );

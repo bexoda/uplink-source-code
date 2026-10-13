@@ -42,15 +42,15 @@ public:
 
 	Button ();
 	Button ( int newx, int newy, int newwidth, int newheight,
-			 const char *newcaption, char *newname );
+			 const char *newcaption, const char *newname );
 
 	virtual ~Button ();
 
 	void SetProperties ( int newx, int newy, int newwidth, int newheight,
-					     const char *newcaption, char *newname );
+					     const char *newcaption, const char *newname );
 
 	void SetCaption ( const char *newcaption );
-	void SetTooltip ( char *newtooltip );
+	void SetTooltip ( const char *newtooltip );
 	void SetStandardImage ( Image *newimage );
 	void SetImages ( Image *newstandard, Image *newhighlighted, Image *newclicked );	
 

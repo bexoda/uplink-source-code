@@ -43,9 +43,9 @@ public:
 	TaskManager ();
 	~TaskManager ();
 
-	void RunSoftware ( char *name, float version );
+	void RunSoftware ( const char *name, float version );
 												
-	void SetProgramTarget ( UplinkObject *newprogramtarget, char *targetstring, int targetint );
+	void SetProgramTarget ( UplinkObject *newprogramtarget, const char *targetstring, int targetint );
 	void SetTargetProgram ( int newtargetprogram );
 
 	bool IsTargetProgramLast ( int newtargetprogram );
@@ -60,7 +60,7 @@ public:
 	void Print  ();
 	void Update ();
 
-	char *GetID ();
+	const char *GetID ();
 
 };
 

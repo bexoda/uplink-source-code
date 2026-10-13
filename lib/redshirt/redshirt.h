@@ -44,8 +44,8 @@ bool RsEncryptFile		( char *filename );						// Overwrites origional with encryp
 bool RsDecryptFile		( char *filename );						// Overwrites origional with decrypted
 
 
-FILE *RsFileOpen		( char *filename, char *mode = "rb" );		// preserves origional
-void  RsFileClose		( char *filename, FILE *file );
+FILE *RsFileOpen		( char *filename, const char *mode = "rb" );		// preserves origional
+void  RsFileClose		( const char *filename, FILE *file );
 
 
 
@@ -53,16 +53,16 @@ void  RsFileClose		( char *filename, FILE *file );
 // Archive file routines ======================================
 
 
-bool RsLoadArchive			( char *filename );
+bool RsLoadArchive			( const char *filename );
 
-FILE *RsArchiveFileOpen		( char *filename, char *mode );		      // Looks for file apppath/filename					
-char *RsArchiveFileOpen		( char *filename );					      // Opens from filename first, then from zip file
+FILE *RsArchiveFileOpen		( const char *filename, const char *mode );		      // Looks for file apppath/filename					
+char *RsArchiveFileOpen		( const char *filename );					      // Opens from filename first, then from zip file
 bool RsArchiveFileLoaded	( char *filename );
 
-void RsArchiveFileClose		( char *filename, FILE *file = NULL );
+void RsArchiveFileClose		( const char *filename, FILE *file = NULL );
 
 void RsCloseArchive			( char *filename );									// Frees all memory (how nice)
 
-DArray <char *> *RsListArchive ( char *path = NULL, char *filter = NULL );
+DArray <char *> *RsListArchive ( const char *path = NULL, const char *filter = NULL );
 
 #endif

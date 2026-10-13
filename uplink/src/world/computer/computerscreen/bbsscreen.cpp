@@ -76,7 +76,7 @@ void BBSScreen::Print ()
 
 }
 	
-char *BBSScreen::GetID ()
+const char *BBSScreen::GetID ()
 {
 	
 	return "SCR_BBS";

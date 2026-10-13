@@ -21,8 +21,8 @@
 //#endif
 
 
-bool BglOpenZipFile ( char *zipfile, char *apppath, char *id = NULL );
-bool BglOpenZipFile ( FILE *zipfile, char *apppath, char *id = NULL );
+bool BglOpenZipFile ( char *zipfile, char *apppath, const char *id = NULL );
+bool BglOpenZipFile ( FILE *zipfile, char *apppath, const char *id = NULL );
 
 bool BglFileLoaded  ( char *filename );
 bool BglExtractFile ( char *filename, char *target = NULL );
@@ -30,7 +30,7 @@ bool BglExtractFile ( char *filename, char *target = NULL );
 void BglCloseZipFile ( char *id );
 
 
-DArray <char *> *BglListFiles ( char *path, char *directory = NULL, char *filter = NULL );
+DArray <char *> *BglListFiles ( char *path, const char *directory = NULL, const char *filter = NULL );
 
 void BglCloseAllFiles();
 

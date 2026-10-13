@@ -29,7 +29,7 @@ class ConsoleScreenInterface : public RemoteInterfaceScreen
 
 protected:
 	
-	LList <char *> users;							// 0 is system, 1 is player
+	LList <const char *> users;							// 0 is system, 1 is player
 	
 	LList <ConsoleCommand *> queue;					// Commands NOT YET RUN
 	bool waiting;									// True if waiting for commands to "scroll" on
@@ -56,14 +56,14 @@ public:
 	ConsoleScreenInterface ();
 	~ConsoleScreenInterface ();
 
-	void AddUser ( char *name );
+	void AddUser ( const char *name );
 
-	void SetCurrentDir ( char *currentdir );
+	void SetCurrentDir ( const char *currentdir );
 	
-	void PutText ( int userid, char *text );					// Adds text to end of queue
-	void PutTextAtStart ( int userid, char *text );
+	void PutText ( int userid, const char *text );					// Adds text to end of queue
+	void PutTextAtStart ( int userid, const char *text );
 	
-	void RunCommand				( char *command );				// Parses command into ConsoleCommand object
+	void RunCommand				( const char *command );				// Parses command into ConsoleCommand object
 	void RunCommand				( ConsoleCommand *cc );
 
 	void RunCommand_TEXT		( char *text );
@@ -117,7 +117,7 @@ public:
 public:
 
 	ConsoleCommand ();
-	ConsoleCommand ( int newTYPE, char *newdata1, int newtime );
+	ConsoleCommand ( int newTYPE, const char *newdata1, int newtime );
 	~ConsoleCommand ();
 
 };

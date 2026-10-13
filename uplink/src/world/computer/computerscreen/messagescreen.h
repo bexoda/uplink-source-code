@@ -39,7 +39,7 @@ public:
 
 	void SetNextPage ( int newnextpage );
 	void SetTextMessage ( const char *newtextmessage );
-	void SetButtonMessage ( char *newbuttonmessage );
+	void SetButtonMessage ( const char *newbuttonmessage );
 	void SetMailThisToMe ( bool newvalue );
 
 	// Common functions
@@ -48,7 +48,7 @@ public:
 	void Save  ( FILE *file );			
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();				
 
 };

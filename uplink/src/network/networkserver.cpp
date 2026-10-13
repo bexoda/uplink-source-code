@@ -188,7 +188,7 @@ void NetworkServer::Update ()
 
 }
 
-char *NetworkServer::GetID ()
+const char *NetworkServer::GetID ()
 {
 
 	return "SERVER";

@@ -34,8 +34,8 @@ public:
     SgPlaylist ();
     ~SgPlaylist ();
 
-    void SetName ( char *newname );
-    void AddSong ( char *name );
+    void SetName ( const char *newname );
+    void AddSong ( const char *name );
 
     int NumSongs ();
     char *GetRandomSong ();

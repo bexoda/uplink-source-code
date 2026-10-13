@@ -53,8 +53,8 @@ public:
 
 	Data *GetData     ( int memoryindex );
 	Data *GetDataFile ( int dataindex );
-	Data *GetData     ( char *title );
-	bool ContainsData ( char *title, float version = -1.0f );
+	Data *GetData     ( const char *title );
+	bool ContainsData ( const char *title, float version = -1.0f );
 
 	int GetDataIndex ( int memoryindex );						// Returns index of data in this memory block
 	int GetMemoryIndex ( int dataindex );						// Finds first memory index pointing to the data
@@ -70,7 +70,7 @@ public:
 	void Print ();		
 	void Update ();			
 	
-	char *GetID ();	
+	const char *GetID ();	
 	int GetOBJECTID ();
 
 };
@@ -117,7 +117,7 @@ public:
 	Data ( Data *copyme );
 	~Data ();
 
-	void SetTitle ( char *newtitle );
+	void SetTitle ( const char *newtitle );
 	void SetDetails ( int newTYPE, int newsize, 
 					  int newencrypted = 0, int newcompressed = 0, 
 					  float newversion = 1.0, int newsoftwareTYPE = SOFTWARETYPE_NONE );
@@ -129,7 +129,7 @@ public:
 	void Print ();		
 	void Update ();			
 	
-	char *GetID ();	
+	const char *GetID ();	
 	int GetOBJECTID ();
 
 };

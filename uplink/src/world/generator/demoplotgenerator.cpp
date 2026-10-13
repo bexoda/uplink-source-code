@@ -623,7 +623,7 @@ void DemoPlotGenerator::Update ()
 
 }
 
-char *DemoPlotGenerator::GetID ()
+const char *DemoPlotGenerator::GetID ()
 {
 
     return "DEMOPGEN";

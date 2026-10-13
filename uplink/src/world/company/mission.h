@@ -77,26 +77,26 @@ public:
 	~Mission ();
 
 	void SetTYPE			( int newTYPE );
-	void SetCompletion		( char *newA, char *newB, char *newC, char *newD, char *newE );
+	void SetCompletion		( const char *newA, const char *newB, char *newC, char *newD, char *newE );
 
 	void SetCreateDate		( Date *date );
-	void SetEmployer		( char *newemployer );
-	void SetContact			( char *newcontact );
+	void SetEmployer		( const char *newemployer );
+	void SetContact			( const char *newcontact );
 	void SetPayment			( int newpayment, int newmaxpayment = -1 );
 	void SetDifficulty		( int newdifficulty );
 	void SetMinRating		( int newrating );
 	void SetAcceptRating	( int newrating );
 	void SetNpcPriority		( bool newpriority );
-	void SetDescription		( char *newdescription );
+	void SetDescription		( const char *newdescription );
 	void SetDetails			( const char *newdetails );
 	void SetFullDetails		( const char *newdetails );
 	
-	void SetWhySoMuchMoney	( char *answer );
-	void SetHowSecure		( char *answer );
-	void SetWhoIsTheTarget  ( char *answer );
+	void SetWhySoMuchMoney	( const char *answer );
+	void SetHowSecure		( const char *answer );
+	void SetWhoIsTheTarget  ( const char *answer );
 
-	void GiveLink			( char *ip );
-	void GiveCode			( char *ip, char *code );
+	void GiveLink			( const char *ip );
+	void GiveCode			( const char *ip, char *code );
 
 	void SetDueDate			( Date *newdate );
 	Date *GetDueDate		();							// Can return NULL
@@ -113,7 +113,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

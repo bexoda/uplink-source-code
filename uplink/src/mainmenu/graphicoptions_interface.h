@@ -49,7 +49,7 @@ public:
 	GraphicOptionsInterface ();
 	~GraphicOptionsInterface ();
 
-	void SetOptionTYPE ( char *newtype );						// eg GAME, SOUND etc
+	void SetOptionTYPE ( const char *newtype );						// eg GAME, SOUND etc
 	bool ChangeOptionValue ( char *option, int newvalue );      // Returns true if shutdown required
 
 	void Create ();

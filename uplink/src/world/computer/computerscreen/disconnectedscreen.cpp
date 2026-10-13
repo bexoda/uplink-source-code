@@ -31,7 +31,7 @@ void DisconnectedScreen::SetNextPage ( int newnextpage )
 
 }
 
-void DisconnectedScreen::SetTextMessage ( char *newtextmessage )
+void DisconnectedScreen::SetTextMessage ( const char *newtextmessage )
 {
 
 	if ( textmessage ) delete [] textmessage;
@@ -98,7 +98,7 @@ void DisconnectedScreen::Print ()
 
 }
 	
-char *DisconnectedScreen::GetID ()
+const char *DisconnectedScreen::GetID ()
 {
 
 	return "SCR_DISC";

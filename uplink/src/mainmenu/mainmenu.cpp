@@ -162,7 +162,7 @@ void MainMenu::Update ()
 
 }
 
-char *MainMenu::GetID ()
+const char *MainMenu::GetID ()
 {
 
 	return "MMI";

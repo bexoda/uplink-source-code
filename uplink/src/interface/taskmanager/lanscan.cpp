@@ -146,7 +146,7 @@ void LanScan::CloseClick ( Button *button )
 
 }
 
-void LanScan::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LanScan::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

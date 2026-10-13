@@ -224,7 +224,7 @@ void SecurityBypass::EndCurrentBypass ()
 
 }
 
-void SecurityBypass::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void SecurityBypass::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*
@@ -379,7 +379,7 @@ void SecurityBypass::CreateInterface ()
 		/********** Patched by François Gagné **********/
 		// To be complete, each type would need a picture just like the proxy bypass (software/proxy.tif)
 
-		char *bypassCaption, *pauseCaption, *closeCaption;
+		const char *bypassCaption, *pauseCaption, *closeCaption;
 		switch ( TYPE ) {
 		  case SECURITY_TYPE_PROXY:
 			bypassCaption = "Click to use this proxy bypass";

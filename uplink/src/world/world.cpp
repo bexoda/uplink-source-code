@@ -137,7 +137,7 @@ World::~World()
 
 }
 
-VLocation *World::CreateVLocation ( char *ip, int phys_x, int phys_y )
+VLocation *World::CreateVLocation ( const char *ip, int phys_x, int phys_y )
 {
 
 	if ( locations.LookupTree ( ip ) != NULL ) {
@@ -171,7 +171,7 @@ bool World::VerifyVLocation ( char *ip, int phys_x, int phys_y )
 
 }
 
-Company *World::CreateCompany ( char *name )
+Company *World::CreateCompany ( const char *name )
 {
 
 	Company *company = new Company ();
@@ -183,7 +183,7 @@ Company *World::CreateCompany ( char *name )
 
 }
 
-Computer *World::CreateComputer ( char *name, char *companyname, char *ip )
+Computer *World::CreateComputer ( const char *name, const char *companyname, const char *ip )
 {
 
 	Computer *computer = new Computer ();
@@ -200,7 +200,7 @@ Computer *World::CreateComputer ( char *name, char *companyname, char *ip )
 
 }
 
-Person *World::CreatePerson ( char *name, char *localhost )
+Person *World::CreatePerson ( const char *name, const char *localhost )
 {
 
 	Person *person = new Person ();
@@ -280,7 +280,7 @@ void World::CreateGatewayDef ( GatewayDef *newdef )
 
 }
 
-VLocation *World::GetVLocation  ( char *ip )
+VLocation *World::GetVLocation  ( const char *ip )
 {
 
 	BTree <VLocation *> *vl = locations.LookupTree ( ip );
@@ -290,7 +290,7 @@ VLocation *World::GetVLocation  ( char *ip )
 
 }
 
-Company *World::GetCompany ( char *name )
+Company *World::GetCompany ( const char *name )
 {
 
 	BTree <Company *> *company = companies.LookupTree ( name );
@@ -300,7 +300,7 @@ Company *World::GetCompany ( char *name )
 
 }
 
-Computer *World::GetComputer ( char *name )
+Computer *World::GetComputer ( const char *name )
 {
 
 	BTree <Computer *> *computer = computers.LookupTree ( name );
@@ -310,7 +310,7 @@ Computer *World::GetComputer ( char *name )
 
 }
 
-Person *World::GetPerson ( char *name )
+Person *World::GetPerson ( const char *name )
 {
 
 	if ( people.LookupTree("PLAYER") && strcmp ( name, GetPlayer ()->handle ) == 0 ) {
@@ -343,7 +343,7 @@ char *World::GetPassword ( int index )
 
 }
 
-GatewayDef *World::GetGatewayDef ( char *name )
+GatewayDef *World::GetGatewayDef ( const char *name )
 {
 
 	if ( name ) {
@@ -450,7 +450,7 @@ void World::Print ()
 
 }
 
-char *World::GetID ()
+const char *World::GetID ()
 {
 
 	return "WORLD";

@@ -46,7 +46,7 @@ Message::~Message()
 
 }
 
-void Message::SetTo	( char *newto )
+void Message::SetTo	( const char *newto )
 {
 
 	UplinkAssert ( strlen (newto) < SIZE_PERSON_NAME );
@@ -54,7 +54,7 @@ void Message::SetTo	( char *newto )
 
 }
 
-void Message::SetFrom ( char *newfrom )
+void Message::SetFrom ( const char *newfrom )
 {
 
 	UplinkAssert ( strlen (newfrom) < SIZE_PERSON_NAME );
@@ -62,7 +62,7 @@ void Message::SetFrom ( char *newfrom )
 
 }
 
-void Message::SetSubject ( char *newsubject )
+void Message::SetSubject ( const char *newsubject )
 {
 
 	if ( subject ) delete [] subject;
@@ -87,7 +87,7 @@ void Message::SetDate ( Date *newdate )
 
 }
 
-void Message::GiveLink ( char *ip )
+void Message::GiveLink ( const char *ip )
 {
 
 	size_t theipsize = SIZE_VLOCATION_IP;
@@ -98,7 +98,7 @@ void Message::GiveLink ( char *ip )
 
 }
 
-void Message::GiveCode ( char *ip, char *code )
+void Message::GiveCode ( const char *ip, char *code )
 {
 
 	char *thecode = new char [strlen(code)+1];
@@ -232,7 +232,7 @@ void Message::Print ()
 
 }
 	
-char *Message::GetID ()
+const char *Message::GetID ()
 {
 
 	return "MESSAGE";

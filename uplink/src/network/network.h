@@ -70,7 +70,7 @@ public:
 	void Save   ( FILE *file );
 	void Print  ();
 	void Update ();
-	char *GetID ();
+	const char *GetID ();
 
 };
 

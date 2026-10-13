@@ -33,7 +33,7 @@ VLocation::~VLocation()
 {
 }
 
-void VLocation::SetIP ( char *newip )
+void VLocation::SetIP ( const char *newip )
 {
 
 	UplinkAssert ( strlen (newip) < SIZE_VLOCATION_IP );
@@ -54,7 +54,7 @@ bool VLocation::VerifyIP ( char *newip )
 
 }
 
-void VLocation::SetComputer ( char *newcomputer )
+void VLocation::SetComputer ( const char *newcomputer )
 {
 
 	UplinkAssert ( strlen (newcomputer) < SIZE_COMPUTER_NAME );
@@ -215,7 +215,7 @@ void VLocation::Print ()
 
 }
 
-char *VLocation::GetID ()
+const char *VLocation::GetID ()
 {
 
 	return "VIRTLOC";
@@ -286,7 +286,7 @@ void VLocationSpecial::Print ()
     VLocation::Print ();
 }
 	
-char *VLocationSpecial::GetID ()
+const char *VLocationSpecial::GetID ()
 {
     return "VLOCSPEC";
 }

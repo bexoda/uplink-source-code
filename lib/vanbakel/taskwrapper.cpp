@@ -37,7 +37,7 @@ void TaskWrapper::SetPID ( int newpid )
 
 }
 
-void TaskWrapper::SetName ( char *newname )
+void TaskWrapper::SetName ( const char *newname )
 {
 
 	if ( name ) delete name;

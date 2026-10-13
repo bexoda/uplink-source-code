@@ -73,7 +73,7 @@ void LinksScreen::Print ()
 
 }
 	
-char *LinksScreen::GetID ()
+const char *LinksScreen::GetID ()
 {
 	
 	return "SCR_LINK";

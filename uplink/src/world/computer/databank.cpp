@@ -187,7 +187,7 @@ Data *DataBank::GetData ( int memoryindex )
 
 }
 
-Data *DataBank::GetData ( char *title )
+Data *DataBank::GetData ( const char *title )
 {
 
 	for ( int i = 0; i < data.Size (); ++i )
@@ -199,7 +199,7 @@ Data *DataBank::GetData ( char *title )
 
 }
 
-bool DataBank::ContainsData ( char *title, float version )
+bool DataBank::ContainsData ( const char *title, float version )
 {
 
 	for ( int i = 0; i < data.Size (); ++i )
@@ -386,7 +386,7 @@ void DataBank::Print ()
 
 }
 	
-char *DataBank::GetID ()
+const char *DataBank::GetID ()
 {
 
 	return "DATABANK";
@@ -443,7 +443,7 @@ Data::~Data ()
 {
 }
 
-void Data::SetTitle ( char *newtitle )
+void Data::SetTitle ( const char *newtitle )
 {
 	
 	UplinkAssert ( strlen (newtitle) < SIZE_DATA_TITLE );
@@ -515,7 +515,7 @@ void Data::Update ()
 {
 }
 
-char *Data::GetID ()
+const char *Data::GetID ()
 {
 	
 	return "DATA";

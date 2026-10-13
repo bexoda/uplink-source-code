@@ -23,10 +23,10 @@ bool CopyFilePlain          ( const char *oldfilename, const char *newfilename )
 bool CopyFileUplink         ( const char *oldfilename, const char *newfilename );
 bool RemoveFile             ( const char *filename );
 
-DArray <char *> *ListDirectory  ( char *directory, char *filter );
+DArray <char *> *ListDirectory  ( const char *directory, const char *filter );
 DArray <char *> *ListSubdirs ( char *directory );
 
-void SetColour              ( char *colourName );                    // calls glColour3f
+void SetColour              ( const char *colourName );                    // calls glColour3f
 
 void PrintStackTrace();
 

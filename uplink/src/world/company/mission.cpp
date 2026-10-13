@@ -72,7 +72,7 @@ void Mission::SetTYPE ( int newTYPE )
 
 }
 
-void Mission::SetCompletion ( char *newA, char *newB, char *newC, char *newD, char *newE )
+void Mission::SetCompletion ( const char *newA, const char *newB, char *newC, char *newD, char *newE )
 {
 
 	// No need to set them if NULL is passed in - they will not be examined after all
@@ -119,7 +119,7 @@ void Mission::SetNpcPriority ( bool newpriority )
 
 }
 
-void Mission::SetDescription ( char *newdescription )
+void Mission::SetDescription ( const char *newdescription )
 {
 
 	UplinkAssert ( strlen ( newdescription ) < SIZE_MISSION_DESCRIPTION );
@@ -147,7 +147,7 @@ void Mission::SetFullDetails ( const char *newdetails )
 
 }
 
-void Mission::SetWhySoMuchMoney	( char *answer )
+void Mission::SetWhySoMuchMoney	( const char *answer )
 {
 
 	if ( whysomuchmoney ) delete [] whysomuchmoney;
@@ -162,7 +162,7 @@ void Mission::SetWhySoMuchMoney	( char *answer )
 
 }
 
-void Mission::SetHowSecure ( char *answer )
+void Mission::SetHowSecure ( const char *answer )
 {
 
 	if ( howsecure ) delete [] howsecure;
@@ -177,7 +177,7 @@ void Mission::SetHowSecure ( char *answer )
 
 }
 
-void Mission::SetWhoIsTheTarget ( char *answer )
+void Mission::SetWhoIsTheTarget ( const char *answer )
 {
 
 	if ( whoisthetarget ) delete [] whoisthetarget;
@@ -192,7 +192,7 @@ void Mission::SetWhoIsTheTarget ( char *answer )
 
 }
 
-void Mission::SetEmployer ( char *newemployer )
+void Mission::SetEmployer ( const char *newemployer )
 {
 
 	UplinkAssert ( strlen (newemployer) < 64 );
@@ -202,7 +202,7 @@ void Mission::SetEmployer ( char *newemployer )
 
 }
 
-void Mission::SetContact ( char *newcontact )
+void Mission::SetContact ( const char *newcontact )
 {
 
 	UplinkAssert ( strlen (newcontact) < SIZE_PERSON_NAME );
@@ -246,7 +246,7 @@ void Mission::SetAcceptRating ( int newrating )
 
 }
 
-void Mission::GiveLink ( char *ip )
+void Mission::GiveLink ( const char *ip )
 {
 
 	UplinkAssert ( strlen (ip) < SIZE_VLOCATION_IP );
@@ -257,7 +257,7 @@ void Mission::GiveLink ( char *ip )
 
 }
 
-void Mission::GiveCode ( char *ip, char *code )
+void Mission::GiveCode ( const char *ip, char *code )
 {
 
 	UplinkAssert ( strlen (ip) < SIZE_VLOCATION_IP );
@@ -458,7 +458,7 @@ void Mission::Print ()
 
 }
 	
-char *Mission::GetID ()
+const char *Mission::GetID ()
 {
 
 	return "MISSION";

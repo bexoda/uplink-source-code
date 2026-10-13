@@ -402,12 +402,12 @@ const int PROB_MISSION_TRACEUSER []         =          {  0,  0,  0,  0,  0,  0,
 
 struct ComputerUpgrade
 {
-	char *name;	
+	const char *name;	
 	int TYPE;								// Unused in HW
 	int cost;
 	int size;
 	int data;								// SW version, HW speed or HW capacity or HW bandwidth etc
-	char *description;
+	const char *description;
 };
 
 
@@ -456,7 +456,7 @@ const ComputerUpgrade *GetHardwareUpgrade ( char *name );
 
 struct UplinkRating 
 {
-	char *name;
+	const char *name;
 	int score;
 };
 
@@ -538,8 +538,8 @@ extern const int  NEUROMANCERCHANGE [];							// One int for each mission type -
 
 struct PhysicalGatewayLocation
 {
-	char *city;
-	char *country;
+	const char *city;
+	const char *country;
 	int x;
 	int y;
 };

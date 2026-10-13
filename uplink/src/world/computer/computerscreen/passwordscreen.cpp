@@ -38,7 +38,7 @@ void PasswordScreen::SetNextPage ( int newnextpage )
 
 }
 
-void PasswordScreen::SetPassword ( char *newpassword )
+void PasswordScreen::SetPassword ( const char *newpassword )
 {
 
 	UplinkAssert ( strlen (newpassword) < SIZE_PASSWORDSCREEN_PASSWORD );
@@ -105,7 +105,7 @@ void PasswordScreen::Print ()
 
 }
 	
-char *PasswordScreen::GetID ()
+const char *PasswordScreen::GetID ()
 {
 
 	return "SCR_PASS";

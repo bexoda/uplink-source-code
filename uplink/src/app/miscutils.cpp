@@ -273,7 +273,7 @@ bool RemoveFile ( const char *filename )
 
 }
 
-DArray <char *> *ListDirectory  ( char *directory, char *filter )
+DArray <char *> *ListDirectory  ( const char *directory, const char *filter )
 {
 
     //
@@ -424,7 +424,7 @@ DArray <char *> *ListSubdirs ( char *directory )
 
 }
 
-void SetColour ( char *colourName )
+void SetColour ( const char *colourName )
 {
 
     if ( !app || 

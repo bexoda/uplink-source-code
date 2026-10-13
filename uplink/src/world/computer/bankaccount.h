@@ -41,11 +41,11 @@ public:
 	~BankAccount ();
 
 	void SetOwner		 ( char *newname );
-	void SetSecurity	 ( char *newpassword, int newsecurity );
+	void SetSecurity	 ( const char *newpassword, int newsecurity );
 	void SetAccNumber	 ( int newaccnumber );	
 	void SetBalance		 ( int newbalance, int newloan );
 
-	void ChangeBalance	 ( int amount, char *description = NULL );	
+	void ChangeBalance	 ( int amount, const char *description = NULL );	
 	
 	// Has this account sent money to target account
 	// If partial is true,  it return true if there is a log of the transaction on the target _or_ source account
@@ -66,7 +66,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

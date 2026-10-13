@@ -154,7 +154,7 @@ void LogScreen::Print ()
 
 }
 
-char *LogScreen::GetID ()
+const char *LogScreen::GetID ()
 {
 
 	return "SCR_LOGS";

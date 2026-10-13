@@ -53,14 +53,14 @@ public:
 	// Data access functions
 
 	void AddRecord ( Record *newrecord );
-	void AddRecordSorted ( Record *newrecord, char *sortfield = RECORDBANK_NAME );
+	void AddRecordSorted ( Record *newrecord, const char *sortfield = RECORDBANK_NAME );
 
 	Record *GetRecord			  ( int index );							// Returns NULL if not found
 	Record *GetRecord			  ( char *query );							// Assumes there is only 1 match
-	LList <Record *> *GetRecords  ( char *query );
-	Record *GetRandomRecord		  ( char *query );
+	LList <Record *> *GetRecords  ( const char *query );
+	Record *GetRandomRecord		  ( const char *query );
     
-    Record *GetRecordFromName           ( char *name );
+    Record *GetRecordFromName           ( const char *name );
     Record *GetRecordFromNamePassword   ( char *name, char *password );
     Record *GetRecordFromAccountNumber  ( char *accNo );
 
@@ -74,11 +74,11 @@ public:
 	void Print ();		
 	void Update ();			
 	
-	char *GetID ();			
+	const char *GetID ();			
 	int GetOBJECTID ();
 
 private:
-	char *MakeSafeField( char * fieldval );
+	char *MakeSafeField( const char * fieldval );
 
 };
 
@@ -104,13 +104,13 @@ public:
 	Record();
 	virtual ~Record();
 
-	void AddField    ( char *name, const char *value );
-	void AddField    ( char *name, int value );
+	void AddField    ( const char *name, const char *value );
+	void AddField    ( const char *name, int value );
 	
-	void ChangeField ( char *name, const char *newvalue );
-	void ChangeField ( char *name, int newvalue );
+	void ChangeField ( const char *name, const char *newvalue );
+	void ChangeField ( const char *name, int newvalue );
 
-	char *GetField   ( char *name );	 
+	char *GetField   ( const char *name );	 
 	void DeleteField ( char *name );
 
 	// Common functions
@@ -120,7 +120,7 @@ public:
 	void Print ();		
 	void Update ();			
 	
-	char *GetID ();			
+	const char *GetID ();			
 	int GetOBJECTID ();
 
 };

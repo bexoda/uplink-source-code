@@ -121,7 +121,7 @@ void IRCInterface::MainTextDraw ( Button *button, bool highlighted, bool clicked
 
 }
 
-void IRCInterface::AddEmoticons ( int row, char *smiley, Image *imgSmiley )
+void IRCInterface::AddEmoticons ( int row, const char *smiley, Image *imgSmiley )
 {
 
     ScrollBox *scrollBox = ScrollBox::GetScrollBox( "ircscroller" );
@@ -356,7 +356,7 @@ void IRCInterface::UserScrollChange ( char *name, int newValue )
 
 }
 
-void IRCInterface::AddText ( char *user, const char *text, float r, float g, float b )
+void IRCInterface::AddText ( const char *user, const char *text, float r, float g, float b )
 {
 
 	UplinkAssert (text);
@@ -385,7 +385,7 @@ void IRCInterface::AddText ( char *user, const char *text, float r, float g, flo
 			UplinkAssert (theLine);
 			if ( strlen(theLine) > 0 ) {
 				UplinkIRCMessage *msg = new UplinkIRCMessage ();
-				char *thisuser = ( i == 0 ? user : NULL );
+				const char *thisuser = ( i == 0 ? user : NULL );
 				msg->Set ( thisuser, theLine, r, g, b );
 				buffer.PutDataAtEnd( msg );
 			}
@@ -444,7 +444,7 @@ void IRCInterface::ResetUsers ()
 
 }
 
-void IRCInterface::AddUser ( char *name )
+void IRCInterface::AddUser ( const char *name )
 {
 
     // Does the user exist already?
@@ -522,7 +522,7 @@ void IRCInterface::RemoveUser ( char *name )
 
 }
 
-UplinkIRCUser *IRCInterface::GetUser ( char *name )
+UplinkIRCUser *IRCInterface::GetUser ( const char *name )
 {
 
     for ( int i = 0; i < users.Size(); ++i ) {
@@ -548,7 +548,7 @@ UplinkIRCMessage::~UplinkIRCMessage ()
     if ( text ) delete [] text;
 }
 
-void UplinkIRCMessage::Set ( char *newuser, char *newtext, float r, float g, float b )
+void UplinkIRCMessage::Set ( const char *newuser, char *newtext, float r, float g, float b )
 {
 	
     if ( user ) delete [] user;
@@ -585,7 +585,7 @@ UplinkIRCUser::~UplinkIRCUser ()
     if ( name ) delete [] name;
 }
 
-void UplinkIRCUser::Set ( char *newname )
+void UplinkIRCUser::Set ( const char *newname )
 {
 
     if ( name ) delete [] name;
@@ -938,7 +938,7 @@ bool UplinkIRCMonitor::Received_PRIVMSG (const CIrcMessage* pmsg)
         }
         else {
 
-		    IRCInterface::AddText( (char *) pmsg->prefix.sNick.c_str(), GETIRCPARAM(1), COLOUR_TEXT );
+		    IRCInterface::AddText( (const char *) pmsg->prefix.sNick.c_str(), GETIRCPARAM(1), COLOUR_TEXT );
 
         }
 
@@ -958,7 +958,7 @@ bool UplinkIRCMonitor::Received_JOIN (const CIrcMessage* pmsg)
 		parsedMessage1 [ sizeof ( parsedMessage1 ) - 1 ] = '\0';
 
 		IRCInterface::AddText( NULL, parsedMessage1, COLOUR_JOINPART );
-		IRCInterface::AddUser( (char *) pmsg->prefix.sNick.c_str() );
+		IRCInterface::AddUser( (const char *) pmsg->prefix.sNick.c_str() );
 	}
 
     return true;
@@ -1097,7 +1097,7 @@ bool UplinkIRCMonitor::Received_NICK (const CIrcMessage* pmsg)
     
     IRCInterface::AddText( NULL, parsedMessage, COLOUR_JOINPART );
     
-    UplinkIRCUser *user = IRCInterface::GetUser( (char *) pmsg->prefix.sNick.c_str() );
+    UplinkIRCUser *user = IRCInterface::GetUser( (const char *) pmsg->prefix.sNick.c_str() );
     if ( user ) user->Set( GETIRCPARAM(0) );
 
     // Update the screen

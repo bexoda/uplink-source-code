@@ -77,7 +77,7 @@ void LogUnDeleter::MoveTo ( int x, int y, int time_ms )
 
 }
 
-void LogUnDeleter::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void LogUnDeleter::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

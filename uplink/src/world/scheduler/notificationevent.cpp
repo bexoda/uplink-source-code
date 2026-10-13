@@ -764,7 +764,7 @@ void NotificationEvent::Print ()
 
 }
 
-char *NotificationEvent::GetID ()
+const char *NotificationEvent::GetID ()
 {
 
 	return "EVT_NOT";

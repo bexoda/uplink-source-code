@@ -102,9 +102,9 @@ public:
 	virtual ~Computer();
 
 	void SetTYPE        ( int newTYPE );
-	void SetName		( char *newname );
-	void SetCompanyName ( char *newname );
-	void SetIP			( char *newip );
+	void SetName		( const char *newname );
+	void SetCompanyName ( const char *newname );
+	void SetIP			( const char *newip );
 	void SetTraceSpeed  ( int newtracespeed );
 	void SetTraceAction ( int newtraceaction );
 
@@ -128,8 +128,8 @@ public:
 	int  NumRecentHacks ();
 
     static void GenerateAccessCode( char *code, char *result, size_t resultsize );
-    static void GenerateAccessCode( char *name, char *code, char *result, size_t resultsize );
-    static void GenerateAccessCode( int accNo, char *code, char *result, size_t resultsize );
+    static void GenerateAccessCode( char *name, const char *code, char *result, size_t resultsize );
+    static void GenerateAccessCode( int accNo, const char *code, char *result, size_t resultsize );
 
 	// Common functions
 
@@ -138,7 +138,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

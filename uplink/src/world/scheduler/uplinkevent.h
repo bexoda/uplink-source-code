@@ -48,7 +48,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();							// You must override this
+	const char *GetID ();							// You must override this
 	int   GetOBJECTID ();					// You must override this
 
 };

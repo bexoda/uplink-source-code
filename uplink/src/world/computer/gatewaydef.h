@@ -96,8 +96,8 @@ public:
 
 	// Basic data set functions
 
-	void SetName ( char *newname );
-	void SetDescription ( char *newdescription );
+	void SetName ( const char *newname );
+	void SetDescription ( const char *newdescription );
     
     void SetFilename ( char *newfilename );
     void SetThumbnail ( char *newthumbnail );
@@ -125,7 +125,7 @@ public:
 	bool Load  ( FILE *file );
 	void Save  ( FILE *file );
 	
-	char *GetID ();
+	const char *GetID ();
 
 };
 

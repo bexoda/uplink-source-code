@@ -32,7 +32,7 @@ protected:
 
 protected:
 
-	void MergeCaption ( char *buttonName, char *targetCaption );
+	void MergeCaption ( const char *buttonName, const char *targetCaption );
 
 public:
 

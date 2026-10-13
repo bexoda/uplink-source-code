@@ -296,7 +296,7 @@ bool filterFile( char *infile, char *outfile,
 // process a file in place, temporary file = filename++ext
 // see filterFile for description of readHeader, writeHeader and filterFunc
 
-bool filterFileInPlace( char *filename, char *ext, 				 
+bool filterFileInPlace( char *filename, const char *ext, 				 
 						headerFunc *readHeader, 
 						headerFunc *writeHeader, 
 						headerFunc *writeChecksum, 
@@ -353,7 +353,7 @@ const char *RsBasename(const char *filename)
 	return p;
 }
 
-FILE *RsFileOpen ( char *filename, char *mode )
+FILE *RsFileOpen ( char *filename, const char *mode )
 {
 
 	if ( !RsFileExists ( filename ) ) return NULL;
@@ -383,7 +383,7 @@ FILE *RsFileOpen ( char *filename, char *mode )
     }
 }
 
-void RsFileClose ( char *filename, FILE *file )
+void RsFileClose ( const char *filename, FILE *file )
 {
 
 	fclose ( file );
@@ -398,7 +398,7 @@ void RsFileClose ( char *filename, FILE *file )
 }
 
 
-bool RsLoadArchive ( char *filename )
+bool RsLoadArchive ( const char *filename )
 {
 
 	char fullfilename [SIZE_RSFILENAME];
@@ -440,7 +440,7 @@ bool RsLoadArchive ( char *filename )
 	return result;
 }
 
-FILE *RsArchiveFileOpen	( char *filename, char *mode )
+FILE *RsArchiveFileOpen	( const char *filename, const char *mode )
 {
 
 	FILE *file = NULL;
@@ -455,7 +455,7 @@ FILE *RsArchiveFileOpen	( char *filename, char *mode )
 
 }
 
-char *RsArchiveFileOpen ( char *filename )
+char *RsArchiveFileOpen ( const char *filename )
 {
 
     //
@@ -536,12 +536,12 @@ bool RsArchiveFileLoaded ( char *filename )
 
 }
 
-void RsArchiveFileClose	( char *filename, FILE *file )
+void RsArchiveFileClose	( const char *filename, FILE *file )
 {
 
 	if ( file ) fclose ( file );
 
-	char *extension = strrchr ( filename, '.' );
+	const char *extension = strrchr ( filename, '.' );
 	assert (extension);
 		
 	char targetfilename [SIZE_RSFILENAME];
@@ -684,7 +684,7 @@ void RsCleanUp ()
 }
 
 
-DArray <char *> *RsListArchive ( char *path, char *filter )
+DArray <char *> *RsListArchive ( const char *path, const char *filter )
 {
 
     DArray <char *> *result = BglListFiles ( rsapppath, path, filter );

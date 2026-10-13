@@ -369,7 +369,7 @@ void LogBank::Update ()
 {
 }
 
-char *LogBank::GetID ()
+const char *LogBank::GetID ()
 {
 
 	return "LOGBANK";
@@ -409,7 +409,7 @@ AccessLog::~AccessLog()
 
 }
 
-void AccessLog::SetProperties ( Date *newdate, char *newfromip, char *newfromname,
+void AccessLog::SetProperties ( Date *newdate, const char *newfromip, const char *newfromname,
 							    int newSUSPICIOUS, int newTYPE )
 {
 
@@ -444,7 +444,7 @@ void AccessLog::SetTYPE ( int newTYPE )
 
 }
 
-void AccessLog::SetFromIP ( char *newfromip )
+void AccessLog::SetFromIP ( const char *newfromip )
 {
 
 	UplinkAssert (strlen(newfromip) < SIZE_VLOCATION_IP );
@@ -459,7 +459,7 @@ void AccessLog::SetSuspicious ( int newSUSPICIOUS )
 
 }
 
-void AccessLog::SetData1 ( char *newdata )
+void AccessLog::SetData1 ( const char *newdata )
 {
 
 	if ( data1 ) delete [] data1;
@@ -661,7 +661,7 @@ void AccessLog::Print ()
 
 }
 
-char *AccessLog::GetID ()
+const char *AccessLog::GetID ()
 {
 
 	return "ACC_LOG";

@@ -30,7 +30,7 @@ ComputerScreen::~ComputerScreen()
 
 }
 
-void ComputerScreen::SetMainTitle ( char *newmaintitle )
+void ComputerScreen::SetMainTitle ( const char *newmaintitle )
 {
 
 	UplinkAssert ( strlen(newmaintitle) < SIZE_COMPUTERSCREEN_MAINTITLE );
@@ -38,7 +38,7 @@ void ComputerScreen::SetMainTitle ( char *newmaintitle )
 
 }
 
-void ComputerScreen::SetSubTitle ( char *newsubtitle )
+void ComputerScreen::SetSubTitle ( const char *newsubtitle )
 {
 
 	UplinkAssert ( strlen(newsubtitle) < SIZE_COMPUTERSCREEN_SUBTITLE );
@@ -103,7 +103,7 @@ void ComputerScreen::Update ()
 {
 }
 
-char *ComputerScreen::GetID ()
+const char *ComputerScreen::GetID ()
 {
 
 	return "COMPSCR";

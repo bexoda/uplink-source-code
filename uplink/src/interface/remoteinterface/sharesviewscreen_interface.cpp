@@ -198,7 +198,7 @@ void SharesViewScreenInterface::UpdateStatus ()
 
 }
 
-void SharesViewScreenInterface::SetCompanyName ( char *newcompanyname )
+void SharesViewScreenInterface::SetCompanyName ( const char *newcompanyname )
 {
 
 	UplinkAssert ( strlen(newcompanyname) < SIZE_COMPANY_NAME );

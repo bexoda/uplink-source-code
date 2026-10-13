@@ -27,7 +27,7 @@ Button::Button ()
 }
 
 Button::Button ( int newx, int newy, int newwidth, int newheight,
-				 const char *newcaption, char *newname )
+				 const char *newcaption, const char *newname )
 {
 
 	caption = name = tooltip = NULL;
@@ -63,7 +63,7 @@ Button::~Button ()
 }
 
 void Button::SetProperties ( int newx, int newy, int newwidth, int newheight,
-			   				 const char *newcaption, char *newname )
+			   				 const char *newcaption, const char *newname )
 {
 
 	x = newx;
@@ -90,7 +90,7 @@ void Button::SetCaption ( const char *newcaption )
 
 }
 
-void Button::SetTooltip ( char *newtooltip )
+void Button::SetTooltip ( const char *newtooltip )
 {
 
 	if ( tooltip ) delete [] tooltip;

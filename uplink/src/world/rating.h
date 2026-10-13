@@ -48,14 +48,14 @@ public:
 	void ChangeUplinkScore		( int amount );
 	void ChangeNeuromancerScore ( int amount );
 
-	char *GetUplinkRating	   ();
-	char *GetNeuromancerRating ();
+	const char *GetUplinkRating	   ();
+	const char *GetNeuromancerRating ();
 
 	void SetCreditRating ( int rating );
     void ChangeCreditRating ( int amount );
 
-	static char *GetUplinkRatingString ( int urating );
-	static char *GetNeuromancerRatingString ( int nrating );
+	static const char *GetUplinkRatingString ( int urating );
+	static const char *GetNeuromancerRatingString ( int nrating );
 
 	// Common functions
 
@@ -64,7 +64,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 
 };
 

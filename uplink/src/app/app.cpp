@@ -102,7 +102,7 @@ void App :: Initialise ()
 
 }
 
-void App :: Set ( char *newpath, char *newversion, char *newtype, char *newdate, char *newtitle )
+void App :: Set ( const char *newpath, const char *newversion, const char *newtype, const char *newdate, const char *newtitle )
 {
                 
 	UplinkAssert ( strlen ( newpath ) < SIZE_APP_PATH );
@@ -650,7 +650,7 @@ void App::Update ()
 
 }
 
-char *App::GetID ()
+const char *App::GetID ()
 {
 
 	return "APP";

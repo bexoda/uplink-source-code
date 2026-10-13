@@ -873,7 +873,7 @@ UplinkObject *CreateUplinkObject ( int OBJECTID )
 
 }
 
-bool LoadDynamicStringInt ( char* _file, int _line, char **string, FILE *file )
+bool LoadDynamicStringInt ( const char* _file, int _line, char **string, FILE *file )
 {
 
 	*string = NULL;
@@ -907,7 +907,7 @@ bool LoadDynamicStringInt ( char* _file, int _line, char **string, FILE *file )
 
 }
 
-bool LoadDynamicStringInt ( char* _file, int _line, char *string, int maxsize, FILE *file )
+bool LoadDynamicStringInt ( const char* _file, int _line, char *string, int maxsize, FILE *file )
 {
 
 	if ( !string ) {
@@ -1013,7 +1013,7 @@ void SaveDynamicString ( char *string, int maxsize, FILE *file )
 
 }
 
-bool FileReadDataInt ( char* _file, int _line, void * _DstBuf, size_t _ElementSize, size_t _Count, FILE * _File )
+bool FileReadDataInt ( const char* _file, int _line, void * _DstBuf, size_t _ElementSize, size_t _Count, FILE * _File )
 {
 	size_t sizeRead = fread ( _DstBuf, _ElementSize, _Count, _File );
 	if ( sizeRead != _Count ) {

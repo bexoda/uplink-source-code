@@ -67,7 +67,7 @@ Agent::~Agent()
 
 }
 
-void Agent::SetHandle ( char *newhandle )
+void Agent::SetHandle ( const char *newhandle )
 {
 
 	UplinkAssert ( strlen(newhandle) < SIZE_AGENT_HANDLE );
@@ -188,7 +188,7 @@ bool Agent::ParseAccessCode ( const char *thecode, char *username, size_t userna
 }
 
 
-void Agent::GiveLink ( char *newip )
+void Agent::GiveLink ( const char *newip )
 {
 
 	if ( !HasLink ( newip ) ) {
@@ -294,7 +294,7 @@ int Agent::HasAccount  ( char *ip )
 
 }
 
-bool Agent::HasLink ( char *newip )
+bool Agent::HasLink ( const char *newip )
 {
 
 	for ( int i = 0; i < links.Size (); ++i )
@@ -348,7 +348,7 @@ void Agent::GiveMessage ( Message *message )
 
 }
 
-void Agent::GiveCode ( char *newip, char *newcode )
+void Agent::GiveCode ( const char *newip, char *newcode )
 {
 
     // Do we already have this code?
@@ -435,7 +435,7 @@ void Agent::GiveCode ( char *newip, char *newcode )
 
 }
 
-int  Agent::CreateNewAccount ( char *bankip, char *accname, char *password, int balance, int loan )
+int  Agent::CreateNewAccount ( char *bankip, char *accname, const char *password, int balance, int loan )
 {
 
 	int accno = Person::CreateNewAccount ( bankip, accname, password, balance, loan );
@@ -1064,7 +1064,7 @@ void Agent::Print ()
 
 }
 
-char *Agent::GetID ()
+const char *Agent::GetID ()
 {
 
 	return "AGENT";

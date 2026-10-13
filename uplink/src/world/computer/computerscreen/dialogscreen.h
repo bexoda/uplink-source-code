@@ -36,14 +36,14 @@ public:
 	DialogScreen();
 	virtual ~DialogScreen();
 
-	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip );
-	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip,
-					 int data1, int data2, char *stringdata1, char *stringdata2 );
+	void AddWidget ( const char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, const char *tooltip );
+	void AddWidget ( const char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, const char *tooltip,
+					 int data1, int data2, const char *stringdata1, const char *stringdata2 );
 
-	void RemoveWidget ( char *name );
+	void RemoveWidget ( const char *name );
 
-	void SetReturnKeyButton ( char *name );
-    void SetEscapeKeyButton ( char *name );
+	void SetReturnKeyButton ( const char *name );
+    void SetEscapeKeyButton ( const char *name );
 
 	// Common functions
 
@@ -51,7 +51,7 @@ public:
 	void Save  ( FILE *file );			
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();				
 
 };
@@ -98,11 +98,11 @@ public:
 	DialogScreenWidget ();
 	~DialogScreenWidget ();
 
-	void SetName ( char *newname );
+	void SetName ( const char *newname );
 	void SetTYPE ( int NEWWIDGETTYPE );
 	void SetPosition ( int newx, int newy );
 	void SetSize ( int newwidth, int newheight );
-	void SetTooltip ( char *newtooltip );
+	void SetTooltip ( const char *newtooltip );
 	void SetCaption ( const char *newcaption );
 	
 	char *GetName ();
@@ -112,7 +112,7 @@ public:
 	// Data access (data and stringdata is unused)
 
 	void SetData ( int newdata1, int newdata2 );
-	void SetStringData ( char *newstringdata1, char *newstringdata2 );
+	void SetStringData ( const char *newstringdata1, const char *newstringdata2 );
 
 	char *GetStringData1 ();
 	char *GetStringData2 ();
@@ -123,7 +123,7 @@ public:
 	void Save  ( FILE *file );			
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();				
 
 };

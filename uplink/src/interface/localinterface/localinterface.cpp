@@ -313,7 +313,7 @@ void LocalInterface::Update ()
 
 }
 
-char *LocalInterface::GetID ()
+const char *LocalInterface::GetID ()
 {
 
 	return "LINT";

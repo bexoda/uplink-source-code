@@ -33,6 +33,7 @@ public:
 
 	void SetTargetButton ( char *bname );
 
+	using LocalInterfaceScreen::Create;			// adds a positioned Create, keeps the base one
 	void Create ( int x, int y );
 	void Remove ();
 	bool IsVisible ();

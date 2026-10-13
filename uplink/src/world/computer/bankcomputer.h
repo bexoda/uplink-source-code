@@ -26,7 +26,7 @@ public:
 	int GenerateUniqueAccountNumber ();
 
 	int CreateBankAccount ( BankAccount *newaccount );						//  These return the account 
-	int CreateBankAccount ( char *name, char *password, int security,		//	number assigned
+	int CreateBankAccount ( char *name, const char *password, int security,		//	number assigned
 							 int balance, int loan );
 
     void CloseAccount ( int accno );
@@ -40,7 +40,7 @@ public:
 	void Print ();
 	void Update ();
 	
-	char *GetID ();
+	const char *GetID ();
 	int   GetOBJECTID ();
 
 };

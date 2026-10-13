@@ -35,7 +35,7 @@ public:
 
 	
 	void SetNextPage ( int newnextpage );
-	void SetPassword ( char *newpassword );
+	void SetPassword ( const char *newpassword );
 	void SetDifficulty ( int newdifficulty );
 
 
@@ -45,7 +45,7 @@ public:
 	void Save  ( FILE *file );		
 	void Print ();						
 	
-	char *GetID ();						
+	const char *GetID ();						
 	int   GetOBJECTID ();			
 
 };

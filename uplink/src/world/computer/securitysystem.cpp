@@ -5,7 +5,7 @@
 
 
 
-static char *names [] = {	"Unknown",
+static const char *names [] = {	"Unknown",
 							"Proxy",
 							"Firewall",
 							"Encrypter",
@@ -70,7 +70,7 @@ void SecuritySystem::EndBypass ()
 
 }
 
-char *SecuritySystem::GetName ()
+const char *SecuritySystem::GetName ()
 {
 
 	return names [TYPE];
@@ -120,7 +120,7 @@ void SecuritySystem::Update ()
 }
 
 
-char *SecuritySystem::GetID ()
+const char *SecuritySystem::GetID ()
 {
 
 	return "SECSYST";

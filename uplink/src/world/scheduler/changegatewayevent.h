@@ -47,7 +47,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();				
+	const char *GetID ();				
 	int   GetOBJECTID ();		
 
 };

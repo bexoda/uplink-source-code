@@ -59,14 +59,14 @@ public:
 	Company();
 	virtual ~Company();
 
-	void SetName ( char *newname );	
+	void SetName ( const char *newname );	
 
 	void SetSize ( int newsize );
 	void SetTYPE ( int newTYPE );
 	void SetGrowth ( int newgrowth );
 	void SetAlignment ( int newalignment );
 
-	void SetBoss ( char *bossname );
+	void SetBoss ( const char *bossname );
 	void SetAdmin ( char *adminname );
 
 	void Grow ( int dayspast );					// Applies growth
@@ -83,7 +83,7 @@ public:
 	virtual void Print ();
 	virtual void Update ();
 	
-	virtual char *GetID ();
+	virtual const char *GetID ();
 	virtual int   GetOBJECTID ();
 
 };

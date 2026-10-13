@@ -91,7 +91,7 @@ public:
 	void RunScreen ( int screenindex, Computer *compref = NULL );			// Runs at existing location
 	bool VerifyScreen ( int screenindex );
 
-	void SetSecurity ( char *newname, int newvalue );
+	void SetSecurity ( const char *newname, int newvalue );
 
 	void Create();
 	void Remove ();
@@ -107,7 +107,7 @@ public:
 	void Print  ();
 	void Update ();
 
-	char *GetID ();
+	const char *GetID ();
 
 };
 

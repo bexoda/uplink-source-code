@@ -32,7 +32,7 @@ ShotByFedsEvent::~ShotByFedsEvent ()
 
 }
 
-void ShotByFedsEvent::SetName ( char *newname )
+void ShotByFedsEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
@@ -131,7 +131,7 @@ void ShotByFedsEvent::Print ()
 
 }
 
-char *ShotByFedsEvent::GetID ()
+const char *ShotByFedsEvent::GetID ()
 {
 
 	return "EVT_SHOT";

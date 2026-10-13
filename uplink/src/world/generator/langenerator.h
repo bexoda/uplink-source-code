@@ -40,7 +40,7 @@ public:
 	// Top level functions for generating entire networks
 
 	static Computer  *LoadLAN					( char *filename );
-	static Computer  *GenerateLAN				( char *companyname, int difficulty );			// 0 = low, 5 = high
+	static Computer  *GenerateLAN				( const char *companyname, int difficulty );			// 0 = low, 5 = high
 	static void       GenerateLANCluster        ( LanComputer *comp, int difficulty );
 
     static void       SanityCheckLAN            ( LanComputer *comp );

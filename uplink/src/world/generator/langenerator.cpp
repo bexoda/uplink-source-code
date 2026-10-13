@@ -358,7 +358,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 
 }
 
-Computer  *LanGenerator::GenerateLAN ( char *companyname, int difficulty )
+Computer  *LanGenerator::GenerateLAN ( const char *companyname, int difficulty )
 {
 
     //

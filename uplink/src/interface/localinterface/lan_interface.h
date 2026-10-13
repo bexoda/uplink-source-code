@@ -20,11 +20,11 @@
 
 struct LanInterfaceObject
 {
-    char    *name;
-    char    *filename;
+    const char    *name;
+    const char    *filename;
     int     width;
     int     height;
-    char    *description;
+    const char    *description;
 };
 
 // ============================================================================
@@ -37,7 +37,7 @@ struct LanInterfaceObject
 class LanInterfaceHighlight
 {
 public:
-    LanInterfaceHighlight ( int _systemIndex, char *_text ) 
+    LanInterfaceHighlight ( int _systemIndex, const char *_text ) 
         : systemIndex(_systemIndex) 
         {
             UplinkStrncpy ( text, _text, sizeof ( text ) );

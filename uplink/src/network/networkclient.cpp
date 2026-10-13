@@ -11,6 +11,9 @@
 #include "app/app.h"
 #include "app/globals.h"
 
+// tcp4u takes the terminator as a (never written) LPSTR
+static char MESSAGE_TERMINATOR [] = "#";
+
 #include "options/options.h"
 
 #include "mainmenu/mainmenu.h"
@@ -328,7 +331,7 @@ void NetworkClient::Update ()
 	char buffer [512] = "";
 	UINT nLength = sizeof buffer;
 
-	int result = TcpRecvUntilStr ( socket, buffer, &nLength, "#", 2, false, -1, HFILE_ERROR );
+	int result = TcpRecvUntilStr ( socket, buffer, &nLength, MESSAGE_TERMINATOR, 2, false, -1, HFILE_ERROR );
 
 	switch ( result ) {
 
@@ -369,7 +372,7 @@ void NetworkClient::Update ()
 
 }
 
-char *NetworkClient::GetID ()
+const char *NetworkClient::GetID ()
 {
 
     return "CLIENT";

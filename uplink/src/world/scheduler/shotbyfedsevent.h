@@ -38,7 +38,7 @@ public:
 	ShotByFedsEvent ();
 	~ShotByFedsEvent ();
 
-	void SetName ( char *newname );
+	void SetName ( const char *newname );
 	void SetReason ( const char *newreason );
 
 	void Run ();
@@ -52,7 +52,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();		
+	const char *GetID ();		
 	int   GetOBJECTID ();
 
 };

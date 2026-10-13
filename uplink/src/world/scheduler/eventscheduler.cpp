@@ -174,7 +174,7 @@ void EventScheduler::Update ()
 
 }
 
-char *EventScheduler::GetID ()
+const char *EventScheduler::GetID ()
 {
 
 	return "SCHED";

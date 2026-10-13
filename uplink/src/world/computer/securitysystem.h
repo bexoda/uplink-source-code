@@ -58,7 +58,7 @@ public:
 	void Bypass ();
 	void EndBypass ();
 
-	char *GetName ();
+	const char *GetName ();
 
 	// Common functions
 
@@ -67,7 +67,7 @@ public:
 	void Print ();		
 	void Update ();			
 	
-	char *GetID ();			
+	const char *GetID ();			
 	int GetOBJECTID ();
 
 };

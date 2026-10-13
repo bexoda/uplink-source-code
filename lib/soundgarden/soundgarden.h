@@ -27,7 +27,7 @@
 void SgInitialise ();
 void SgShutdown ();
 							
-void SgPlaySound ( char *filename, char *id = NULL, 
+void SgPlaySound ( char *filename, const char *id = NULL, 
 				   bool synchronised = true );				// id must be unique to each sample.
 															// If NULL, filename is used.
 
@@ -46,9 +46,9 @@ void SgStopMod   ();
 
 void SgPlaylist_Initialise ();
 void SgPlaylist_Shutdown ();
-void SgPlaylist_Create ( char *playlist );
-void SgPlaylist_AddSong ( char *playlist, char *songname );
-void SgPlaylist_Play ( char *playlist );
+void SgPlaylist_Create ( const char *playlist );
+void SgPlaylist_AddSong ( const char *playlist, const char *songname );
+void SgPlaylist_Play ( const char *playlist );
 void SgPlaylist_Stop ();
 void SgPlaylist_NextSong ();
 void SgPlaylist_RandomSong ();

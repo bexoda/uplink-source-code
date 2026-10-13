@@ -49,7 +49,7 @@ void Connection::SetOwner ( char *newowner )
 
 }
 
-void Connection::AddVLocation ( char *ip )
+void Connection::AddVLocation ( const char *ip )
 {
 	
 	// First make sure this ip isn't already in there
@@ -92,7 +92,7 @@ void Connection::RemoveLastLocation ()
 
 }
 
-bool Connection::LocationIncluded ( char *ip )
+bool Connection::LocationIncluded ( const char *ip )
 {
 
 	for ( int i = 0; i < vlocations.Size (); ++i )
@@ -481,7 +481,7 @@ void Connection::Print ()
 
 }
 	
-char *Connection::GetID ()
+const char *Connection::GetID ()
 {
 	
 	return "CONNECT";

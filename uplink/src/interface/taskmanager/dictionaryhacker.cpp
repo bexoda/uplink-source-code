@@ -209,7 +209,7 @@ void DictionaryHacker::DictionaryHackerClick ( Button *button )
 
 }
 
-void DictionaryHacker::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void DictionaryHacker::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

@@ -129,7 +129,7 @@ public:
 
 	*/
 
-	static void MissionFailed ( Mission *mission, Person *person, char *reason );
+	static void MissionFailed ( Mission *mission, Person *person, const char *reason );
 
 };
 

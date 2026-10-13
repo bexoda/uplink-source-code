@@ -73,7 +73,7 @@ int BankComputer::CreateBankAccount ( BankAccount *newaccount )
 
 }
 
-int BankComputer::CreateBankAccount ( char *name, char *password, int security,
+int BankComputer::CreateBankAccount ( char *name, const char *password, int security,
 										int balance, int loan )
 {
 
@@ -167,7 +167,7 @@ void BankComputer::Update ()
 
 }
 
-char *BankComputer::GetID ()
+const char *BankComputer::GetID ()
 {
 
 	return "BCOMP";

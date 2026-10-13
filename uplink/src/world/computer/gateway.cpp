@@ -1,6 +1,8 @@
 // -*- tab-width:4 c-file-style:"cc-mode" -*-
 
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "gucci.h"
 
@@ -177,7 +179,7 @@ void Gateway::ExchangeGatewayComplete ()
 	GatewayDef *newgateway = curgatewaydef;
 	UplinkAssert (newgateway);
 
-	LList <char *> removedItems;
+	std::vector <std::string> removedItems;
 
 
 	//
@@ -209,7 +211,7 @@ void Gateway::ExchangeGatewayComplete ()
 
 		if ( indexSlowest != -1 ) {
 			UplinkAssert (upgradeSlowest != NULL);
-			removedItems.PutData ( upgradeSlowest->name );
+			removedItems.push_back ( upgradeSlowest->name );
 			hardware.RemoveData (indexSlowest);
 		}
 		else {
@@ -228,10 +230,9 @@ void Gateway::ExchangeGatewayComplete ()
 		for ( int i = newgateway->maxmemory * 8; i < memorysize; ++i )
 			databank.RemoveData (i);
 
-		size_t removedMemorysize = 64;
-		char *removedMemory = new char [removedMemorysize];
-		UplinkSnprintf ( removedMemory, removedMemorysize, "%dGq of memory", memorysize - (newgateway->maxmemory*8) );
-		removedItems.PutData (removedMemory);
+		char removedMemory [64];
+		UplinkSnprintf ( removedMemory, sizeof ( removedMemory ), "%dGq of memory", memorysize - (newgateway->maxmemory*8) );
+		removedItems.push_back ( removedMemory );
 
         SetMemorySize ( newgateway->maxmemory * 8 );
 
@@ -252,7 +253,7 @@ void Gateway::ExchangeGatewayComplete ()
 			UplinkAssert (cu);
 
 			if ( cu->TYPE == GATEWAYUPGRADETYPE_SECURITY ) {
-				removedItems.PutData ( cu->name );
+				removedItems.push_back ( cu->name );
 				hardware.RemoveData (i);
 			}
 
@@ -266,15 +267,15 @@ void Gateway::ExchangeGatewayComplete ()
 	// Tell the player what we removed
 	//
 
-	if ( removedItems.Size () > 0 ) {
+	if ( !removedItems.empty () ) {
 
 		std::ostringstream removedText;
 		removedText << "Unfortunately, your new gateway does not have enough space to contain "
 					   "all of your old hardware.  As such, we have been forced to remove the "
 					   "following items from your new system :\n\n";
 
-		for ( int i = 0; i < removedItems.Size (); ++i )
-			removedText << removedItems.GetData(i) << "\n";
+		for ( const std::string &item : removedItems )
+			removedText << item << "\n";
 
 
 		Message *msg = new Message ();
@@ -292,7 +293,7 @@ void Gateway::ExchangeGatewayComplete ()
 
 }
 
-void Gateway::SetModemType ( char *newmodem, int newmodemspeed )
+void Gateway::SetModemType ( const char *newmodem, int newmodemspeed )
 {
 
 	UplinkAssert ( strlen(newmodem) < 64 );
@@ -345,7 +346,7 @@ bool Gateway::HasAnyHUDUpgrade ()
 
 }
 
-void Gateway::GiveCPU ( char *CPUName )
+void Gateway::GiveCPU ( const char *CPUName )
 {
 
 	GatewayDef *gatewaydef = curgatewaydef;
@@ -434,10 +435,10 @@ int Gateway::GetCPUSpeed ()
 
 }
 
-LList <char *> *Gateway::GetCPUs ()
+LList <const char *> *Gateway::GetCPUs ()
 {
 
-	LList <char *> *list = new LList <char *> ();
+	LList <const char *> *list = new LList <const char *> ();
 
 	for ( int i = 0; i < hardware.Size (); ++i ) {
 
@@ -486,10 +487,10 @@ int Gateway::GetNumSecurity ()
 
 }
 
-LList <char *> *Gateway::GetSecurity ()
+LList <const char *> *Gateway::GetSecurity ()
 {
 
-	LList <char *> *list = new LList <char *> ();
+	LList <const char *> *list = new LList <const char *> ();
 
 	for ( int i = 0; i < hardware.Size (); ++i ) {
 
@@ -536,7 +537,7 @@ void Gateway::GiveHardware ( char *newhardware )
 
 }
 
-bool Gateway::IsHWInstalled ( char *name )
+bool Gateway::IsHWInstalled ( const char *name )
 {
 
 	for ( int i = 0; i < hardware.Size (); ++i )
@@ -775,7 +776,7 @@ void Gateway::Update ()
 }
 
 
-char *Gateway::GetID ()
+const char *Gateway::GetID ()
 {
 
 	return "GATEWAY";

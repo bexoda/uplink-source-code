@@ -37,7 +37,7 @@ ClientStatusInterface::ClientStatusInterface()
 	UplinkStrncpy ( criminal, " ", sizeof ( criminal ) );
 	UplinkStrncpy ( financial, " ", sizeof ( financial ) );
 
-	news.PutDataAtStart ( " " );
+	news.PutDataAtStart ( UplinkStrdup ( " " ) );		// owned: the destructor deletes [] every entry
 
 }
 
@@ -238,7 +238,10 @@ void ClientStatusInterface::AddNewsStory ( char *newsstory )
 
 	news.PutDataAtStart ( newscopy );
 
-	while ( news.Size () > 6 )	news.RemoveData (6);
+	while ( news.Size () > 6 ) {
+		delete [] news.GetData (6);
+		news.RemoveData (6);
+	}
 
 	EclDirtyButton ( "status_worldbg" );
 

@@ -71,7 +71,7 @@ void View::Print ()
 
 }
 
-char *View::GetID ()
+const char *View::GetID ()
 {
 
 	return "VIEW";

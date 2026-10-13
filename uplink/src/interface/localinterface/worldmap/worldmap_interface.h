@@ -128,7 +128,7 @@ public:
 	virtual void Save  ( FILE *file );
 	virtual void Print ();
 	
-	virtual char *GetID ();
+	virtual const char *GetID ();
 
 protected:
 

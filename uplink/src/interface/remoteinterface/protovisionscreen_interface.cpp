@@ -114,7 +114,7 @@ void ProtovisionScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "protovisionscreen_subtitle" );
 		EclRegisterButtonCallbacks ( "protovisionscreen_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
-        char *textmessage = "Falken's maze\n"
+        const char *textmessage = "Falken's maze\n"
 							"Black jack\n"
 							"Gin rummy\n"
 							"hearts\n"

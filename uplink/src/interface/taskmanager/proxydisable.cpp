@@ -153,7 +153,7 @@ ProxyDisable::~ProxyDisable ()
 }
 
 
-void ProxyDisable::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void ProxyDisable::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 
 	/*

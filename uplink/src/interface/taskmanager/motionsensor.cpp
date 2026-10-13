@@ -88,7 +88,7 @@ MotionSensor::~MotionSensor ()
 {
 }
 
-void MotionSensor::SetTarget ( UplinkObject *uo, char *uos, int uoi )
+void MotionSensor::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 {
 }
 

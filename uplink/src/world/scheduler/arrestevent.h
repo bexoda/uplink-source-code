@@ -33,9 +33,9 @@ public:
 	ArrestEvent ();
 	~ArrestEvent ();
 
-	void SetName	( char *newname );
+	void SetName	( const char *newname );
 	void SetReason	( const char *newreason );
-	void SetIP		( char *newip );
+	void SetIP		( const char *newip );
 
 	void Run ();
 
@@ -48,7 +48,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();				
+	const char *GetID ();				
 	int   GetOBJECTID ();		
 
 };

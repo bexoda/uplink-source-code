@@ -371,7 +371,7 @@ void Player::Update ()
 }
 
 
-char *Player::GetID ()
+const char *Player::GetID ()
 {
 	return "PLAYER";
 }

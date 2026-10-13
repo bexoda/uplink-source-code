@@ -33,7 +33,7 @@ public:
 	SeizeGatewayEvent ();
 	~SeizeGatewayEvent ();
 
-	void SetName ( char *newname );
+	void SetName ( const char *newname );
 	void SetReason ( const char *newreason );
 	void SetGatewayID ( int newid );
 
@@ -49,7 +49,7 @@ public:
 	void Save  ( FILE *file );
 	void Print ();
 	
-	char *GetID ();				
+	const char *GetID ();				
 	int   GetOBJECTID ();		
 
 };

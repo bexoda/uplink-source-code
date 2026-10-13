@@ -288,7 +288,7 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 		// Has some college quals
 
-		LList <char *> possiblequals;
+		LList <const char *> possiblequals;
 		possiblequals.PutData ( "Science" );
 		possiblequals.PutData ( "Maths" );
 		possiblequals.PutData ( "Physics" );
@@ -538,13 +538,13 @@ Record *RecordGenerator::GetSocialSecurity ( char *personname )
 
 }
 
-Record *RecordGenerator::GetCriminal ( char *personname )
+Record *RecordGenerator::GetCriminal ( const char *personname )
 {
 
 	Computer *comp = game->GetWorld ()->GetComputer ( "Global Criminal Database" );
 	UplinkAssert ( comp );
 
-	char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
+	const char *name = ( strcmp ( personname, "PLAYER" ) == 0 ?
 							game->GetWorld ()->GetPlayer ()->handle :
 							personname );
 

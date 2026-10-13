@@ -1659,7 +1659,7 @@ void ScriptLibrary::Script71 ()
 	// Add in a new account for the player to use
 	//
 
-	char *password = NameGenerator::GeneratePassword ();
+	const char *password = NameGenerator::GeneratePassword ();
 	char username [12];
 	UplinkSnprintf ( username, sizeof ( username ), "temp%c%c%c%c", 'a' + NumberGenerator::RandomNumber ( 26 ),
 															'a' + NumberGenerator::RandomNumber ( 26 ),
@@ -1679,7 +1679,7 @@ void ScriptLibrary::Script71 ()
     // Generate the text
     //
 
-    char *description = PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE );
+    const char *description = PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE );
 
     std::ostringstream details;
     details << "We have recently heard a rumour going around that says the complete Uplink Agent "
@@ -2098,7 +2098,7 @@ void ScriptLibrary::Script85 ()
 
     int NUMCAPTIONS = 14;
 
-    char *TEXT [] = {   "Not Connected",
+    const char *TEXT [] = {   "Not Connected",
                         "Aligning radio transmitter",
                         "Complete",
                         "Starting remote connect services",
