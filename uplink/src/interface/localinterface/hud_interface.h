@@ -10,6 +10,8 @@
 #ifndef _included_hudinterface_h
 #define _included_hudinterface_h
 
+#include "app/optstring.h"
+
 // ============================================================================
 
 #include "eclipse.h"
@@ -45,7 +47,7 @@ public:
 
 protected:
 
-  	char *previoushighlight;
+  	OptString previoushighlight;
 	Image *previousimage;
     
     char visibleUpgrades[8];                                    // Entries corrispond to visual position on screen. 

@@ -65,7 +65,6 @@ HUDInterface::HUDInterface ()
 HUDInterface::~HUDInterface ()
 {
 
-	if ( previoushighlight ) delete [] previoushighlight;
 	if ( previousimage ) delete previousimage;
 
 }
@@ -112,7 +111,7 @@ void HUDInterface::SoftwareClick ( Button * /*button*/ )
 void HUDInterface::HardwareClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -123,7 +122,7 @@ void HUDInterface::HardwareClick ( Button *button )
 void HUDInterface::MemoryClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -134,7 +133,7 @@ void HUDInterface::MemoryClick ( Button *button )
 void HUDInterface::StatusClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -145,7 +144,7 @@ void HUDInterface::StatusClick ( Button *button )
 void HUDInterface::FinanceClick	( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -156,7 +155,7 @@ void HUDInterface::FinanceClick	( Button *button )
 void HUDInterface::SendMailClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -167,7 +166,7 @@ void HUDInterface::SendMailClick ( Button *button )
 void HUDInterface::AnalyserClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -178,7 +177,7 @@ void HUDInterface::AnalyserClick ( Button *button )
 void HUDInterface::IRCClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -189,7 +188,7 @@ void HUDInterface::IRCClick ( Button *button )
 void HUDInterface::LANClick ( Button *button )
 {
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -223,7 +222,7 @@ void HUDInterface::EmailClick ( Button *button )
         return;
     }
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -267,7 +266,7 @@ void HUDInterface::MissionClick	( Button *button )
         return;
     }
 
-	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight, button->name ) == 0 ) 
+	if ( GetHUD ()->previoushighlight && strcmp ( GetHUD ()->previoushighlight.c_str (), button->name ) == 0 ) 
 		game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_NONE );
 
 	else
@@ -446,9 +445,7 @@ void HUDInterface::HighlightToolbarButton   ( const char *bname )
 
 		// Remember this button was highlighted
 
-		if ( GetHUD ()->previoushighlight ) delete [] GetHUD ()->previoushighlight;
-		GetHUD ()->previoushighlight = new char [strlen(bname)+1];
-		UplinkSafeStrcpy ( GetHUD ()->previoushighlight, bname );
+		GetHUD ()->previoushighlight = bname;
 
 	}
 	else {
@@ -466,7 +463,7 @@ void HUDInterface::UnHighlightToolbarButton ()
 
 		// Get the button
 
-		Button *button = EclGetButton ( GetHUD ()->previoushighlight );
+		Button *button = EclGetButton ( GetHUD ()->previoushighlight.c_str () );
 		
         if ( button ) {
 
@@ -482,13 +479,12 @@ void HUDInterface::UnHighlightToolbarButton ()
 		    button->image_highlighted = new_highlighted;
 		    button->image_clicked     = new_clicked;
 
-		    EclDirtyButton ( GetHUD ()->previoushighlight );
+		    EclDirtyButton ( GetHUD ()->previoushighlight.c_str () );
 
         }
 
 		// No button is now highlighted
 
-		delete [] GetHUD ()->previoushighlight;
 		GetHUD ()->previoushighlight = NULL;
 
 	}

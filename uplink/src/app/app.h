@@ -10,6 +10,8 @@
 #ifndef _included_app_h
 #define _included_app_h
 
+#include "app/optstring.h"
+
 #include <string>
 
 // ============================================================================
@@ -56,7 +58,7 @@ public :
 	MainMenu *mainmenu;
 	PhoneDialler *phoneDial;
 
-	char *nextLoadGame;
+	OptString nextLoadGame;
 
 	bool askCodeCard;
 
@@ -74,7 +76,7 @@ public:
 
 	void SetNextLoadGame ( const char *username );       // Set the username to load with the next call to LoadGame
 	void LoadGame ();                                    // Use the username set with SetNextLoadGame
-	void LoadGame ( char *username );
+	void LoadGame ( const char *username );
 	void SaveGame ( const char *username );
 	void RetireGame ( char *username );
 	static DArray <char *> *ListExistingGames ();

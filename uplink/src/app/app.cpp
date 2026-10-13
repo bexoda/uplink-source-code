@@ -210,11 +210,8 @@ void App::SetNextLoadGame ( const char *username )
 
 	UplinkAssert ( username );
 
-	if ( nextLoadGame )
-		delete [] nextLoadGame;
 
-	nextLoadGame = new char [ strlen ( username ) + 1 ];
-	UplinkSafeStrcpy ( nextLoadGame, username );
+	nextLoadGame = username;
 
 }
 
@@ -223,14 +220,13 @@ void App::LoadGame ( )
 
 	UplinkAssert ( nextLoadGame );
 
-	LoadGame ( nextLoadGame );
+	LoadGame ( nextLoadGame.c_str () );
 
-	delete [] nextLoadGame;
 	nextLoadGame = NULL;
 
 }
 
-void App::LoadGame ( char *username )
+void App::LoadGame ( const char *username )
 {
 
 	UplinkAssert ( game );
@@ -528,10 +524,7 @@ void App::Close ()
 		phoneDial = NULL;
 	}
 
-	if ( nextLoadGame ) {
-		delete [] nextLoadGame;
-		nextLoadGame = NULL;
-	}
+	nextLoadGame = NULL;
 
 #ifdef _DEBUG
     char filename [256];
