@@ -15,6 +15,8 @@
 #ifndef _included_classinterface_h				
 #define _included_classinterface_h
 
+#include <memory>
+
 #include <stdio.h>
 
 // ============================================================================
@@ -34,9 +36,9 @@ class Interface : public UplinkObject
 
 protected:
 
-	LocalInterface  *li;
-	RemoteInterface *ri;
-	TaskManager     *tm;
+	std::unique_ptr<LocalInterface> li;
+	std::unique_ptr<RemoteInterface> ri;
+	std::unique_ptr<TaskManager> tm;
 
 public:
 

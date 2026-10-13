@@ -19,18 +19,18 @@
 Interface::Interface()
 {
 
-	li = new LocalInterface ();
-	ri = new RemoteInterface ();
-	tm = new TaskManager ();
+	li.reset ( new LocalInterface () );
+	ri.reset ( new RemoteInterface () );
+	tm.reset ( new TaskManager () );
 	
 }
 
 Interface::~Interface()
 {
 
-	if ( li ) delete li;
-	if ( ri ) delete ri;
-	if ( tm ) delete tm;
+	li.reset ();
+	ri.reset ();
+	tm.reset ();
 
 }	
 
@@ -57,7 +57,7 @@ LocalInterface *Interface::GetLocalInterface ()
 {
 
 	UplinkAssert ( li );
-	return li;
+	return li.get ();
 
 }
 
@@ -65,7 +65,7 @@ RemoteInterface *Interface::GetRemoteInterface ()
 {
 
 	UplinkAssert ( ri );
-	return ri;
+	return ri.get ();
 
 }
 
@@ -73,7 +73,7 @@ TaskManager *Interface::GetTaskManager ()
 {
 
 	UplinkAssert ( tm );
-	return tm;
+	return tm.get ();
 
 }
 

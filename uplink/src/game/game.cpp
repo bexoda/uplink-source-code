@@ -37,12 +37,12 @@
 Game::Game ()
 {
 
-	ui      = NULL;
-	view    = NULL;
-	world   = NULL;
+	ui.reset ();
+	view.reset ();
+	world.reset ();
 
 	gamespeed = GAMESPEED_PAUSED;
-	gob = NULL;
+	gob.reset ();
 
 	loadedSavefileVer = NULL;
 
@@ -60,11 +60,11 @@ Game::Game ()
 Game::~Game () 
 {
 
-	if ( ui )      delete ui;
-	if ( view )    delete view;
-	if ( world )   delete world;
+	ui.reset ();
+	view.reset ();
+	world.reset ();
 
-	if ( gob )	   delete gob;
+	gob.reset ();
 
 
 
@@ -74,10 +74,10 @@ Game::~Game ()
 void Game::NewGame ()
 {
  
-	if ( ui )      delete ui;
-	if ( view )    delete view;
-	if ( world )   delete world;
-	if ( gob )	   delete gob;
+	ui.reset ();
+	view.reset ();
+	world.reset ();
+	gob.reset ();
 
 	createdSavefileVer = SAVEFILE_VERSION;
 
@@ -86,7 +86,7 @@ void Game::NewGame ()
 	for ( size_t i = 0; i < sizeof ( winningCodeRandom ); i++ )
 		winningCodeRandom |= ( NumberGenerator::RandomNumber ( 254 ) + 1 ) << ( i * 8 );
 
-	gob = NULL;
+	gob.reset ();
 
 	whichWorldMap = defconworldmap;
 	if ( app->GetOptions ()->GetOption ("graphics_defaultworldmap") &&
@@ -99,7 +99,7 @@ void Game::NewGame ()
 	// Initialise the world. Its clock is held while the world is generated and fast-forwarded
 	// below: Date::Update adds a second whenever a second of real time passes, which made the
 	// generated world depend on how fast the machine was.
-	world = new World ();
+	world.reset ( new World () );
 	world->date.DeActivate ();
 	WorldGenerator::LoadDynamicsGatewayDefs ();
 
@@ -111,11 +111,11 @@ void Game::NewGame ()
     SgPlaySound ( RsArchiveFileOpen ( "sounds/ringout.wav" ), "sounds/ringout.wav", false );
 
 	// Initialise the view		
-	view = new View ();
+	view.reset ( new View () );
 	view->Initialise ();
 
 	// Initialise the interface
-	ui = new Interface ();
+	ui.reset ( new Interface () );
 	GetInterface ()->Create ();	
 	
 	// Start the game running
@@ -176,7 +176,7 @@ void Game::GameOver ( const char *reason )
 
 	gamespeed = GAMESPEED_GAMEOVER;
 
-	if ( !gob ) gob = new GameObituary ();
+	if ( !gob ) gob.reset ( new GameObituary () );
 	gob->SetGameOverReason ( reason );
 	gob->Evaluate ();
 	
@@ -187,7 +187,7 @@ void Game::DemoGameOver ()
 
   	gamespeed = GAMESPEED_GAMEOVER;
 
-	if ( !gob ) gob = new GameObituary ();
+	if ( !gob ) gob.reset ( new GameObituary () );
 	gob->SetGameOverReason (  "You reached the maximum permissable Agent rating for a Demo user.\n"
                               "You can visit www.introversion.co.uk to buy the full product." );
 	gob->SetDemoGameOver ( true );
@@ -200,7 +200,7 @@ void Game::WarezGameOver ()
 
     gamespeed = GAMESPEED_GAMEOVER;
 
-    if ( !gob ) gob = new GameObituary ();
+    if ( !gob ) gob.reset ( new GameObituary () );
     gob->SetGameOverReason (  "You are playing an illegal copy of Uplink.\n"
                               "You can visit www.introversion.co.uk to buy the full product." );
     gob->SetWarezGameOver ( true );
@@ -212,7 +212,7 @@ Interface *Game::GetInterface ()
 {
 
 	UplinkAssert ( ui );
-	return ui;
+	return ui.get ();
 
 }
 
@@ -220,7 +220,7 @@ View *Game::GetView ()
 {
 
 	UplinkAssert ( view );
-	return view;
+	return view.get ();
 
 }
 
@@ -228,7 +228,7 @@ World *Game::GetWorld ()
 {
 
 	UplinkAssert ( world );
-	return world;
+	return world.get ();
 
 }
 
@@ -236,7 +236,7 @@ GameObituary *Game::GetObituary ()
 {
 
 	UplinkAssert (gob);
-	return gob;
+	return gob.get ();
 
 }
 
@@ -305,15 +305,15 @@ bool Game::Load ( FILE *file )
 
 	// Reset currently running game
 
-	if ( ui )      delete ui;
-	if ( view )    delete view;
-	if ( world )   delete world;
-	if ( gob )	   delete gob;
+	ui.reset ();
+	view.reset ();
+	world.reset ();
+	gob.reset ();
 
-	ui	    = new Interface ();
-	view    = new View ();
-	world   = new World ();
-	gob     = NULL;
+	ui.reset ( new Interface () );
+	view.reset ( new View () );
+	world.reset ( new World () );
+	gob.reset ();
 	WorldGenerator::LoadDynamicsGatewayDefs ();
 
 	LoadID ( file );
@@ -345,7 +345,7 @@ bool Game::Load ( FILE *file )
 	else {
 
 		// This is a "game over" game
-		gob = new GameObituary ();
+		gob.reset ( new GameObituary () );
 		if ( !gob->Load ( file ) ) return false;
 		
 	}

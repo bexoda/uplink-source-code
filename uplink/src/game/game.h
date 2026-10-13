@@ -13,6 +13,8 @@
 #ifndef _included_game_h
 #define _included_game_h
 
+#include <memory>
+
 #include "app/optstring.h"
 
 #include <stdio.h>
@@ -43,13 +45,13 @@ class Game : public UplinkObject
 
 protected:
 
-	Interface *ui;
-	View      *view;
-	World     *world;
+	std::unique_ptr<Interface> ui;
+	std::unique_ptr<View> view;
+	std::unique_ptr<World> world;
 
 	int gamespeed;
 
-	GameObituary *gob;                     // Only used if this is a dead person
+	std::unique_ptr<GameObituary> gob;                     // Only used if this is a dead person
 	time_t lastsave;                       // Used in autosaving
 
 	OptString loadedSavefileVer;               // The game is/was loaded from a savefile from that version, if NULL assume current
