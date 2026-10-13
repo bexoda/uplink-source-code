@@ -265,7 +265,7 @@ T BTree <T> :: GetData ( const char *searchid )
 	BTree <T> *btree = LookupTree ( searchid );
 
 	if ( btree ) return btree->data;
-	else return NULL;
+	else return T ();
 
 }
 

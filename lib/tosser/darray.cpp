@@ -1,68 +1,31 @@
 // Tosser implementation file
 // Part of tosser
 // By Christopher Delay
+//
+// Storage is two std::vectors (the data, each in a one-member struct, and a used flag per slot). Size () still grows by the
+// step size, as callers loop over it; the vectors' capacity grows geometrically underneath.
+// firstfree is the lowest slot that may be unused, so PutData does not rescan the used prefix.
 
 #ifndef _included_tosser_darray
 #define _included_tosser_darray
 
-#include <stdlib.h>
+#include <algorithm>
+#include <cstdlib>
 #include <iostream>
 #include <assert.h>
-using namespace std;
 
 #include "tosser.h"
 
 template <class T>
 DArray <T> :: DArray ()
+	: stepsize ( 1 ), firstfree ( 0 )
 {
-
-    stepsize = 1;
-    arraysize = 0;
-    dynarray = NULL;
-    shadow = NULL;
-    
-}
-
-template <class T>
-DArray <T> :: DArray ( const DArray<T>& da )
-{
-
-    stepsize = da.stepsize;
-    arraysize = da.arraysize;
-
-	if ( da.dynarray && da.shadow ) {
-		dynarray = new T [ arraysize ];
-		shadow = new char [ arraysize ];
-
-		for ( int a = 0; a < arraysize; ++a ) {
-			dynarray [a] = da.dynarray [a];
-			shadow [a] = da.shadow [a];
-		}
-	}
-	else {
-		dynarray = NULL;
-		shadow = NULL;
-	}
-    
 }
 
 template <class T>
 DArray <T> :: DArray ( int newstepsize )
+	: stepsize ( newstepsize ), firstfree ( 0 )
 {
-
-    stepsize = newstepsize;
-    arraysize = 0;
-    dynarray = NULL;
-    shadow = NULL;
-    
-}
-
-template <class T>
-DArray <T> :: ~DArray ()
-{
-
-    Empty ();
-
 }
 
 template <class T>
@@ -70,68 +33,13 @@ void DArray <T> :: SetSize ( int newsize )
 {
 
 	if ( newsize <= 0 ) {
-
-		arraysize = 0;
-
-		if ( dynarray ) delete [] dynarray;
-		if ( shadow ) delete [] shadow;
-
-		dynarray = NULL;
-		shadow = NULL;
-
+		Empty ();
+		return;
 	}
-	else if ( newsize > arraysize ) {
 
-		int oldarraysize = arraysize;
-
-		arraysize = newsize;
-		T *temparray = new T [ arraysize ];
-		char *tempshadow = new char [ arraysize ];
-		
-		int a;
-
-		for ( a = 0; a < oldarraysize; ++a ) {
-			
-			temparray [a] = dynarray [a];
-			tempshadow [a] = shadow [a];
-			
-		}
-		
-		for ( a = oldarraysize; a < arraysize; ++a )
-			tempshadow [a] = 0;
-		
-		if ( dynarray ) delete [] dynarray;
-		if ( shadow ) delete [] shadow;
-		
-		dynarray = temparray;
-		shadow = tempshadow;
-
-	}
-	else if ( newsize < arraysize ) {
-
-		arraysize = newsize;
-		T *temparray = new T [arraysize];
-		char *tempshadow = new char [arraysize];
-
-		for ( int a = 0; a < arraysize; ++a ) {
-
-			temparray [a] = dynarray [a];
-			tempshadow [a] = shadow [a];
-
-		}
-
-		if ( dynarray ) delete [] dynarray;
-		if ( shadow ) delete [] shadow;
-		
-		dynarray = temparray;
-		shadow = tempshadow;
-
-	}
-	else if ( newsize == arraysize ) {
-
-		// Do nothing
-
-	}
+	dynarray.resize ( newsize );
+	shadow.resize ( newsize, 0 );
+	firstfree = std::min ( firstfree, newsize );
 
 }
 
@@ -146,31 +54,20 @@ void DArray <T> :: SetStepSize ( int newstepsize )
 template <class T>
 int DArray <T> :: PutData ( const T &newdata )
 {
-    
-    int freespace = -1;				 // Find a free space
-    
-    for ( int a = 0; a < arraysize; ++a ) {
-	
-		if ( shadow [a] == 0 ) {
-			
-			freespace = a;
-			break;
-			
-		}
-		
-    }
-    
-    if ( freespace == -1 ) {			 // Must resize the array
-			
-		freespace = arraysize;		
-		SetSize ( arraysize + stepsize );
-   
-    }
 
-    dynarray [freespace] = newdata;
-    shadow [freespace] = 1;
-    
-    return freespace;
+	int size = Size ();
+	int freespace = firstfree;
+	while ( freespace < size && shadow [freespace] )
+		++freespace;
+
+	if ( freespace == size )					// Must resize the array
+		SetSize ( size + stepsize );
+
+	dynarray [freespace].value = newdata;
+	shadow [freespace] = 1;
+	firstfree = freespace + 1;
+
+	return freespace;
 
 }
 
@@ -178,10 +75,10 @@ template <class T>
 void DArray <T> :: PutData ( const T &newdata, int index )
 {
 
-    assert ( index < arraysize && index >= 0 );       
+	assert ( index < Size () && index >= 0 );
 
-    dynarray [index] = newdata;
-    shadow [index] = 1;
+	dynarray [index].value = newdata;
+	shadow [index] = 1;
 
 }
 
@@ -189,16 +86,11 @@ template <class T>
 void DArray <T> :: Empty ()
 {
 
-    if ( dynarray != NULL )
-		delete [] dynarray;
-    
-    if ( shadow != NULL )
-		delete [] shadow;
-    
-    dynarray = NULL;
-    shadow = NULL;
-    
-    arraysize = 0;
+	dynarray.clear ();
+	dynarray.shrink_to_fit ();
+	shadow.clear ();
+	shadow.shrink_to_fit ();
+	firstfree = 0;
 
 }
 
@@ -206,12 +98,12 @@ template <class T>
 T DArray <T> :: GetData ( int index ) const
 {
 
-    assert ( index < arraysize && index >= 0 );       
+	assert ( index < Size () && index >= 0 );
 
-    if ( shadow [index] == 0 )
-	   cout << "DArray::GetData called, referenced unused data.  (Index = " << index << ")\n";
-    
-    return dynarray [index];
+	if ( shadow [index] == 0 )
+		std::cout << "DArray::GetData called, referenced unused data.  (Index = " << index << ")\n";
+
+	return dynarray [index].value;
 
 }
 
@@ -219,118 +111,99 @@ template <class T>
 T& DArray <T> :: operator [] (int index)
 {
 
-    assert ( index < arraysize && index >= 0 );
+	assert ( index < Size () && index >= 0 );
 
-    if ( shadow [index] == 0 )
-		cout << "DArray error : DArray::[] called, referenced unused data.  (Index = " << index << ")\n";
-    
-    return dynarray [index];    
+	if ( shadow [index] == 0 )
+		std::cout << "DArray error : DArray::[] called, referenced unused data.  (Index = " << index << ")\n";
+
+	return dynarray [index].value;
 }
-
 
 template <class T>
 void DArray <T> :: ChangeData ( const T &newdata, int index )
 {
-    
-	assert ( index < arraysize && index >= 0 );
-        
-    if ( shadow [index] == 0 )
-		cout << "Warning : DArray::ChangeData called, referenced unused data.  (Index = " << index << ")\n";
-    
-    PutData ( newdata, index );
-    shadow [index] = 1;
-    
+
+	assert ( index < Size () && index >= 0 );
+
+	if ( shadow [index] == 0 )
+		std::cout << "Warning : DArray::ChangeData called, referenced unused data.  (Index = " << index << ")\n";
+
+	PutData ( newdata, index );
+
 }
 
 template <class T>
 void DArray <T> :: RemoveData ( int index )
 {
-    
-    assert ( index < arraysize && index >= 0 );
-    
-    if ( shadow [index] == 0 )
-		cout << "Warning : DArray::RemoveData called, referenced unused data.  (Index = " << index << ")\n";
-    
-    shadow [index] = 0;
-    
+
+	assert ( index < Size () && index >= 0 );
+
+	if ( shadow [index] == 0 )
+		std::cout << "Warning : DArray::RemoveData called, referenced unused data.  (Index = " << index << ")\n";
+
+	shadow [index] = 0;
+	firstfree = std::min ( firstfree, index );
+
 }
 
 template <class T>
 int DArray <T> :: NumUsed () const
 {
 
-    int count = 0;
-    
-    for ( int a = 0; a < arraysize; ++a )
-		if ( shadow [a] == 1 )
-			++count;
-		
-    return count;
-		
+	return (int) std::count ( shadow.begin (), shadow.end (), 1 );
+
 }
 
 template <class T>
-int DArray <T> :: Size () const 
+int DArray <T> :: Size () const
 {
-	       
-    return arraysize;
-		
+
+	return (int) dynarray.size ();
+
 }
 
 template <class T>
-bool DArray <T> :: ValidIndex ( int index ) const 
+bool DArray <T> :: ValidIndex ( int index ) const
 {
-    
-    if (index >= arraysize || index < 0 )
-		return false;
-    
-    if (!shadow [index])
-		return false;
-    
-    return true;
-    
+
+	return index >= 0 && index < Size () && shadow [index];
+
 }
 
 template <class T>
-int DArray <T> :: FindData ( const T &newdata ) const 
+int DArray <T> :: FindData ( const T &newdata ) const
 {
-    
-    for ( int a = 0; a < arraysize; ++a )
-		if ( shadow [a] )
-		    if ( dynarray [a] == newdata )
-				return a;
-    
-    return -1;    
-    
+
+	for ( int a = 0; a < Size (); ++a )
+		if ( shadow [a] && dynarray [a].value == newdata )
+			return a;
+
+	return -1;
+
 }
 
 template <class T>
 void DArray <T> :: Sort ( Comparator comp )
 {
 
-	// First compact the array
+	// Move the used entries to the front, keeping their order, then sort them
 
-	int nextIndex = 0, validItem = 0;
-    for ( int a = 0; a < arraysize; ++a ) {
+	int used = 0;
+	for ( int a = 0; a < Size (); ++a ) {
 		if ( shadow [a] ) {
-			validItem++;
-			if ( nextIndex == a )
-				nextIndex++;
+			if ( a != used ) {
+				dynarray [used] = dynarray [a];
+				shadow [used] = 1;
+				shadow [a] = 0;
+			}
+			++used;
 		}
-		else
-			for ( ; nextIndex < arraysize; nextIndex++ )
-				if ( shadow [nextIndex] ) {
-					validItem++;
-					shadow [a] = 1;
-					dynarray [a] = dynarray [nextIndex];
-					shadow [nextIndex] = 0;
-					nextIndex++;
-					break;
-				}
 	}
+	firstfree = used;
 
-	if ( validItem > 0 )
-		qsort ( dynarray, validItem, sizeof(T), ( int (*)(const void *,const void *) )comp );
+	static_assert ( sizeof ( Slot ) == sizeof ( T ), "the comparator sees each Slot as a T" );
+	if ( used > 0 )
+		qsort ( dynarray.data (), used, sizeof ( Slot ), ( int (*)(const void *,const void *) )comp );
 
 }
 

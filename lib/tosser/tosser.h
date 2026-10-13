@@ -10,6 +10,7 @@
 #define _included_tosser_h
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 
@@ -95,17 +96,16 @@ class DArray
 protected:
     
     int stepsize;
-    int arraysize;
+    int firstfree;				 // lowest slot that may be unused
 
-    T *dynarray;
-    char *shadow;				 //0=not used, 1=used
+    struct Slot { T value; };	 // a struct, so DArray <bool> is not std::vector <bool>
+    std::vector <Slot> dynarray;
+    std::vector <char> shadow;	 //0=not used, 1=used
     
 public:
 
     DArray ();
-    DArray ( const DArray<T>& da );
     DArray ( int newstepsize );
-    ~DArray ();
 
     void SetSize ( int newsize );
 	void SetStepSize ( int newstepsize );
