@@ -24,7 +24,6 @@ ArrestEvent::ArrestEvent ()
 
 	reason = NULL;
 	ip = NULL;
-	memset ( name, 0, sizeof ( name ) );
 
 }
 
@@ -40,7 +39,7 @@ void ArrestEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -67,7 +66,7 @@ void ArrestEvent::SetIP ( const char *newip )
 void ArrestEvent::Run ()
 {
 
-	Person *person = game->GetWorld ()->GetPerson ( name );
+	Person *person = game->GetWorld ()->GetPerson ( name.c_str () );
 	UplinkAssert (person);
 
 	person->SetStatus ( PERSON_STATUS_INJAIL );
@@ -90,9 +89,9 @@ void ArrestEvent::Run ()
 char *ArrestEvent::GetShortString ()
 {
 
-	size_t shortstringsize = strlen(name) + 16;
+	size_t shortstringsize = strlen(name.c_str ()) + 16;
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "Arrest for %s", name );
+	UplinkSnprintf ( shortstring, shortstringsize, "Arrest for %s", name.c_str () );
 	return shortstring;
 }
 
@@ -117,14 +116,10 @@ bool ArrestEvent::Load  ( FILE *file )
 	if ( !UplinkEvent::Load ( file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( name, sizeof(name), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( name, sizeof(name), 1, file ) ) {
-			name [ sizeof(name) - 1 ] = '\0';
-			return false;
-		}
-		name [ sizeof(name) - 1 ] = '\0';
+		if ( !LoadFixedString ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 
 	if ( !LoadDynamicStringPtr ( &reason, file ) ) return false;
@@ -143,7 +138,7 @@ void ArrestEvent::Save  ( FILE *file )
 
 	UplinkEvent::Save ( file );
 
-	SaveDynamicString ( name, sizeof(name), file );
+	SaveDynamicString ( name, SIZE_PERSON_NAME, file );
 
 	SaveDynamicString ( reason, file );
 	SaveDynamicString ( ip, file );
@@ -155,7 +150,7 @@ void ArrestEvent::Save  ( FILE *file )
 void ArrestEvent::Print ()
 {
 
-	printf ( "Arrest Event for %s:\n", name );
+	printf ( "Arrest Event for %s:\n", name.c_str () );
 	UplinkEvent::Print ();
 
 	printf ( "%s\n", reason );

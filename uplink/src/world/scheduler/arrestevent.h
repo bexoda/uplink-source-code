@@ -11,6 +11,8 @@
 #ifndef _included_arrestevent_h
 #define _included_arrestevent_h
 
+#include <string>
+
 
 #include "world/person.h"
 #include "world/scheduler/uplinkevent.h"
@@ -26,7 +28,7 @@ protected:
 
 public:
 
-	char name [SIZE_PERSON_NAME];
+	std::string name;
 
 public:
 

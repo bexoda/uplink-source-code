@@ -11,6 +11,8 @@
 #ifndef _included_seizeevent_h
 #define _included_seizeevent_h
 
+#include <string>
+
 
 #include "world/person.h"
 #include "world/scheduler/uplinkevent.h"
@@ -25,7 +27,7 @@ protected:
 
 public:
 
-	char name [SIZE_PERSON_NAME];
+	std::string name;
 	int gateway_id;							// id number of gateway to seize
 
 public:

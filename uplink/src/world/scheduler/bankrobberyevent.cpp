@@ -27,10 +27,10 @@
 BankRobberyEvent::BankRobberyEvent ()
 {
 
-    UplinkStrncpy ( source_ip, " ", sizeof ( source_ip ) );
-    UplinkStrncpy ( source_accno, " ", sizeof ( source_accno ) );
-    UplinkStrncpy ( target_ip, " ", sizeof ( target_ip ) );
-    UplinkStrncpy ( target_accno, " ", sizeof ( target_accno ) );
+    source_ip = " ";
+    source_accno = " ";
+    target_ip = " ";
+    target_accno = " ";
     amount = 0;
 
 }
@@ -50,7 +50,7 @@ void BankRobberyEvent::Run ()
     //
     // Has the player left a log on the source bank system
 
-    BankAccount *source = BankAccount::GetAccount ( source_ip, source_accno );
+    BankAccount *source = BankAccount::GetAccount ( source_ip.c_str (), source_accno.c_str () );
 
     if ( source ) {
         for ( int i = 0; i < source->log.internallogs.Size (); ++i ) {
@@ -63,8 +63,8 @@ void BankRobberyEvent::Run ()
 
 					if ( al->data1 && al->data2 ) {
 
-						if ( strstr ( al->data1, target_ip )    != 0 &&
-							 strstr ( al->data1, target_accno ) != 0 &&
+						if ( strstr ( al->data1, target_ip.c_str () )    != 0 &&
+							 strstr ( al->data1, target_accno.c_str () ) != 0 &&
 							 strcmp ( al->data2, amount_s )     == 0 ) {
 
 							rumbled = true;
@@ -86,7 +86,7 @@ void BankRobberyEvent::Run ()
 
     if ( !rumbled ) {
 
-        BankAccount *target = BankAccount::GetAccount ( target_ip, target_accno );
+        BankAccount *target = BankAccount::GetAccount ( target_ip.c_str (), target_accno.c_str () );
 
         if ( target ) {
 
@@ -100,8 +100,8 @@ void BankRobberyEvent::Run ()
 
 						if ( al->data1 && al->data2 ) {
 
-							if ( strstr ( al->data1, source_ip )    != 0 &&
-								 strstr ( al->data1, source_accno ) != 0 &&
+							if ( strstr ( al->data1, source_ip.c_str () )    != 0 &&
+								 strstr ( al->data1, source_accno.c_str () ) != 0 &&
 								 strcmp ( al->data2, amount_s )     == 0 ) {
 
 								rumbled = true;
@@ -129,7 +129,7 @@ void BankRobberyEvent::Run ()
 
     if ( rumbled ) {
 
-        VLocation *vl = game->GetWorld ()->GetVLocation ( source_ip );
+        VLocation *vl = game->GetWorld ()->GetVLocation ( source_ip.c_str () );
         UplinkAssert (vl);
         Computer *comp = vl->GetComputer ();
         UplinkAssert (comp);
@@ -178,10 +178,10 @@ void BankRobberyEvent::SetDetails ( const char *newsourceip, char *newsourceaccn
                                     int newamount, Date *newhackdate )
 {
 
-    UplinkStrncpy ( source_ip, newsourceip, sizeof ( source_ip ) );
-    UplinkStrncpy ( source_accno, newsourceaccno, sizeof ( source_accno ) );
-    UplinkStrncpy ( target_ip, newtargetip, sizeof ( target_ip ) );
-    UplinkStrncpy ( target_accno, newtargetaccno, sizeof ( target_accno ) );
+    source_ip = newsourceip;
+    source_accno = newsourceaccno;
+    target_ip = newtargetip;
+    target_accno = newtargetaccno;
 
     amount = newamount;
     hackdate.SetDate ( newhackdate );
@@ -196,32 +196,16 @@ bool BankRobberyEvent::Load  ( FILE *file )
     if ( !UplinkEvent::Load ( file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( source_ip, sizeof(source_ip), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( source_accno, sizeof(source_accno), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( target_ip, sizeof(target_ip), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( target_accno, sizeof(target_accno), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( source_ip, 128, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( source_accno, 128, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( target_ip, 128, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( target_accno, 128, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( source_ip, sizeof(source_ip), 1, file ) ) {
-			source_ip [ sizeof(source_ip) - 1 ] = '\0';
-			return false;
-		}
-		source_ip [ sizeof(source_ip) - 1 ] = '\0';
-		if ( !FileReadData ( source_accno, sizeof(source_accno), 1, file ) ) {
-			source_accno [ sizeof(source_accno) - 1 ] = '\0';
-			return false;
-		}
-		source_accno [ sizeof(source_accno) - 1 ] = '\0';
-		if ( !FileReadData ( target_ip, sizeof(target_ip), 1, file ) ) {
-			target_ip [ sizeof(target_ip) - 1 ] = '\0';
-			return false;
-		}
-		target_ip [ sizeof(target_ip) - 1 ] = '\0';
-		if ( !FileReadData ( target_accno, sizeof(target_accno), 1, file ) ) {
-			target_accno [ sizeof(target_accno) - 1 ] = '\0';
-			return false;
-		}
-		target_accno [ sizeof(target_accno) - 1 ] = '\0';
+		if ( !LoadFixedString ( source_ip, 128, file ) ) return false;
+		if ( !LoadFixedString ( source_accno, 128, file ) ) return false;
+		if ( !LoadFixedString ( target_ip, 128, file ) ) return false;
+		if ( !LoadFixedString ( target_accno, 128, file ) ) return false;
 	}
 
     if ( !FileReadData ( &amount, sizeof(amount), 1, file ) ) return false;
@@ -240,10 +224,10 @@ void BankRobberyEvent::Save  ( FILE *file )
 
     UplinkEvent::Save ( file );
 
-	SaveDynamicString ( source_ip, sizeof(source_ip), file );
-	SaveDynamicString ( source_accno, sizeof(source_accno), file );
-	SaveDynamicString ( target_ip, sizeof(target_ip), file );
-	SaveDynamicString ( target_accno, sizeof(target_accno), file );
+	SaveDynamicString ( source_ip, 128, file );
+	SaveDynamicString ( source_accno, 128, file );
+	SaveDynamicString ( target_ip, 128, file );
+	SaveDynamicString ( target_accno, 128, file );
 
     fwrite ( &amount, sizeof(amount), 1, file );
     hackdate.Save ( file );
@@ -257,8 +241,8 @@ void BankRobberyEvent::Print ()
 
     printf ( "Bank Robbery Event\n" );
     UplinkEvent::Print ();
-    printf ( "Source: %s %s\n", source_ip, source_accno );
-    printf ( "Target: %s %s\n", target_ip, target_accno );
+    printf ( "Source: %s %s\n", source_ip.c_str (), source_accno.c_str () );
+    printf ( "Target: %s %s\n", target_ip.c_str (), target_accno.c_str () );
     printf ( "Amount: %d\n", amount );
     printf ( "Date:\n" );
     hackdate.Print ();

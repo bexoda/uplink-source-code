@@ -10,6 +10,8 @@
 #ifndef _included_attemptmissionevent_h
 #define _included_attemptmissionevent_h
 
+#include <string>
+
 
 #include "world/person.h"
 #include "world/scheduler/uplinkevent.h"
@@ -20,7 +22,7 @@ class AttemptMissionEvent : public UplinkEvent
 
 public:
 
-	char agentname [SIZE_PERSON_NAME];
+	std::string agentname;
 
 public:
 

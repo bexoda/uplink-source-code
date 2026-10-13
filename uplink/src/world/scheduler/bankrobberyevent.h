@@ -17,6 +17,8 @@
 #ifndef _included_bankrobberyevent_h
 #define _included_bankrobberyevent_h
 
+#include <string>
+
 #include "world/scheduler/eventscheduler.h"
 
 
@@ -25,10 +27,10 @@ class BankRobberyEvent : public UplinkEvent
 
 public:
 
-    char source_ip      [128];
-    char source_accno   [128];
-    char target_ip      [128];
-    char target_accno   [128];
+    std::string source_ip;
+    std::string source_accno;
+    std::string target_ip;
+    std::string target_accno;
     int amount;
     Date hackdate;
 

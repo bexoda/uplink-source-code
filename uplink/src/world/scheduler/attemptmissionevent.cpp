@@ -19,7 +19,6 @@
 AttemptMissionEvent::AttemptMissionEvent ()
 {
 
-	memset ( agentname, 0, sizeof ( agentname ) );
 
 }
 
@@ -30,7 +29,7 @@ AttemptMissionEvent::~AttemptMissionEvent ()
 void AttemptMissionEvent::Run ()
 {
 
-	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( agentname );
+	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( agentname.c_str () );
 	UplinkAssert (agent);
 
 	agent->AttemptMission ();
@@ -41,16 +40,16 @@ void AttemptMissionEvent::SetAgentName ( const char *newagentname )
 {
 
 	UplinkAssert ( strlen (newagentname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( agentname, newagentname, sizeof ( agentname ) );
+	agentname = newagentname;
 
 }
 
 char *AttemptMissionEvent::GetShortString ()
 {
 
-	size_t shortstringsize = strlen(agentname) + 32;
+	size_t shortstringsize = strlen(agentname.c_str ()) + 32;
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "Attempt Mission for %s", agentname );
+	UplinkSnprintf ( shortstring, shortstringsize, "Attempt Mission for %s", agentname.c_str () );
 	return shortstring;
 
 }
@@ -58,7 +57,7 @@ char *AttemptMissionEvent::GetShortString ()
 char *AttemptMissionEvent::GetLongString ()
 {
 
-	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( agentname );
+	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( agentname.c_str () );
 	UplinkAssert (agent);
 
 	Mission *m = agent->missions.GetData (0);
@@ -82,14 +81,10 @@ bool AttemptMissionEvent::Load ( FILE *file )
 	if ( !UplinkEvent::Load ( file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( agentname, sizeof(agentname), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( agentname, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( agentname, sizeof(agentname), 1, file ) ) {
-			agentname [ sizeof(agentname) - 1 ] = '\0';
-			return false;
-		}
-		agentname [ sizeof(agentname) - 1 ] = '\0';
+		if ( !LoadFixedString ( agentname, SIZE_PERSON_NAME, file ) ) return false;
 	}
 
 	LoadID_END ( file );
@@ -105,7 +100,7 @@ void AttemptMissionEvent::Save ( FILE *file )
 
 	UplinkEvent::Save ( file );
 
-	SaveDynamicString ( agentname, sizeof(agentname), file );
+	SaveDynamicString ( agentname, SIZE_PERSON_NAME, file );
 
 	SaveID_END ( file );
 
@@ -114,7 +109,7 @@ void AttemptMissionEvent::Save ( FILE *file )
 void AttemptMissionEvent::Print ()
 {
 
-	printf ( "AttemptMissionEvent : agentname=%s\n", agentname );
+	printf ( "AttemptMissionEvent : agentname=%s\n", agentname.c_str () );
 
 	UplinkEvent::Print ();
 

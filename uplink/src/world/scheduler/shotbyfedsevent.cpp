@@ -21,7 +21,6 @@ ShotByFedsEvent::ShotByFedsEvent ()
 {
 
 	reason = NULL;
-	memset ( name, 0, sizeof ( name ) );
 
 }
 
@@ -36,7 +35,7 @@ void ShotByFedsEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -53,7 +52,7 @@ void ShotByFedsEvent::SetReason ( const char *newreason )
 void ShotByFedsEvent::Run ()
 {
 
-	Person *person = game->GetWorld ()->GetPerson ( name );
+	Person *person = game->GetWorld ()->GetPerson ( name.c_str () );
 	UplinkAssert (person);
 
 	person->SetStatus ( PERSON_STATUS_DEAD );
@@ -65,9 +64,9 @@ void ShotByFedsEvent::Run ()
 char *ShotByFedsEvent::GetShortString ()
 {
 
-	size_t shortstringsize = strlen(name) + 32;
+	size_t shortstringsize = strlen(name.c_str ()) + 32;
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "ShotByFeds for %s", name );
+	UplinkSnprintf ( shortstring, shortstringsize, "ShotByFeds for %s", name.c_str () );
 	return shortstring;
 
 }
@@ -91,14 +90,10 @@ bool ShotByFedsEvent::Load  ( FILE *file )
 	if ( !UplinkEvent::Load ( file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( name, sizeof(name), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( name, sizeof(name), 1, file ) ) {
-			name [ sizeof(name) - 1 ] = '\0';
-			return false;
-		}
-		name [ sizeof(name) - 1 ] = '\0';
+		if ( !LoadFixedString ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	if ( !LoadDynamicStringPtr ( &reason, file ) ) return false;
 
@@ -115,7 +110,7 @@ void ShotByFedsEvent::Save  ( FILE *file )
 
 	UplinkEvent::Save ( file );
 
-	SaveDynamicString ( name, sizeof(name), file );
+	SaveDynamicString ( name, SIZE_PERSON_NAME, file );
 	SaveDynamicString ( reason, file );
 
 	SaveID_END ( file );
@@ -125,7 +120,7 @@ void ShotByFedsEvent::Save  ( FILE *file )
 void ShotByFedsEvent::Print ()
 {
 
-	printf ( "ShotByFedsEvent : for %s\n", name );
+	printf ( "ShotByFedsEvent : for %s\n", name.c_str () );
 	UplinkEvent::Print ();
 	printf ( "Reason : %s\n", reason );
 

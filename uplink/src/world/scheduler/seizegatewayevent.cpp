@@ -30,7 +30,6 @@ SeizeGatewayEvent::SeizeGatewayEvent ()
 
 	reason = NULL;
 	gateway_id = 0;
-	memset ( name, 0, sizeof ( name ) );
 
 }
 
@@ -45,7 +44,7 @@ void SeizeGatewayEvent::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen(newname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -69,7 +68,7 @@ void SeizeGatewayEvent::SetGatewayID ( int newid )
 void SeizeGatewayEvent::Run ()
 {
 
-	Person *person = game->GetWorld ()->GetPerson ( name );
+	Person *person = game->GetWorld ()->GetPerson ( name.c_str () );
 	UplinkAssert (person);
 
 	ConsequenceGenerator::SeizeGateway ( person, reason );
@@ -78,7 +77,7 @@ void SeizeGatewayEvent::Run ()
 	// If this is the player, then it's GAME OVER
 	//
 
-	if ( strcmp ( name, "PLAYER" ) == 0 ) {
+	if ( strcmp ( name.c_str (), "PLAYER" ) == 0 ) {
 
 		if ( gateway_id == game->GetWorld ()->GetPlayer ()->gateway.id ) {
 
@@ -133,9 +132,9 @@ void SeizeGatewayEvent::RunWarning ()
 char *SeizeGatewayEvent::GetShortString ()
 {
 
-	size_t shortstringsize = strlen(name) + 32;
+	size_t shortstringsize = strlen(name.c_str ()) + 32;
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "Seize Gateway of %s", name );
+	UplinkSnprintf ( shortstring, shortstringsize, "Seize Gateway of %s", name.c_str () );
 	return shortstring;
 
 }
@@ -161,14 +160,10 @@ bool SeizeGatewayEvent::Load  ( FILE *file )
 	if ( !UplinkEvent::Load ( file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( name, sizeof(name), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( name, sizeof(name), 1, file ) ) {
-			name [ sizeof(name) - 1 ] = '\0';
-			return false;
-		}
-		name [ sizeof(name) - 1 ] = '\0';
+		if ( !LoadFixedString ( name, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	if ( !LoadDynamicStringPtr ( &reason, file ) ) return false;
 	if ( !FileReadData ( &gateway_id, sizeof(gateway_id), 1, file ) ) return false;
@@ -186,7 +181,7 @@ void SeizeGatewayEvent::Save  ( FILE *file )
 
 	UplinkEvent::Save ( file );
 
-	SaveDynamicString ( name, sizeof(name), file );
+	SaveDynamicString ( name, SIZE_PERSON_NAME, file );
 	SaveDynamicString ( reason, file );
 	fwrite ( &gateway_id, sizeof(gateway_id), 1, file );
 
@@ -197,7 +192,7 @@ void SeizeGatewayEvent::Save  ( FILE *file )
 void SeizeGatewayEvent::Print ()
 {
 
-	printf ( "Seize Gateway Event for %s, Gateway no. %d:\n", name, gateway_id );
+	printf ( "Seize Gateway Event for %s, Gateway no. %d:\n", name.c_str (), gateway_id );
 	UplinkEvent::Print ();
 	printf ( "%s\n", reason );
 

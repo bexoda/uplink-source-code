@@ -275,7 +275,7 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	UplinkStrncpy ( completionA, target->ip.c_str (), sizeof ( completionA ) );
 	UplinkStrncpy ( completionB, person->name.c_str (), sizeof ( completionB ) );
 
-    UplinkStrncpy ( arcmissiontarget, person->name.c_str (), sizeof ( arcmissiontarget ) );
+    arcmissiontarget = person->name.c_str ();
 
 	fulldetails	<< "\nTARGET INDIVIDUAL :\n"
 				<< "   NAME    : " << person->name << "\n"

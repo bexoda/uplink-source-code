@@ -11,6 +11,8 @@
 #ifndef _included_shotbyfedsevent_h
 #define _included_shotbyfedsevent_h
 
+#include <string>
+
 // ============================================================================
 
 #include "eclipse.h"
@@ -31,7 +33,7 @@ protected:
 
 public:
 
-	char name [SIZE_PERSON_NAME];
+	std::string name;
 
 public:
 

@@ -22,6 +22,8 @@
 #ifndef _included_plotgenerator_h
 #define _included_plotgenerator_h
 
+#include <string>
+
 #include "app/uplinkobject.h"
 #include "world/person.h"
 
@@ -56,9 +58,9 @@ protected:
 	int act;
 	int scene;
 
-	char act1scene3agent [SIZE_PERSON_NAME];						// The guy who first raises the issue
-	char act1scene4agent [SIZE_PERSON_NAME];						// The guy who is first executed
-	char act2scene1agent [SIZE_PERSON_NAME];						// The guy who does the Arunmor test mission
+	std::string act1scene3agent;						// The guy who first raises the issue
+	std::string act1scene4agent;						// The guy who is first executed
+	std::string act2scene1agent;						// The guy who does the Arunmor test mission
 
     bool playervisitsplotsites;                                     // Set to true if the player pokes around the plot
     bool playercancelsmail;											// Has the player cancelled the warning mail from a1s7?
@@ -71,9 +73,9 @@ protected:
     bool completed_saveitforthejury;
     bool completed_shinyhammer;
 
-    char saveitforthejury_guytobeframed [SIZE_PERSON_NAME];         // Special variables for special missions
-    char saveitforthejury_targetbankip [SIZE_VLOCATION_IP];
-    char tracer_lastknownip [SIZE_VLOCATION_IP];
+    std::string saveitforthejury_guytobeframed;         // Special variables for special missions
+    std::string saveitforthejury_targetbankip;
+    std::string tracer_lastknownip;
 
 	int numuses_revelation;											// Number of times it has been released
  

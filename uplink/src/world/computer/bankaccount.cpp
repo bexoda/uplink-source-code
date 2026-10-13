@@ -40,7 +40,7 @@ BankAccount::~BankAccount ()
 {
 }
 	
-BankAccount *BankAccount::GetAccount ( const char *bankip, char *accno )
+BankAccount *BankAccount::GetAccount ( const char *bankip, const char *accno )
 {
 
 	VLocation *vl = game->GetWorld ()->GetVLocation ( bankip );

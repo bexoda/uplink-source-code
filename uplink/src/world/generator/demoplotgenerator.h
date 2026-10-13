@@ -13,6 +13,8 @@
 #ifndef _included_demoplotgenerator_h
 #define _included_demoplotgenerator_h
 
+#include <string>
+
 
 #include "app/uplinkobject.h"
 
@@ -23,7 +25,7 @@ class DemoPlotGenerator : public UplinkObject
 protected:
 
     int scene;
-    char arcmissiontarget [SIZE_PERSON_NAME];
+    std::string arcmissiontarget;
 
 protected:
 

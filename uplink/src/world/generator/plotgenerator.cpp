@@ -81,9 +81,9 @@ PlotGenerator::PlotGenerator ()
 	act = 0;
 	scene = 0;
 
-	UplinkStrncpy ( act1scene3agent, " ", sizeof ( act1scene3agent ) );
-	UplinkStrncpy ( act1scene4agent, " ", sizeof ( act1scene4agent ) );
-	UplinkStrncpy ( act2scene1agent, " ", sizeof ( act2scene1agent ) );
+	act1scene3agent = " ";
+	act1scene4agent = " ";
+	act2scene1agent = " ";
 
     playervisitsplotsites = false;
     playercancelsmail = false;
@@ -98,9 +98,9 @@ PlotGenerator::PlotGenerator ()
 
 	specialmissionscompleted = 0;
 
-    UplinkStrncpy ( saveitforthejury_guytobeframed, "None", sizeof ( saveitforthejury_guytobeframed ) );
-    UplinkStrncpy ( saveitforthejury_targetbankip, "None", sizeof ( saveitforthejury_targetbankip ) );
-    UplinkStrncpy ( tracer_lastknownip, "None ", sizeof ( tracer_lastknownip ));
+    saveitforthejury_guytobeframed = "None";
+    saveitforthejury_targetbankip = "None";
+    tracer_lastknownip = "None ";
 
 	numuses_revelation = 0;
     revelation_releaseuncontrolled = false;
@@ -1030,7 +1030,7 @@ void PlotGenerator::RunRevelation ( const char *ip, float version, bool /*player
 void PlotGenerator::RunRevelationTracer ( const char *ip )
 {
 
-    UplinkStrncpy ( tracer_lastknownip, ip, sizeof ( tracer_lastknownip ) );
+    tracer_lastknownip = ip;
 
 }
 
@@ -1170,14 +1170,14 @@ void PlotGenerator::Run_Act1Scene2 ()
 
 	delete allpeople;
 
-	UplinkStrncpy ( act1scene3agent, sorted.GetData (1)->name.c_str (), sizeof ( act1scene3agent ) );
-	UplinkStrncpy ( act1scene4agent, sorted.GetData (0)->name.c_str (), sizeof ( act1scene4agent ) );
+	act1scene3agent = sorted.GetData (1)->name.c_str ();
+	act1scene4agent = sorted.GetData (0)->name.c_str ();
 
 	//
 	// Set up a log in on scene4 guys computer
 	//
 
-    char *computername = NameGenerator::GeneratePersonalComputerName( act1scene4agent );
+    char *computername = NameGenerator::GeneratePersonalComputerName( act1scene4agent.c_str () );
 	Computer *comp = game->GetWorld ()->GetComputer ( computername );
 	if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 		return;
@@ -1236,9 +1236,9 @@ void PlotGenerator::Run_Act1Scene2 ()
 void PlotGenerator::Run_Act1Scene3 ()
 {
 
-	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene3agent, " " ) != 0, __FILE__, __LINE__ ) )
+	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene3agent.c_str (), " " ) != 0, __FILE__, __LINE__ ) )
 		return;
-	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene3agent );
+	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene3agent.c_str () );
 	if ( UplinkIncompatibleSaveGameAssert (agent, __FILE__, __LINE__) )
 		return;
 
@@ -1286,15 +1286,15 @@ void PlotGenerator::Run_Act1Scene3 ()
 void PlotGenerator::Run_Act1Scene4 ()
 {
 
-	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent, " " ) != 0, __FILE__, __LINE__ ) )
+	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent.c_str (), " " ) != 0, __FILE__, __LINE__ ) )
 		return;
-	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent );
+	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent.c_str () );
 	if ( UplinkIncompatibleSaveGameAssert (agent, __FILE__, __LINE__) )
 		return;
 
-	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene3agent, " " ) != 0, __FILE__, __LINE__ ) )
+	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene3agent.c_str (), " " ) != 0, __FILE__, __LINE__ ) )
 		return;
-	Agent *scene3guy = (Agent *) game->GetWorld ()->GetPerson ( act1scene3agent );
+	Agent *scene3guy = (Agent *) game->GetWorld ()->GetPerson ( act1scene3agent.c_str () );
 	if ( UplinkIncompatibleSaveGameAssert (scene3guy, __FILE__, __LINE__) )
 		return;
 
@@ -1372,9 +1372,9 @@ void PlotGenerator::Run_Act1Scene4 ()
 void PlotGenerator::Run_Act1Scene5 ()
 {
 
-	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent, " " ) != 0, __FILE__, __LINE__ ) )
+	if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent.c_str (), " " ) != 0, __FILE__, __LINE__ ) )
 		return;
-	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent );
+	Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent.c_str () );
 	if ( UplinkIncompatibleSaveGameAssert (agent, __FILE__, __LINE__) )
 		return;
 
@@ -1395,7 +1395,7 @@ void PlotGenerator::Run_Act1Scene5 ()
 	al->SetData1 ( "Copied file RevelationCoreV0.7" );
 	comp->logbank.AddLog ( al );
 
-    char *hiscomputername = NameGenerator::GeneratePersonalComputerName( act1scene4agent );
+    char *hiscomputername = NameGenerator::GeneratePersonalComputerName( act1scene4agent.c_str () );
 	Computer *hiscomp = game->GetWorld ()->GetComputer ( hiscomputername );
 	if ( UplinkIncompatibleSaveGameAssert (hiscomp, __FILE__, __LINE__) )
 		return;
@@ -1466,9 +1466,9 @@ void PlotGenerator::Run_Act1Scene7 ()
 
 	if ( !playercancelsmail ) {
 
-		if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent, " " ) != 0, __FILE__, __LINE__ ) )
+		if ( UplinkIncompatibleSaveGameAssert ( strcmp ( act1scene4agent.c_str (), " " ) != 0, __FILE__, __LINE__ ) )
 			return;
-		Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent );
+		Agent *agent = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent.c_str () );
 		if ( UplinkIncompatibleSaveGameAssert (agent, __FILE__, __LINE__) )
 			return;
 
@@ -1513,7 +1513,7 @@ void PlotGenerator::Run_Act1Scene7 ()
 
         // Make sure that mail doesn't appear on his computer any more
 
-        char *hiscomputername = NameGenerator::GeneratePersonalComputerName( act1scene4agent );
+        char *hiscomputername = NameGenerator::GeneratePersonalComputerName( act1scene4agent.c_str () );
 	    Computer *hiscomp = game->GetWorld ()->GetComputer ( hiscomputername );
 	    if ( UplinkIncompatibleSaveGameAssert (hiscomp, __FILE__, __LINE__) )
 			return;
@@ -1606,7 +1606,7 @@ void PlotGenerator::Run_Act2Scene1 ()
 
     char *hiscomputername;
 	{
-		char * temp = NameGenerator::GeneratePersonalComputerName( act1scene4agent );
+		char * temp = NameGenerator::GeneratePersonalComputerName( act1scene4agent.c_str () );
 		hiscomputername = new char[ strlen( temp ) + 1 ];
 		UplinkSafeStrcpy( hiscomputername, temp );
 	}
@@ -1619,7 +1619,7 @@ void PlotGenerator::Run_Act2Scene1 ()
 	Computer *comp = new Computer ();
 	comp->SetTYPE ( COMPUTER_TYPE_PERSONALCOMPUTER );
 	comp->SetName ( hiscomputername );
-	comp->SetCompanyName ( act1scene4agent );
+	comp->SetCompanyName ( act1scene4agent.c_str () );
 	comp->SetTraceSpeed ( 0 );
 	comp->SetTraceAction ( COMPUTER_TRACEACTION_DISCONNECT );
 	comp->SetIsTargetable ( false );
@@ -1670,7 +1670,7 @@ void PlotGenerator::Run_Act2Scene1 ()
     }
 	else if ( playercancelsmail ) {
 
-	    Agent *act1scene4 = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent );
+	    Agent *act1scene4 = (Agent *) game->GetWorld ()->GetPerson ( act1scene4agent.c_str () );
     	if ( UplinkIncompatibleSaveGameAssert (act1scene4, __FILE__, __LINE__) )
 			return;
 
@@ -3573,7 +3573,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
     Person *poorsod = WorldGenerator::GetRandomPerson ();
     UplinkAssert (poorsod);
 
-    UplinkStrncpy ( saveitforthejury_guytobeframed, poorsod->name.c_str (), sizeof ( saveitforthejury_guytobeframed ) );
+    saveitforthejury_guytobeframed = poorsod->name.c_str ();
 
     //char *personalcomputername = strdup( NameGenerator::GeneratePersonalComputerName(poorsod->name) );
 	char personalcomputername[MAX_COMPUTERNAME];
@@ -3590,7 +3590,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
     BankComputer *bank = (BankComputer *) WorldGenerator::GetRandomComputer ( COMPUTER_TYPE_PUBLICBANKSERVER );
 	UplinkAssert (bank);
 
-    UplinkStrncpy ( saveitforthejury_targetbankip, bank->ip.c_str (), sizeof ( saveitforthejury_targetbankip ) );
+    saveitforthejury_targetbankip = bank->ip.c_str ();
 
 	char description [SIZE_MISSION_DESCRIPTION];
 	std::ostringstream fulldetails;
@@ -3749,7 +3749,7 @@ bool PlotGenerator::IsMissionComplete_Tracer ()
     if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 		return false;
 
-    if ( strcmp ( tracer_lastknownip, comp->ip.c_str () ) == 0 ) {
+    if ( strcmp ( tracer_lastknownip.c_str (), comp->ip.c_str () ) == 0 ) {
 
         // Success
 
@@ -4135,7 +4135,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
     // Look up the persons computer
 
-    Person *poorsod = game->GetWorld ()->GetPerson ( saveitforthejury_guytobeframed );
+    Person *poorsod = game->GetWorld ()->GetPerson ( saveitforthejury_guytobeframed.c_str () );
     if ( UplinkIncompatibleSaveGameAssert (poorsod, __FILE__, __LINE__) )
 		return false;
 
@@ -4151,7 +4151,7 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 
     // Lookup the bank he was supposed to be framed for
 
-    VLocation *vl = game->GetWorld ()->GetVLocation ( saveitforthejury_targetbankip );
+    VLocation *vl = game->GetWorld ()->GetVLocation ( saveitforthejury_targetbankip.c_str () );
     UplinkAssert (vl);
     BankComputer *comp = (BankComputer *) vl->GetComputer ();
     UplinkAssert (comp);
@@ -4711,26 +4711,14 @@ bool PlotGenerator::Load  ( FILE *file )
 	if ( !FileReadData ( &scene, sizeof(scene), 1, file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( act1scene3agent, sizeof(act1scene3agent), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( act1scene4agent, sizeof(act1scene4agent), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( act2scene1agent, sizeof(act2scene1agent), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( act1scene3agent, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( act1scene4agent, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( act2scene1agent, SIZE_PERSON_NAME, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( act1scene3agent, sizeof(act1scene3agent), 1, file ) ) {
-			act1scene3agent [ sizeof(act1scene3agent) - 1 ] = '\0';
-			return false;
-		}
-		act1scene3agent [ sizeof(act1scene3agent) - 1 ] = '\0';
-		if ( !FileReadData ( act1scene4agent, sizeof(act1scene4agent), 1, file ) ) {
-			act1scene4agent [ sizeof(act1scene4agent) - 1 ] = '\0';
-			return false;
-		}
-		act1scene4agent [ sizeof(act1scene4agent) - 1 ] = '\0';
-		if ( !FileReadData ( act2scene1agent, sizeof(act2scene1agent), 1, file ) ) {
-			act2scene1agent [ sizeof(act2scene1agent) - 1 ] = '\0';
-			return false;
-		}
-		act2scene1agent [ sizeof(act2scene1agent) - 1 ] = '\0';
+		if ( !LoadFixedString ( act1scene3agent, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadFixedString ( act1scene4agent, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadFixedString ( act2scene1agent, SIZE_PERSON_NAME, file ) ) return false;
 	}
 
     if ( !FileReadData ( &playervisitsplotsites, sizeof(playervisitsplotsites), 1, file ) ) return false;
@@ -4747,26 +4735,14 @@ bool PlotGenerator::Load  ( FILE *file )
     if ( !FileReadData ( &specialmissionscompleted, sizeof(specialmissionscompleted), 1, file ) ) return false;
 
 	if ( strcmp( game->GetLoadedSavefileVer(), "SAV59" ) >= 0 ) {
-		if ( !LoadDynamicStringStatic ( saveitforthejury_guytobeframed, sizeof(saveitforthejury_guytobeframed), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( saveitforthejury_targetbankip, sizeof(saveitforthejury_targetbankip), file ) ) return false;
-		if ( !LoadDynamicStringStatic ( tracer_lastknownip, sizeof(tracer_lastknownip), file ) ) return false;
+		if ( !LoadDynamicStringStatic ( saveitforthejury_guytobeframed, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( saveitforthejury_targetbankip, SIZE_VLOCATION_IP, file ) ) return false;
+		if ( !LoadDynamicStringStatic ( tracer_lastknownip, SIZE_VLOCATION_IP, file ) ) return false;
 	}
 	else {
-		if ( !FileReadData ( saveitforthejury_guytobeframed, sizeof(saveitforthejury_guytobeframed), 1, file ) ) {
-			saveitforthejury_guytobeframed [ sizeof(saveitforthejury_guytobeframed) - 1 ] = '\0';
-			return false;
-		}
-		saveitforthejury_guytobeframed [ sizeof(saveitforthejury_guytobeframed) - 1 ] = '\0';
-		if ( !FileReadData ( saveitforthejury_targetbankip, sizeof(saveitforthejury_targetbankip), 1, file ) ) {
-			saveitforthejury_targetbankip [ sizeof(saveitforthejury_targetbankip) - 1 ] = '\0';
-			return false;
-		}
-		saveitforthejury_targetbankip [ sizeof(saveitforthejury_targetbankip) - 1 ] = '\0';
-		if ( !FileReadData ( tracer_lastknownip, sizeof(tracer_lastknownip), 1, file ) ) {
-			tracer_lastknownip [ sizeof(tracer_lastknownip) - 1 ] = '\0';
-			return false;
-		}
-		tracer_lastknownip [ sizeof(tracer_lastknownip) - 1 ] = '\0';
+		if ( !LoadFixedString ( saveitforthejury_guytobeframed, SIZE_PERSON_NAME, file ) ) return false;
+		if ( !LoadFixedString ( saveitforthejury_targetbankip, SIZE_VLOCATION_IP, file ) ) return false;
+		if ( !LoadFixedString ( tracer_lastknownip, SIZE_VLOCATION_IP, file ) ) return false;
 	}
 
 	if ( !FileReadData ( &numuses_revelation, sizeof(numuses_revelation), 1, file ) ) return false;
@@ -4793,9 +4769,9 @@ void PlotGenerator::Save  ( FILE *file )
 	fwrite ( &act, sizeof(act), 1, file );
 	fwrite ( &scene, sizeof(scene), 1, file );
 
-	SaveDynamicString ( act1scene3agent, sizeof(act1scene3agent), file );
-	SaveDynamicString ( act1scene4agent, sizeof(act1scene4agent), file );
-	SaveDynamicString ( act2scene1agent, sizeof(act2scene1agent), file );
+	SaveDynamicString ( act1scene3agent, SIZE_PERSON_NAME, file );
+	SaveDynamicString ( act1scene4agent, SIZE_PERSON_NAME, file );
+	SaveDynamicString ( act2scene1agent, SIZE_PERSON_NAME, file );
 
     fwrite ( &playervisitsplotsites, sizeof(playervisitsplotsites), 1, file );
     fwrite ( &playercancelsmail, sizeof(playercancelsmail), 1, file );
@@ -4810,9 +4786,9 @@ void PlotGenerator::Save  ( FILE *file )
 
     fwrite ( &specialmissionscompleted, sizeof(specialmissionscompleted), 1, file );
 
-	SaveDynamicString ( saveitforthejury_guytobeframed, sizeof(saveitforthejury_guytobeframed), file );
-	SaveDynamicString ( saveitforthejury_targetbankip, sizeof(saveitforthejury_targetbankip), file );
-	SaveDynamicString ( tracer_lastknownip, sizeof(tracer_lastknownip), file );
+	SaveDynamicString ( saveitforthejury_guytobeframed, SIZE_PERSON_NAME, file );
+	SaveDynamicString ( saveitforthejury_targetbankip, SIZE_VLOCATION_IP, file );
+	SaveDynamicString ( tracer_lastknownip, SIZE_VLOCATION_IP, file );
 
 	fwrite ( &numuses_revelation, sizeof(numuses_revelation), 1, file );
     fwrite ( &revelation_releaseuncontrolled, sizeof(revelation_releaseuncontrolled), 1, file );
@@ -4833,9 +4809,9 @@ void PlotGenerator::Print ()
 
 	printf ( "Plot Generator\n" );
 	printf ( "Act=%d, Scene=%d\n", act, scene );
-	printf ( "Act1Scene3Agent = %s\n", act1scene3agent );
-	printf ( "Act1Scene4Agent = %s\n", act1scene4agent );
-	printf ( "Act2Scene1Agent = %s\n", act2scene1agent );
+	printf ( "Act1Scene3Agent = %s\n", act1scene3agent.c_str () );
+	printf ( "Act1Scene4Agent = %s\n", act1scene4agent.c_str () );
+	printf ( "Act2Scene1Agent = %s\n", act2scene1agent.c_str () );
 
 	printf ( "PlayerVisitsPlotSites = %d\n", playervisitsplotsites );
     printf ( "PlayerCancelsMail = %d\n", playercancelsmail );
@@ -4853,9 +4829,9 @@ void PlotGenerator::Print ()
 
 	printf ( "specialmissionscompleted : %d\n", specialmissionscompleted );
 
-    printf ( "saveitforthejury_targetbankip : %s\n", saveitforthejury_targetbankip );
-    printf ( "saveitforthejury_guytobeframed : %s\n", saveitforthejury_guytobeframed );
-    printf ( "tracer_lastknownip : %s\n", tracer_lastknownip );
+    printf ( "saveitforthejury_targetbankip : %s\n", saveitforthejury_targetbankip.c_str () );
+    printf ( "saveitforthejury_guytobeframed : %s\n", saveitforthejury_guytobeframed.c_str () );
+    printf ( "tracer_lastknownip : %s\n", tracer_lastknownip.c_str () );
 
     printf ( "revelation_releaseuncontrolled : %d\n", revelation_releaseuncontrolled );
     printf ( "revelation_releasefailed : %d\n", revelation_releasefailed );
