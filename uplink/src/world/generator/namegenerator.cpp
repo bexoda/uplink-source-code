@@ -207,7 +207,9 @@ char *NameGenerator::GenerateCompanyName ()
     char *companynameA = companynamesA.GetData (index1);
     char *companynameB = companynamesB.GetData (index2);
 	char name [SIZE_COMPANY_NAME];
-	UplinkSnprintf ( name, sizeof ( name ), "%s %s", companynameA, companynameB );
+	// An exhausted list gives NULL; glibc printed that as "(null)", so keep the same name
+	UplinkSnprintf ( name, sizeof ( name ), "%s %s", companynameA ? companynameA : "(null)",
+	                 companynameB ? companynameB : "(null)" );
 
 	delete [] companynameA;
     companynamesA.RemoveData (index1);
@@ -233,7 +235,9 @@ char *NameGenerator::GeneratePersonName ()
     char *forname = fornames.GetData (index_f);
     char *surname = surnames.GetData (index_s);
 	char name [SIZE_PERSON_NAME];
-	UplinkSnprintf ( name, sizeof ( name ), "%s %s", forname, surname );
+	// An exhausted list gives NULL; glibc printed that as "(null)", so keep the same name
+	UplinkSnprintf ( name, sizeof ( name ), "%s %s", forname ? forname : "(null)",
+	                 surname ? surname : "(null)" );
 
     delete [] surname;
 	surnames.RemoveData (index_s);

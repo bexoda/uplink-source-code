@@ -116,144 +116,108 @@ void BTree <T> :: PutData ( const char *newid, const T &newdata )
 
 }
 
+// Replaces this node by its left child (the old right subtree goes on the far right of
+// it), or by its right child, or empties it. Frees what it takes out.
 template <class T>
-void BTree <T> :: RemoveData ( const char *newid )
+void BTree <T> :: RemoveThisNode ()
 {
-    
-    /*
-      Deletes an element from the list
-      By replacing the element with it's own left node, then appending
-      it's own right node onto the extreme right of itself.
-      
-      */
-    
-    assert (newid);
-    
-    if ( strcmp ( newid, id ) == 0 ) {
-	
-		//var tempright : pointer to node := data->right
-		BTree <T> *tempright = Right ();       
-			
-			//data := data->left
-		if ( Left () ) {
-			
-			id = new char [strlen (Left ()->id) + 1];
-			strcpy ( id, Left ()->id );
-			data = Left ()->data;                  // This bit requires a good copy constructor
-			rtree = Left ()->Right ();
-			ltree = Left ()->Left ();	
-			
-			AppendRight ( tempright );
-			
-		}
-		else {
-			
-			//append_right ( data, tempright )
-			
-			if ( Right () ) {
-			   
-				id = new char [strlen (Right ()->id) + 1];
-				strcpy ( id, Right ()->id );
-				data = Right ()->data;                  // This bit requires a good copy constructor
-				ltree = Right ()->Left ();	
-				rtree = Right ()->Right ();
-			
-			}
-			else {
-			
-				id = NULL;                              // Hopefully this is the root node
-			
-			}	    
-			
-		}
-	    	
-    }                                                   //elsif Name < data->name then
-	else if ( strcmp ( newid, id ) < 0 ) {
-		if ( Left () ) {
-            if ( strcmp ( Left ()->id, newid ) == 0 && !Left ()->Left () && !Left ()->Right () )
-                ltree = NULL;
-            else
-		        Left ()->RemoveData ( newid );
-		}
+
+    BTree <T> *tempright = rtree;
+    delete [] id;
+
+    if ( ltree ) {
+        BTree <T> *left = ltree;
+        id = left->id;
+        data = left->data;
+        ltree = left->ltree;
+        rtree = left->rtree;
+        left->id = NULL;
+        left->ltree = left->rtree = NULL;
+        delete left;
+        AppendRight ( tempright );
     }
-    else {                                              //elsif Name > data->name then
-		if ( Right () ) {
-            if ( strcmp ( Right ()->id, newid ) == 0 && !Right ()->Left () && !Right ()->Right () )
-                rtree = NULL;
-            else
-		        Right ()->RemoveData ( newid );
-		}
+    else if ( rtree ) {
+        BTree <T> *right = rtree;
+        id = right->id;
+        data = right->data;
+        ltree = right->ltree;
+        rtree = right->rtree;
+        right->id = NULL;
+        right->ltree = right->rtree = NULL;
+        delete right;
+    }
+    else {
+        id = NULL;                              // Hopefully this is the root node
     }
 
 }
 
 template <class T>
-void BTree <T> :: RemoveData ( const char *newid, const T &newdata  )
+void BTree <T> :: RemoveData ( const char *newid )
 {
-    
-    /*
-      Deletes an element from the list
-      By replacing the element with it's own left node, then appending
-      it's own right node onto the extreme right of itself.
-      
-      */
-    
+
     assert (newid);
-    
-    if ( strcmp ( newid, id ) == 0 && data == newdata ) {
-	
-		//var tempright : pointer to node := data->right
-		BTree <T> *tempright = Right ();       
-			
-			//data := data->left
-		if ( Left () ) {
-			
-			id = new char [strlen (Left ()->id) + 1];
-			strcpy ( id, Left ()->id );
-			data = Left ()->data;                  // This bit requires a good copy constructor
-			rtree = Left ()->Right ();
-			ltree = Left ()->Left ();	
-			
-			AppendRight ( tempright );
-			
-		}
-		else {
-			
-			//append_right ( data, tempright )
-			
-			if ( Right () ) {
-			   
-				id = new char [strlen (Right ()->id) + 1];
-				strcpy ( id, Right ()->id );
-				data = Right ()->data;                  // This bit requires a good copy constructor
-				ltree = Right ()->Left ();	
-				rtree = Right ()->Right ();
-			
-			}
-			else {
-			
-				id = NULL;                              // Hopefully this is the root node
-			
-			}	    
-			
-		}
-	    	
-    }                                                   //elsif Name < data->name then
-	else if ( strcmp ( newid, id ) <= 0 ) {
-		if ( Left () ) {
-            if ( strcmp ( Left ()->id, newid ) == 0 && data == newdata && !Left ()->Left () && !Left ()->Right () )
-                ltree = NULL;
-            else
-		        Left ()->RemoveData ( newid, newdata );
-		}
+    if ( !id ) return;
+
+    int cmp = strcmp ( newid, id );
+
+    if ( cmp == 0 ) {
+        RemoveThisNode ();
     }
-    else {                                              //elsif Name > data->name then
-		if ( Right () ) {
-            if ( strcmp ( Right ()->id, newid ) == 0 && data == newdata && !Right ()->Left () && !Right ()->Right () )
-                rtree = NULL;
+    else if ( cmp < 0 ) {
+        if ( ltree ) {
+            if ( ltree->id && strcmp ( ltree->id, newid ) == 0 && !ltree->ltree && !ltree->rtree ) {
+                delete ltree;
+                ltree = NULL;
+            }
             else
-		        Right ()->RemoveData ( newid, newdata );
-		}
+                ltree->RemoveData ( newid );
+        }
+    }
+    else {
+        if ( rtree ) {
+            if ( rtree->id && strcmp ( rtree->id, newid ) == 0 && !rtree->ltree && !rtree->rtree ) {
+                delete rtree;
+                rtree = NULL;
+            }
+            else
+                rtree->RemoveData ( newid );
+        }
+    }
+
+}
+
+template <class T>
+void BTree <T> :: RemoveData ( const char *newid, const T &newdata )
+{
+
+    assert (newid);
+    if ( !id ) return;
+
+    int cmp = strcmp ( newid, id );
+
+    if ( cmp == 0 && data == newdata ) {
+        RemoveThisNode ();
+    }
+    else if ( cmp <= 0 ) {
+        if ( ltree ) {
+            if ( ltree->id && strcmp ( ltree->id, newid ) == 0 && ltree->data == newdata && !ltree->ltree && !ltree->rtree ) {
+                delete ltree;
+                ltree = NULL;
+            }
+            else
+                ltree->RemoveData ( newid, newdata );
+        }
+    }
+    else {
+        if ( rtree ) {
+            if ( rtree->id && strcmp ( rtree->id, newid ) == 0 && rtree->data == newdata && !rtree->ltree && !rtree->rtree ) {
+                delete rtree;
+                rtree = NULL;
+            }
+            else
+                rtree->RemoveData ( newid, newdata );
+        }
     }
 
 }

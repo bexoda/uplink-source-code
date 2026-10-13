@@ -27,24 +27,7 @@ using namespace std;
 // Use : A dynamicly sized list of data
 // NOT sorted in any way - new data is simply added on at the end
 // Indexes of data are not constant
-// Sequential access is fast, random access is slow
-
-template <class T>
-class LListItem
-{
-
-protected:
-
-public:
-
-	T data;
-	LListItem *next;
-	LListItem *previous;
-
-	LListItem ();
-	~LListItem ();
-
-};
+// Stored in a std::vector: random access is fast
 
 template <class T>
 class LList
@@ -52,26 +35,17 @@ class LList
 
 protected:
 
-	LListItem <T> *first;                 // Pointer to first node
-	LListItem <T> *last;                  // Pointer to last node
-
-	LListItem <T> *previous;              // Used to get quick access
-	int previousindex;                    // for sequential reads (common)
-
-	int numitems;
+	std::vector <T> items;
 
 public:
-
-	LList ();
-	~LList ();
 
 	void PutData        ( const T &newdata );     // Adds in data at the end	
 	void PutDataAtEnd   ( const T &newdata );
 	void PutDataAtStart ( const T &newdata );	
 	void PutDataAtIndex ( const T &newdata, int index );
 
-    T GetData          ( int index );			// slow unless sequential
-	void RemoveData    ( int index );			// slow 
+    T GetData          ( int index );
+	void RemoveData    ( int index );
     int  FindData      ( const T &data );		// -1 means 'not found'
   
     int Size ();			 // Returns the total size of the array
@@ -150,7 +124,8 @@ protected :
     BTree *rtree;
     
     
-    void AppendRight ( BTree <T> *tempright );                            // Used by Remove
+    void AppendRight ( BTree <T> *tempright );
+    void RemoveThisNode ();                            // Used by Remove
     
 public :
 

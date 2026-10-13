@@ -254,3 +254,15 @@ TEST_CASE ( "BTree: removing", "[tosser]" )
 	t.PutData ( "n", 1 );
 	CHECK ( t.GetData ( "n" ) == 1 );
 }
+
+TEST_CASE ( "BTree: RemoveData ( id, data ) checks the data of the node it removes", "[tosser]" )
+{
+	BTree<int> t;
+	t.PutData ( "m", 1 );
+	t.PutData ( "c", 2 );						// a leaf under "m"
+	t.RemoveData ( "c", 1 );					// "m" holds 1, "c" does not: nothing to remove
+	CHECK ( t.GetData ( "c" ) == 2 );
+	t.RemoveData ( "c", 2 );
+	CHECK ( t.LookupTree ( "c" ) == NULL );
+	CHECK ( t.Size () == 1 );
+}
