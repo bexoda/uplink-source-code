@@ -131,7 +131,7 @@ void ChangeGatewayScreenInterface::GatewayButtonDraw ( Button *button, bool high
 	char cost [16];
 	UplinkSnprintf ( cost, sizeof ( cost ), "%dc", price );
 
-	GciDrawText ( button->x + 5, button->y + 10, gd->name );
+	GciDrawText ( button->x + 5, button->y + 10, gd->name.c_str () );
 	GciDrawText ( (button->x + button->width - 10 ) - GciTextWidth ( cost ), button->y + 10, cost );
 
 }
@@ -342,7 +342,7 @@ void ChangeGatewayScreenInterface::ShowGateway ( int index )
 	    EclRegisterCaptionChange ( "changegateway_stats1", newstats1 );
 	    EclRegisterCaptionChange ( "changegateway_stats2", newstats2 );
 
-	    EclRegisterCaptionChange ( "changegateway_text", gd->description, 1500 );
+	    EclRegisterCaptionChange ( "changegateway_text", gd->description.c_str (), 1500 );
 
 
 	    // Show the new picture
@@ -351,7 +351,7 @@ void ChangeGatewayScreenInterface::ShowGateway ( int index )
 	    EclGetButton ("changegateway_picture")->image_standard = NULL;
 	    //char imagename [64];
 	    //UplinkSnprintf ( imagename, sizeof ( imagename ), "gateway/gateway_t%d.tif", index );
-	    button_assignbitmap ( "changegateway_picture", gd->thumbnail );
+	    button_assignbitmap ( "changegateway_picture", gd->thumbnail.c_str () );
     //	EclGetButton ("changegateway_picture")->image_standard->Scale ( 240, 140 );
 	    EclRegisterButtonCallbacks ( "changegateway_picture", GatewayPictureDraw, NULL, NULL, NULL );
 
@@ -412,7 +412,7 @@ void ChangeGatewayScreenInterface::Create ( ComputerScreen *newcs )
 			UplinkSnprintf ( bname, sizeof ( bname ), "changegateway_title %d", i );
 
 			if ( gd )
-				EclRegisterButton ( 20, 140 + i * 20, 220, 15, gd->name, "View this gateway", bname );
+				EclRegisterButton ( 20, 140 + i * 20, 220, 15, gd->name.c_str (), "View this gateway", bname );
 			else
 				EclRegisterButton ( 20, 140 + i * 20, 220, 15, "", "View this gateway", bname );
 			
@@ -463,7 +463,7 @@ void ChangeGatewayScreenInterface::Create ( ComputerScreen *newcs )
 		int sizegatewaydefs = game->GetWorld ()->gatewaydefs.Size ();
 		for ( int ii = 0; ii < sizegatewaydefs; ii++ )
 			if ( game->GetWorld ()->gatewaydefs.ValidIndex ( ii ) )
-				if ( strcmp ( game->GetWorld ()->gatewaydefs.GetData ( ii )->name, gd->name ) == 0 ) {
+				if ( strcmp ( game->GetWorld ()->gatewaydefs.GetData ( ii )->name.c_str (), gd->name.c_str () ) == 0 ) {
 					ShowGateway ( ii );
 					break;
 				}

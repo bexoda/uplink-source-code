@@ -75,9 +75,9 @@ void ChangeGatewayEvent::RunWarning ()
 char *ChangeGatewayEvent::GetShortString ()
 {
 
-	size_t shortstringsize = 128 + ( (newgatewaydef)? strlen ( newgatewaydef->name ) : 4 );
+	size_t shortstringsize = 128 + ( (newgatewaydef)? strlen ( newgatewaydef->name.c_str () ) : 4 );
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "Exchanging gateway for '%s'", (newgatewaydef)? newgatewaydef->name : "NULL" );
+	UplinkSnprintf ( shortstring, shortstringsize, "Exchanging gateway for '%s'", (newgatewaydef)? newgatewaydef->name.c_str () : "NULL" );
 	return shortstring;
 		
 }
@@ -147,7 +147,7 @@ void ChangeGatewayEvent::Print ()
 
 	printf ( "ChangeGateway Event\n" );
 	UplinkEvent::Print ();
-	printf ( "New gateway '%s'\n", (newgatewaydef)? newgatewaydef->name : "NULL" );
+	printf ( "New gateway '%s'\n", (newgatewaydef)? newgatewaydef->name.c_str () : "NULL" );
 
 }
 	

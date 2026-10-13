@@ -352,7 +352,7 @@ GatewayDef *World::GetGatewayDef ( const char *name )
 		for ( int i = 0; i < gatewaydefs.Size (); ++i ) {
 			if ( gatewaydefs.ValidIndex ( i ) && gatewaydefs.GetData ( i ) ) {
 
-				char *gatewayNameTrim = TrimSpaces ( gatewaydefs.GetData ( i )->name );
+				char *gatewayNameTrim = TrimSpaces ( gatewaydefs.GetData ( i )->name.c_str () );
 				bool equalsname = ( strcmp ( nameTrim, gatewayNameTrim ) == 0 );
 				delete [] gatewayNameTrim;
 				if ( equalsname ) {

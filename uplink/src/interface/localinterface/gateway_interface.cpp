@@ -133,7 +133,7 @@ void GatewayInterface::Create ()
 		//char gatewayname [64];
 		//UplinkSnprintf ( gatewayname, sizeof ( gatewayname ), "gateway/gateway%d.tif", gateway->type );
 		EclRegisterButton ( gatewayX, gatewayY, gatewayW, gatewayH, "", "", "gateway_picture" );
-		button_assignbitmap ( "gateway_picture", gatewaydef->filename );
+		button_assignbitmap ( "gateway_picture", gatewaydef->filename.c_str () );
 //		EclGetButton ("gateway_picture")->image_standard->Scale ( 256, 256 );
 		EclRegisterButtonCallbacks ( "gateway_picture", DrawGatewayPicture, NULL, NULL, NULL );
 

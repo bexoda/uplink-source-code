@@ -17,10 +17,10 @@
 GatewayDef::GatewayDef ()
 {
 
-	UplinkStrncpy ( name, "UnNamed", sizeof ( name ) );
-	UplinkStrncpy ( description, "UnDescribed ;)", sizeof ( description ) );
-    UplinkStrncpy ( filename, "None", sizeof ( filename ) );
-    UplinkStrncpy ( thumbnail, "None", sizeof ( thumbnail ) );
+	name = "UnNamed";
+	description = "UnDescribed ;)";
+    filename = "None";
+    thumbnail = "None";
 	cost = 0;
 	maxcpus = 0;
 	maxmemory = 0;
@@ -39,10 +39,10 @@ GatewayDef::GatewayDef ( const GatewayDef& gd )
    : cpus ( gd.cpus ), memory ( gd.memory ), security ( gd.security )
 {
 
-	memcpy ( name, gd.name, sizeof ( name ) );
-	memcpy ( description, gd.description, sizeof ( description ) );
-	memcpy ( filename, gd.filename, sizeof ( filename ) );
-	memcpy ( thumbnail, gd.thumbnail, sizeof ( thumbnail ) );
+	name = gd.name;
+	description = gd.description;
+	filename = gd.filename;
+	thumbnail = gd.thumbnail;
 	
 	cost = gd.cost;
 	maxcpus = gd.maxcpus;
@@ -103,16 +103,19 @@ void GatewayDef::LoadGatewayDefinition ( istream &thefile )
 
 	// Basics
 
-    thefile.getline ( name, SIZE_GATEWAY_NAME );
+    char line [SIZE_GATEWAY_DESCRIPTION];
+    thefile.getline ( line, SIZE_GATEWAY_NAME );
+    name = line;
 
 	thefile >> cost >> maxcpus >> maxmemory >> maxupgrades 
 			>> maxsecurity >> bandwidth >> width >> height >> ws;
 
-	thefile.getline ( description, SIZE_GATEWAY_DESCRIPTION );
+	thefile.getline ( line, SIZE_GATEWAY_DESCRIPTION );
+	description = line;
 
 	// Changed so users don't get confused about the 'you cannot be caught with this gateway' part
-	if ( strstr ( description, "An embedded broad-band radio transmitter provides total anonymity for the user - you cannot be caught with this gateway." ) )
-		UplinkStrncpy ( description, "A good small all rounder.", sizeof ( description ) );
+	if ( strstr ( description.c_str (), "An embedded broad-band radio transmitter provides total anonymity for the user - you cannot be caught with this gateway." ) )
+		description = "A good small all rounder.";
 
 	// CPU positions
 
@@ -186,7 +189,7 @@ void GatewayDef::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_GATEWAY_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 		
 }
 
@@ -194,7 +197,7 @@ void GatewayDef::SetDescription ( const char *newdescription )
 {
 
 	UplinkAssert ( strlen (newdescription) < SIZE_GATEWAY_DESCRIPTION );
-	UplinkStrncpy ( description, newdescription, sizeof ( description ) );
+	description = newdescription;
 
 }
 
@@ -202,7 +205,7 @@ void GatewayDef::SetFilename ( char *newfilename )
 {
 
     UplinkAssert ( strlen ( newfilename) < SIZE_GATEWAY_FILENAME );
-    UplinkStrncpy ( filename, newfilename, sizeof ( filename ) );
+    filename = newfilename;
 
 }
 
@@ -210,7 +213,7 @@ void GatewayDef::SetThumbnail ( char *newthumbnail )
 {
 
     UplinkAssert ( strlen ( newthumbnail) < SIZE_GATEWAY_FILENAME );
-    UplinkStrncpy ( thumbnail, newthumbnail, sizeof ( thumbnail ) );
+    thumbnail = newthumbnail;
 
 }
 
@@ -281,7 +284,7 @@ int GatewayDef::GatewayDefComparator ( GatewayDef *const *gatewaydef1, GatewayDe
 	else if ( (*gatewaydef1)->cost < (*gatewaydef2)->cost )
 		return -1;
 	else
-		return strcmp ( (*gatewaydef1)->name, (*gatewaydef2)->name );
+		return strcmp ( (*gatewaydef1)->name.c_str (), (*gatewaydef2)->name.c_str () );
 
 }
 
@@ -289,7 +292,7 @@ bool GatewayDef::VerifyCorrectness ()
 {
 
 	if ( maxcpus <= 0 || maxmemory <= 0 || bandwidth <= 0 ) {
-		printf ( "WARNING : GatewayDef::VerifyCorrectness, Gateway '%s' loaded from '%s' as invald values, ( maxcpus <= %d || maxmemory <= %d || bandwidth <= %d )\n", name, filename, maxcpus, maxmemory, bandwidth );
+		printf ( "WARNING : GatewayDef::VerifyCorrectness, Gateway '%s' loaded from '%s' as invald values, ( maxcpus <= %d || maxmemory <= %d || bandwidth <= %d )\n", name.c_str (), filename.c_str (), maxcpus, maxmemory, bandwidth );
 		return false;
 	}
 	return true;
@@ -380,10 +383,10 @@ bool GatewayDef::Load  ( FILE *file )
 
 	LoadID ( file );
 
-	if ( !LoadDynamicStringStatic ( name,        sizeof(name),        file ) ) return false;
-	if ( !LoadDynamicStringStatic ( description, sizeof(description), file ) ) return false;
-	if ( !LoadDynamicStringStatic ( filename,    sizeof(filename),    file ) ) return false;
-	if ( !LoadDynamicStringStatic ( thumbnail,   sizeof(thumbnail),   file ) ) return false;
+	if ( !LoadDynamicStringStatic ( name,        SIZE_GATEWAY_NAME,        file ) ) return false;
+	if ( !LoadDynamicStringStatic ( description, SIZE_GATEWAY_DESCRIPTION, file ) ) return false;
+	if ( !LoadDynamicStringStatic ( filename,    SIZE_GATEWAY_FILENAME,    file ) ) return false;
+	if ( !LoadDynamicStringStatic ( thumbnail,   SIZE_GATEWAY_FILENAME,   file ) ) return false;
 
 	if ( !FileReadData ( &cost,        sizeof(cost),        1, file ) ) return false;
 	if ( !FileReadData ( &maxcpus,     sizeof(maxcpus),     1, file ) ) return false;
@@ -415,10 +418,10 @@ void GatewayDef::Save  ( FILE *file )
 
 	SaveID ( file );
 
-	SaveDynamicString ( name,        sizeof(name),        file );
-	SaveDynamicString ( description, sizeof(description), file );
-	SaveDynamicString ( filename,    sizeof(filename),    file );
-	SaveDynamicString ( thumbnail,   sizeof(thumbnail),   file );
+	SaveDynamicString ( name,        SIZE_GATEWAY_NAME,        file );
+	SaveDynamicString ( description, SIZE_GATEWAY_DESCRIPTION, file );
+	SaveDynamicString ( filename,    SIZE_GATEWAY_FILENAME,    file );
+	SaveDynamicString ( thumbnail,   SIZE_GATEWAY_FILENAME,   file );
 
 	fwrite ( &cost,        sizeof(cost),        1, file );
 	fwrite ( &maxcpus,     sizeof(maxcpus),     1, file );

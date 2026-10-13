@@ -30,7 +30,7 @@ Gateway::Gateway ()
 	nuked = false;
 	proximity = 0;
 
-	UplinkStrncpy ( modemtype, " ", sizeof ( modemtype ) );
+	modemtype = " ";
 	modemspeed = 0;
 	memorysize = 0;
 
@@ -297,7 +297,7 @@ void Gateway::SetModemType ( const char *newmodem, int newmodemspeed )
 {
 
 	UplinkAssert ( strlen(newmodem) < 64 );
-	UplinkStrncpy ( modemtype, newmodem, sizeof ( modemtype ) );
+	modemtype = newmodem;
 
 	modemspeed = newmodemspeed;
 
@@ -666,7 +666,7 @@ bool Gateway::Load  ( FILE *file )
 
 	if ( !FileReadData ( &modemspeed, sizeof(modemspeed), 1, file ) ) return false;
 	if ( !FileReadData ( &memorysize, sizeof(memorysize), 1, file ) ) return false;
-	if ( !FileReadData ( &modemtype,  sizeof(modemtype),  1, file ) ) return false;
+	if ( !LoadFixedString ( modemtype, 64, file ) ) return false;
 
 	if ( !FileReadData ( &hudupgrades, sizeof(hudupgrades), 1, file ) ) return false;
 
@@ -743,7 +743,7 @@ void Gateway::Save  ( FILE *file )
 
 	fwrite ( &modemspeed, sizeof(modemspeed), 1, file );
 	fwrite ( &memorysize, sizeof(memorysize), 1, file );
-	fwrite ( &modemtype,  sizeof(modemtype),  1, file );
+	SaveFixedString ( modemtype, 64, file );
 
 	fwrite ( &hudupgrades, sizeof(hudupgrades), 1, file );
 
@@ -755,7 +755,7 @@ void Gateway::Print ()
 {
 
 	printf ( "Gateway : name='%s', id=%d\n"
-	         "nuked=%d, proximity=%d\n", (curgatewaydef)? curgatewaydef->name : "NULL", id, nuked, proximity );
+	         "nuked=%d, proximity=%d\n", (curgatewaydef)? curgatewaydef->name.c_str () : "NULL", id, nuked, proximity );
 	printf ( "Upgrades : %c\n", hudupgrades );
 
 	databank.Print ();

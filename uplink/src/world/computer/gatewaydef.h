@@ -3,6 +3,8 @@
 #ifndef _included_gatewaydef_h
 #define _included_gatewaydef_h
 
+#include <string>
+
 /*
 	
 	Complete definition of a gateway
@@ -56,10 +58,10 @@ public:
 
 	// id information
 
-	char name           [SIZE_GATEWAY_NAME];
-	char description    [SIZE_GATEWAY_DESCRIPTION];
-    char filename       [SIZE_GATEWAY_FILENAME];
-    char thumbnail      [SIZE_GATEWAY_FILENAME];
+	std::string name;
+	std::string description;
+    std::string filename;
+    std::string thumbnail;
 	
 	// Game data definitions
 

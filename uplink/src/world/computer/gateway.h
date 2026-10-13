@@ -11,6 +11,8 @@
 #ifndef _included_gateway_h
 #define _included_gateway_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -54,7 +56,7 @@ public:
 	bool nuked;								// Has the player blown it up?
 	int proximity;							// Number of people nearby
 	
-	char modemtype [64];
+	std::string modemtype;
 
 	int modemspeed;
 	int memorysize;

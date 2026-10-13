@@ -140,6 +140,7 @@ void SaveDynamicString     ( const std::string &string, FILE *file );
 void SaveDynamicString     ( const std::string &string, int maxsize, FILE *file );
 bool LoadDynamicStringInt  ( const char* _file, int _line, std::string &string, int maxsize, FILE *file );
 bool LoadFixedString       ( std::string &string, int size, FILE *file );	// a raw char[size] block (pre-SAV59 saves)
+void SaveFixedString       ( const std::string &string, int size, FILE *file );	// writes a zero-padded char[size] block
 
 #define LoadDynamicStringPtr(string,file) LoadDynamicStringInt(__FILE__,__LINE__,string,file)
 #define LoadDynamicStringStatic(string,maxsize,file) LoadDynamicStringInt(__FILE__,__LINE__,string,maxsize,file)
