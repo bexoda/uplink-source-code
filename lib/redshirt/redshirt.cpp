@@ -583,7 +583,7 @@ void RsDeleteDirectory ( const char *dirname )
 }
 
 
-void RsInitialise ( char *newapppath )
+void RsInitialise ( const char *newapppath )
 {
     snprintf ( rsapppath, sizeof ( rsapppath ), "%s", newapppath );
 

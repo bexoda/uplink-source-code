@@ -361,7 +361,7 @@ char *Options::ThemeFilename ( const char *filename )
     else {
 
         char fullFilename[256];
-        UplinkSnprintf ( fullFilename, sizeof ( fullFilename ), "%s%s/%s", app->path, themeName.c_str (), filename );
+        UplinkSnprintf ( fullFilename, sizeof ( fullFilename ), "%s%s/%s", app->path.c_str (), themeName.c_str (), filename );
 		if ( DoesFileExist ( fullFilename ) ) {
             UplinkSnprintf ( result, resultsize, "%s/%s", themeName.c_str (), filename );
 
@@ -408,7 +408,7 @@ bool Options::Load ( [[maybe_unused]] FILE *file )
 	// Read from our own options file
 
 	char filename [256];
-	UplinkSnprintf ( filename, sizeof ( filename ), "%soptions", app->userpath );
+	UplinkSnprintf ( filename, sizeof ( filename ), "%soptions", app->userpath.c_str () );
 	printf ( "Loading uplink options from %s...", filename );
 
 	FILE *optionsfile = NULL;
@@ -495,10 +495,10 @@ void Options::Save ( [[maybe_unused]] FILE *file )
 
 	// Write to our own options file
 
-	MakeDirectory ( app->userpath );
+	MakeDirectory ( app->userpath.c_str () );
 
 	char filename [256];
-	UplinkSnprintf ( filename, sizeof ( filename ), "%soptions", app->userpath );
+	UplinkSnprintf ( filename, sizeof ( filename ), "%soptions", app->userpath.c_str () );
 
 	printf ( "Saving uplink options to %s...", filename );
 

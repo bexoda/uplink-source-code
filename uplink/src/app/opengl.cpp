@@ -440,7 +440,7 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/)
 	else if ( key == 96 ) { // backtick (`)
 
 	    char screenpath [256];
-	    UplinkSnprintf ( screenpath, sizeof ( screenpath ), "%sscreenshot.bmp", app->userpath );
+	    UplinkSnprintf ( screenpath, sizeof ( screenpath ), "%sscreenshot.bmp", app->userpath.c_str () );
 
 		GciSaveScreenshot( screenpath );
 
@@ -481,7 +481,7 @@ void specialkeyboard (int key, int /*x*/, int /*y*/)
 		case GCI_KEY_F9:
 
 			char screenpath [256];
-			UplinkSnprintf ( screenpath, sizeof ( screenpath ), "%sscreenshot.bmp", app->userpath );
+			UplinkSnprintf ( screenpath, sizeof ( screenpath ), "%sscreenshot.bmp", app->userpath.c_str () );
 
 			GciSaveScreenshot( screenpath );
 

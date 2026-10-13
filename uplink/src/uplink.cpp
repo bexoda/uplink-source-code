@@ -296,8 +296,8 @@ int RunUplinkExceptionHandling ()
 	if ( file_stdout ) {
 		fprintf ( file_stdout, "\nAn (unrecognised) Uplink Internal Error has occured\n" );
 		fprintf ( file_stdout, "===================================================\n" );
-		if ( app && strncmp ( app->userpath, "c:/", sizeof(app->userpath) ) != 0 ) {
-			fprintf ( file_stdout, "See the %sdebug.log file for more informations on the error\n", app->userpath );
+		if ( app && app->userpath != "c:/" ) {
+			fprintf ( file_stdout, "See the %sdebug.log file for more informations on the error\n", app->userpath.c_str () );
 		}
 		else {
 			fprintf ( file_stdout, "See the debug.log file for more informations on the error\n" );
@@ -421,13 +421,13 @@ void Init_App ( char *argv0 )
 
 #ifdef CODECARD_ENABLED
     #ifdef CODECARD_CHRIS
-        UplinkStrncat ( app->release, sizeof ( app->release ), "(code-C)" );
+        app->release += "(code-C)";
     #endif
     #ifdef CODECARD_MARK
-        UplinkStrncat ( app->release, sizeof ( app->release ), "(code-M)" );
+        app->release += "(code-M)";
     #endif
     #ifdef CODECARD_TOM
-        UplinkStrncat ( app->release, sizeof ( app->release ), "(code-T)" );
+        app->release += "(code-T)";
     #endif
 #endif
 
@@ -435,7 +435,7 @@ void Init_App ( char *argv0 )
 	printf ( "=                           =\n" );
 	printf ( "=        U P L I N K        =\n" );
 	printf ( "=                           =\n" );		
-	printf ( "=        Version %-10s =\n", app->version );
+	printf ( "=        Version %-10s =\n", app->version.c_str () );
 
 #ifdef FULLGAME
     printf ( "=     - R E L E A S E -     =\n" );
@@ -452,17 +452,17 @@ void Init_App ( char *argv0 )
 	printf ( "=                           =\n" );
 	printf ( "=============================\n" );
 	printf ( "\n" );
-	printf ( "%s\n", app->release );
+	printf ( "%s\n", app->release.c_str () );
 
 #ifdef DEBUGLOG_ENABLED
 
-	MakeDirectory ( app->userpath );
-	MakeDirectory ( app->usertmppath );
-	EmptyDirectory ( app->usertmppath );
-	MakeDirectory ( app->userretirepath );
+	MakeDirectory ( app->userpath.c_str () );
+	MakeDirectory ( app->usertmppath.c_str () );
+	EmptyDirectory ( app->usertmppath.c_str () );
+	MakeDirectory ( app->userretirepath.c_str () );
 
     char debugpath [256];
-    UplinkSnprintf ( debugpath, sizeof ( debugpath ), "%sdebug.log", app->userpath );
+    UplinkSnprintf ( debugpath, sizeof ( debugpath ), "%sdebug.log", app->userpath.c_str () );
 
 #ifndef WIN32
 	file_stdout = NULL;
@@ -488,7 +488,7 @@ void Init_App ( char *argv0 )
     printf ( "NEW GAME     %d:%d, %d/%d/%d\n", thetime->tm_hour, thetime->tm_min, thetime->tm_mday, thetime->tm_mon+1, thetime->tm_year+1900 );
     printf ( "===============================================\n" );
         
-    printf ( "Version : %s\n", app->version );
+    printf ( "Version : %s\n", app->version.c_str () );
 
 #ifdef FULLGAME
     printf ( "RELEASE\n" );
@@ -504,11 +504,11 @@ void Init_App ( char *argv0 )
 #else
     printf ( "Linux Build\n" );
 #endif
-    printf ( "%s\n", app->release );
+    printf ( "%s\n", app->release.c_str () );
 
 #endif
 
-    RsInitialise ( app->path );
+    RsInitialise ( app->path.c_str () );
 
 	app->Initialise ();
 
@@ -744,7 +744,7 @@ bool VerifyLegitAndCodeCardCheck()
 	// Ensure the world.dat file is in place and has the right CRC
 
 	char worlddatfilename [256];
-	UplinkSnprintf ( worlddatfilename, sizeof ( worlddatfilename ), "%sworld.dat", app->path );
+	UplinkSnprintf ( worlddatfilename, sizeof ( worlddatfilename ), "%sworld.dat", app->path.c_str () );
 	findGoodFile ( worlddatfilename );
 
 	FILE *file = fopen ( worlddatfilename, "rb" );

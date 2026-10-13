@@ -10,6 +10,8 @@
 #ifndef _included_app_h
 #define _included_app_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -36,15 +38,15 @@ class App : public UplinkObject
 
 public :
 
-    char path    [SIZE_APP_PATH];
-    char userpath [SIZE_APP_PATH];
-    char usertmppath [SIZE_APP_PATH]; // Used by the crash reporter to store the current .usr
-    char userretirepath [SIZE_APP_PATH]; // Used to store old agents ( .usr / .tmp )
-    char version [SIZE_APP_VERSION];
-    char type    [SIZE_APP_TYPE];
-    char date    [SIZE_APP_DATE];
-    char title   [SIZE_APP_TITLE];
-    char release [SIZE_APP_RELEASE];          
+    std::string path;
+    std::string userpath;
+    std::string usertmppath; // Used by the crash reporter to store the current .usr
+    std::string userretirepath; // Used to store old agents ( .usr / .tmp )
+    std::string version;
+    std::string type;
+    std::string date;
+    std::string title;
+    std::string release;          
 
     int starttime;
     bool closed;

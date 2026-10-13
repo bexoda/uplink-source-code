@@ -76,7 +76,7 @@ DArray <char *> *ThemeInterface::ListAvailableThemes ()
 
     if ( !themes ) {
 
-        themes = ListSubdirs ( app->path );
+        themes = ListSubdirs ( app->path.c_str () );
 
 		for ( int i = themes->Size() - 1; i >= 0; --i ) {
 			if ( themes->ValidIndex (i) ) {

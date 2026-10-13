@@ -63,7 +63,7 @@ std::string ScratchFile ( const char *name )
 std::vector<unsigned char> SaveBytes ()
 {
 	std::string path = ScratchFile ( "harness.sav" );
-	MakeDirectory ( app->usertmppath );
+	MakeDirectory ( app->usertmppath.c_str () );
 	FILE *f = fopen ( path.c_str (), "wb" );
 	if ( !f ) throw std::runtime_error ( "cannot write " + path );
 	game->Save ( f );

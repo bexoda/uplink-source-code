@@ -311,7 +311,7 @@ DArray <char *> *ListDirectory  ( const char *directory, const char *filter )
 
 	char userdir [256];
 	//UplinkStrncpy ( userdir, directory, sizeof ( userdir ) );
-	UplinkSnprintf ( userdir, sizeof ( userdir ), "%s%s", app->path, directory ); 
+	UplinkSnprintf ( userdir, sizeof ( userdir ), "%s%s", app->path.c_str (), directory ); 
 	DIR *dir = opendir( userdir );
 	if (dir != NULL) {
 	    struct dirent *entry = readdir ( dir );
@@ -364,7 +364,7 @@ DArray <char *> *ListDirectory  ( const char *directory, const char *filter )
 
 }
 
-DArray <char *> *ListSubdirs ( char *directory )
+DArray <char *> *ListSubdirs ( const char *directory )
 {
 
     DArray <char *> *result = new DArray <char *> ();

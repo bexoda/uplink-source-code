@@ -24,7 +24,7 @@ bool CopyFileUplink         ( const char *oldfilename, const char *newfilename )
 bool RemoveFile             ( const char *filename );
 
 DArray <char *> *ListDirectory  ( const char *directory, const char *filter );
-DArray <char *> *ListSubdirs ( char *directory );
+DArray <char *> *ListSubdirs ( const char *directory );
 
 void SetColour              ( const char *colourName );                    // calls glColour3f
 

@@ -25,7 +25,7 @@
 // Basic routines =============================================
 
 
-void RsInitialise ( char *apppath );                                            // Creates a temp directory
+void RsInitialise ( const char *apppath );                                            // Creates a temp directory
 void RsCleanUp ();																// Deletes all created files
 
 
