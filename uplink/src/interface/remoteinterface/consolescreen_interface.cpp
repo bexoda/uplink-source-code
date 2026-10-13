@@ -360,7 +360,7 @@ void ConsoleScreenInterface::RunCommand_DIR ()
 				if ( data ) {
 
 					char filesummary [128];
-					UplinkSnprintf ( filesummary, sizeof ( filesummary ), "%s    %dGq", data->title, data->size );
+					UplinkSnprintf ( filesummary, sizeof ( filesummary ), "%s    %dGq", data->title.c_str (), data->size );
 					PutTextAtStart ( 0, filesummary );
 
 				}
@@ -552,7 +552,7 @@ void ConsoleScreenInterface::RunCommand_DELETEALL ( char *dir )
                 Data *file = comp->databank.GetDataFile(i);
                 if ( file ) {
                     char caption [256];
-                    UplinkSnprintf ( caption, sizeof ( caption ), "Deleting %s...", file->title );
+                    UplinkSnprintf ( caption, sizeof ( caption ), "Deleting %s...", file->title.c_str () );
                     queue.PutDataAtStart( new ConsoleCommand ( CMDTYPE_TEXT, caption, TIMEREQUIRED_DELETEONEGIGAQUAD * file->size ) );
                 }
             }
@@ -600,7 +600,7 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
 
 			bool isDataTheProgram = false;
 			if ( data ) {
-				char *lcDataTitle = LowerCaseString ( data->title );
+				char *lcDataTitle = LowerCaseString ( data->title.c_str () );
 				isDataTheProgram = ( strcmp ( lcDataTitle , program ) == 0 );
 				delete [] lcDataTitle;
 			}
@@ -641,7 +641,7 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
 
                     for ( int m = 0; m < comp->databank.NumDataFiles (); ++m ) {
                         Data *data = comp->databank.GetDataFile ( m );
-                        if ( data && strcmp ( data->title, "RevelationTracer" ) == 0 ) {
+                        if ( data && strcmp ( data->title.c_str (), "RevelationTracer" ) == 0 ) {
                             comp->databank.RemoveDataFile ( m );
                             break;
                         }
@@ -668,7 +668,7 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
 
 				bool isDataTheProgram = false;
 				if ( data ) {
-					char *lcDataTitle = LowerCaseString ( data->title );
+					char *lcDataTitle = LowerCaseString ( data->title.c_str () );
 					isDataTheProgram = ( strcmp ( lcDataTitle , program ) == 0 );
 					delete [] lcDataTitle;
 				}
@@ -678,7 +678,7 @@ void ConsoleScreenInterface::RunCommand_RUN	( char *program, bool actuallyrun )
 					if ( data->TYPE == DATATYPE_PROGRAM ) {
 
 						char text [64];
-						UplinkSnprintf ( text, sizeof ( text ), "Starting program %s...", data->title );
+						UplinkSnprintf ( text, sizeof ( text ), "Starting program %s...", data->title.c_str () );
 
 						queue.PutDataAtStart ( new ConsoleCommand ( CMDTYPE_RUNPROGRAM, program, 1000 ) );
 						queue.PutDataAtStart ( new ConsoleCommand ( CMDTYPE_TEXT, "Started.", 0 ) );

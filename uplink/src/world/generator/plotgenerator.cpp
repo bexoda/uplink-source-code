@@ -705,7 +705,7 @@ bool PlotGenerator::PlayerContactsARUNMOR ( Message *msg )
 		Data *attached = msg->GetData ();
 
 		if ( attached && attached->TYPE	== DATATYPE_PROGRAM &&
-			 strcmp ( attached->title, "Revelation" ) == 0 ) {
+			 strcmp ( attached->title.c_str (), "Revelation" ) == 0 ) {
 
 			version_faith = attached->version;
 
@@ -756,7 +756,7 @@ bool PlotGenerator::PlayerContactsARUNMOR ( Message *msg )
 		Data *attached = msg->GetData ();
 
 		if ( attached && attached->TYPE	== DATATYPE_PROGRAM &&
-			 strcmp ( attached->title, "Revelation" ) == 0 ) {
+			 strcmp ( attached->title.c_str (), "Revelation" ) == 0 ) {
 
             if ( playerloyalty != 1 && attached->version > version_faith ) {
 
@@ -3882,13 +3882,13 @@ bool PlotGenerator::IsMissionComplete_ARCInfiltration ()
 
             if ( !thisfile->encrypted ) {
 
-			    if ( strstr ( thisfile->title, "REVELATION" ) != NULL &&
+			    if ( strstr ( thisfile->title.c_str (), "REVELATION" ) != NULL &&
 				     thisfile->encrypted == 0 ) {
 
 				    char unused [64];
 				    int thisfileindex;
 
-				    sscanf ( thisfile->title, "%s %d.dat", unused, &thisfileindex );
+				    sscanf ( thisfile->title.c_str (), "%s %d.dat", unused, &thisfileindex );
 
 				    if ( thisfileindex >= 0 && thisfileindex < numfiles &&
 					     filefound [thisfileindex] == false ) {
@@ -4046,13 +4046,13 @@ bool PlotGenerator::IsMissionComplete_Darwin ()
 
             if ( !thisfile->encrypted ) {
 
-			    if ( strstr ( thisfile->title, "DARWIN" ) != NULL &&
+			    if ( strstr ( thisfile->title.c_str (), "DARWIN" ) != NULL &&
 				     thisfile->encrypted == 0 ) {
 
 				    char unused [64];
 				    int thisfileindex;
 
-				    sscanf ( thisfile->title, "%s %d.dat", unused, &thisfileindex );
+				    sscanf ( thisfile->title.c_str (), "%s %d.dat", unused, &thisfileindex );
 
 				    if ( thisfileindex >= 0 && thisfileindex < numfiles &&
 					     filefound [thisfileindex] == false ) {

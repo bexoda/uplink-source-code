@@ -192,7 +192,7 @@ Data *DataBank::GetData ( const char *title )
 
 	for ( int i = 0; i < data.Size (); ++i )
 		if ( data.ValidIndex (i) )
-			if ( strcmp ( data.GetData (i)->title, title ) == 0 )
+			if ( strcmp ( data.GetData (i)->title.c_str (), title ) == 0 )
 				return data.GetData (i);
 
 	return NULL;
@@ -204,7 +204,7 @@ bool DataBank::ContainsData ( const char *title, float version )
 
 	for ( int i = 0; i < data.Size (); ++i )
 		if ( data.ValidIndex (i) )
-			if ( strcmp ( data.GetData (i)->title, title ) == 0 ) {
+			if ( strcmp ( data.GetData (i)->title.c_str (), title ) == 0 ) {
 				float versionData = data.GetData (i)->version;
 				if ( versionData < 0.0f || versionData >= version )
 					return true;
@@ -414,7 +414,7 @@ void DataBank::Update ()
 Data::Data ()
 {
 
-	UplinkStrncpy ( title, "Empty", sizeof ( title ) );
+	title = "Empty";
 	TYPE = DATATYPE_NONE;
 	size = 0;
 	encrypted = 0;
@@ -429,7 +429,7 @@ Data::Data ( Data *copyme )
 
 	UplinkAssert (copyme);
 
-	SetTitle ( copyme->title );
+	SetTitle ( copyme->title.c_str () );
 	TYPE = copyme->TYPE;
 	size = copyme->size;
 	encrypted = copyme->encrypted;
@@ -447,7 +447,7 @@ void Data::SetTitle ( const char *newtitle )
 {
 	
 	UplinkAssert ( strlen (newtitle) < SIZE_DATA_TITLE );
-	UplinkStrncpy ( title, newtitle, sizeof ( title ) );
+	title = newtitle;
 
 }
 
@@ -505,7 +505,7 @@ void Data::Save ( FILE *file )
 void Data::Print ()
 {
 	
-	printf ( "Data: %s\n", title );
+	printf ( "Data: %s\n", title.c_str () );
 	printf ( "type = %d, size = %d, encrypted = %d, compressed = %d\nversion = %f, softwareTYPE = %d\n", 
 				TYPE, size, encrypted, compressed, version, softwareTYPE );
 

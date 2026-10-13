@@ -261,12 +261,12 @@ void UplinkAgentList::UpdateLists ()
 			Data *thisfile = databank->GetDataFile (i);
 			UplinkAssert (thisfile);
 			
-            if ( strstr ( thisfile->title, datatitle ) != NULL ) {
+            if ( strstr ( thisfile->title.c_str (), datatitle ) != NULL ) {
 
 				char unused [64];
 				int thisfileindex;
 
-				sscanf ( thisfile->title, "%s %d.dat", unused, &thisfileindex );
+				sscanf ( thisfile->title.c_str (), "%s %d.dat", unused, &thisfileindex );
             
                 if ( thisfileindex >= 0 && thisfileindex < numfiles ) {
 			

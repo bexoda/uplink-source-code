@@ -10,6 +10,7 @@
   */
 
 #include <stdio.h>
+#include <string>
 
 #include "tosser.h"
 
@@ -128,10 +129,16 @@ UplinkObject *CreateUplinkObject ( int OBJECTID );
 
 #define MAX_LENGTH_DYMANIC_STRING 16384
 
-void SaveDynamicString     ( char *string, FILE *file );					// Works with NULL
-void SaveDynamicString     ( char *string, int maxsize, FILE *file );		// Works with NULL
+void SaveDynamicString     ( const char *string, FILE *file );					// Works with NULL
+void SaveDynamicString     ( const char *string, int maxsize, FILE *file );		// Works with NULL
 bool LoadDynamicStringInt  ( const char* _file, int _line, char **string, FILE *file );					// Assigns space for string
 bool LoadDynamicStringInt  ( const char* _file, int _line, char *string, int maxsize, FILE *file );		// Does not allocate space
+
+// std::string versions: the same bytes on disk as the char versions. The maxsize of the
+// fixed array a field used to be is still enforced on load, so saves validate as before.
+void SaveDynamicString     ( const std::string &string, FILE *file );
+void SaveDynamicString     ( const std::string &string, int maxsize, FILE *file );
+bool LoadDynamicStringInt  ( const char* _file, int _line, std::string &string, int maxsize, FILE *file );
 
 #define LoadDynamicStringPtr(string,file) LoadDynamicStringInt(__FILE__,__LINE__,string,file)
 #define LoadDynamicStringStatic(string,maxsize,file) LoadDynamicStringInt(__FILE__,__LINE__,string,maxsize,file)

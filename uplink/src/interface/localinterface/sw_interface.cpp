@@ -54,7 +54,7 @@ void SWInterface::SoftwareClick ( Button *button )
 	for ( int i = 0; i < numfiles; ++i ) {
 
 		if ( db->GetDataFile (i) &&
-			strcmp ( db->GetDataFile (i)->title, softwarename ) == 0 &&
+			strcmp ( db->GetDataFile (i)->title.c_str (), softwarename ) == 0 &&
 			db->GetDataFile (i)->version == version ) {
 			inmemory = true;
 			break;
@@ -163,7 +163,7 @@ void SWInterface::ToggleSubMenu ( int softwareTYPE, int x, int y )
 
 		// Create a list of all software in memory
 
-		LList <char *> software;				// Bit of a hack - think about this
+		LList <const char *> software;			// Bit of a hack - think about this
 		LList <float> versions;
 
 		DataBank *db = &(game->GetWorld ()->GetPlayer ()->gateway.databank);
@@ -181,7 +181,7 @@ void SWInterface::ToggleSubMenu ( int softwareTYPE, int x, int y )
 				int existingindex = -1;
 				
 				for ( int si = 0; si < software.Size (); ++si ) {
-					if ( strcmp ( software.GetData (si), db->GetDataFile (di)->title ) == 0 ) {
+					if ( strcmp ( software.GetData (si), db->GetDataFile (di)->title.c_str () ) == 0 ) {
 						existingindex = si;
 						break;
 					}
@@ -191,7 +191,7 @@ void SWInterface::ToggleSubMenu ( int softwareTYPE, int x, int y )
 
 				if ( existingindex == -1 ) {
 
-					software.PutData ( db->GetDataFile (di)->title );
+					software.PutData ( db->GetDataFile (di)->title.c_str () );
 					versions.PutData ( db->GetDataFile (di)->version );
 
 				}
@@ -201,7 +201,7 @@ void SWInterface::ToggleSubMenu ( int softwareTYPE, int x, int y )
 					software.RemoveData ( existingindex );
 					versions.RemoveData ( existingindex );
 
-					software.PutDataAtIndex ( db->GetDataFile (di)->title, existingindex );
+					software.PutDataAtIndex ( db->GetDataFile (di)->title.c_str (), existingindex );
 					versions.PutDataAtIndex ( db->GetDataFile (di)->version, existingindex );
 
 				}
@@ -458,7 +458,7 @@ bool SWInterface::HasVersionMenu ( char *program )
 
 		if ( db->GetDataFile (di) &&
 			 db->GetDataFile (di)->TYPE == DATATYPE_PROGRAM &&
-			 strcmp ( db->GetDataFile (di)->title, program ) == 0 ) {
+			 strcmp ( db->GetDataFile (di)->title.c_str (), program ) == 0 ) {
 		
 			 count++;
 			 if ( count > 1 ) return true;
@@ -479,7 +479,7 @@ void SWInterface::ToggleVersionMenu ( char *program, int x, int y )
 
 		// Create it
 		
-		LList <char *> software;				// Bit of a hack - think about this
+		LList <const char *> software;			// Bit of a hack - think about this
 		LList <float> versions;
 
 		DataBank *db = &(game->GetWorld ()->GetPlayer ()->gateway.databank);
@@ -488,9 +488,9 @@ void SWInterface::ToggleVersionMenu ( char *program, int x, int y )
 
 			if ( db->GetDataFile (di) &&
 				 db->GetDataFile (di)->TYPE == DATATYPE_PROGRAM &&
-				 strcmp ( db->GetDataFile (di)->title, program ) == 0 ) {
+				 strcmp ( db->GetDataFile (di)->title.c_str (), program ) == 0 ) {
 
-				software.PutData ( db->GetDataFile (di)->title );
+				software.PutData ( db->GetDataFile (di)->title.c_str () );
 				versions.PutData ( db->GetDataFile (di)->version );
 
 			}

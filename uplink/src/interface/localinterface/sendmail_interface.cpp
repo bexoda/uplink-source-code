@@ -94,7 +94,7 @@ void SendMailInterface::AttachFileClick ( Button *button )
 	for ( int i = 0; i < db->GetDataSize (); ++i ) {
 
 		if ( db->GetDataFile (i) &&
-			strcmp ( db->GetDataFile (i)->title, button->caption ) == 0 ) {
+			strcmp ( db->GetDataFile (i)->title.c_str (), button->caption ) == 0 ) {
 			data = db->GetDataFile (i);
 			break;
 		}
@@ -127,14 +127,14 @@ void SendMailInterface::ToggleFileList ( int x, int y )
 
 		// Create a list of all files in memory
 
-		LList <char *> software;				// Bit of a hack - think about this
+		LList <const char *> software;			// Bit of a hack - think about this
 
 		DataBank *db = &(game->GetWorld ()->GetPlayer ()->gateway.databank);
 
 		for ( int di = 0; di < db->GetDataSize (); ++di ) {
 
 			if ( db->GetDataFile (di) ) 
-				software.PutData ( db->GetDataFile (di)->title );
+				software.PutData ( db->GetDataFile (di)->title.c_str () );
 
 		}
 
@@ -422,7 +422,7 @@ void SendMailInterface::Update ()
 		EclGetButton ( "sendmail_body box" )->SetCaption ( m->GetBody () );
 
 		char attached [128];
-		if ( m->GetData () ) {    UplinkSnprintf ( attached, sizeof ( attached ), "File: %s", m->GetData ()->title );
+		if ( m->GetData () ) {    UplinkSnprintf ( attached, sizeof ( attached ), "File: %s", m->GetData ()->title.c_str () );
 		} else {                  UplinkStrncpy ( attached, "File: None attached", sizeof ( attached ) );
 		}
 		EclGetButton ( "sendmail_file" )->SetCaption ( attached );

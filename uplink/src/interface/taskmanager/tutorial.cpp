@@ -2090,7 +2090,7 @@ bool Tutorial::HasCompletedCurrentSection ()
         else if ( current_part == 68 )                  return ( game->GetInterface ()->GetLocalInterface ()->InScreen () == SCREEN_SENDMAIL &&
                                                                  ((SendMailInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen () )->sGetMessage () &&
                                                                  ((SendMailInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen () )->sGetMessage ()->GetData () &&
-                                                                 strcmp ( ((SendMailInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen () )->sGetMessage ()->GetData ()->title, "Uplink test data" ) == 0 );
+                                                                 strcmp ( ((SendMailInterface *) game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen () )->sGetMessage ()->GetData ()->title.c_str (), "Uplink test data" ) == 0 );
         else if ( current_part == 69 )                  return ( game->GetInterface ()->GetLocalInterface ()->InScreen () == SCREEN_NONE );
         else                                            return nextclicked;
 

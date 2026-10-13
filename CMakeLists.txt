@@ -43,7 +43,8 @@ target_compile_definitions(uplink_flags INTERFACE
   _REENTRANT USE_SDL USE_FTGL
   $<IF:$<BOOL:${UPLINK_DEMO}>,DEMOGAME=1,FULLGAME=1>)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  target_compile_options(uplink_flags INTERFACE -Wall -Wextra)
+  # A wrong printf argument (e.g. a std::string for %s) is undefined behaviour: an error.
+  target_compile_options(uplink_flags INTERFACE -Wall -Wextra -Werror=format)
 endif()
 # A derived function whose signature drifts from the base virtual silently stops overriding
 # it (a const change once disabled every hacking tool's SetTarget). Level 1 flags only those.

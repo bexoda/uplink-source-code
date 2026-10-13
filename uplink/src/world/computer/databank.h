@@ -11,6 +11,8 @@
 #ifndef _included_databank_h
 #define _included_databank_h
 
+#include <string>
+
 
 #include "app/uplinkobject.h"
 
@@ -102,7 +104,7 @@ class Data : public UplinkObject
 
 public:
 
-	char title [SIZE_DATA_TITLE];
+	std::string title;
 	int TYPE;
 	int size;
 	int encrypted;						// 0 = not encrypted, >=1 = encrypted

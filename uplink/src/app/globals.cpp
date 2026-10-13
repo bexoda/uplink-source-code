@@ -138,3 +138,20 @@ char *UplinkStrdup ( const char *s )
 	memcpy ( copy, s, len + 1 );
 	return copy;
 }
+
+std::string UplinkFormat ( const char *format, ... )
+{
+	va_list args;
+	va_start ( args, format );
+	va_list copy;
+	va_copy ( copy, args );
+	int len = vsnprintf ( NULL, 0, format, copy );
+	va_end ( copy );
+	std::string out;
+	if ( len > 0 ) {
+		out.resize ( (size_t) len );
+		vsnprintf ( &out [0], (size_t) len + 1, format, args );
+	}
+	va_end ( args );
+	return out;
+}

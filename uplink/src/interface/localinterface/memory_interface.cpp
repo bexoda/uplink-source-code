@@ -146,7 +146,7 @@ void MemoryInterface::MemoryBlockDraw ( Button *button, bool highlighted, bool /
 			 game->GetWorld ()->GetPlayer ()->gateway.databank.GetDataIndex (index)	!= 
 			 game->GetWorld ()->GetPlayer ()->gateway.databank.GetDataIndex (index-1) ) {
 								
-				GciDrawText ( button->x + 30, button->y + 8, data->title );
+				GciDrawText ( button->x + 30, button->y + 8, data->title.c_str () );
 
 				if ( data->TYPE == DATATYPE_PROGRAM ) {
 					char version [5];

@@ -2782,7 +2782,7 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 	Data *msgdata = message->GetData ();
 
 	if ( msgdata
-		 && strcmp ( msgdata->title, datatitle ) == 0
+		 && strcmp ( msgdata->title.c_str (), datatitle ) == 0
 		 && msgdata->encrypted == 0 ) {
 
 		MissionCompleted ( mission, person, message );
@@ -2790,7 +2790,7 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 
 	}
 	else if ( msgdata
-		 && strcmp ( msgdata->title, datatitle ) == 0
+		 && strcmp ( msgdata->title.c_str (), datatitle ) == 0
 		 && msgdata->encrypted > 0 ) {
 
 		// Message is encrypted
@@ -2905,13 +2905,13 @@ bool MissionGenerator::IsMissionComplete_StealAllFiles ( Mission *mission, Perso
 			Data *thisfile = ourcomp->databank.GetDataFile (i);
 			UplinkAssert (thisfile);
 
-			if ( strstr ( thisfile->title, stolendatatitle ) != NULL ) {
+			if ( strstr ( thisfile->title.c_str (), stolendatatitle ) != NULL ) {
 
 				if ( thisfile->encrypted == 0 ) {
 
 					int thisfileindex;
 
-					char *lastspace = strrchr ( thisfile->title, ' ' );
+					const char *lastspace = strrchr ( thisfile->title.c_str (), ' ' );
 					if ( lastspace ) {
 
 						sscanf ( lastspace, " %d.dat", &thisfileindex );
@@ -3745,13 +3745,13 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 			    Data *thisfile = ourcomp->databank.GetDataFile (i);
 			    UplinkAssert (thisfile);
 
-			    if ( strstr ( thisfile->title, "Uplink_Agent_Data" ) != NULL &&
+			    if ( strstr ( thisfile->title.c_str (), "Uplink_Agent_Data" ) != NULL &&
 				     thisfile->encrypted == 0 ) {
 
 				    char unused [64];
 				    int thisfileindex;
 
-				    sscanf ( thisfile->title, "%s %d.dat", unused, &thisfileindex );
+				    sscanf ( thisfile->title.c_str (), "%s %d.dat", unused, &thisfileindex );
 
 				    if ( thisfileindex >= 0 && thisfileindex < numfiles &&
 					     filefound [thisfileindex] == false ) {
@@ -3763,7 +3763,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 
 			    }
 
-                if ( strcmp ( thisfile->title, "Uplink_Agent_List" ) == 0 &&
+                if ( strcmp ( thisfile->title.c_str (), "Uplink_Agent_List" ) == 0 &&
                     thisfile->encrypted == 0 ) {
 
                     foundprogram = true;

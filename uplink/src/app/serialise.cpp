@@ -966,12 +966,12 @@ bool LoadDynamicStringInt ( const char* _file, int _line, char *string, int maxs
 
 }
 
-void SaveDynamicString ( char *string, FILE *file )
+void SaveDynamicString ( const char *string, FILE *file )
 {
 	SaveDynamicString ( string, -1, file );
 }
 
-void SaveDynamicString ( char *string, int maxsize, FILE *file )
+void SaveDynamicString ( const char *string, int maxsize, FILE *file )
 {
 
 	if ( string ) {
@@ -1022,4 +1022,24 @@ bool FileReadDataInt ( const char* _file, int _line, void * _DstBuf, size_t _Ele
 		return false;
 	}
 	return true;
+}
+
+void SaveDynamicString ( const std::string &string, FILE *file )
+{
+	SaveDynamicString ( string.c_str (), -1, file );
+}
+
+void SaveDynamicString ( const std::string &string, int maxsize, FILE *file )
+{
+	SaveDynamicString ( string.c_str (), maxsize, file );
+}
+
+bool LoadDynamicStringInt ( const char* _file, int _line, std::string &string, int maxsize, FILE *file )
+{
+	// Same validation as the fixed-array version (a NULL string or one longer than maxsize
+	// is an error), then keep the text.
+	std::string buffer ( maxsize > 0 ? maxsize : 1, '\0' );
+	bool ok = LoadDynamicStringInt ( _file, _line, &buffer [0], maxsize, file );
+	string = buffer.c_str ();
+	return ok;
 }

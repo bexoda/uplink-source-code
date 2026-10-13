@@ -96,7 +96,7 @@ void FileServerScreenInterface::FileClick ( Button *button )
 		// Log this access
 		char action [64];
 
-		UplinkSnprintf ( action, sizeof ( action ), "Accessed file %s", data->title );
+		UplinkSnprintf ( action, sizeof ( action ), "Accessed file %s", data->title.c_str () );
 		AccessLog *log = new AccessLog ();
 		log->SetProperties ( &(game->GetWorld ()->date), 
 							 game->GetWorld ()->GetPlayer ()->GetConnection ()->GetGhost (), "PLAYER",
@@ -317,7 +317,7 @@ void FileServerScreenInterface::FileDraw ( Button *button, bool highlighted, boo
 
 		glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
 
-		GciDrawText ( button->x, button->y + 10, data->title );
+		GciDrawText ( button->x, button->y + 10, data->title.c_str () );
 
 		char size [64];
 		UplinkSnprintf ( size, sizeof ( size ), "%d GigaQuads", data->size );
