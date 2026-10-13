@@ -52,6 +52,15 @@ void DArray <T> :: SetStepSize ( int newstepsize )
 }
 
 template <class T>
+void DArray <T> :: Reserve ( int capacity )
+{
+
+	dynarray.reserve ( capacity );
+	shadow.reserve ( capacity );
+
+}
+
+template <class T>
 int DArray <T> :: PutData ( const T &newdata )
 {
 

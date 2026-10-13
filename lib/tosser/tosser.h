@@ -109,6 +109,7 @@ public:
 
     void SetSize ( int newsize );
 	void SetStepSize ( int newstepsize );
+    void Reserve ( int capacity );				 // Room for this many slots; Size () is unchanged
 
     int  PutData    ( const T &newdata );			 // Returns index used
     void PutData    ( const T &newdata, int index );
@@ -148,8 +149,6 @@ protected :
     BTree *ltree;
     BTree *rtree;
     
-    void RecursiveConvertToDArray ( DArray <T> *darray, BTree <T> *btree );
-    void RecursiveConvertIndexToDArray ( DArray <char *> *darray, BTree <T> *btree );
     
     void AppendRight ( BTree <T> *tempright );                            // Used by Remove
     
@@ -183,6 +182,9 @@ public :
     
     DArray <T> *ConvertToDArray ();
     DArray <char *> *ConvertIndexToDArray ();
+
+    void CollectData ( std::vector <T> &out ) const;			 // Same order as ConvertToDArray
+    void CollectIds  ( std::vector <char *> &out ) const;		 // Same order as ConvertIndexToDArray
     
 };
 

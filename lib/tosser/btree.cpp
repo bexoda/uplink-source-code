@@ -345,53 +345,55 @@ BTree <T> *BTree <T> :: Right () const
 template <class T>
 DArray <T> *BTree <T> :: ConvertToDArray ()
 {
-    
+
+    std::vector <T> items;
+    CollectData ( items );
+
     DArray <T> *darray = new DArray <T>;
-    RecursiveConvertToDArray ( darray, this );
-    
+    darray->Reserve ( (int) items.size () );
+    for ( const T &item : items )
+        darray->PutData ( item );
+
     return darray;
-    
+
 }
 
 template <class T>
 DArray <char *> *BTree <T> :: ConvertIndexToDArray ()
 {
-    
+
+    std::vector <char *> ids;
+    CollectIds ( ids );
+
     DArray <char *> *darray = new DArray <char *>;
-    RecursiveConvertIndexToDArray ( darray, this );
-    
+    darray->Reserve ( (int) ids.size () );
+    for ( char *item : ids )
+        darray->PutData ( item );
+
     return darray;
-    
+
+}
+
+// Node, then left, then right: the order saves and updates have always used.
+
+template <class T>
+void BTree <T> :: CollectData ( std::vector <T> &out ) const
+{
+
+    if ( id ) out.push_back ( data );
+    if ( ltree ) ltree->CollectData ( out );
+    if ( rtree ) rtree->CollectData ( out );
+
 }
 
 template <class T>
-void BTree <T> :: RecursiveConvertToDArray ( DArray <T> *darray, BTree <T> *btree )
+void BTree <T> :: CollectIds ( std::vector <char *> &out ) const
 {
-    
-    assert (darray);
-    
-    if ( !btree ) return;            // Base case
-    
-    if ( btree->id ) darray->PutData ( btree->data );
-    
-    RecursiveConvertToDArray ( darray, btree->Left  () );
-    RecursiveConvertToDArray ( darray, btree->Right () );
-    
-}
 
-template <class T>
-void BTree <T> :: RecursiveConvertIndexToDArray ( DArray <char *> *darray, BTree <T> *btree )
-{
-    
-    assert (darray);
-    
-    if ( !btree ) return;            // Base case
-    
-    if ( btree->id ) darray->PutData ( btree->id );
-    
-    RecursiveConvertIndexToDArray ( darray, btree->Left  () );
-    RecursiveConvertIndexToDArray ( darray, btree->Right () );
-    
+    if ( id ) out.push_back ( id );
+    if ( ltree ) ltree->CollectIds ( out );
+    if ( rtree ) rtree->CollectIds ( out );
+
 }
 
 #endif

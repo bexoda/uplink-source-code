@@ -184,15 +184,13 @@ void UpdateBTree ( BTree <UplinkObject *> *btree )
 
 	UplinkAssert ( btree );
 
-	DArray <UplinkObject *> *uo = btree->ConvertToDArray ();
+	// A snapshot: an Update may add to or remove from the tree
+	std::vector <UplinkObject *> uo;
+	btree->CollectData ( uo );
 
-	for ( int i = 0; i < uo->Size (); ++i )
-		if ( uo->ValidIndex (i) )
-			if ( uo->GetData (i) )
-				uo->GetData (i)->Update ();
-
-	delete uo;	
-
+	for ( UplinkObject *object : uo )
+		if ( object )
+			object->Update ();
 
 }
 
