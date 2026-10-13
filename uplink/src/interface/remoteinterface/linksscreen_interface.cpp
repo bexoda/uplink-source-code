@@ -39,25 +39,25 @@
 
 int LinksScreenInterface::baseoffset = 0;
 
-Image *LinksScreenInterface::ilink_tif = NULL;
-Image *LinksScreenInterface::ilink_h_tif = NULL;
-Image *LinksScreenInterface::ilink_c_tif = NULL;
+std::unique_ptr<Image> LinksScreenInterface::ilink_tif;
+std::unique_ptr<Image> LinksScreenInterface::ilink_h_tif;
+std::unique_ptr<Image> LinksScreenInterface::ilink_c_tif;
 
-Image *LinksScreenInterface::iadd_tif = NULL;
-Image *LinksScreenInterface::iadd_h_tif = NULL;
-Image *LinksScreenInterface::iadd_c_tif = NULL;
+std::unique_ptr<Image> LinksScreenInterface::iadd_tif;
+std::unique_ptr<Image> LinksScreenInterface::iadd_h_tif;
+std::unique_ptr<Image> LinksScreenInterface::iadd_c_tif;
 
 
 LinksScreenInterface::LinksScreenInterface ()
 {
 
-	ilink_tif = get_assignbitmap ( "link.tif" );
-	ilink_h_tif = get_assignbitmap ( "link_h.tif" );
-	ilink_c_tif = get_assignbitmap ( "link_c.tif" );
+	ilink_tif.reset ( get_assignbitmap ( "link.tif" ) );
+	ilink_h_tif.reset ( get_assignbitmap ( "link_h.tif" ) );
+	ilink_c_tif.reset ( get_assignbitmap ( "link_c.tif" ) );
 
-	iadd_tif = get_assignbitmap ( "add.tif" );
-	iadd_h_tif = get_assignbitmap ( "add_h.tif" );
-	iadd_c_tif = get_assignbitmap ( "add_c.tif" );
+	iadd_tif.reset ( get_assignbitmap ( "add.tif" ) );
+	iadd_h_tif.reset ( get_assignbitmap ( "add_h.tif" ) );
+	iadd_c_tif.reset ( get_assignbitmap ( "add_c.tif" ) );
 
 }
 
@@ -69,31 +69,13 @@ LinksScreenInterface::~LinksScreenInterface ()
     DeleteLListData ( &filteredlist );
 	filteredlist.Empty ();
 
-	if ( ilink_tif ) {
-		delete ilink_tif;
-		ilink_tif = NULL;
-	}
-	if ( ilink_h_tif ) {
-		delete ilink_h_tif;
-		ilink_h_tif = NULL;
-	}
-	if ( ilink_c_tif ) {
-		delete ilink_c_tif;
-		ilink_c_tif = NULL;
-	}
+	ilink_tif.reset ();
+	ilink_h_tif.reset ();
+	ilink_c_tif.reset ();
 
-	if ( iadd_tif ) {
-		delete iadd_tif;
-		iadd_tif = NULL;
-	}
-	if ( iadd_h_tif ) {
-		delete iadd_h_tif;
-		iadd_h_tif = NULL;
-	}
-	if ( iadd_c_tif ) {
-		delete iadd_c_tif;
-		iadd_c_tif = NULL;
-	}
+	iadd_tif.reset ();
+	iadd_h_tif.reset ();
+	iadd_c_tif.reset ();
 
 }
 
@@ -381,10 +363,10 @@ void LinksScreenInterface::ShowLinkDraw ( Button *button, bool highlighted, bool
 	    VLocation *vl = game->GetWorld ()->GetVLocation (link);
 
 		if ( vl->colored )
-			imagebutton_draw ( button, highlighted, clicked, iadd_tif, iadd_h_tif, iadd_c_tif );
+			imagebutton_draw ( button, highlighted, clicked, iadd_tif.get (), iadd_h_tif.get (), iadd_c_tif.get () );
 
 		else if ( vl->displayed )
-			imagebutton_draw ( button, highlighted, clicked, ilink_tif, ilink_h_tif, ilink_c_tif );
+			imagebutton_draw ( button, highlighted, clicked, ilink_tif.get (), ilink_h_tif.get (), ilink_c_tif.get () );
 
 		else
             clear_draw ( button->x, button->y, button->width, button->height );
@@ -755,7 +737,7 @@ void LinksScreenInterface::Create ( ComputerScreen *newcs )
 
 				UplinkSnprintf ( name, sizeof ( name ), "linksscreen_addlink %d", li );
 				EclRegisterButton ( 15, 145 + li * 15, 13, 13, "", "Store this link", name );
-				button_assignbitmaps ( name, iadd_tif, iadd_h_tif, iadd_c_tif );
+				button_assignbitmaps ( name, iadd_tif.get (), iadd_h_tif.get (), iadd_c_tif.get () );
 				EclRegisterButtonCallbacks ( name, AddLinkDraw, AddLinkClick, button_click, button_highlight );
 
 			}

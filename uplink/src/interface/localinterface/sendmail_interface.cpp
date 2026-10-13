@@ -24,7 +24,7 @@
 #include "world/company/mission.h"
 
 	
-Message *SendMailInterface::m = new Message();		// The message being built up
+std::unique_ptr<Message> SendMailInterface::m ( new Message() );		// The message being built up
 bool SendMailInterface::changed = false;	        // Has m changed?
 
 // These have to be initialised above to stop them from being reset
@@ -36,8 +36,8 @@ SendMailInterface::SendMailInterface ()
 {
 
 	//if ( m )
-	//	delete m;
-	//m = new Message ();       // The message being built up
+	//	m.reset ();
+	//m.reset ( new Message () );       // The message being built up
 	//changed = false;          // Has m changed?
 
 }
@@ -46,8 +46,8 @@ SendMailInterface::~SendMailInterface ()
 {
 
 	//if ( m ) {
-	//	delete m;
-	//	m = NULL;
+	//	m.reset ();
+	//	m.reset ();
 	//}
 
 }
@@ -55,7 +55,7 @@ SendMailInterface::~SendMailInterface ()
 Message *SendMailInterface::sGetMessage ()
 {
 
-    return m;
+    return m.get ();
 
 }
 
@@ -264,8 +264,8 @@ void SendMailInterface::ClearClick ( Button * /*button*/ )
 {
 	
 	if ( m ) {
-		delete m;	
-		m = new Message ();
+		m.reset ();	
+		m.reset ( new Message () );
 		changed = true;
 	}
 	
@@ -291,7 +291,7 @@ void SendMailInterface::SendClick ( Button * /*button*/ )
 	m->Send ();
 
 	// We can't delete the old message m - it is in use elsewhere now
-	m = new Message ();
+	m.reset ( new Message () );
 	changed = true;
 	game->GetInterface ()->GetLocalInterface ()->GetInterfaceScreen ()->Update ();
 

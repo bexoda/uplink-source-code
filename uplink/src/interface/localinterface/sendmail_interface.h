@@ -5,6 +5,8 @@
 #ifndef _included_sendmailinterface_h
 #define _included_sendmailinterface_h
 
+#include <memory>
+
 // ============================================================================
 
 #include "localinterfacescreen.h"
@@ -37,7 +39,7 @@ protected:
 
 protected:
 
-	static Message *m;					// The message being built up
+	static std::unique_ptr<Message> m;					// The message being built up
 	static bool changed;				// Has m changed?
 
 public:

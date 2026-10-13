@@ -37,7 +37,7 @@
 
 BTree <VLocation *> ClientCommsInterface::locations;
 LList <char *> ClientCommsInterface::connection;
-WorldMapLayout *ClientCommsInterface::layout = NULL;
+std::unique_ptr<WorldMapLayout> ClientCommsInterface::layout;
 
 static int stippleindex = 0;
 static int STIPPLE []  = { 0x1111,		//		0001000100010001
@@ -73,7 +73,7 @@ ClientCommsInterface::ClientCommsInterface()
 ClientCommsInterface::~ClientCommsInterface()
 {
     
-    if (layout)	delete layout;
+    layout.reset ();
     
 }
 
@@ -246,9 +246,8 @@ void ClientCommsInterface::Create ()
 	int fullsizeY = (int)(316.0 * ( fullsizeX / 595.0 ));
 		
 	// Create the background bitmap
-	if ( layout )
-		delete layout;
-	layout = new WorldMapLayout( MapRectangle( 20, 50, fullsizeX, fullsizeY ) );
+	layout.reset ();
+	layout.reset ( new WorldMapLayout( MapRectangle( 20, 50, fullsizeX, fullsizeY ) ) );
 	
 	EclRegisterButton ( 20, 50, fullsizeX, fullsizeY, "", "", "comms_largemap" );												
 	

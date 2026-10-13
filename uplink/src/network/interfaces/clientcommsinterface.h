@@ -5,6 +5,8 @@
 #ifndef _included_clientcommsinterface_h
 #define _included_clientcommsinterface_h
 
+#include <memory>
+
 // ============================================================================
 
 #include "eclipse.h"
@@ -36,7 +38,7 @@ public:
     
 protected:
 
-    static WorldMapLayout *layout;
+    static std::unique_ptr<WorldMapLayout> layout;
     static void DrawAllObjects();
     static bool InConnection( const char *computerName );
 

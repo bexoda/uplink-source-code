@@ -3,6 +3,8 @@
 #ifndef _included_linksscreeninterface_h
 #define _included_linksscreeninterface_h
 
+#include <memory>
+
 
 // ============================================================================
 
@@ -24,13 +26,13 @@ protected:
 	LList <char *> fulllist;
 	LList <char *> filteredlist;
 
-	static Image *ilink_tif;
-	static Image *ilink_h_tif;
-	static Image *ilink_c_tif;
+	static std::unique_ptr<Image> ilink_tif;
+	static std::unique_ptr<Image> ilink_h_tif;
+	static std::unique_ptr<Image> ilink_c_tif;
 
-	static Image *iadd_tif;
-	static Image *iadd_h_tif;
-	static Image *iadd_c_tif;
+	static std::unique_ptr<Image> iadd_tif;
+	static std::unique_ptr<Image> iadd_h_tif;
+	static std::unique_ptr<Image> iadd_c_tif;
 
 protected:
 
