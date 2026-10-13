@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "soundgarden.h"
 
@@ -50,7 +50,7 @@ void SeizeGatewayEvent::SetName ( char *newname )
 
 }
 
-void SeizeGatewayEvent::SetReason ( char *newreason )
+void SeizeGatewayEvent::SetReason ( const char *newreason )
 {
 
 	if ( reason )
@@ -83,16 +83,14 @@ void SeizeGatewayEvent::Run ()
 
 		if ( gateway_id == game->GetWorld ()->GetPlayer ()->gateway.id ) {
 
-			std::ostrstream deathmsg;
+			std::ostringstream deathmsg;
 
 			deathmsg << "Disavowed by Uplink Corporation at " << game->GetWorld ()->date.GetLongString ()
 					 << "\nFor " << reason
-					 << "\n" << '\x0';
+					 << "\n";
 
-			game->GameOver ( deathmsg.str () );
+			game->GameOver ( deathmsg.str ().c_str () );
 
-			deathmsg.rdbuf()->freeze( 0 );
-			//delete [] deathmsg.str ();
 
 		}
 		else {
@@ -146,13 +144,12 @@ char *SeizeGatewayEvent::GetShortString ()
 char *SeizeGatewayEvent::GetLongString ()
 {
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "Seize Gateway Event\n"
 			   << "For : " << name << "\n"
 			   << "GatewayID : " << gateway_id << "\n"
-			   << "Reason : " << reason
-			   << '\x0';
-	return longstring.str ();
+			   << "Reason : " << reason;
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -107,18 +107,15 @@ void CriminalScreenInterface::AddConvictionClick ( Button *button )
 		
 		if ( existing ) {
 
-			std::ostrstream newconvictions;
+			std::ostringstream newconvictions;
 
 			if ( strstr ( existing, "None" ) == NULL )
 				newconvictions << existing << "\n";
 
-			newconvictions << newconviction
-						   << '\x0';
+			newconvictions << newconviction;
 
-			rec->ChangeField ( "Convictions", newconvictions.str () );
+			rec->ChangeField ( "Convictions", newconvictions.str ().c_str () );
 
-			newconvictions.rdbuf()->freeze( 0 );
-			//delete [] newconvictions.str ();
 
 		}
 

@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -41,7 +41,7 @@ void ShotByFedsEvent::SetName ( char *newname )
 
 }
 
-void ShotByFedsEvent::SetReason ( char *newreason )
+void ShotByFedsEvent::SetReason ( const char *newreason )
 {
 
 	if ( reason )
@@ -76,12 +76,11 @@ char *ShotByFedsEvent::GetShortString ()
 char *ShotByFedsEvent::GetLongString ()
 {
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "Shot By Feds Event\n"
 			   << "For : " << name << "\n"
-			   << "Reason : " << reason
-			   << '\x0';
-	return longstring.str ();
+			   << "Reason : " << reason;
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

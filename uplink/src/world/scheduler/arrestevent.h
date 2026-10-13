@@ -34,7 +34,7 @@ public:
 	~ArrestEvent ();
 
 	void SetName	( char *newname );
-	void SetReason	( char *newreason );
+	void SetReason	( const char *newreason );
 	void SetIP		( char *newip );
 
 	void Run ();

@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -135,13 +135,12 @@ void BankRobberyEvent::Run ()
         Computer *comp = vl->GetComputer ();
         UplinkAssert (comp);
 
-		std::ostrstream deathmsg;
+		std::ostringstream deathmsg;
 		deathmsg << "Disavowed by Uplink Corporation at " << game->GetWorld ()->date.GetLongString ()
 				 << "\nFor attempting to steal money from "
-				 << comp->name << "\n"
-                 << '\x0';
+				 << comp->name << "\n";
 
-		game->GameOver ( deathmsg.str () );
+		game->GameOver ( deathmsg.str ().c_str () );
 
     }
     else {
@@ -164,15 +163,14 @@ char *BankRobberyEvent::GetShortString ()
 char *BankRobberyEvent::GetLongString ()
 {
 
-    std::ostrstream longstring;
+    std::ostringstream longstring;
     longstring << "Bank Robbery Event\n"
                << "Source : " << source_ip << ", " << source_accno << "\n"
                << "Target : " << target_ip << ", " << target_accno << "\n"
                << "Amount : " << amount << "\n"
-               << hackdate.GetLongString ()
-               << '\x0';
+               << hackdate.GetLongString ();
 
-    return longstring.str ();
+    return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include <GL/gl.h>
 
@@ -84,7 +84,7 @@ void RevelationTracker::Tick ( int n )
 			}
 			else {
 
-				std::ostrstream newcaption;
+				std::ostringstream newcaption;
 
 				newcaption << "Infected systems" << "\n";
 
@@ -110,12 +110,9 @@ void RevelationTracker::Tick ( int n )
 
 				}
 
-				newcaption << '\x0';
 
-				button->SetCaption ( newcaption.str () );
+				button->SetCaption ( newcaption.str ().c_str () );
 
-				newcaption.rdbuf()->freeze( 0 );
-				//delete [] newcaption.str ();
 
 			}
 

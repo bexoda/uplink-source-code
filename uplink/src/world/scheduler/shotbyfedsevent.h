@@ -39,7 +39,7 @@ public:
 	~ShotByFedsEvent ();
 
 	void SetName ( char *newname );
-	void SetReason ( char *newreason );
+	void SetReason ( const char *newreason );
 
 	void Run ();
 

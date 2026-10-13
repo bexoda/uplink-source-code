@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 #include "eclipse.h"
@@ -111,17 +111,15 @@ void ClientConnection::Handle_ClientCommsInterface ()
 
 	if ( conn->traceprogress != traceprogress ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTCOMMS-TRACEPROGRESS " << conn->traceprogress;
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
+		msgstream << (char) 10 << (char) 13 << '#';
 
-		char *message = msgstream.str ();
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS ) 	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		traceprogress = conn->traceprogress;
 
@@ -133,21 +131,19 @@ void ClientConnection::Handle_ClientCommsInterface ()
 
 	if ( !sentgateway ){
 
-	    std::ostrstream msgstream;
+	    std::ostringstream msgstream;
 
 	    VLocation *vl = game->GetWorld ()->GetVLocation ( IP_LOCALHOST );
 	    UplinkAssert (vl);
 	    msgstream << "CLIENTCOMMS-IPNAME " << vl->ip
 		      << " " << vl->x << " " << vl->y << " " << vl->computer;
-	    msgstream << (char) 10 << (char) 13 << '#' << '\x0';
+	    msgstream << (char) 10 << (char) 13 << '#';
 
-	    char *message = msgstream.str ();
+	    std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 	    int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 	    if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-	    //delete [] msgstream.str ();
 
 	    sentgateway = true;
 
@@ -166,21 +162,19 @@ void ClientConnection::Handle_ClientCommsInterface ()
 
 	    for ( int i = 0; i < numnewlinks; ++i ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 
 		VLocation *vl = game->GetWorld ()->GetVLocation ( links->GetData(i) );
 		UplinkAssert (vl);
 		msgstream << "CLIENTCOMMS-IPNAME " << vl->ip
 			  << " " << vl->x << " " << vl->y << " " << vl->computer;
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
+		msgstream << (char) 10 << (char) 13 << '#';
 
-		char *message = msgstream.str ();
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 	    }
 
@@ -202,7 +196,7 @@ void ClientConnection::Handle_ClientCommsInterface ()
 
 	if ( conn->GetSize () != connectionsize ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTCOMMS " << conn->GetSize () << " ";
 
 		for ( int i = 0; i < conn->GetSize (); ++i ) {
@@ -211,15 +205,13 @@ void ClientConnection::Handle_ClientCommsInterface ()
 			msgstream << vl->x << " " << vl->y << " " << vl->ip << " ";
 		}
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
+		msgstream << (char) 10 << (char) 13 << '#';
 
-		char *message = msgstream.str ();
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS ) 	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 
 		connectionsize = conn->GetSize ();
@@ -241,20 +233,18 @@ void ClientConnection::Handle_ClientStatusInterface ()
 	if ( player->rating.uplinkrating != rating.uplinkrating ||
 		 player->rating.neuromancerrating != rating.neuromancerrating ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-RATING "
 				  << "Uplink rating : " << player->rating.GetUplinkRating () << "\n"
 				  << "Neuromancer   : " << player->rating.GetNeuromancerRating () << "\n"
 				  << "Notoriety     : None";
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		rating.uplinkrating = player->rating.uplinkrating;
 		rating.neuromancerrating = player->rating.neuromancerrating;
@@ -267,7 +257,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 	if ( player->GetBalance () != balance || player->accounts.Size () != numaccounts ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-FINANCE "
 				  << "Balance : " << player->GetBalance () << "c\n\n";
 
@@ -286,14 +276,12 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 		}
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 
 		balance = player->GetBalance ();
@@ -314,18 +302,16 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 	if ( crimrec && strcmp ( convictions, crimrec ) != 0 ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-CRIMINAL "
 				  << crimrec;
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		UplinkStrncpy ( convictions, crimrec, sizeof ( convictions ) );
 
@@ -337,7 +323,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 	if ( player->gateway.GetHudUpgrades () != hudupgrades ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-HUD ";
 
 		if ( !(player->gateway.HasAnyHUDUpgrade ()) )								msgstream << "None\n";
@@ -346,14 +332,12 @@ void ClientConnection::Handle_ClientStatusInterface ()
 		if ( player->gateway.HasHUDUpgrade ( HUDUPGRADE_IRCCLIENT ) )	        	msgstream << "IRC Client\n";
         if ( player->gateway.HasHUDUpgrade ( HUDUPGRADE_LANVIEW ) )                 msgstream << "LAN View\n";
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		hudupgrades = player->gateway.GetHudUpgrades ();
 
@@ -370,7 +354,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 		// No need to store cpu, modem and mem seperately - multiply them together and compare
 		// This will work pretty much all of the time;
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-HW ";
 		msgstream << player->gateway.GetCPUSpeed () << "\n"
 				  << player->gateway.modemtype << "\n"
@@ -380,14 +364,12 @@ void ClientConnection::Handle_ClientStatusInterface ()
 			if ( player->gateway.hardware.ValidIndex (i) )
 				msgstream << player->gateway.hardware.GetData (i) << "\n";
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		cpumodemmemory = player->gateway.GetCPUSpeed () * player->gateway.GetBandwidth () * player->gateway.memorysize;
 		numhwitems = player->gateway.hardware.Size ();
@@ -400,7 +382,7 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 	if ( strcmp ( player->GetRemoteHost ()->ip, ip ) != 0 ) {
 
-		std::ostrstream msgstream;
+		std::ostringstream msgstream;
 		msgstream << "CLIENTSTATUS-IP ";
 
 		if ( player->IsConnected () ) {
@@ -415,14 +397,12 @@ void ClientConnection::Handle_ClientStatusInterface ()
 
 		}
 
-		msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-		char *message = msgstream.str ();
+		msgstream << (char) 10 << (char) 13 << '#';
+		std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 		int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 		if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-		msgstream.rdbuf()->freeze( 0 );
-		//delete [] msgstream.str ();
 
 		UplinkStrncpy ( ip, player->GetRemoteHost ()->ip, sizeof ( ip ) );
 
@@ -469,16 +449,14 @@ void ClientConnection::Handle_ClientStatusInterface ()
 			News *thisnews = uplink->news.GetData (in);
 			UplinkAssert (thisnews);
 
-			std::ostrstream msgstream;
+			std::ostringstream msgstream;
 			msgstream << "CLIENTSTATUS-NEWS - " << thisnews->date.GetShortString () << ": " << thisnews->headline;
-			msgstream << (char) 10 << (char) 13 << '#' << '\x0';
-			char *message = msgstream.str ();
+			msgstream << (char) 10 << (char) 13 << '#';
+			std::string message_text = msgstream.str ().c_str (); char *message = (char *) message_text.c_str ();
 
 			int result = TcpSend ( socket, message, (unsigned int) ( strlen(message)+1 ), false, HFILE_ERROR );
 			if ( result != TCP4U_SUCCESS )	app->GetNetwork ()->GetServer ()->clients.RemoveData (index);
 
-			msgstream.rdbuf()->freeze( 0 );
-			//delete [] msgstream.str ();
 
 		}
 

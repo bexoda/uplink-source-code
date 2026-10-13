@@ -54,8 +54,8 @@ public:
 	~News ();
 
 	void SetDate     ( Date *newdate );
-	void SetHeadline ( char *newheadline );
-	void SetDetails  ( char *newdetails );
+	void SetHeadline ( const char *newheadline );
+	void SetDetails  ( const char *newdetails );
 
 	char *GetDetails ();
 

@@ -45,7 +45,7 @@ public:
 	GameObituary ();
 	~GameObituary ();
 
-	void SetGameOverReason ( char *newreason );
+	void SetGameOverReason ( const char *newreason );
 	char *GameOverReason ();
     void SetDemoGameOver ( bool newvalue );
     void SetWarezGameOver ( bool newvalue );

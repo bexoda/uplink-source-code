@@ -1,6 +1,6 @@
 // -*- tab-width:4 c-file-style:"cc-mode" -*-
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -269,7 +269,7 @@ void Gateway::ExchangeGatewayComplete ()
 
 	if ( removedItems.Size () > 0 ) {
 
-		std::ostrstream removedText;
+		std::ostringstream removedText;
 		removedText << "Unfortunately, your new gateway does not have enough space to contain "
 					   "all of your old hardware.  As such, we have been forced to remove the "
 					   "following items from your new system :\n\n";
@@ -277,17 +277,14 @@ void Gateway::ExchangeGatewayComplete ()
 		for ( int i = 0; i < removedItems.Size (); ++i )
 			removedText << removedItems.GetData(i) << "\n";
 
-		removedText << '\x0';
 
 		Message *msg = new Message ();
 		msg->SetTo ( "PLAYER" );
 		msg->SetFrom ( "Uplink Corporation" );
 		msg->SetSubject ( "Removed hardware items" );
-		msg->SetBody ( removedText.str () );
+		msg->SetBody ( removedText.str ().c_str () );
 		msg->Send ();
 
-		removedText.rdbuf()->freeze( 0 );
-		//delete [] removedText.str ();
 
 	}
 

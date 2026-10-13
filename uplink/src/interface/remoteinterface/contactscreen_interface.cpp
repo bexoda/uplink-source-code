@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include <GL/gl.h>
 
@@ -125,19 +125,18 @@ void ContactScreenInterface::PutMessage ( int userid, char *message )
 
 	// Work out the full message
 
-	std::ostrstream fullmessage;
+	std::ostringstream fullmessage;
 
 	ContactScreenInterface *thisint = (ContactScreenInterface *) GetInterfaceScreen ( SCREEN_CONTACTSCREEN );
 
-	if	( userid == 0 )	fullmessage << message << '\x0';
-	else				fullmessage << thisint->users.GetData (userid) << " : " << message << '\x0';
+	if	( userid == 0 )	fullmessage << message;
+	else				fullmessage << thisint->users.GetData (userid) << " : " << message;
 
 
 	// Add the message to the queue
 
-	char * msg = new char[ strlen( fullmessage.str() ) + 1 ];
-	UplinkSafeStrcpy( msg, fullmessage.str() );
-	fullmessage.rdbuf()->freeze( 0 );
+	char * msg = new char[ strlen( fullmessage.str ().c_str () ) + 1 ];
+	UplinkSafeStrcpy( msg, fullmessage.str ().c_str () );
 	thisint->messagequeue.PutData ( msg );
 
 	// Can't delete the fullmessage.str here

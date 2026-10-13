@@ -360,7 +360,7 @@ Record::~Record()
 
 }
 
-void Record::AddField ( char *name, char *value )
+void Record::AddField ( char *name, const char *value )
 {
 
 	char *newvalue = new char [strlen(value) + 1];
@@ -379,7 +379,7 @@ void Record::AddField ( char *name, int value )
 
 }
 
-void Record::ChangeField ( char *name, char *newvalue )
+void Record::ChangeField ( char *name, const char *newvalue )
 {
 
 	BTree <char *> *tree = fields.LookupTree ( name );

@@ -7,7 +7,7 @@
 //#include <vfw.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include "soundgarden.h"
 #include "redshirt.h"
@@ -294,8 +294,8 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	// Generate the fields of the mission
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	switch ( NumberGenerator::RandomNumber ( 3 ) + 1 ) {
 
@@ -308,8 +308,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "You will require " << datasize << " GigaQuads of storage space.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 
 	fulldetails << "Thankyou for working for " << employer->name << ".\n"
@@ -331,8 +330,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	fulldetails	<< "\nReturn the file via email to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -350,16 +348,12 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( difficulty > 3 )		mission->SetWhySoMuchMoney ( "The files contain sensitive data." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -488,8 +482,8 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	// Generate the fields of the mission
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 
 	details << "Payment for this job is " << payment << " credits.\n"
@@ -501,7 +495,6 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
     if ( target->TYPE == COMPUTER_TYPE_LAN )
         details << "\nThe data is stored on a LAN.\n";
 
-    details << '\x0';
 
 
 	char completionA [SIZE_VLOCATION_IP];								// IP
@@ -583,8 +576,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 				<< "IP : " << ourcomp->ip << "\n\n"
 				<< "USERNAME : " << username << "\n"
 				<< "PASSWORD : " << password << "\n\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 
 	Date postdate;
@@ -603,8 +595,8 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "There will be a lot of data to copy" );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
@@ -612,10 +604,6 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	mission->GiveLink ( ourcomp->ip );
 	mission->GiveCode ( ourcomp->ip, code );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -716,8 +704,8 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 	// Generate the fields of the mission
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 
 	switch ( NumberGenerator::RandomNumber ( 3 ) + 1 ) {
@@ -730,8 +718,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 
 	fulldetails << "Thankyou for working for " << employer->name << ".\n"
@@ -746,8 +733,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 				<< "Send a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	char completionA [SIZE_VLOCATION_IP];
 	char completionB [SIZE_DATA_TITLE];
@@ -770,16 +756,12 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( difficulty > 4 )		mission->SetWhySoMuchMoney ( "The data will be well protected." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -826,8 +808,8 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	// Generate the fields of the mission
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 
 	details << "Payment for this job is " << payment << " credits.\n"
@@ -837,7 +819,6 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
     if ( target->TYPE == COMPUTER_TYPE_LAN )
         details << "\nThe data is stored on a LAN.\n";
 
-	details	<< '\x0';
 
 
 	char completionA [SIZE_VLOCATION_IP];								// IP
@@ -955,8 +936,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 				 << "Send a notice of completion to\n"
 				 << personname << "\n"
 				 << "\n"
-				 << "END"
-				 << '\x0';
+				 << "END";
 
 
 	Date postdate;
@@ -975,17 +955,13 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "The data will be well protected." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -1068,13 +1044,12 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
     UplinkStrncpy ( completionC, "Unused", sizeof ( completionC ) );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Break into the following well known financial institute:\n"
 				<< "TARGET COMPUTER DATA :\n"
@@ -1174,8 +1149,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 	fulldetails	<< "\nSend a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	char whoisthetarget [128];
 	UplinkStrncpy ( whoisthetarget, "Nobody you would know.", sizeof ( whoisthetarget ) );
@@ -1199,17 +1173,13 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "The data is highly personal, and well protected" );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -1270,13 +1240,12 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Gain access to the International Academic Database:\n"
 				<< "TARGET COMPUTER DATA :\n"
@@ -1465,8 +1434,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 				<< "Send a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	char whoisthetarget [128];
 	UplinkStrncpy ( whoisthetarget, "He's just a friend of ours.", sizeof ( whoisthetarget ) );
@@ -1490,17 +1458,13 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( whysomuchmoney );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -1542,13 +1506,12 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Break into the International Social Security Database:\n"
 				<< "TARGET COMPUTER DATA :\n"
@@ -1631,8 +1594,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 				<< "Send a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	char whoisthetarget [128];
 	UplinkStrncpy ( whoisthetarget, "You wouldn't recognise the name.", sizeof ( whoisthetarget ) );
@@ -1656,18 +1618,14 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "We need to use the Social Security record very soon" );
 	mission->SetHowSecure ( "You will need to bypass the Proxy server." );
 	if ( !game->IsRunning () )	mission->SetCreateDate   ( &postdate );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -1710,13 +1668,12 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Break into the Global Criminal Database:\n"
 				<< "TARGET COMPUTER DATA :\n"
@@ -1838,8 +1795,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	fulldetails	<< "\nSend a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -1860,8 +1816,8 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( missiontype == 1 || missiontype == 2 ) mission->SetWhySoMuchMoney ( "The target may have friends." );
 	if ( missiontype == 3 ) mission->SetWhySoMuchMoney ( "The police may come after you." );
 	mission->SetHowSecure ( "The GCD uses a Proxy security system." );
@@ -1869,10 +1825,6 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -1947,15 +1899,14 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, "Trace an unauthorised money transfer", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "One of our bank accounts was recently hacked, and funds were transfered to an unknown account."
 				<< "Use any methods necessary to trace this hacker.\n"
@@ -1973,8 +1924,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 				<< "Once you have traced the hacker, send his name to us at\n"
 				<< personname << " and we will take matters further if necessary.\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	char accesscode [128];
     Computer::GenerateAccessCode( sacc->accountnumber, sacc->password, accesscode, sizeof ( accesscode ) );
@@ -2001,8 +1951,8 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 	mission->GiveLink ( source->ip );
 	mission->GiveCode ( source->ip, accesscode );
@@ -2012,10 +1962,6 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 	if ( hacker == game->GetWorld ()->GetPlayer () ) mission->SetNpcPriority ( true );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2025,7 +1971,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 }
 
-Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, int amount, Date *duedate, char *reason )
+Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, int amount, Date *duedate, const char *reason )
 {
 
 	UplinkAssert (person);
@@ -2069,7 +2015,7 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	char description [128];
 	UplinkSnprintf ( description, sizeof ( description ), "Pay a %dc fine", amount );
 
-	std::ostrstream fulldetails;
+	std::ostringstream fulldetails;
 	fulldetails << reason
 				<< "\n\n"
 				<< "As a result of this action you are legally required to pay a fine to the following account. "
@@ -2086,7 +2032,7 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
                 << "Then select 'transfer' from the menu and fill in the details as above.\n\n"
 				<< "Once you have paid this fine, send a mail to "
 				<< personname << " to confirm receipt.\n"
-				<< "END." << '\x0';
+				<< "END.";
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -2110,11 +2056,9 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	mission->SetAcceptRating ( 0 );
 	mission->SetDescription  ( description );
 	mission->SetDetails		 ( reason );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] fulldetails.str ();
 
 	return mission;
 
@@ -2155,8 +2099,8 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	char completionA [SIZE_MISSION_COMPLETION];									// Target name
 	char completionB [SIZE_MISSION_COMPLETION];									// Type of crime
@@ -2167,8 +2111,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 
 	int missiontype = NumberGenerator::RandomNumber ( 3 ) + 1;
@@ -2250,8 +2193,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 				<< "Once you have completed your mission and his arrest is in the news, send a mail "
 				<< "to " << personname << " and we will transfer the payment.\n"
 				<< "You will only receive payment if he is charged for the crime we have outlined.\n"
-				<< "Good luck.\n"
-				<< '\x0';
+				<< "Good luck.\n";
 
 
 	Date postdate;
@@ -2273,8 +2215,8 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 	m->SetMinRating    ( minrating );
 	m->SetAcceptRating ( acceptrating );
 	m->SetDescription  ( description );
-	m->SetDetails	   ( details.str () );
-	m->SetFullDetails  ( fulldetails.str () );
+	m->SetDetails	   ( details.str ().c_str () );
+	m->SetFullDetails  ( fulldetails.str ().c_str () );
 	m->SetWhySoMuchMoney ( "His employer and friends may come after you." );
 	m->SetWhoIsTheTarget ( "Someone we don't like very much" );
 
@@ -2284,10 +2226,6 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
     m->GiveLink ( person->localhost );
 	if ( missiontype == 2 || missiontype == 3 ) m->GiveLink ( completionC );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2384,16 +2322,15 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 	//
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, "Trace a hacker who recently broke into our systems", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
 			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) <<
-			   " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			   " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Our computer systems were recently compromised by a computer hacker.\n"
 				   "Find this hacker and send his name to us.  We will deal with him in our "
@@ -2413,8 +2350,7 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 
     fulldetails << "Once completed, send the name of the hacker to "
 				<< contact << " and payment will be delivered.\n"
-				   "END"
-				<< '\x0';
+				   "END";
 
 	Mission *m = new Mission ();
 	m->SetTYPE		 ( MISSION_TRACEUSER );
@@ -2426,8 +2362,8 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 	m->SetMinRating    ( minrating );
 	m->SetAcceptRating ( acceptrating );
 	m->SetDescription  ( description );
-	m->SetDetails	   ( details.str () );
-	m->SetFullDetails  ( fulldetails.str () );
+	m->SetDetails	   ( details.str ().c_str () );
+	m->SetFullDetails  ( fulldetails.str ().c_str () );
 	m->GiveLink        ( hacked->ip );
 
 	m->SetWhySoMuchMoney ( "The hacker will certainly have covered his tracks" );
@@ -2442,10 +2378,6 @@ Mission *MissionGenerator::Generate_TraceHacker	( Computer *hacked, Person *hack
 
 	if ( hacker == game->GetWorld ()->GetPlayer () ) m->SetNpcPriority ( true );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2534,15 +2466,14 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	UplinkSnprintf ( completionE, sizeof ( completionE ), "%d", targetaccount->balance );
 	
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, "Our esteemed colleague wishes to make a donation.", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Break into the following well known financial institute:\n"
 				<< "TARGET COMPUTER DATA :\n"
@@ -2559,8 +2490,7 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 				<< "Send a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	Date postdate;
 	postdate.SetDate ( &(game->GetWorld ()->date) );
@@ -2584,18 +2514,14 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "Financial systems are always well guarded." );
 	mission->SetHowSecure ( "The bank will be using Proxys and Monitors." );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 	mission->GiveLink ( source->ip );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2639,15 +2565,14 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 	//
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, "Elite agent required for destruction of computer system", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "One of our competitors has made the critical mistake of becoming over dependent "
 				   "on one of their primary computer systems, and we intend to take advantage of this oversight.\n"
@@ -2688,17 +2613,13 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "The computer system will be heavily defended." );
 	mission->GiveLink ( target->ip );
 	mission->SetWhoIsTheTarget ( whoisthetarget );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2756,16 +2677,15 @@ Mission *MissionGenerator::Generate_RemoveUser ( Company *employer )
 	//
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
 
 	UplinkStrncpy ( description, "Highly skilled Agent required for removal job", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
 	fulldetails << "Recently this man has become quite an annoyance and "
 				   "we would like him removed.  We do not care how you do it, "
@@ -2801,16 +2721,12 @@ Mission *MissionGenerator::Generate_RemoveUser ( Company *employer )
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->SetWhySoMuchMoney ( "A great deal of skill will be required." );
 	mission->SetHowSecure ( "That depends on the method you use." );
 	if ( !game->IsRunning () ) mission->SetCreateDate   ( &postdate );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert ( cu );
@@ -2879,18 +2795,15 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 
 		// Message is encrypted
 
-		std::ostrstream reason;
+		std::ostringstream reason;
 		reason << "Your mission is not yet complete.\n"
 			   << "The data you sent us is encrypted with level " << msgdata->encrypted
 			   << " encryption, which we are unable to break.\n"
 			   << "\nPlease break the encryption on the file and send it too us again.\n"
-			   << "You will not be paid until this has been accomplished."
-			   << '\x0';
+			   << "You will not be paid until this has been accomplished.";
 
-		MissionNotCompleted ( mission, person, message, reason.str () );
+		MissionNotCompleted ( mission, person, message, reason.str ().c_str () );
 
-		reason.rdbuf()->freeze( 0 );
-		//delete [] reason.str ();
 		return false;
 
 	}
@@ -2901,18 +2814,15 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 
 		// Message is compressed
 
-		std::ostrstream reason;
+		std::ostringstream reason;
 		reason << "Your mission is not yet complete.\n"
 			   << "The data you sent us is compressed with level " << msgdata->compressed
 			   << " compression, which we are unable to decode.\n"
 			   << "\nPlease decompress the file and send it too us again.\n"
-			   << "You will not be paid until this has been accomplished."
-			   << '\x0';
+			   << "You will not be paid until this has been accomplished.";
 
-		MissionNotCompleted ( mission, person, message, reason.str () );
+		MissionNotCompleted ( mission, person, message, reason.str ().c_str () );
 
-		reason.rdbuf()->freeze( 0 );
-		//delete [] reason.str ();
 		return false;
 
 	}
@@ -3743,7 +3653,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 
 	if ( success ) {
 
-		std::ostrstream body;
+		std::ostringstream body;
 
 		//body << "Payment of your fine has been received for the following offence: \n"
 		//	 << mission->GetDetails () << "\n\n"
@@ -3751,37 +3661,32 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 		//		"into our systems in future." << '\x0';
 		
 		body << "Payment of your fine has been received for the following offence: \n"
-			 << mission->GetDetails () << "\n" << '\x0';
+			 << mission->GetDetails () << "\n";
 
 		Message *m = new Message ();
 		m->SetTo ( message->from );
 		m->SetFrom ( person->name );
 		m->SetSubject ( "Fine paid" );
-		m->SetBody ( body.str () );
+		m->SetBody ( body.str ().c_str () );
 		m->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
 
 	}
 	else {
 
-		std::ostrstream body;
+		std::ostringstream body;
 		body << "We have still not received payment for the following fine: \n"
 			 << mission->GetDetails () << "\n\n"
-			 << "Please ensure this payment reaches us soon to avoid further action."
-			 << '\x0';
+			 << "Please ensure this payment reaches us soon to avoid further action.";
 
 		Message *m = new Message ();
 		m->SetTo ( message->from );
 		m->SetFrom ( person->name );
 		m->SetSubject ( "Outstanding fine still not paid" );
-		m->SetBody ( body.str () );
+		m->SetBody ( body.str ().c_str () );
 		m->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
 	}
 
@@ -3900,7 +3805,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
             if ( foundprogram ) payment += (int) ( PAYMENT_SPECIALMISSION_MOLE * 0.25 );
             payment = 100 * (int) (payment / 100);
 
-            std::ostrstream body;
+            std::ostringstream body;
             body << "Weve just checked our fileserver, and we can see lots of data containing the handles of "
                     "Agents and their real-world names.  This data will come in very handy.\n";
 
@@ -3925,17 +3830,14 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
                         "out of an available " << PAYMENT_SPECIALMISSION_MOLE << ".\n\n";
 
             body << "Once again, congratulations on an incredible hack.\n\nEND";
-            body << '\x0';
 
 	        Message *m = new Message ();
 	        m->SetTo ( message->from );
 	        m->SetFrom ( person->name );
 	        m->SetSubject ( "Mission completed" );
-	        m->SetBody ( body.str() );
+	        m->SetBody ( body.str ().c_str () );
 	        m->Send ();
 
-			body.rdbuf()->freeze( 0 );
-			//delete [] body.str ();
 
             //
             // Money, ratings etc
@@ -3976,7 +3878,7 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
     UplinkAssert (person);
     UplinkAssert (message);
 
-	std::ostrstream body;
+	std::ostringstream body;
 	body << "Congratulations on your success.\n";
 
 	if		( mission->paymentmethod == MISSIONPAYMENT_HALFATSTART )
@@ -3986,18 +3888,15 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
 
 	body << "\n"
 		 << "Thankyou for working for " << mission->employer << ".\n\n"
-         << "THIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY."
-		 << '\x0';
+         << "THIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY.";
 
 	Message *m = new Message ();
 	m->SetTo ( message->from );
 	m->SetFrom ( person->name );
 	m->SetSubject ( "Mission completed" );
-	m->SetBody ( body.str () );
+	m->SetBody ( body.str ().c_str () );
 	m->Send ();
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 
 	if		( mission->paymentmethod == MISSIONPAYMENT_HALFATSTART )		game->GetWorld ()->GetPlayer ()->ChangeBalance ( mission->payment / 2, "Anonymous benefactor" );
 	else if ( mission->paymentmethod == MISSIONPAYMENT_AFTERCOMPLETION )	game->GetWorld ()->GetPlayer ()->ChangeBalance ( mission->payment, "Anonymous benefactor" );
@@ -4028,23 +3927,20 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
 
 }
 
-void MissionGenerator::MissionNotCompleted ( Mission *mission, Person *person, Message *message, char *reason )
+void MissionGenerator::MissionNotCompleted ( Mission *mission, Person *person, Message *message, const char *reason )
 {
 
-    std::ostrstream body;
+    std::ostringstream body;
     body << reason;
     body << "\n\nTHIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY.";
-    body << '\x0';
 
 	Message *m = new Message ();
 	m->SetTo ( message->from );
 	m->SetFrom ( person->name );
 	m->SetSubject ( "Mission NOT completed" );
-	m->SetBody ( body.str () );
+	m->SetBody ( body.str ().c_str () );
 	m->Send ();
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 }
 
 void MissionGenerator::MissionFailed ( Mission *mission, Person *person, char *reason )
@@ -4072,26 +3968,23 @@ void MissionGenerator::MissionFailed ( Mission *mission, Person *person, char *r
     }
     else {
 
-	    std::ostrstream body;
+	    std::ostringstream body;
 	    body << "You have failed the following mission: \n"
 		     << mission->description
 		     << "\n"
 		     << reason
 		     << "\n\n"
 		     << "In future we will employ someone more qualified.\n\n"
-             << "THIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY."
-             << '\x0';
+             << "THIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY.";
 
 	    // Send a mail to the person
 	    Message *m = new Message ();
 	    m->SetTo ( "PLAYER" );
 	    m->SetFrom ( mission->employer );
 	    m->SetSubject ( "Mission FAILED" );
-	    m->SetBody ( body.str () );
+	    m->SetBody ( body.str ().c_str () );
 	    m->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
     }
 

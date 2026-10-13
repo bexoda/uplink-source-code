@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 #include "soundgarden.h"
@@ -67,23 +67,20 @@ void EmailInterface::EmailReply ( Button *button )
 	char contact [SIZE_PERSON_NAME];
 	UplinkStrncpy ( contact, em->message->from, sizeof ( contact ) );
 
-	std::ostrstream body;
+	std::ostringstream body;
 	body << "RE your email\n"
          << "'" 
          << em->message->GetSubject ()
          << "'"
-         << "\n\n"
-         << '\x0';
+         << "\n\n";
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_SENDMAIL );
 	game->GetInterface ()->GetLocalInterface ()->Update ();
 
 	EclRegisterCaptionChange ( "sendmail_to", contact, 1 );						// Should occur instantly
 	EclRegisterCaptionChange ( "sendmail_subject", "RE your email" );
-	EclRegisterCaptionChange ( "sendmail_body box", body.str (), 1000 );
+	EclRegisterCaptionChange ( "sendmail_body box", body.str ().c_str (), 1000 );
 
-	body.rdbuf()->freeze( 0 );
-    //delete [] body.str ();
 
 }
 
@@ -161,7 +158,7 @@ void EmailInterface::Create ()
 		char date [SIZE_DATE_LONG + 8];
 		size_t subjectsize = strlen(message->GetSubject()) + 12;
 		char *subject = new char [subjectsize];
-		std::ostrstream body;
+		std::ostringstream body;
 
 		UplinkSnprintf ( from, sizeof ( from ), "From : %s", message->from );
 		UplinkSnprintf ( date, sizeof ( date ), "Date : %s", message->date.GetShortString () );
@@ -252,7 +249,6 @@ void EmailInterface::Create ()
 
 		}
 
-		body << '\x0';
 
 		//EclRegisterButton ( screenw - panelwidth - 3, paneltop + 20, panelwidth, 30, "", "email_from" );
 		//EclRegisterButton ( screenw - panelwidth - 3, paneltop + 55, panelwidth, 15, "", "email_date" );
@@ -272,7 +268,7 @@ void EmailInterface::Create ()
 
 		//int boxheight = screenh - (paneltop + 110) - 70;
 		//create_stextbox ( screenw - panelwidth - 3, paneltop + 110, panelwidth, boxheight, body.str (), "email_body" );
-		create_stextbox ( screenw - panelwidth, (paneltop + 3) + 110, (panelwidth - 7), boxheight, body.str (), "email_body" );
+		create_stextbox ( screenw - panelwidth, (paneltop + 3) + 110, (panelwidth - 7), boxheight, body.str ().c_str (), "email_body" );
 
 		//int x1 = screenw - panelwidth - 2;
 		//int x2 = x1 + panelwidth / 3 + 2;
@@ -296,8 +292,6 @@ void EmailInterface::Create ()
 
 		delete [] subject;
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
 	}
 

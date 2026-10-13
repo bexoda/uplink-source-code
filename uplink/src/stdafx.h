@@ -15,11 +15,11 @@
 
 #ifndef OLD_HEADERS
 #  include <iostream>
-#  include <strstream>
+#  include <sstream>
    using namespace std;
 #else
 #  include <iostream.h>
-#  include <strstream.h>
+#  include <sstream>
 #endif
 
 #ifdef _DEBUG

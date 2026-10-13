@@ -104,10 +104,10 @@ public:
 	Record();
 	virtual ~Record();
 
-	void AddField    ( char *name, char *value );
+	void AddField    ( char *name, const char *value );
 	void AddField    ( char *name, int value );
 	
-	void ChangeField ( char *name, char *newvalue );
+	void ChangeField ( char *name, const char *newvalue );
 	void ChangeField ( char *name, int newvalue );
 
 	char *GetField   ( char *name );	 

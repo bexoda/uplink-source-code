@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include <GL/gl.h>
 
@@ -507,7 +507,7 @@ void ChangeGatewayScreenInterface::CreateAreYouSure ()
 
 	int price = GetGatewayPrice(currentselect);
 
-	std::ostrstream caption;
+	std::ostringstream caption;
 	caption << "You have chosen to part exchange your current gateway for a " << newgateway->name << ".\n"
 			   "If you chose to proceed, the money will be deducted from your account and Uplink Corporation "
 			   "will prepare your new gateway.  We will install identical hardware in your new gateway, and "
@@ -522,12 +522,10 @@ void ChangeGatewayScreenInterface::CreateAreYouSure ()
 	if ( price > 0 )	caption << "This exchange will cost you " << price << " credits.\n";
 	else				caption << "You will be given " << price * -1 << " credits to balance the exchange.\n";
 
-	caption << "Click Proceed to continue or Cancel to abort." << '\x0';
+	caption << "Click Proceed to continue or Cancel to abort.";
 
-	EclRegisterCaptionChange ( "changegateway_text", caption.str(), 8000 );
+	EclRegisterCaptionChange ( "changegateway_text", caption.str ().c_str (), 8000 );
 	
-	caption.rdbuf()->freeze( 0 );
-	//delete [] caption.str();
 
 }
 

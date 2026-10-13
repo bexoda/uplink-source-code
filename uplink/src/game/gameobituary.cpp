@@ -46,7 +46,7 @@ GameObituary::~GameObituary ()
 }
 
 
-void GameObituary::SetGameOverReason ( char *newreason )
+void GameObituary::SetGameOverReason ( const char *newreason )
 {
 
 	if ( gameoverreason ) delete [] gameoverreason;

@@ -1,6 +1,6 @@
 // -*- tab-width:4 c-file-style:"cc-mode" -*-
 
-#include <strstream>
+#include <sstream>
 
 #include <fstream>
 
@@ -161,7 +161,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		int index, x, y, security, data1, data2, data3;
 		bool haveModemPhoneNumber = true;
         char dataX[256];
-		std::istrstream thisLine ( fullLine );
+		std::istringstream thisLine ( fullLine );
 		thisLine >> index >> systemName >> x >> y >> security >> data1 >> data2 >> data3 >> ws;
         if ( strstr(systemName, "MODEM") ) {
             thisLine.getline(dataX, 256);
@@ -224,7 +224,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		int from, to, security;
 		float fromX, fromY, toX, toY;
 
-		std::istrstream thisLine ( fullLine );
+		std::istringstream thisLine ( fullLine );
 		thisLine >> linkName >> from >> fromX >> fromY >> to >> toX >> toY >> security >> ws;
 		linkName[ sizeof(linkName) - 1 ] = '\0';
 
@@ -255,7 +255,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		int systemIndex;
 		int validIndex;
 
-		std::istrstream thisLine ( fullLine );
+		std::istringstream thisLine ( fullLine );
 		thisLine >> name >> systemIndex >> validIndex >> ws;
 
 		if ( cluster->systems.ValidIndex ( systemIndex ) ) {
@@ -290,7 +290,7 @@ Computer  *LanGenerator::LoadLAN ( char *filename )
 		int index;
 		char allData[256];
 
-		std::istrstream thisLine ( fullLine );
+		std::istringstream thisLine ( fullLine );
 		thisLine >> dataName >> index >> ws;
         thisLine.getline( allData, 256 );
 

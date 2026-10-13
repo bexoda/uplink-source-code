@@ -46,6 +46,9 @@ void UplinkSnprintfImpl ( const char *file, int line, char *buf, size_t bufsize,
 void UplinkStrncpyImpl ( const char *file, int line, char *dest, const char *source, size_t count );
 void UplinkStrncatImpl ( const char *file, int line, char *dest, size_t destbufsize, const char *source );
 
+// A new[] copy of `s`, for functions whose callers delete [] the result.
+char *UplinkStrdup ( const char *s );
+
 #define UplinkAssert(x)  { if ( !(x) ) UplinkAssertFailed ( #x, __FILE__, __LINE__ ); }
 
 #ifdef TESTGAME

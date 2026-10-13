@@ -88,8 +88,8 @@ public:
 	void SetAcceptRating	( int newrating );
 	void SetNpcPriority		( bool newpriority );
 	void SetDescription		( char *newdescription );
-	void SetDetails			( char *newdetails );
-	void SetFullDetails		( char *newdetails );
+	void SetDetails			( const char *newdetails );
+	void SetFullDetails		( const char *newdetails );
 	
 	void SetWhySoMuchMoney	( char *answer );
 	void SetHowSecure		( char *answer );

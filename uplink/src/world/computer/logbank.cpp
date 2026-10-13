@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -502,7 +502,7 @@ void AccessLog::SetData3 ( char *newdata )
 char *AccessLog::GetDescription ()
 {
 
-	std::ostrstream fullcaption;
+	std::ostringstream fullcaption;
 
     /*
         It's worth remembering that all logs can now
@@ -516,25 +516,25 @@ char *AccessLog::GetDescription ()
 	switch ( TYPE ) {
 
 		case LOG_TYPE_DELETED:
-			fullcaption << "[Log Deleted]" << '\x0';
+			fullcaption << "[Log Deleted]";
 			break;
 
 		case LOG_TYPE_CONNECTIONOPENED:
-			fullcaption << "Connection established from " << fromip << '\x0';
+			fullcaption << "Connection established from " << fromip;
 			break;
 
 		case LOG_TYPE_CONNECTIONCLOSED:
-			fullcaption << "Connection from " << fromip << " closed" << '\x0';
+			fullcaption << "Connection from " << fromip << " closed";
 			break;
 
 		case LOG_TYPE_BOUNCEBEGIN:
 			UplinkAssert (data1);
-			fullcaption << "Connection opened to " << data1 << '\x0';
+			fullcaption << "Connection opened to " << data1;
 			break;
 
 		case LOG_TYPE_BOUNCE:
 			UplinkAssert (data1);
-			fullcaption << "Connection from " << fromip << " routed to " << data1 << '\x0';
+			fullcaption << "Connection from " << fromip << " routed to " << data1;
 			break;
 
 		case LOG_TYPE_TRANSFERTO:
@@ -546,12 +546,12 @@ char *AccessLog::GetDescription ()
 			    char accno [16];
 			    sscanf ( data1, "%s %s", ip, accno );
 
-			    fullcaption << data2 << "c transfered to IP " << ip << ", acc no. " << accno << '\x0';
+			    fullcaption << data2 << "c transfered to IP " << ip << ", acc no. " << accno;
 
             }
             else {
 
-                fullcaption << "Invalid TransferTO log" << '\x0';
+                fullcaption << "Invalid TransferTO log";
 
             }
 
@@ -568,12 +568,12 @@ char *AccessLog::GetDescription ()
 			    char accno [16];
 			    sscanf ( data1, "%s %s", ip, accno );
 
-			    fullcaption << data2 << "c deposited from IP " << ip << ", acc no. " << accno << '\x0';
+			    fullcaption << data2 << "c deposited from IP " << ip << ", acc no. " << accno;
 
             }
             else {
 
-                fullcaption << "Invalid TransferFROM log" << '\x0';
+                fullcaption << "Invalid TransferFROM log";
 
             }
 
@@ -583,17 +583,16 @@ char *AccessLog::GetDescription ()
 
 		default:
 			UplinkAssert (data1);
-			fullcaption << "From " << fromip << " : " << data1 << '\x0';
+			fullcaption << "From " << fromip << " : " << data1;
 			break;
 
 	};
 
 	//return fullcaption.str ();
-	char * ans = fullcaption.str();
+	std::string ans_text = fullcaption.str ().c_str (); char *ans = (char *) ans_text.c_str ();
     char * anscpy = new char[ strlen(ans) + 1 ];
 	UplinkSafeStrcpy( anscpy, ans );
 	ans = NULL;
-	fullcaption.rdbuf()->freeze( 0 );
 	return anscpy;
 
 }

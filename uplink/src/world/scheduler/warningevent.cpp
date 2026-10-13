@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "app/globals.h"
 #include "app/serialise.h"
@@ -51,14 +51,13 @@ char *WarningEvent::GetLongString ()
 
 	char *eventstring = event->GetLongString ();
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "Warning Event for :\n"
-			   << eventstring
-			   << '\x0';
+			   << eventstring;
 
 	delete [] eventstring;
 
-	return longstring.str ();
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

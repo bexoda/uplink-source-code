@@ -51,7 +51,7 @@ public:
 	void SetTo		( char *newto );
 	void SetFrom	( char *newfrom );
 	void SetSubject ( char *newsubject );
-	void SetBody	( char *newbody );
+	void SetBody	( const char *newbody );
 	void SetDate    ( Date *newdate );
 
 	void GiveLink ( char *ip );

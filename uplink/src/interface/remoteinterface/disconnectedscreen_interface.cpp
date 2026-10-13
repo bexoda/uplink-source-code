@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include "eclipse.h"
 #include "gucci.h"
@@ -83,7 +83,7 @@ void DisconnectedScreenInterface::Create ( ComputerScreen *newcs )
             EclRegisterButton ( 50, 180, 400, 200, "", "", "disconnectedscreen_loginslost" );
             EclRegisterButtonCallbacks ( "disconnectedscreen_loginslost", textbutton_draw, NULL, NULL, NULL );
 
-            std::ostrstream loginslost;
+            std::ostringstream loginslost;
             loginslost << "Your username and password was revoked on these systems:\n\n";
 
             for ( int i = 0; i < DisconnectedScreen::loginslost.Size (); ++i ) {
@@ -107,11 +107,8 @@ void DisconnectedScreenInterface::Create ( ComputerScreen *newcs )
 
             }
 
-            loginslost << '\x0';
-            EclRegisterCaptionChange ( "disconnectedscreen_loginslost", loginslost.str (),  2000 );
-            //delete [] loginslost.str ();
+            EclRegisterCaptionChange ( "disconnectedscreen_loginslost", loginslost.str ().c_str (),  2000 );
 
-			loginslost.rdbuf()->freeze( 0 );
 
             DisconnectedScreen::ClearLoginsLost ();
 

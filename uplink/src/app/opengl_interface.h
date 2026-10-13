@@ -58,7 +58,7 @@ Button *getcurrentbutton ();					// Returns button under mouse or NULL
 //
 
 void create_stextbox ( int x, int y, int width, int height, 
-                        char *caption, char *name );
+                        const char *caption, char *name );
 void remove_stextbox ( char *name );
 
 void draw_stextbox	 ( Button *button, bool highlighted, bool clicked );

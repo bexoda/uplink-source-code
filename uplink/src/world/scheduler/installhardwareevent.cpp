@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -124,7 +124,7 @@ void InstallHardwareEvent::Run ()
 	// Notify the player
 	//
 
-	std::ostrstream body;
+	std::ostringstream body;
 	Message *msg = new Message ();
 	msg->SetTo ( "PLAYER" );
 	msg->SetFrom ( "Uplink Corporation" );
@@ -133,8 +133,7 @@ void InstallHardwareEvent::Run ()
 		msg->SetSubject ( "Gateway upgrade complete" );
 		body << "The following hardware item has been successfully installed "
 		    "in your gateway machine : \n\n"
-			<< hwsale->title
-			<< '\x0';
+			<< hwsale->title;
 	}
 	else {
 		msg->SetSubject ( "Gateway upgrade failed" );
@@ -142,15 +141,12 @@ void InstallHardwareEvent::Run ()
 				"in your gateway machine : \n\n"
 			 << hwsale->title
 			 << "\n\nReason: " << failure
-			 << "\nYour money has been refunded."
-			 << '\x0';
+			 << "\nYour money has been refunded.";
 	}
 
-	msg->SetBody ( body.str () );
+	msg->SetBody ( body.str ().c_str () );
 	msg->Send ();
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 
 	//
 	// The engineer walks away
@@ -167,22 +163,19 @@ void InstallHardwareEvent::RunWarning ()
 	// Notify the player
 	//
 
-	std::ostrstream body;
+	std::ostringstream body;
 	body << "We are about to begin installation of the following hardware item "
 		    "in your gateway machine : \n\n"
 			<< hwsale->title
 			<< "\n\n"
-			<< "We anticipate this will take 30 - 60 minutes to complete."
-			<< '\x0';
+			<< "We anticipate this will take 30 - 60 minutes to complete.";
 	Message *msg = new Message ();
 	msg->SetTo ( "PLAYER" );
 	msg->SetFrom ( "Uplink Corporation" );
 	msg->SetSubject ( "Gateway upgrade commencing" );
-	msg->SetBody ( body.str () );
+	msg->SetBody ( body.str ().c_str () );
 	msg->Send ();
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 
 	//
 	// Someone is near the gateway
@@ -205,12 +198,11 @@ char *InstallHardwareEvent::GetShortString ()
 char *InstallHardwareEvent::GetLongString ()
 {
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "Install Hardware Event\n"
 			   << "Item : " << hwsale->title << "\n"
-			   << "Version : " << version << "\n"
-			   << '\x0';
-	return longstring.str ();
+			   << "Version : " << version << "\n";
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

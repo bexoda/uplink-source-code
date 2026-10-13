@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <strstream>
+#include <sstream>
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -144,7 +144,7 @@ void RecordGenerator::GenerateRecord_Criminal ( char *personname, int age )
 	// Generate a possible criminal past
 	// Only a small percentage of people have any convictions
 
-	std::ostrstream convictions;
+	std::ostringstream convictions;
 
 	Person *person = game->GetWorld ()->GetPerson ( personname );
 	UplinkAssert (person);
@@ -246,19 +246,16 @@ void RecordGenerator::GenerateRecord_Criminal ( char *personname, int age )
 
 	}
 
-	convictions << '\x0';
 
 	Record *crim = new Record ();
 	crim->AddField ( RECORDBANK_NAME, personname );
-	crim->AddField ( "Convictions", convictions.str () );
+	crim->AddField ( "Convictions", convictions.str ().c_str () );
 
 	Computer *crimdb = game->GetWorld ()->GetComputer ( "Global Criminal Database" );
 	UplinkAssert ( crimdb );
 
 	crimdb->recordbank.AddRecordSorted ( crim );
 
-	convictions.rdbuf()->freeze( 0 );
-	//delete [] convictions.str ();
 
 }
 
@@ -284,9 +281,9 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 	int brains = (int) NumberGenerator::RandomNormalNumber ( 50, 50 );					// 0 = thick, 50 = average, 100 = rocket scientist
 
-	std::ostrstream collegequals;
-	std::ostrstream universityquals;
-	std::ostrstream otherquals;
+	std::ostringstream collegequals;
+	std::ostringstream universityquals;
+	std::ostringstream otherquals;
 
 	if ( age >= 16 ) {
 
@@ -340,7 +337,6 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 	}
 
-	collegequals << '\x0';
 
 	if ( age >= 21 && brains > 50 ) {
 
@@ -378,7 +374,6 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 	}
 
-	universityquals << '\x0';
 
 	if ( age > 18 && brains > 50 ) {
 
@@ -408,27 +403,20 @@ void RecordGenerator::GenerateRecord_Academic ( char *personname, int age )
 
 	}
 
-	otherquals << '\x0';
 
 
 	Record *rec = new Record ();
 	rec->AddField ( RECORDBANK_NAME, personname );
 	rec->AddField ( "IQ", brains + 50 );
-	rec->AddField ( "College", collegequals.str () );
-	rec->AddField ( "University", universityquals.str () );
-	rec->AddField ( "Other", otherquals.str () );
+	rec->AddField ( "College", collegequals.str ().c_str () );
+	rec->AddField ( "University", universityquals.str ().c_str () );
+	rec->AddField ( "Other", otherquals.str ().c_str () );
 
 	Computer *ac = game->GetWorld ()->GetComputer ( "International Academic Database" );
 	UplinkAssert ( ac );
 
 	ac->recordbank.AddRecordSorted ( rec );
 
-	collegequals.rdbuf()->freeze( 0 );
-	universityquals.rdbuf()->freeze( 0 );
-	otherquals.rdbuf()->freeze( 0 );
-	//delete [] collegequals.str ();
-	//delete [] universityquals.str ();
-	//delete [] otherquals.str ();
 
 }
 

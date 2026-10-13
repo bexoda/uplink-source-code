@@ -36,7 +36,7 @@ void News::SetDate ( Date *newdate )
 
 }
 
-void News::SetHeadline ( char *newheadline )
+void News::SetHeadline ( const char *newheadline )
 {
 
 	UplinkAssert ( strlen ( newheadline ) < SIZE_NEWS_HEADLINE );
@@ -44,7 +44,7 @@ void News::SetHeadline ( char *newheadline )
 
 }
 
-void News::SetDetails ( char *newdetails )
+void News::SetDetails ( const char *newdetails )
 {
 
 	if ( details )

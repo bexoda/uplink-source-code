@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "soundgarden.h"
 
@@ -45,7 +45,7 @@ void ArrestEvent::SetName ( char *newname )
 
 }
 
-void ArrestEvent::SetReason ( char *newreason )
+void ArrestEvent::SetReason ( const char *newreason )
 {
 
 	if ( reason )
@@ -100,13 +100,12 @@ char *ArrestEvent::GetShortString ()
 char *ArrestEvent::GetLongString ()
 {
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "ArrestEvent:\n"
 			   << "For : " << name << "\n"
-			   << "Reason : " << reason
-			   << '\x0';
+			   << "Reason : " << reason;
 
-	return longstring.str ();
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

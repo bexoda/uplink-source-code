@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -65,13 +65,12 @@ char *AttemptMissionEvent::GetLongString ()
 	Mission *m = agent->missions.GetData (0);
 	UplinkAssert (m);
 
-	std::ostrstream longstring;
+	std::ostringstream longstring;
 	longstring << "Attempt Mission Event:\n"
 			   << "Agent : " << agentname << "\n"
-			   << "Agents next mission : " << m->description
-			   << '\x0';
+			   << "Agents next mission : " << m->description;
 
-	return longstring.str ();
+	return UplinkStrdup ( longstring.str ().c_str () );
 
 }
 

@@ -42,10 +42,10 @@
 void EclReset ( int width, int height );
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 char *caption, char *name );
+						 const char *caption, char *name );
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 char *caption, char *tooltip, char *name );
+						 const char *caption, char *tooltip, char *name );
 
 void EclRegisterImageButton ( int x, int y, int width, int height,
 							  char *caption, char *tooltip, char *name );
@@ -141,13 +141,13 @@ int  EclRegisterAnimation ( char *bname, int targetX, int targetY,
 							int targetW, int targetH, int time_ms,
 							void (*callback) () = NULL );
 
-int  EclRegisterCaptionChange ( char *bname, char *targetC, int time_ms,
+int  EclRegisterCaptionChange ( char *bname, const char *targetC, int time_ms,
 							    void (*callback) () = NULL );
-int  EclRegisterCaptionChange ( char *bname, char *targetC,				// Determines time_ms from 							   
+int  EclRegisterCaptionChange ( char *bname, const char *targetC,				// Determines time_ms from 							   
 							    void (*callback) () = NULL );			// length of caption
 
 int  EclRegisterAnimation ( char *bname, int targetX, int targetY, int MOVETYPE, 
-							int targetW, int targetH, char *targetC, int time_ms,
+							int targetW, int targetH, const char *targetC, int time_ms,
 							void (*callback) () = NULL );
 
 int EclIsAnimationActive ( char *bname );					// Returns ID number of anim, or -1

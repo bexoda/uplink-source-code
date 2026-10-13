@@ -72,7 +72,7 @@ void Message::SetSubject ( char *newsubject )
 
 }
 
-void Message::SetBody ( char *newbody )
+void Message::SetBody ( const char *newbody )
 {
 
 	if ( body ) delete [] body;

@@ -128,7 +128,7 @@ void Mission::SetDescription ( char *newdescription )
 
 }
 
-void Mission::SetDetails ( char *newdetails )
+void Mission::SetDetails ( const char *newdetails )
 {
 
 	if ( details ) delete [] details;
@@ -138,7 +138,7 @@ void Mission::SetDetails ( char *newdetails )
 
 }
 
-void Mission::SetFullDetails ( char *newdetails )
+void Mission::SetFullDetails ( const char *newdetails )
 {
 
 	if ( fulldetails ) delete [] fulldetails;

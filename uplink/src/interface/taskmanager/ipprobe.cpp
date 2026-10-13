@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include <GL/gl.h>
 
@@ -131,7 +131,7 @@ void IPProbe::Tick ( int n )
 					Computer *comp = vl->GetComputer ();
 					UplinkAssert (comp);
 
-					std::ostrstream body;
+					std::ostringstream body;
 					body << "Results of IP Probe\n\n"
 						 << "IP: " << comp->ip << "\n"
 						 << "(" << comp->name << ")\n"
@@ -155,18 +155,15 @@ void IPProbe::Tick ( int n )
 
 					}
 
-					body << '\x0';
 
 					// Found - send a message to the player with the details
 					Message *msg = new Message ();
 					msg->SetTo ( "PLAYER" );
 					msg->SetFrom ( "IP Probe" );
 					msg->SetSubject ( "Results of probe" );
-					msg->SetBody ( body.str () );
+					msg->SetBody ( body.str ().c_str () );
 					msg->Send ();
 
-					body.rdbuf()->freeze( 0 );
-					//delete [] body.str ();
 
 				}
 				else {

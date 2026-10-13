@@ -133,7 +133,7 @@ void EclReset ( int width, int height )
 }
 
 void EclRegisterButton ( int x, int y, int width, int height, 
-  			 			 char *caption, char *name )
+  			 			 const char *caption, char *name )
 {
 
 	if ( EclGetButton ( name ) ) {
@@ -159,7 +159,7 @@ void EclRegisterButton ( int x, int y, int width, int height,
 }
 
 void EclRegisterButton ( int x, int y, int width, int height,
-						 char *caption, char *tooltip, char *name )
+						 const char *caption, char *tooltip, char *name )
 {
 
 	EclRegisterButton ( x, y, width, height, caption, name );
@@ -968,7 +968,7 @@ int  EclRegisterAnimation ( char *bname, int targetX, int targetY,
 
 }
 
-int  EclRegisterCaptionChange ( char *bname, char *targetC, int time_ms,
+int  EclRegisterCaptionChange ( char *bname, const char *targetC, int time_ms,
 							    void (*callback) ())
 {
 
@@ -985,7 +985,7 @@ int  EclRegisterCaptionChange ( char *bname, char *targetC, int time_ms,
 
 }
 
-int  EclRegisterCaptionChange ( char *bname, char *targetC,				
+int  EclRegisterCaptionChange ( char *bname, const char *targetC,				
 							    void (*callback) () )
 {
 
@@ -1001,7 +1001,7 @@ int EclAnimationsRunning()
 
 
 int  EclRegisterAnimation ( char *bname, int targetX, int targetY, int MOVETYPE, 
-							int targetW, int targetH, char *targetC, int time_ms,
+							int targetW, int targetH, const char *targetC, int time_ms,
 							void (*callback) () )
 {
 

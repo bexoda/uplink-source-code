@@ -130,3 +130,11 @@ void UplinkStrncatImpl ( const char *file, int line, char *dest, size_t destbufs
 	}
 	memcpy ( dest + destlen, source, sourcelen + 1 );
 }
+
+char *UplinkStrdup ( const char *s )
+{
+	size_t len = strlen ( s );
+	char *copy = new char [ len + 1 ];
+	memcpy ( copy, s, len + 1 );
+	return copy;
+}

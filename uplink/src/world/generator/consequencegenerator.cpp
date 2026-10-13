@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -103,18 +103,15 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 			char *existing = rec->GetField ( "Convictions" );
 			//UplinkAssert (existing);
 
-			std::ostrstream newconvictions;
+			std::ostringstream newconvictions;
 
 			if ( existing && strstr ( existing, "None" ) == NULL )
 				newconvictions << existing << "\n";
 
-			newconvictions << "Unauthorised systems access\n"
-						   << '\x0';
+			newconvictions << "Unauthorised systems access\n";
 
-			rec->ChangeField ( "Convictions", newconvictions.str () );
+			rec->ChangeField ( "Convictions", newconvictions.str ().c_str () );
 
-			newconvictions.rdbuf()->freeze( 0 );
-			//delete [] newconvictions.str ();
 		}
 
 		//
@@ -230,44 +227,38 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 		if ( strcmp ( person->name, "PLAYER" ) != 0 ) {
 
-			std::ostrstream reason;
+			std::ostringstream reason;
 			reason << "hacking into the "
-				   << comp->name << ".\n"
-				   << '\x0';
+				   << comp->name << ".\n";
 
 			ArrestEvent *event = new ArrestEvent ();
 			event->SetName ( person->name );
-			event->SetReason ( reason.str () );
+			event->SetReason ( reason.str ().c_str () );
 			event->SetIP ( comp->ip );
 			event->SetRunDate ( &duedate );
 
 			game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 			game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-			reason.rdbuf()->freeze( 0 );
-			//delete [] reason.str ();
 
 		}
 		else {
 
 			// This is the player - seize his gateway
 
-			std::ostrstream reason;
+			std::ostringstream reason;
 			reason << "Hacking into the "
-				   << comp->name << ".\n"
-				   << '\x0';
+				   << comp->name << ".\n";
 
 			SeizeGatewayEvent *event = new SeizeGatewayEvent ();
 			event->SetName ( person->name );
 			event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
-			event->SetReason ( reason.str () );
+			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
 
 			game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 			game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-			reason.rdbuf()->freeze( 0 );
-			//delete [] reason.str ();
 
 		}
 
@@ -289,43 +280,37 @@ void ConsequenceGenerator::CaughtHacking ( Person *person, Computer *comp )
 
 		if ( strcmp ( person->name, "PLAYER" ) != 0 ) {
 
-			std::ostrstream reason;
+			std::ostringstream reason;
 			reason << "hacking into the "
-				   << comp->name << ".\n"
-				   << '\x0';
+				   << comp->name << ".\n";
 
 			ShotByFedsEvent *event = new ShotByFedsEvent ();
 			event->SetName ( person->name );
-			event->SetReason ( reason.str () );
+			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
 
 			game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 			game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-			reason.rdbuf()->freeze( 0 );
-			//delete [] reason.str ();
 
 		}
 		else {
 
 			// This is the player - seize his gateway
 
-			std::ostrstream reason;
+			std::ostringstream reason;
 			reason << "Hacking into the "
-				   << comp->name << ".\n"
-				   << '\x0';
+				   << comp->name << ".\n";
 
 			SeizeGatewayEvent *event = new SeizeGatewayEvent ();
 			event->SetName ( person->name );
 			event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
-			event->SetReason ( reason.str () );
+			event->SetReason ( reason.str ().c_str () );
 			event->SetRunDate ( &duedate );
 
 			game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 			game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-			reason.rdbuf()->freeze( 0 );
-			//delete [] reason.str ();
 
 		}
 
@@ -385,42 +370,36 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 
 		int jailtime = finesize / 1000;
 
-		std::ostrstream reason;
+		std::ostringstream reason;
 		reason << "For refusing to pay a " << finesize << "c fine.\n"
-			   << "Send to jail for " << jailtime << " years.\n"
-			   << '\x0';
+			   << "Send to jail for " << jailtime << " years.\n";
 
 		ArrestEvent *event = new ArrestEvent ();
 		event->SetName ( person->name );
-		event->SetReason ( reason.str () );
+		event->SetReason ( reason.str ().c_str () );
 		event->SetRunDate ( &duedate );
 
 		game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 		game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-		reason.rdbuf()->freeze( 0 );
-		//delete [] reason.str ();
 
 	}
 	else {
 
 		// This is the player - seize his gateway
 
-		std::ostrstream reason;
-		reason << "For refusing to pay a " << finesize << "c fine.\n"
-			   << '\x0';
+		std::ostringstream reason;
+		reason << "For refusing to pay a " << finesize << "c fine.\n";
 
 		SeizeGatewayEvent *event = new SeizeGatewayEvent ();
 		event->SetName ( person->name );
 		event->SetGatewayID ( game->GetWorld ()->GetPlayer ()->gateway.id );
-		event->SetReason ( reason.str () );
+		event->SetReason ( reason.str ().c_str () );
 		event->SetRunDate ( &duedate );
 
 		game->GetWorld ()->scheduler.ScheduleWarning ( event, &warningdate );
 		game->GetWorld ()->scheduler.ScheduleEvent ( event );
 
-		reason.rdbuf()->freeze( 0 );
-		//delete [] reason.str ();
 
 	}
 

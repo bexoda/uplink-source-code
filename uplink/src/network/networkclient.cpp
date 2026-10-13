@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <strstream>
+#include <sstream>
 #include <string>
 
 #include "eclipse.h"
@@ -164,7 +164,7 @@ void NetworkClient::Print ()
 void NetworkClient::Handle_ClientCommsData ( char *buffer )
 {
 
-    std::istrstream msgstream ( buffer );
+    std::istringstream msgstream ( buffer );
 
     char msgtype [64];
     msgstream >> msgtype;
@@ -268,7 +268,7 @@ void NetworkClient::Handle_ClientCommsData ( char *buffer )
 void NetworkClient::Handle_ClientStatusData ( char *buffer )
 {
 
-    std::istrstream msgstream ( buffer );
+    std::istringstream msgstream ( buffer );
 
     char msgtype [64];
     msgstream >> msgtype;

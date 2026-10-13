@@ -38,7 +38,7 @@ public:
 	virtual ~MessageScreen();
 
 	void SetNextPage ( int newnextpage );
-	void SetTextMessage ( char *newtextmessage );
+	void SetTextMessage ( const char *newtextmessage );
 	void SetButtonMessage ( char *newbuttonmessage );
 	void SetMailThisToMe ( bool newvalue );
 

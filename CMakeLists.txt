@@ -85,7 +85,7 @@ target_link_libraries(ftgl_uplink PUBLIC Freetype::Freetype OpenGL::GL OpenGL::G
 target_compile_options(ftgl_uplink PRIVATE -w)
 
 add_library(unrar_sha1 STATIC ${CONTRIB}/unrar/sha1.cpp)
-target_include_directories(unrar_sha1 PUBLIC ${CONTRIB} ${CONTRIB}/unrar)
+target_include_directories(unrar_sha1 SYSTEM PUBLIC ${CONTRIB} ${CONTRIB}/unrar)
 target_link_libraries(unrar_sha1 PRIVATE uplink_flags)
 target_compile_options(unrar_sha1 PRIVATE -w)
 

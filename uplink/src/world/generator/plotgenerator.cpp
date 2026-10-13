@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -1243,7 +1243,7 @@ void PlotGenerator::Run_Act1Scene3 ()
 	if ( UplinkIncompatibleSaveGameAssert (agent, __FILE__, __LINE__) )
 		return;
 
-	std::ostrstream details;
+	std::ostringstream details;
 	details << "One of the top ranking Uplink Agents has broken the silence over the recent "
 			   "activity of ARC (Andromeda Research Corporation) and raised doubts over the "
 			   "morality of the work being done.\n\n"
@@ -1256,15 +1256,12 @@ void PlotGenerator::Run_Act1Scene3 ()
 			   "destructive manner if properly exploited.  ARC are relying on the unofficial code of "
 			   "honour of Uplink Agents - that they won't discuss what they were working on.  Someone "
 			   "needs to come forward and explain what this company is up to.'\n\n"
-			   "Once again, ARC refused to comment, but did say that a press release was imminent."
-			   << '\x0';
+			   "Once again, ARC refused to comment, but did say that a press release was imminent.";
 
 	News *news = new News ();
 	news->SetHeadline ( "High ranking Agent raises doubts over ARC" );
-	news->SetDetails ( details.str () );
+	news->SetDetails ( details.str ().c_str () );
 
-	details.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -1308,7 +1305,7 @@ void PlotGenerator::Run_Act1Scene4 ()
 	// Create the news story
 	//
 
-	std::ostrstream details;
+	std::ostringstream details;
 	details << "In a suprising development in the mystery of Andromeda Research Corporation (ARC), "
 			   "the number one rated Uplink Agent has come forward and tried to re-assure the community.\n\n"
 			   "This comes two days after Agent " << scene3guy->handle << " publicly expressed concern "
@@ -1322,16 +1319,13 @@ void PlotGenerator::Run_Act1Scene4 ()
 			   "have had full access to the ARC Central Mainframe for the past week and there is nothing of the sort "
 			   "on the system.  What they are doing is being kept under wraps but it is definately not a weapon.'\n\n"
 			   "Agent " << agent->handle << " is a well respected hacker with years of experience and his comments "
-			   "will certainly re-assure the community."
-			   << '\x0';
+			   "will certainly re-assure the community.";
 
 
 	News *news = new News ();
 	news->SetHeadline ( "Top Uplink Agent re-assures community" );
-	news->SetDetails ( details.str () );
+	news->SetDetails ( details.str ().c_str () );
 
-	details.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -1430,7 +1424,7 @@ void PlotGenerator::Run_Act1Scene5 ()
 	// Generate the news story
 	//
 
-	std::ostrstream details;
+	std::ostringstream details;
 	details << "Agent " << agent->handle << " has been found dead in his house after an apparent suicide.\n"
 			   "Preliminary forensic analysis suggests he overdosed on sleeping pills.\n\n"
 			   "He was at the top of the Agent leaderboard and made the news recently after commenting on the "
@@ -1439,15 +1433,12 @@ void PlotGenerator::Run_Act1Scene5 ()
 			   "the mystery surrounding the project.\n\n"
 			   "ARC released a statement earlier today, stating 'He was the best programmer we had ever seen and "
 			   "was a lead player in the project.  For something like this happen is a tradgedy of the greatest order.  "
-			   "Our thoughts go out to this mans family and friends.'"
-			   << '\x0';
+			   "Our thoughts go out to this mans family and friends.'";
 
 	News *news = new News ();
 	news->SetHeadline ( "Top agent working for ARC found dead" );
-	news->SetDetails ( details.str () );
+	news->SetDetails ( details.str ().c_str () );
 
-	details.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -1488,7 +1479,7 @@ void PlotGenerator::Run_Act1Scene7 ()
 		if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 			return;
 
-		std::ostrstream body;
+		std::ostringstream body;
 		body << "[Autosend - 7 day delay expired]\n"
 				"[Sent to ALL-AGENTS]\n\n"
 				"Agents,\n"
@@ -1501,8 +1492,7 @@ void PlotGenerator::Run_Act1Scene7 ()
 				"Unfortunately they saw what I was doing and I had to leave quick, and I haven't had time "
 				"to analyse the project files yet.  If you read this then they have already caught me.\n\n"
 				"ARC cannot be trusted.  We must come together as a group and find out what they are up to "
-				"before something terrible happens.  I don't know if it's already too late."
-				<< '\x0';
+				"before something terrible happens.  I don't know if it's already too late.";
 
 		char from [32];
 		UplinkSnprintf ( from, sizeof ( from ), "Agent %s", agent->handle );
@@ -1516,13 +1506,11 @@ void PlotGenerator::Run_Act1Scene7 ()
 		msg->SetTo ( "PLAYER" );
 		msg->SetFrom ( from );
 		msg->SetSubject ( "Warning about ARC" );
-		msg->SetBody ( body.str () );
+		msg->SetBody ( body.str ().c_str () );
 		msg->GiveLink ( comp->ip );
 		msg->GiveCode ( comp->ip, code );
 		msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
         // Make sure that mail doesn't appear on his computer any more
 
@@ -1560,7 +1548,7 @@ void PlotGenerator::Run_Act1Scene8 ()
 
 	if ( !playercancelsmail ) {
 
-		std::ostrstream details;
+		std::ostringstream details;
 		details << "Uplink Corporation has issued a formal warning to all of its agents, warning them "
 				   "against accepting work for Andromeda Research Corporation (ARC).\n\n"
 				   "In a statement released today, they say 'Uplink Corporation is currently investigating "
@@ -1578,11 +1566,10 @@ void PlotGenerator::Run_Act1Scene8 ()
 				   "'Any agents using the Demo Uplink client who wish to purchase the full client can do so by "
 				   "visiting www.introversion.co.uk'";
 #endif
-        details << '\x0';
 
 		News *news = new News ();
 		news->SetHeadline ( "Formal warning issued by Uplink Corporation" );
-		news->SetDetails ( details.str () );
+		news->SetDetails ( details.str ().c_str () );
 
 		CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 		UplinkAssert (cu);
@@ -1662,7 +1649,7 @@ void PlotGenerator::Run_Act2Scene1 ()
 
     if ( game->GetWorld ()->GetPlayer ()->gateway.databank.GetData ( "RevelationCoreV0.7" ) ) {
 
-		std::ostrstream body;
+		std::ostringstream body;
 		body << "Agent " << game->GetWorld ()->GetPlayer ()->handle << ",\n"
 			 << "We couldn't help but notice that you have been poking into our "
                 "business recently, and if our backup logs are correct, you are now "
@@ -1671,18 +1658,15 @@ void PlotGenerator::Run_Act2Scene1 ()
                 "quite a lot of money for it.  Or you could come and work for us.\n"
                 "You obviously have the talent.  We were amazed when we realised what you had done.\n\n"
                 "We believe you will find that we can offer huge rewards for successfull applicants.\n\n"
-				"Reply to this email (or send one to internal@ARC.net) if you are interested in discussing this further."
-			 << '\x0';
+				"Reply to this email (or send one to internal@ARC.net) if you are interested in discussing this further.";
 
 		Message *msg = new Message ();
 		msg->SetFrom ( "internal@ARC.net" );
 		msg->SetSubject ( "An offer you can't refuse" );
 		msg->SetTo ( "PLAYER" );
-		msg->SetBody ( body.str () );
+		msg->SetBody ( body.str ().c_str () );
 		msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
     }
 	else if ( playercancelsmail ) {
@@ -1691,7 +1675,7 @@ void PlotGenerator::Run_Act2Scene1 ()
     	if ( UplinkIncompatibleSaveGameAssert (act1scene4, __FILE__, __LINE__) )
 			return;
 
-		std::ostrstream body;
+		std::ostringstream body;
 		body << "Agent " << game->GetWorld ()->GetPlayer ()->handle << ",\n"
 			 << "We have been tidying up some of our loose ends recently and we "
 			    "couldn't help but notice that you seem to have done us a very "
@@ -1707,23 +1691,20 @@ void PlotGenerator::Run_Act2Scene1 ()
 				"Why are we offering this to you?  You managed to trace back to his "
 				"computer system several days before any of our guys could get there.  "
 				"You obviously have talent.  And your motives appear to be good as well.\n\n"
-				"Reply to this email (or send one to internal@ARC.net) if you are interested in discussing this further."
-			 << '\x0';
+				"Reply to this email (or send one to internal@ARC.net) if you are interested in discussing this further.";
 
 		Message *msg = new Message ();
 		msg->SetFrom ( "internal@ARC.net" );
 		msg->SetSubject ( "An offer you can't refuse" );
 		msg->SetTo ( "PLAYER" );
-		msg->SetBody ( body.str () );
+		msg->SetBody ( body.str ().c_str () );
 		msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
 	}
     else if ( playervisitsplotsites ) {
 
-		std::ostrstream body;
+		std::ostringstream body;
 		body << "Agent " << game->GetWorld ()->GetPlayer ()->handle << ",\n"
 			 << "We couldn't help but notice that you have recently been poking around in "
                 "some of our computer systems, presumably attempting to determine what is "
@@ -1736,18 +1717,15 @@ void PlotGenerator::Run_Act2Scene1 ()
                 "If you would be interested in doing some work for us, we'd love to hear from you. Reply "
                 "to this email or send one to internal@ARC.net, and we will see what we can do.  We think "
                 "you will find that ARC offer the best rates for freelance agents in the business.\n\n"
-                "We look forward to hearing from you."
-			 << '\x0';
+                "We look forward to hearing from you.";
 
 		Message *msg = new Message ();
 		msg->SetFrom ( "internal@ARC.net" );
 		msg->SetSubject ( "An offer you can't refuse" );
 		msg->SetTo ( "PLAYER" );
-		msg->SetBody ( body.str () );
+		msg->SetBody ( body.str ().c_str () );
 		msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-		//delete [] body.str ();
 
     }
 
@@ -1809,7 +1787,7 @@ void PlotGenerator::Run_Act2Scene3 ()
     // And try to convince him to defect to them
     // By sending them the Revelation Virus
 
-    std::ostrstream body;
+    std::ostringstream body;
     body << "Agent " << game->GetWorld ()->GetPlayer ()->handle << "\n\n"
          << "Firstly let us congratulate you on scoring such a lucrative deal with "
             "the Andromeda Research Corporation.  Secondly, let us warn you that you "
@@ -1825,18 +1803,15 @@ void PlotGenerator::Run_Act2Scene3 ()
             "Simply reply to this email with the ARC data attached.\n\n"
             "Before you answer, think about the moral implications of what you are about "
             "to do.  Can you really trust ARC, who recently made the news by murdering "
-            "two of their best Uplink Agents?"
-         << '\x0';
+            "two of their best Uplink Agents?";
 
     Message *msg = new Message ();
     msg->SetTo ( "PLAYER" );
     msg->SetFrom ( "internal@Arunmor.net" );
     msg->SetSubject ( "Counter offer from a friend" );
-    msg->SetBody ( body.str () );
+    msg->SetBody ( body.str ().c_str () );
     msg->Send ();
 
-	body.rdbuf()->freeze( 0 );
-    //delete [] body.str ();
 
 }
 
@@ -1978,7 +1953,7 @@ void PlotGenerator::Run_Act3Scene2 ()
 void PlotGenerator::Run_Act3Scene3 ()
 {
 
-    std::ostrstream details;
+    std::ostringstream details;
     details <<  "Arunmor Corporation have been working hard on researching the recently discovered "
                 "Revelation project, and have released details of their findings.\n\n"
                 "'Revelation is the most destructive computer virus we have ever seen' said the CEO of "
@@ -1999,18 +1974,15 @@ void PlotGenerator::Run_Act3Scene3 ()
 
     details << "'Our Faith project is now aiming to provide a counter-virus that will stop Revelation in its tracks.'\n";
     details << "Federal Agents today began an investigation into the activities of Andromeda Research Corporation.";
-    details << '\x0';
 
 
     News *news = new News ();
     news->SetHeadline ( "Arunmor release details on Revelation" );
-    news->SetDetails ( details.str () );
+    news->SetDetails ( details.str ().c_str () );
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
 	cu->CreateNews ( news );
 
-	details.rdbuf()->freeze( 0 );
-    //delete [] details.str ();
 
 
 	Date rundate;
@@ -2028,7 +2000,7 @@ void PlotGenerator::Run_Act3Scene3 ()
 void PlotGenerator::Run_Act3Scene4 ()
 {
 
-    std::ostrstream details;
+    std::ostringstream details;
     details << "Federal Agents today made their first public announcement on their investigation into Andromeda Research Corporation (ARC).\n\n"
                "'Our investigation so far has uncovered a number of disturbing facts, however no concrete evidence has yet been discovered' "
                "said a Federal Spokesman. 'It would appear that ARC are developing a software tool in an attempt to damage the operation of the "
@@ -2039,19 +2011,16 @@ void PlotGenerator::Run_Act3Scene4 ()
                "and that the CEO and the Managing Director of ARC are both core members of this group.  Our profile of Andromeda lists them as "
                "well funded Anti-Capitalist Techno-Anarchists, which would seem to fit the charges against them.  So far, we have not had any success in finding this group.'\n\n"
                "'Their only real-world presence that we are aware of is their Public Access Terminal, but the registered contact details of that site are all fake.'\n\n"
-               "'We intend to continue our investigation and appeal for anyone with any information to come forward.'"
-            << '\x0';
+               "'We intend to continue our investigation and appeal for anyone with any information to come forward.'";
 
 
     News *news = new News ();
     news->SetHeadline ( "Federal Agents release findings on ARC" );
-    news->SetDetails ( details.str () );
+    news->SetDetails ( details.str ().c_str () );
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
 	cu->CreateNews ( news );
 
-	details.rdbuf()->freeze( 0 );
-    //delete [] details.str ();
 
 
 	Date rundate;
@@ -3071,7 +3040,7 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
     if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 		return NULL;
 
-    std::ostrstream fulldetails;
+    std::ostringstream fulldetails;
     fulldetails << "One of our sources within Andromeda Research Corporation has discovered that ARC "
                    "are planning on launching Revelation from three primary systems. When the time is right, "
                    "their Agents will enter these systems and begin running Revelation.\n\n"
@@ -3091,14 +3060,12 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
                    "Payment will be " << PAYMENT_SPECIALMISSION_TRACER << "\n\n"
                 << "Our FileServer: " << ourcomp->ip << "\n"
                 << "Target system: " << comp->name << "\n"
-                << "Target IP: " << comp->ip
-                << '\x0';
+                << "Target IP: " << comp->ip;
 
-    std::ostrstream details;
+    std::ostringstream details;
 	details << "Payment for this job is " << PAYMENT_SPECIALMISSION_TRACER << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << 10 << ".\n"
-			<< "This mission cannot be auto-accepted."
-			<< '\x0';
+			<< "This mission cannot be auto-accepted.";
 
 
 	Mission *m = new Mission ();
@@ -3110,8 +3077,8 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
     m->SetMinRating ( 10 );
     m->SetAcceptRating ( 99 );
 	m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_TRACER) );
-    m->SetDetails ( details.str () );
-	m->SetFullDetails ( fulldetails.str () );
+    m->SetDetails ( details.str ().c_str () );
+	m->SetFullDetails ( fulldetails.str ().c_str () );
     m->SetWhySoMuchMoney ( "The mission is extremely important." );
     m->SetHowSecure ( "The target will be very secure." );
     m->SetWhoIsTheTarget ( "Andromeda Research Corporation." );
@@ -3119,10 +3086,6 @@ Mission *PlotGenerator::GenerateMission_Tracer ()
     m->GiveLink ( ourcomp->ip );
     m->GiveCode ( ourcomp->ip, code );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-    //delete [] fulldetails.str ();
 
 	return m;
 
@@ -3177,7 +3140,7 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
     // Generate the mission
     //
 
-    std::ostrstream fulldetails;
+    std::ostringstream fulldetails;
     fulldetails << "We have recently been co-operating with Federal Agents in an attempt to bring the CEO "
                    "of Andromeda Research Corporation into custody for questioning.  Unfortunately, for various "
                    "legal and political reasons, the Feds are refusing to arrest the man due to a lack of evidence "
@@ -3198,14 +3161,12 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
                 << "Password: " << password << "\n"
                 << "Filename: Revelation\n"
                 << "Target system: " << target->name << "\n"
-                << "Target IP: " << target->ip
-                << '\x0';
+                << "Target IP: " << target->ip;
 
-    std::ostrstream details;
+    std::ostringstream details;
 	details << "Payment for this job is " << PAYMENT_SPECIALMISSION_TAKEMETOYOURLEADER << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << 10 << ".\n"
-			<< "This mission cannot be auto-accepted."
-			<< '\x0';
+			<< "This mission cannot be auto-accepted.";
 
 	Mission *m = new Mission ();
 	m->SetTYPE ( MISSION_SPECIAL );
@@ -3216,8 +3177,8 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
     m->SetMinRating ( 10 );
     m->SetAcceptRating ( 99 );
 	m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_TAKEMETOYOURLEADER) );
-    m->SetDetails ( details.str () );
-	m->SetFullDetails ( fulldetails.str () );
+    m->SetDetails ( details.str ().c_str () );
+	m->SetFullDetails ( fulldetails.str ().c_str () );
     m->SetWhySoMuchMoney ( "It involves very important people." );
     m->SetHowSecure ( "It won't be a problem." );
     m->SetWhoIsTheTarget ( "The CEO of Andromeda Research Corporation." );
@@ -3225,10 +3186,6 @@ Mission *PlotGenerator::GenerateMission_TakeMeToYourLeader ()
     m->GiveLink ( ourcomp->ip );
     m->GiveCode ( ourcomp->ip, code );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-    //delete [] fulldetails.str ();
 
 	return m;
 
@@ -3302,7 +3259,7 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
     //
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream fulldetails;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, SpecialMissionDescription (SPECIALMISSION_ARCINFILTRATION), sizeof ( description ) );
 
@@ -3331,14 +3288,12 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
 				<< "USERNAME : " << username << "\n"
 				<< "PASSWORD : " << password << "\n\n"
                 << "Reply to this mail when you have finished.\n\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
-    std::ostrstream details;
+    std::ostringstream details;
 	details << "Payment for this job is " << PAYMENT_SPECIALMISSION_ARCINFILTRATION << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << 10 << ".\n"
-			<< "This mission cannot be auto-accepted."
-			<< '\x0';
+			<< "This mission cannot be auto-accepted.";
 
 	// Insert the mission
 	Mission *mission = new Mission ();
@@ -3351,8 +3306,8 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
     mission->SetAcceptRating ( 99 );
     mission->SetPayment      ( PAYMENT_SPECIALMISSION_ARCINFILTRATION, (int) ( PAYMENT_SPECIALMISSION_ARCINFILTRATION * 1.1 ) );
 	mission->SetDescription  ( description );
-    mission->SetDetails      ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+    mission->SetDetails      ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
     mission->SetWhySoMuchMoney ( "This mission will be extremely difficult" );
     mission->SetWhoIsTheTarget ( "Andromeda Research Corporation" );
     mission->SetHowSecure ( "The system will be extremely secure." );
@@ -3360,10 +3315,6 @@ Mission *PlotGenerator::GenerateMission_ARCInfiltration ()
 	mission->GiveLink ( ourcomp->ip );
 	mission->GiveCode ( ourcomp->ip, code );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-    //delete [] details.str ();
-    //delete [] fulldetails.str ();
 
     return mission;
 
@@ -3422,7 +3373,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
     Computer::GenerateAccessCode( username, password, code, sizeof ( code ) );
 
 
-    std::ostrstream details;
+    std::ostringstream details;
     details << "Our tracer programs have just informed us that Revelation has been released "
                "into the wild by Andromeda Research Corporation.  Only a small number of systems "
                "are currently infected but more will certainly follow.  This is what we have been planning for.\n\n"
@@ -3436,8 +3387,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
 			   "Codename: CounterAttack\n\n"
             << "Our FileServer: " << ourcomp->ip << "\n"
             << "Username: " << username << "\n"
-            << "Password: " << password << "\n"
-            << '\x0';
+            << "Password: " << password << "\n";
 
     //
     // Generate the mission
@@ -3449,7 +3399,7 @@ Mission *PlotGenerator::GenerateMission_CounterAttack ()
     m->SetPayment ( PAYMENT_SPECIALMISSION_COUNTERATTACK );
     m->SetDifficulty ( 20 );
     m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_COUNTERATTACK) );
-    m->SetFullDetails ( details.str () );
+    m->SetFullDetails ( details.str ().c_str () );
     m->GiveLink ( ourcomp->ip );
     m->GiveCode ( ourcomp->ip, code );
 
@@ -3466,7 +3416,7 @@ Mission *PlotGenerator::GenerateMission_MaidenFlight ()
 	if ( UplinkIncompatibleSaveGameAssert (comp, __FILE__, __LINE__) )
 		return NULL;
 
-	std::ostrstream fulldetails;
+	std::ostringstream fulldetails;
 	fulldetails << "Our corporation has been developing a software product known as Revelation for some time now, "
 				   "and Version 1.0 is finally ready.  In order to test and refine this program, we need to test it "
 				   "in the real world.  Your mission will be to install and run Revelation for us.\n\n"
@@ -3483,8 +3433,7 @@ Mission *PlotGenerator::GenerateMission_MaidenFlight ()
                 << PAYMENT_SPECIALMISSION_MAIDENFLIGHT
                 << "c for successful completion of this mission.\n\n"
 				   "Codename: MaidenFlight\n\n"
-				   "[END]"
-				<< '\x0';
+				   "[END]";
 
 
 	Mission *m = new Mission ();
@@ -3495,10 +3444,8 @@ Mission *PlotGenerator::GenerateMission_MaidenFlight ()
 	m->SetDifficulty ( 6 );
 
 	m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_MAIDENFLIGHT)  );
-	m->SetFullDetails ( fulldetails.str () );
+	m->SetFullDetails ( fulldetails.str ().c_str () );
 
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] fulldetails.str ();
 
 	return m;
 
@@ -3571,7 +3518,7 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
     //
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream fulldetails;
+	std::ostringstream fulldetails;
 
 	UplinkStrncpy ( description, SpecialMissionDescription (SPECIALMISSION_DARWIN), sizeof ( description ) );
 
@@ -3597,8 +3544,7 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
 				<< "USERNAME : " << username << "\n"
 				<< "PASSWORD : " << password << "\n\n"
                 << "Reply to this mail when you have finished.\n\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 
 	// Insert the mission
@@ -3610,13 +3556,11 @@ Mission *PlotGenerator::GenerateMission_Darwin ()
 	mission->SetDifficulty   ( 10 );
     mission->SetPayment      ( PAYMENT_SPECIALMISSION_DARWIN );
 	mission->SetDescription  ( description );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->GiveLink ( target->ip );
 	mission->GiveLink ( ourcomp->ip );
 	mission->GiveCode ( ourcomp->ip, code );
 
-	fulldetails.rdbuf()->freeze( 0 );
-    //delete [] fulldetails.str ();
 
     return mission;
 
@@ -3651,7 +3595,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
     UplinkStrncpy ( saveitforthejury_targetbankip, bank->ip, sizeof ( saveitforthejury_targetbankip ) );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream fulldetails;
+	std::ostringstream fulldetails;
 
     UplinkStrncpy ( description, SpecialMissionDescription (SPECIALMISSION_SAVEITFORTHEJURY), sizeof ( description ) );
 
@@ -3672,8 +3616,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
 	fulldetails << "\n"
 				<< "Target individual :\n"
 				<< poorsod->name << "\n"
-                << "His personal computer: " << personalComputer->ip << "\n"
-                << '\x0';
+                << "His personal computer: " << personalComputer->ip << "\n";
 
 	//
 	// Build the mission
@@ -3686,7 +3629,7 @@ Mission *PlotGenerator::GenerateMission_SaveItForTheJury ()
 	m->SetPayment      ( PAYMENT_SPECIALMISSION_SAVEITFORTHEJURY );
 	m->SetDifficulty   ( 10 );
 	m->SetDescription  ( description );
-	m->SetFullDetails  ( fulldetails.str () );
+	m->SetFullDetails  ( fulldetails.str ().c_str () );
 
 	m->GiveLink ( bank->ip );
     m->GiveLink ( personalComputer->ip );
@@ -3728,7 +3671,7 @@ Mission *PlotGenerator::GenerateMission_ShinyHammer ()
     //
     // Ahhh... a nice simple one for a change
 
-    std::ostrstream details;
+    std::ostringstream details;
     details << "We are getting tired of racing against Arunmor Corporation, and recently "
                "their Faith project has been performing well against Revelation.  We need "
                "to put a stop to this.  Since the CEO of our company was arrested, Arunmor have "
@@ -3745,8 +3688,7 @@ Mission *PlotGenerator::GenerateMission_ShinyHammer ()
             << PAYMENT_SPECIALMISSION_SHINYHAMMER
             << " credits for completion of this mission.  If you succeed, we believe we will be able to "
                "take advantage of their momentary confusion and launch Revelation successfully.\n\n"
-               "Be patient...the time is near."
-            << '\x0';
+               "Be patient...the time is near.";
 
     Mission *m = new Mission ();
     m->SetTYPE ( MISSION_SPECIAL );
@@ -3755,10 +3697,8 @@ Mission *PlotGenerator::GenerateMission_ShinyHammer ()
     m->SetPayment ( PAYMENT_SPECIALMISSION_SHINYHAMMER );
     m->SetDifficulty ( 15 );
     m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_SHINYHAMMER) );
-    m->SetFullDetails ( details.str () );
+    m->SetFullDetails ( details.str ().c_str () );
 
-	details.rdbuf()->freeze( 0 );
-    //delete [] details.str ();
 
     return m;
 
@@ -3767,7 +3707,7 @@ Mission *PlotGenerator::GenerateMission_ShinyHammer ()
 Mission *PlotGenerator::GenerateMission_GrandTour ()
 {
 
-    std::ostrstream details;
+    std::ostringstream details;
     details << "In your email inbox you will see two emails from us - one containing the final version "
                "of the Revelation virus, and the other containing a tracker which will list the systems "
                "currently infected.\n\n"
@@ -3785,8 +3725,7 @@ Mission *PlotGenerator::GenerateMission_GrandTour ()
                "Think about it - we can destroy all records of ownership, reset everyone back to square one, crash "
                "the whole damn system.  Think of it!\n\n"
                "This will be our last message to you - if all goes to plan, we will never speak again.\n\n"
-               "The codename for this mission is GrandTour.  Best of luck.  ARC out."
-            << '\x0';
+               "The codename for this mission is GrandTour.  Best of luck.  ARC out.";
 
 
     Mission *m = new Mission ();
@@ -3796,10 +3735,8 @@ Mission *PlotGenerator::GenerateMission_GrandTour ()
     m->SetPayment ( PAYMENT_SPECIALMISSION_GRANDTOUR );
     m->SetDifficulty ( 20 );
     m->SetDescription ( SpecialMissionDescription (SPECIALMISSION_GRANDTOUR) );
-    m->SetFullDetails ( details.str() );
+    m->SetFullDetails ( details.str ().c_str () );
 
-	details.rdbuf()->freeze( 0 );
-    //delete [] details.str();
 
     return m;
 
@@ -3989,7 +3926,7 @@ bool PlotGenerator::IsMissionComplete_ARCInfiltration ()
     }
     else {
 
-        std::ostrstream body;
+        std::ostringstream body;
         body << "\n\nWe can see "
              << foundsize << " Gigaquads of useful data which will help us "
              "perfect Faith.\n"
@@ -4000,18 +3937,15 @@ bool PlotGenerator::IsMissionComplete_ARCInfiltration ()
                 "We have managed to determine that the reproductive systems in the Revelation virus "
                 "are based on data and code stolen from Darwin Research Associates a few weeks ago.  The "
                 "virus mutates, multiplies and evolves, much like a real life form.  We believe the way "
-                "to defeat it is to attack it with another virus that it cannot evolve against."
-             << '\x0';
+                "to defeat it is to attack it with another virus that it cannot evolve against.";
 
         Message *msg = new Message ();
         msg->SetTo ( "PLAYER" );
         msg->SetFrom ( "internal@Arunmor.net" );
         msg->SetSubject ( "Congratulations" );
-        msg->SetBody ( body.str () );
+        msg->SetBody ( body.str ().c_str () );
         msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-        //delete [] body.str ();
 
         completed_arcinfiltration = true;
         int change = (int) ( 3 * ((float) foundsize / (float) 90.0) );
@@ -4156,7 +4090,7 @@ bool PlotGenerator::IsMissionComplete_Darwin ()
     }
     else {
 
-        std::ostrstream body;
+        std::ostringstream body;
         body << "Congratulations on your success Agent "
              << game->GetWorld ()->GetPlayer ()->handle
              << "\n\nWe can see "
@@ -4165,18 +4099,15 @@ bool PlotGenerator::IsMissionComplete_Darwin ()
              "if the security systems of the local machine are still running, the virus has "
              "trouble getting out of the system at all.  We are planning on using the research "
              "that Darwin has conducted to make the virus mutate and evolve, in order to "
-             "combat any defense systems it comes up against."
-             << '\x0';
+             "combat any defense systems it comes up against.";
 
         Message *msg = new Message ();
         msg->SetTo ( "PLAYER" );
         msg->SetFrom ( "internal@ARC.net" );
         msg->SetSubject ( "Congratulations" );
-        msg->SetBody ( body.str () );
+        msg->SetBody ( body.str ().c_str () );
         msg->Send ();
 
-		body.rdbuf()->freeze( 0 );
-        //delete [] body.str ();
 
         completed_darwin = true;
         int change = (int) ( 2 * ((float) foundsize / (float) 90.0) );
@@ -4485,8 +4416,8 @@ void PlotGenerator::NewsRevelationUsed ( char *ip, int success )
 
 		*/
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3;
 
 	part1 << comp->companyname << " has been attacked by a computer virus.  "
 								  "The virus first infected the " << comp->name << ".";
@@ -4523,30 +4454,16 @@ void PlotGenerator::NewsRevelationUsed ( char *ip, int success )
 	// Concatenate each part together and post it
 	//
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
 
-	std::ostrstream details;
-	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << "\n\n" << '\x0';
+	std::ostringstream details;
+	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << "\n\n";
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 
 	news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -4649,19 +4566,16 @@ void PlotGenerator::Disinfected ( char *ip )
               msg->SetTo ( "PLAYER" );
               msg->SetSubject ( "Code won" );
 
-              std::ostrstream body;
+              std::ostringstream body;
               body << "Congratulations,\n"
                       "You won the following code:\n\n"
                    << winningDesc << "\n"
-                   << winningCode << "\n"
-                   << '\x0';
+                   << winningCode << "\n";
 
-              msg->SetBody ( body.str () );
+              msg->SetBody ( body.str ().c_str () );
 
               msg->Send ();
 
-              body.rdbuf()->freeze( 0 );
-              //delete [] body.str ();
 
               delete [] winningDesc;
               delete [] winningCode;
@@ -4749,7 +4663,7 @@ void PlotGenerator::MessageIncompatibleSaveGame ( const char *fileassert, int li
 	msg->SetTo ( "PLAYER" );
 	msg->SetSubject ( "Problems" );
 
-	std::ostrstream body;
+	std::ostringstream body;
 	body << "Agent,\n"
 			"If you are reading this email then it means your gateway got corrupted beyond "
 			"any chances of recovery.\n\n"
@@ -4763,15 +4677,12 @@ void PlotGenerator::MessageIncompatibleSaveGame ( const char *fileassert, int li
 			<< fileassert << "\n"
 			<< "Line      : "
 			<< lineassert
-			<< "\n"
-			<< '\x0';
+			<< "\n";
 
-	msg->SetBody ( body.str () );
+	msg->SetBody ( body.str ().c_str () );
 
 	msg->Send ();
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 
 }
 

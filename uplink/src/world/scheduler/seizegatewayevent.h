@@ -34,7 +34,7 @@ public:
 	~SeizeGatewayEvent ();
 
 	void SetName ( char *newname );
-	void SetReason ( char *newreason );
+	void SetReason ( const char *newreason );
 	void SetGatewayID ( int newid );
 
 	void Run ();

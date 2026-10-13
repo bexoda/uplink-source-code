@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <strstream>
+#include <sstream>
 
 #include <stdio.h>
 
@@ -132,22 +132,19 @@ void MissionInterface::ReplyClick ( Button *button )
 	char contact [SIZE_PERSON_NAME];
 	UplinkStrncpy ( contact, mi->mission->contact, sizeof ( contact ) );
 
-	std::ostrstream body;
+	std::ostringstream body;
 	body << "I have completed the following mission:\n"
 		 << mi->mission->description << "\n\n"
 		 << "Please credit my account with the remaining payment ASAP.\n"
-		 << "Additional requested data:\n" 
-		 << '\x0';
+		 << "Additional requested data:\n";
 
 	game->GetInterface ()->GetLocalInterface ()->RunScreen ( SCREEN_SENDMAIL );
 	game->GetInterface ()->GetLocalInterface ()->Update ();
 
 	EclRegisterCaptionChange ( "sendmail_to", contact, 1 );						// Should occur instantly
 	EclRegisterCaptionChange ( "sendmail_subject", "Mission completed" );
-	EclRegisterCaptionChange ( "sendmail_body box", body.str (), 1000 );
+	EclRegisterCaptionChange ( "sendmail_body box", body.str ().c_str (), 1000 );
 
-	body.rdbuf()->freeze( 0 );
-	//delete [] body.str ();
 
 }
 
@@ -183,7 +180,7 @@ void MissionInterface::Create ()
 		char employer [SIZE_MISSION_EMPLOYER + 8];
 		char payment [32];
 		char description [SIZE_MISSION_DESCRIPTION + 16];		
-		std::ostrstream details;
+		std::ostringstream details;
 
 		UplinkSnprintf ( employer, sizeof ( employer ), "Employer : %s", mission->employer );
 		UplinkSnprintf ( payment, sizeof ( payment ), "Payment : %d credits", mission->payment );
@@ -264,7 +261,6 @@ void MissionInterface::Create ()
 
 		}
 
-		details << '\x0';
 
 		//EclRegisterButton ( screenw - panelwidth - 2, paneltop + 20, panelwidth, 15, "", "mission_employer" );
 		//EclRegisterButton ( screenw - panelwidth - 2, paneltop + 40, panelwidth, 15, "", "mission_payment" );
@@ -284,7 +280,7 @@ void MissionInterface::Create ()
 
 		//int boxheight = screenh - (paneltop + 95) - 70;
 		//create_stextbox ( screenw - panelwidth - 2, paneltop + 95, panelwidth, boxheight, details.str (), "mission_details" );
-		create_stextbox ( screenw - panelwidth, (paneltop + 3) + 95, (panelwidth - 7), boxheight, details.str (), "mission_details" );
+		create_stextbox ( screenw - panelwidth, (paneltop + 3) + 95, (panelwidth - 7), boxheight, details.str ().c_str (), "mission_details" );
 
 		//int x1 = screenw - panelwidth - 2;
 		//int x2 = x1 + panelwidth / 3 + 2;
@@ -308,8 +304,6 @@ void MissionInterface::Create ()
 		EclRegisterButton ( x3, y, width, 15, "Abandon", "Abandon this mission", "mission_abandon" );
 		EclRegisterButtonCallback ( "mission_abandon", AbandonClick );
 
-		details.rdbuf()->freeze( 0 );
-		//delete [] details.str ();
 
 	}
 

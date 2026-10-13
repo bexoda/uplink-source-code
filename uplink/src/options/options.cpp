@@ -3,7 +3,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <strstream>
+#include <sstream>
 
 #include <fstream>
 #include "app/dos2unix.h"
@@ -291,7 +291,7 @@ void Options::SetThemeName ( char *newThemeName )
 
             char colourName[64];
             float r, g, b;
-    		std::istrstream thisLine ( lineBuffer );
+    		std::istringstream thisLine ( lineBuffer );
             thisLine >> colourName >> ws >> r >> g >> b >> ws;
 
             BTree <ColourOption *> *exists = colours.LookupTree( colourName );

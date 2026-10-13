@@ -1138,7 +1138,7 @@ Button *getcurrentbutton ()
 
 }
 
-void create_stextbox ( int x, int y, int width, int height, char *caption, char *name )
+void create_stextbox ( int x, int y, int width, int height, const char *caption, char *name )
 {
 
 	char name_box  [128];

@@ -1,6 +1,6 @@
 
 #include <string.h>
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -47,8 +47,8 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 
 		   ========================================================== */
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3, part4, part5, part6;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3, part4, part5, part6;
 
 	// ================================================================================================================
 	// Social security database
@@ -351,39 +351,16 @@ void NewsGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 
 	part3 << "This occured on " << al->date.GetLongString ();
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
-	part4 << '\x0';
-	part5 << '\x0';
-	part6 << '\x0';
 
-	std::ostrstream details;
+	std::ostringstream details;
 	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << "\n\n"
-			<< part4.str () << "\n\n" << part5.str () << "\n\n" << part6.str () << '\x0';
+			<< part4.str () << "\n\n" << part5.str () << "\n\n" << part6.str ();
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 	news->SetData ( NEWS_TYPE_HACKED, comp->ip );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	part4.rdbuf()->freeze( 0 );
-	part5.rdbuf()->freeze( 0 );
-	part6.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] part4.str ();
-	//delete [] part5.str ();
-	//delete [] part6.str ();
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -408,8 +385,8 @@ void NewsGenerator::ComputerDestroyed ( Computer *comp, bool filesdeleted )
 
 		   ========================================================== */
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3, part4;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3, part4;
 
 	switch ( NumberGenerator::RandomNumber ( 3 ) + 1 ) {
 
@@ -506,34 +483,17 @@ void NewsGenerator::ComputerDestroyed ( Computer *comp, bool filesdeleted )
 	// Concatenate each part together and post it
 	//
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
-	part4 << '\x0';
 
-	std::ostrstream details;
-	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << "\n\n" << part4.str () << '\x0';
+	std::ostringstream details;
+	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << "\n\n" << part4.str ();
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 
 	if ( filesdeleted ) news->SetData ( NEWS_TYPE_COMPUTERDESTROYED, comp->ip );
 	else				news->SetData ( NEWS_TYPE_COMPUTERSHUTDOWN, comp->ip );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	part4.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] part4.str ();
-	//delete [] details.str ();
 
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
@@ -559,8 +519,8 @@ void NewsGenerator::AllFilesStolen ( Computer *comp, char *filetype, int totalfi
 
 		====================================================== */
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3;
 
     totalfilesize = 10 * int(totalfilesize/10);
 
@@ -638,29 +598,15 @@ void NewsGenerator::AllFilesStolen ( Computer *comp, char *filetype, int totalfi
 	// Concatenate each part together and post it
 	//
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
 
-	std::ostrstream details;
-	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << '\x0';
+	std::ostringstream details;
+	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str ();
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 	news->SetData ( NEWS_TYPE_STOLEN, comp->ip );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -685,8 +631,8 @@ void NewsGenerator::AllFilesDeleted ( Computer *comp, char *filetype )
 
 		   =========================================================== */
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3;
 
 
 	switch ( comp->NumRecentHacks () ) {
@@ -759,29 +705,15 @@ void NewsGenerator::AllFilesDeleted ( Computer *comp, char *filetype )
 	// Concatenate each part together and post it
 	//
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
 
-	std::ostrstream details;
-	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << '\x0';
+	std::ostringstream details;
+	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str ();
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 	news->SetData ( NEWS_TYPE_DELETED, comp->ip );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);
@@ -807,8 +739,8 @@ void NewsGenerator::Arrested ( Person *person, Computer *comp, char *reason )
 
 		   ========================================================== */
 
-	std::ostrstream headline;
-	std::ostrstream part1, part2, part3;
+	std::ostringstream headline;
+	std::ostringstream part1, part2, part3;
 
 	part1 << "Earlier today a man was arrested by Federal Agents for " << reason;
 
@@ -915,29 +847,15 @@ void NewsGenerator::Arrested ( Person *person, Computer *comp, char *reason )
 	// Concatenate each part together and post it
 	//
 
-	headline << '\x0';
-	part1 << '\x0';
-	part2 << '\x0';
-	part3 << '\x0';
 
-	std::ostrstream details;
-	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str () << '\x0';
+	std::ostringstream details;
+	details << part1.str () << "\n\n" << part2.str () << "\n\n" << part3.str ();
 
 	News *news = new News ();
-	news->SetHeadline ( headline.str () );
-	news->SetDetails ( details.str () );
+	news->SetHeadline ( headline.str ().c_str () );
+	news->SetDetails ( details.str ().c_str () );
 	news->SetData ( NEWS_TYPE_ARREST, person->name, comp ? comp->ip : NULL );
 
-	headline.rdbuf()->freeze( 0 );
-	part1.rdbuf()->freeze( 0 );
-	part2.rdbuf()->freeze( 0 );
-	part3.rdbuf()->freeze( 0 );
-	details.rdbuf()->freeze( 0 );
-	//delete [] headline.str ();
-	//delete [] part1.str ();
-	//delete [] part2.str ();
-	//delete [] part3.str ();
-	//delete [] details.str ();
 
 	CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	UplinkAssert (cu);

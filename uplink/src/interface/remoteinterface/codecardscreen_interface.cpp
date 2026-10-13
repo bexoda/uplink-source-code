@@ -14,7 +14,7 @@
 #include <unistd.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 #include <time.h>
 
 #include <GL/gl.h>
@@ -325,16 +325,14 @@ void CodeCardScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButton ( 80, 80, 350, 20, GetComputerScreen ()->subtitle, "", "codecard_subtitle" );
 		EclRegisterButtonCallbacks ( "codecard_subtitle", DrawSubTitle, NULL, NULL, NULL );
 
-        std::ostrstream caption;
+        std::ostringstream caption;
         caption << "Your Uplink CD must be verified before account creation can continue.\n"
                    "You should find a black code card inside the cover in the CD.\n"
                    "You are now required to enter a code from that card.\n"
-                   "For example, the code at Row Z, Column 15 is 00." << '\x0';
-        EclRegisterButton ( 100, 150, 400, 70, caption.str(), " ", "codecard_text" );
+                   "For example, the code at Row Z, Column 15 is 00.";
+        EclRegisterButton ( 100, 150, 400, 70, caption.str ().c_str (), " ", "codecard_text" );
         EclRegisterButtonCallbacks ( "codecard_text", textbutton_draw, NULL, NULL, NULL );
 
-		caption.rdbuf()->freeze( 0 );
-        //delete [] caption.str();
 
         char rowcolcaption [128];
         UplinkSnprintf ( rowcolcaption, sizeof ( rowcolcaption ), "Enter code from Row %c, Column %d", row + ('A' - 'a'), col );

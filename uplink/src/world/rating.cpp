@@ -219,21 +219,18 @@ void Rating::ChangeUplinkScore ( int amount )
 
 			char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle;
 
-			std::ostrstream body;
+			std::ostringstream body;
 			body << "Congratulations Agent " << agenthandle
 				 << " - you have reached the next Uplink Rating.\n\n"
-					"Your rating is now " << GetUplinkRating () << "."
-				 << '\x0';
+					"Your rating is now " << GetUplinkRating () << ".";
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
 			msg->SetTo ( owner );
 			msg->SetSubject ( "Congratulations" );
-			msg->SetBody ( body.str () );
+			msg->SetBody ( body.str ().c_str () );
 			msg->Send ();
 
-			body.rdbuf()->freeze( 0 );
-			//delete [] body.str ();
 
 			// Increase our credit rating
 
@@ -251,23 +248,20 @@ void Rating::ChangeUplinkScore ( int amount )
 		if ( game->GetWorld ()->GetPerson (owner) ) {
 
 			char *agenthandle = strcmp ( owner, "PLAYER" ) != 0 ? owner : game->GetWorld ()->GetPlayer ()->handle;
-			std::ostrstream body;
+			std::ostringstream body;
 			body << "This is a warning Agent " << agenthandle << " - your performance recently has been unsatisfactory.\n"
 					"As such we have been forced to review your case, and have decided to decrease your Uplink rating.\n\n"
 					"Your rating is now " << GetUplinkRating () << "."
 					"We hope this is sufficient punishment to make our point clear.\n"
-					"Uplink Corporation will not tolerate failure."
-				 << '\x0';
+					"Uplink Corporation will not tolerate failure.";
 
 			Message *msg = new Message ();
 			msg->SetFrom ( "internal@Uplink.net" );
 			msg->SetTo ( owner );
 			msg->SetSubject ( "Uplink WARNING" );
-			msg->SetBody ( body.str () );
+			msg->SetBody ( body.str ().c_str () );
 			msg->Send ();
 
-			body.rdbuf()->freeze( 0 );
-			//delete [] body.str ();
 
 		}
 

@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -211,15 +211,14 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	UplinkStrncpy ( personname, "internal@ARC.net", sizeof ( personname ) );
 
 	char description [SIZE_MISSION_DESCRIPTION];
-	std::ostrstream details;
-	std::ostrstream fulldetails;
+	std::ostringstream details;
+	std::ostringstream fulldetails;
 
     UplinkStrncpy ( description, "Modify a protected Social Security document", sizeof ( description ) );
 
 	details << "Payment for this job is " << payment << " credits.\n"
 			<< "This job has been assigned an Uplink difficulty of " << difficulty << ".\n"
-			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n"
-			<< '\x0';
+			<< "An UplinkRating of " << Rating::GetUplinkRatingString ( acceptrating ) << " or above will be sufficient for automatic acceptance.\n\n";
 
     fulldetails << "Thank you for replying Agent.\n"
                 << "We have some work for you which you can get started on immediately.\n"
@@ -287,8 +286,7 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
                 << "Send a notice of completion to\n"
 				<< personname << "\n"
 				<< "\n"
-				<< "END"
-				<< '\x0';
+				<< "END";
 
 	//
 	// Generate the mission
@@ -305,14 +303,10 @@ Mission *DemoPlotGenerator::Generate_ChangeSocialRecordARC ()
 	mission->SetMinRating    ( minrating );
 	mission->SetAcceptRating ( acceptrating );
 	mission->SetDescription  ( description );
-	mission->SetDetails		 ( details.str () );
-	mission->SetFullDetails  ( fulldetails.str () );
+	mission->SetDetails		 ( details.str ().c_str () );
+	mission->SetFullDetails  ( fulldetails.str ().c_str () );
 	mission->GiveLink ( target->ip );
 
-	details.rdbuf()->freeze( 0 );
-	fulldetails.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
-	//delete [] fulldetails.str ();
 
     return mission;
 
@@ -443,7 +437,7 @@ void DemoPlotGenerator::RunScene ( int newscene )
         m->SetTo ( "PLAYER" );
         m->SetSubject ( "Offer from Andromeda Research Corporation" );
 
-        std::ostrstream body;
+        std::ostringstream body;
         body <<      "Agent "
              <<      game->GetWorld ()->GetPlayer ()->handle << ",\n"
              <<      "We have been monitoring your progress as a new Uplink Agent, "
@@ -455,14 +449,11 @@ void DemoPlotGenerator::RunScene ( int newscene )
                      "You will find working for Andromeda Research Corporation is much more profitable "
                      "than working for Uplink Corporation. In any case, we need an answer soon.\n"
                      "If you are interested, simply reply to this email within the next 24 hours.\n\n"
-                     "[END]"
-             <<      '\x0';
+                     "[END]";
 
-        m->SetBody ( body.str () );
+        m->SetBody ( body.str ().c_str () );
         m->Send ();
 
-		body.rdbuf()->freeze( 0 );
-        //delete [] body.str ();
 
     }
     else if ( scene == 2 ) {
@@ -507,7 +498,7 @@ void DemoPlotGenerator::RunScene ( int newscene )
         // The target of the ARC mission dies
         // News story
 
-        std::ostrstream newsdetails;
+        std::ostringstream newsdetails;
         char *agenthandle = NameGenerator::GenerateAgentAlias ();
         UplinkAssert (agenthandle);
 
@@ -522,19 +513,16 @@ void DemoPlotGenerator::RunScene ( int newscene )
 			           "ARC released a statement earlier today, stating 'He was the best programmer we had ever seen and "
 			           "was a lead player in the project.  For something like this happen is a tradgedy of the greatest order.  "
 			           "Our thoughts go out to this mans family and friends.'\n\n"
-                       "Due to the seriousness of these claims, Uplink Corporation has asked all agents not to accept work from ARC while this issue is resolved."
-                    << '\x0';
+                       "Due to the seriousness of these claims, Uplink Corporation has asked all agents not to accept work from ARC while this issue is resolved.";
 
 	    News *news = new News ();
 	    news->SetHeadline ( "Uplink agent dies in mysterious circumstances" );
-	    news->SetDetails ( newsdetails.str () );
+	    news->SetDetails ( newsdetails.str ().c_str () );
 
 	    CompanyUplink *cu = (CompanyUplink *) game->GetWorld ()->GetCompany ( "Uplink" );
 	    UplinkAssert (cu);
 	    cu->CreateNews ( news );
 
-		newsdetails.rdbuf()->freeze( 0 );
-        //delete [] newsdetails.str ();
 
         // Warning mail to all
 

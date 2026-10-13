@@ -34,7 +34,7 @@ void MessageScreen::SetNextPage ( int newnextpage )
 
 }
 
-void MessageScreen::SetTextMessage ( char *newtextmessage )
+void MessageScreen::SetTextMessage ( const char *newtextmessage )
 {
 
 	if ( textmessage ) delete [] textmessage;

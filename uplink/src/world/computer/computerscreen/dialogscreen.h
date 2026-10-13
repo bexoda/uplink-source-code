@@ -36,8 +36,8 @@ public:
 	DialogScreen();
 	virtual ~DialogScreen();
 
-	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, char *caption, char *tooltip );
-	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, char *caption, char *tooltip,
+	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip );
+	void AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip,
 					 int data1, int data2, char *stringdata1, char *stringdata2 );
 
 	void RemoveWidget ( char *name );
@@ -103,7 +103,7 @@ public:
 	void SetPosition ( int newx, int newy );
 	void SetSize ( int newwidth, int newheight );
 	void SetTooltip ( char *newtooltip );
-	void SetCaption ( char *newcaption );
+	void SetCaption ( const char *newcaption );
 	
 	char *GetName ();
 	char *GetTooltip ();

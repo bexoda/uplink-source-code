@@ -40,7 +40,7 @@ DialogScreen::~DialogScreen()
 
 }
 
-void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, char *caption, char *tooltip )
+void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip )
 {
 
 	DialogScreenWidget *dsw = new DialogScreenWidget ();
@@ -56,7 +56,7 @@ void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int wid
 
 }
 
-void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, char *caption, char *tooltip, 
+void DialogScreen::AddWidget ( char *name, int WIDGETTYPE, int x, int y, int width, int height, const char *caption, char *tooltip, 
 							   int data1, int data2, char *stringdata1, char *stringdata2 )
 {
 
@@ -247,7 +247,7 @@ void DialogScreenWidget::SetTooltip ( char *newtooltip )
 
 }
 
-void DialogScreenWidget::SetCaption ( char *newcaption )
+void DialogScreenWidget::SetCaption ( const char *newcaption )
 {
 
 	if ( caption ) delete [] caption;

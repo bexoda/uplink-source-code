@@ -1,5 +1,5 @@
 
-#include <strstream>
+#include <sstream>
 
 #include "gucci.h"
 
@@ -82,7 +82,7 @@ void NotificationEvent::Run ()
 char *NotificationEvent::GetShortString ()
 {
 
-	std::ostrstream shortstring;
+	std::ostringstream shortstring;
 
 	switch ( TYPE ) {
 
@@ -112,8 +112,7 @@ char *NotificationEvent::GetShortString ()
 
 	}
 
-	shortstring << '\x0';
-	return shortstring.str ();
+	return UplinkStrdup ( shortstring.str ().c_str () );
 
 }
 
@@ -346,24 +345,21 @@ void NotificationEvent::AddInterestOnLoans ()
 			    Computer *comp = vl->GetComputer ();
 			    UplinkAssert (comp);
 
-			    std::ostrstream body;
+			    std::ostringstream body;
 			    body << "You have been charged interest on the following account:\n"
 				     << "IP : " << ip << "\n"
 				     << "BANK : " << comp->name << "\n"
 				     << "ACCNO : " << account->accountnumber << "\n\n"
 				     << "You have been charged " << amountpaid << "c extra on your loan."
-				     << "Your new loan is " << account->loan << "c."
-				     << '\x0';
+				     << "Your new loan is " << account->loan << "c.";
 
 			    Message *msg = new Message ();
 			    msg->SetFrom ( comp->name );
 			    msg->SetTo ( "PLAYER" );
 			    msg->SetSubject ( "Interest charged" );
-			    msg->SetBody ( body.str () );
+			    msg->SetBody ( body.str ().c_str () );
 			    msg->Send ();
 
-				body.rdbuf()->freeze( 0 );
-			    //delete [] body.str ();
 
 		    }
 
@@ -609,24 +605,22 @@ void NotificationEvent::PayUplinkMonthlyFee ()
 
 				person->ChangeBalance ( COST_UPLINK_PERMONTH * -1, "Uplink Corporation : Monthly fee" );
 
-				std::ostrstream body;
+				std::ostringstream body;
 				body << "Uplink Corporation has deducted the standard monthly "
 						"membership fee of " << COST_UPLINK_PERMONTH << " credits from "
 						"you current account.\n\n"
 						"We are confident you will agree that this represents "
 						"incredible value for money and wish you another successful "
 						"and prosperous month with our organisation.\n"
-						"Thank you." << '\x0';
+						"Thank you.";
 
 				Message *m = new Message ();
 				m->SetTo ( person->name );
 				m->SetFrom ( "Uplink Corporation" );
 				m->SetSubject ( "Uplink monthly fee deducted" );
-				m->SetBody ( body.str () );
+				m->SetBody ( body.str ().c_str () );
 				m->Send ();
 
-				body.rdbuf()->freeze( 0 );
-				//delete [] body.str ();
 
 
 			}

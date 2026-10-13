@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-#include <strstream>
+#include <sstream>
 
 #include <GL/gl.h>
 
@@ -105,7 +105,7 @@ void HWInterface::CreateHWInterface ()
 
 		// Hardware devices
 
-		std::ostrstream hardware;	
+		std::ostringstream hardware;	
 		hardware << "DEVICES\n";
         LList <char *> *security = gateway->GetSecurity ();
         if ( security->Size () == 0 ) 
@@ -115,14 +115,11 @@ void HWInterface::CreateHWInterface ()
             for ( int i = 0; i < security->Size (); ++i ) 
                 if ( security->ValidIndex (i) ) 
 		            hardware << security->GetData (i) << "\n";
-        hardware << '\x0';
 
 		EclRegisterButton ( screenw - panelwidth, paneltop + 130, panelwidth - 10, SY(150), "", "", "hw_hardware" );
 		EclRegisterButtonCallbacks ( "hw_hardware", text_draw, NULL, NULL, NULL );
-		EclRegisterCaptionChange ( "hw_hardware", hardware.str (), 1000 );
+		EclRegisterCaptionChange ( "hw_hardware", hardware.str ().c_str (), 1000 );
 		
-		hardware.rdbuf()->freeze( 0 );
-		//delete [] hardware.str ();
         delete security;
 
 		// HUD Upgrades installed
@@ -133,7 +130,7 @@ void HWInterface::CreateHWInterface ()
 		EclRegisterButton ( screenw - panelwidth, paneltop + SY(150) + 70, panelwidth - 10, 60, "", "", "hw_hudupgrades" );
 		EclRegisterButtonCallbacks ( "hw_hudupgrades", text_draw, NULL, NULL, NULL );
 
-		std::ostrstream hudupgrades;
+		std::ostringstream hudupgrades;
 
 		if ( !(gateway->HasAnyHUDUpgrade ()) )								hudupgrades << "None\n";
 		if ( gateway->HasHUDUpgrade ( HUDUPGRADE_MAPSHOWSTRACE ) )			hudupgrades << "Show trace on map\n";
@@ -141,12 +138,9 @@ void HWInterface::CreateHWInterface ()
         if ( gateway->HasHUDUpgrade ( HUDUPGRADE_IRCCLIENT ) )              hudupgrades << "IRC Client\n";
         if ( gateway->HasHUDUpgrade ( HUDUPGRADE_LANVIEW ) )                hudupgrades << "LAN View\n";
 
-		hudupgrades << '\x0';
 
-		EclRegisterCaptionChange ( "hw_hudupgrades", hudupgrades.str () );
+		EclRegisterCaptionChange ( "hw_hudupgrades", hudupgrades.str ().c_str () );
 
-		hudupgrades.rdbuf()->freeze( 0 );
-		//delete [] hudupgrades.str ();
 
 		// View gateway
 

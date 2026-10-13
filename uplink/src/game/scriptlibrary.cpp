@@ -1682,7 +1682,7 @@ void ScriptLibrary::Script71 ()
 
     char *description = PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE );
 
-    std::ostrstream details;
+    std::ostringstream details;
     details << "We have recently heard a rumour going around that says the complete Uplink Agent "
                "List was stolen from their very own Internal Services System, and that this list includes " 
                "a mapping of agent Handles to real-world name.  If true, this data would be of extreme "
@@ -1701,8 +1701,7 @@ void ScriptLibrary::Script71 ()
             << ourcomp->ip << "\n"
             << "Login:\n"
             << code << "\n\n"
-            << "END"
-            << '\x0';
+            << "END";
 
     int payment = 10;
 
@@ -1717,12 +1716,10 @@ void ScriptLibrary::Script71 ()
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, payment );
 	mission->SetDescription  ( description );	
-	mission->SetFullDetails  ( details.str () );
+	mission->SetFullDetails  ( details.str ().c_str () );
 	mission->GiveLink ( ourcomp->ip );
 	mission->GiveCode ( ourcomp->ip, code );
 
-	details.rdbuf()->freeze( 0 );
-	//delete [] details.str ();
 
     game->GetWorld ()->GetPlayer ()->GiveMission (mission);
 
