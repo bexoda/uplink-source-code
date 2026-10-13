@@ -846,7 +846,7 @@ void Tutorial::RunTutorial1 ( int part )
 
 		EclSuperUnHighlight ( "worldmap_close" );
 
-		if ( game->GetWorld ()->GetPlayer ()->messages.Size () > 0 && strcmp ( game->GetWorld ()->GetPlayer ()->messages.GetData ( 0 )->from, "Uplink public access system" ) == 0 ) {
+		if ( game->GetWorld ()->GetPlayer ()->messages.Size () > 0 && strcmp ( game->GetWorld ()->GetPlayer ()->messages.GetData ( 0 )->from.c_str (), "Uplink public access system" ) == 0 ) {
 
 			EclRegisterCaptionChange ( text, "New emails will queue up in the bottom right\n"
 											 "of the screen.  Click on the email to read it.\n", time_ms*2/3 );

@@ -3033,7 +3033,7 @@ bool MissionGenerator::IsMissionComplete_DestroyFile ( Mission *mission, Person 
 
 			// method 1 - Delete all files
 
-			if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1, ip ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1.c_str (), ip ) == 0 ) {
 
 				MissionCompleted ( mission, person, message );
 				return true;
@@ -3042,7 +3042,7 @@ bool MissionGenerator::IsMissionComplete_DestroyFile ( Mission *mission, Person 
 
 			// method 2 - Destroy the entire computer
 
-			if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED && strcmp ( news->data1, ip ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED && strcmp ( news->data1.c_str (), ip ) == 0 ) {
 
 				MissionCompleted ( mission, person, message );
 				return true;
@@ -3302,12 +3302,12 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 		News *news = uplink->news.GetData (i);
 		UplinkAssert (news);
 
-		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, personname ) == 0 ) {
+		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1.c_str (), personname ) == 0 ) {
 
 			if ( strcmp ( framedfor, "FINANCIAL" ) == 0 || strcmp ( framedfor, "DESTROYALL" ) == 0 ) {
 
 				// Make sure he was arrested for hacking this computer
-				arrested = (strcmp ( news->data2, ip ) == 0);
+				arrested = (strcmp ( news->data2.c_str (), ip ) == 0);
 				break;
 
 			}
@@ -3335,7 +3335,7 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 
 		if ( strcmp ( framedfor, "HACKING" ) == 0 ) {								// Bog standard hack
 
-			if ( strcmp ( message->from, "PLAYER" ) == 0 )
+			if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 )
 				game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
 
 			MissionCompleted ( mission, person, message );
@@ -3349,9 +3349,9 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 				News *news = uplink->news.GetData (in);
 				UplinkAssert (news);
 
-				if ( news->NEWSTYPE == NEWS_TYPE_HACKED && strcmp ( news->data1, ip ) == 0 ) {
+				if ( news->NEWSTYPE == NEWS_TYPE_HACKED && strcmp ( news->data1.c_str (), ip ) == 0 ) {
 
-					if ( strcmp ( message->from, "PLAYER" ) == 0 )
+					if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 )
 						game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
 
 					MissionCompleted ( mission, person, message );
@@ -3369,9 +3369,9 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 				News *news = uplink->news.GetData (in);
 				UplinkAssert (news);
 
-				if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1, ip ) == 0 ) {
+				if ( news->NEWSTYPE == NEWS_TYPE_DELETED && strcmp ( news->data1.c_str (), ip ) == 0 ) {
 
-					if ( strcmp ( message->from, "PLAYER" ) == 0 ) {
+					if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 ) {
 						game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
 						game->GetWorld ()->GetPlayer ()->score_systemsfucked ++;
 					}
@@ -3407,7 +3407,7 @@ bool MissionGenerator::IsMissionComplete_TraceUser ( Mission *mission, Person *p
 
 	if ( strstr ( msgbody, personname ) != NULL ) {
 
-		if ( strcmp ( message->from, "PLAYER" ) == 0 )
+		if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 )
 			game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
 
 		MissionCompleted ( mission, person, message );
@@ -3521,12 +3521,12 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 		UplinkAssert (news);
 
 		if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERDESTROYED &&
-			 strcmp ( news->data1, sourceip ) == 0 ) {
+			 strcmp ( news->data1.c_str (), sourceip ) == 0 ) {
 
 			// Data bank formatted
 			// System shut down
 
-			if ( strcmp ( message->from, "PLAYER" ) == 0 )
+			if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 )
 				game->GetWorld ()->GetPlayer ()->score_systemsfucked ++;
 
 			MissionCompleted ( mission, person, message );
@@ -3534,13 +3534,13 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 
 		}
 		else if ( news->NEWSTYPE == NEWS_TYPE_COMPUTERSHUTDOWN &&
-			  	  strcmp ( news->data1, sourceip ) == 0 ) {
+			  	  strcmp ( news->data1.c_str (), sourceip ) == 0 ) {
 
 			// System shut down
 			// But files not deleted
 
 			Message *msg = new Message ();
-			msg->SetTo ( message->from );
+			msg->SetTo ( message->from.c_str () );
 			msg->SetFrom ( person->name.c_str () );
 			msg->SetSubject ( "Problems with mission completion" );
 			msg->SetBody ( "It appears the target system was shut down, but the files were not deleted.\n"
@@ -3588,9 +3588,9 @@ bool MissionGenerator::IsMissionComplete_RemoveUser	( Mission *mission, Person *
 		News *news = uplink->news.GetData (i);
 		UplinkAssert (news);
 
-		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, personname ) == 0 ) {
+		if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1.c_str (), personname ) == 0 ) {
 
-			if ( strcmp ( message->from, "PLAYER" ) == 0 )
+			if ( strcmp ( message->from.c_str (), "PLAYER" ) == 0 )
 				game->GetWorld ()->GetPlayer ()->score_peoplefucked ++;
 
 			MissionCompleted ( mission, person, message );
@@ -3661,7 +3661,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 			 << mission->GetDetails () << "\n";
 
 		Message *m = new Message ();
-		m->SetTo ( message->from );
+		m->SetTo ( message->from.c_str () );
 		m->SetFrom ( person->name.c_str () );
 		m->SetSubject ( "Fine paid" );
 		m->SetBody ( body.str ().c_str () );
@@ -3678,7 +3678,7 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 			 << "Please ensure this payment reaches us soon to avoid further action.";
 
 		Message *m = new Message ();
-		m->SetTo ( message->from );
+		m->SetTo ( message->from.c_str () );
 		m->SetFrom ( person->name.c_str () );
 		m->SetSubject ( "Outstanding fine still not paid" );
 		m->SetBody ( body.str ().c_str () );
@@ -3703,7 +3703,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
         if ( game->GetWorld ()->plotgenerator.PlayerCompletedSpecialMission (SPECIALMISSION_MOLE) ) {
 
 	        Message *m = new Message ();
-	        m->SetTo ( message->from );
+	        m->SetTo ( message->from.c_str () );
 	        m->SetFrom ( person->name.c_str () );
 	        m->SetSubject ( "Mission withdrawn" );
 	        m->SetBody ( "It appears you have already sold the information.\n\n"
@@ -3829,7 +3829,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
             body << "Once again, congratulations on an incredible hack.\n\nEND";
 
 	        Message *m = new Message ();
-	        m->SetTo ( message->from );
+	        m->SetTo ( message->from.c_str () );
 	        m->SetFrom ( person->name.c_str () );
 	        m->SetSubject ( "Mission completed" );
 	        m->SetBody ( body.str ().c_str () );
@@ -3888,7 +3888,7 @@ void MissionGenerator::MissionCompleted ( Mission *mission, Person *person, Mess
          << "THIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY.";
 
 	Message *m = new Message ();
-	m->SetTo ( message->from );
+	m->SetTo ( message->from.c_str () );
 	m->SetFrom ( person->name.c_str () );
 	m->SetSubject ( "Mission completed" );
 	m->SetBody ( body.str ().c_str () );
@@ -3932,7 +3932,7 @@ void MissionGenerator::MissionNotCompleted ( Mission * /*mission*/, Person *pers
     body << "\n\nTHIS IS AN AUTOMATED RESPONSE.  PLEASE DO NOT REPLY.";
 
 	Message *m = new Message ();
-	m->SetTo ( message->from );
+	m->SetTo ( message->from.c_str () );
 	m->SetFrom ( person->name.c_str () );
 	m->SetSubject ( "Mission NOT completed" );
 	m->SetBody ( body.str ().c_str () );

@@ -410,7 +410,7 @@ void Person::Update ()
 			Message *msg = messages.GetData (0);
 			UplinkAssert ( msg );
 
-			if ( strcmp ( msg->from, "PLAYER" ) == 0 ) {
+			if ( strcmp ( msg->from.c_str (), "PLAYER" ) == 0 ) {
 
 				// This is a message from the player - most likely a "completed mission" email
 				// But it may be a mail to a "special" company
@@ -418,14 +418,14 @@ void Person::Update ()
 
 				bool handled = false;
 
-				if ( strcmp ( msg->to, "internal@ARC.net" ) == 0 )
+				if ( strcmp ( msg->to.c_str (), "internal@ARC.net" ) == 0 )
 #ifdef DEMOGAME
                     handled = game->GetWorld ()->demoplotgenerator.PlayerContactsARC ( msg );
 #else
 					handled = game->GetWorld ()->plotgenerator.PlayerContactsARC ( msg );
 #endif
 
-				else if ( strcmp ( msg->to, "internal@Arunmor.net" ) == 0 )
+				else if ( strcmp ( msg->to.c_str (), "internal@Arunmor.net" ) == 0 )
 					handled = game->GetWorld ()->plotgenerator.PlayerContactsARUNMOR ( msg );
 
 				if ( !handled ) {

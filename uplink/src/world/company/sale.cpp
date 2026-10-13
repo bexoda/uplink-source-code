@@ -13,7 +13,7 @@
 Sale::Sale ()
 {
 
-	UplinkStrncpy ( title, "", sizeof ( title ) );
+	title = "";
 	saleTYPE = SALETYPE_NONE;
 	swhwTYPE = SOFTWARETYPE_NONE;
 
@@ -30,7 +30,7 @@ void Sale::SetTitle ( const char *newtitle )
 {
 	
 	UplinkAssert ( strlen (newtitle) < SIZE_SALE_TITLE );
-	UplinkStrncpy ( title, newtitle, sizeof ( title ) );
+	title = newtitle;
 
 }
 
@@ -108,7 +108,7 @@ void Sale::Print ()
 
 	printf ( "Sale\n" );
 	printf ( "\tTitle:%s, saleTYPE:%d, swhwTYPE:%d\n", 
-				title, saleTYPE, swhwTYPE );
+				title.c_str (), saleTYPE, swhwTYPE );
 
 	PrintDArray ( (DArray <UplinkObject *> *) &versions );
 

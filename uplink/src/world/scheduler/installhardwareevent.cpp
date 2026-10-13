@@ -56,14 +56,14 @@ void InstallHardwareEvent::Run ()
 	//
 
 	if ( hwsale->swhwTYPE == GATEWAYUPGRADETYPE_MODEM )
-		game->GetWorld ()->GetPlayer ()->gateway.SetModemType ( hwsale->title, sv->data );
+		game->GetWorld ()->GetPlayer ()->gateway.SetModemType ( hwsale->title.c_str (), sv->data );
 
 	//
 	// CPU   - Change the player's gateway's processor speed
 	//
 
 	if ( hwsale->swhwTYPE == GATEWAYUPGRADETYPE_CPU )
-		game->GetWorld ()->GetPlayer ()->gateway.GiveCPU ( hwsale->title );
+		game->GetWorld ()->GetPlayer ()->gateway.GiveCPU ( hwsale->title.c_str () );
 
 	//
 	// MEMORY  - Give the player's gateway more memory space
@@ -105,13 +105,13 @@ void InstallHardwareEvent::Run ()
 		}
         else {
 
-            game->GetWorld ()->GetPlayer ()->gateway.GiveHardware ( hwsale->title );
+            game->GetWorld ()->GetPlayer ()->gateway.GiveHardware ( hwsale->title.c_str () );
 
             Data *driver = new Data ();
 		    driver->SetDetails ( DATATYPE_PROGRAM, 1, 0, 0, 1.0, SOFTWARETYPE_HWDRIVER );
 
-            if      ( strcmp ( hwsale->title, "Gateway Self Destruct" ) == 0 )      driver->SetTitle ( "Gateway_Nuke" );
-            else if ( strcmp ( hwsale->title, "Gateway Motion Sensor" ) == 0 )      driver->SetTitle ( "Motion_Sensor" );
+            if      ( strcmp ( hwsale->title.c_str (), "Gateway Self Destruct" ) == 0 )      driver->SetTitle ( "Gateway_Nuke" );
+            else if ( strcmp ( hwsale->title.c_str (), "Gateway Motion Sensor" ) == 0 )      driver->SetTitle ( "Motion_Sensor" );
 
 		    game->GetWorld ()->GetPlayer ()->gateway.databank.PutData ( driver );
 
@@ -187,9 +187,9 @@ void InstallHardwareEvent::RunWarning ()
 char *InstallHardwareEvent::GetShortString ()
 {
 
-	size_t shortstringsize = strlen(hwsale->title) + 32;
+	size_t shortstringsize = strlen(hwsale->title.c_str ()) + 32;
 	char *shortstring = new char [shortstringsize];
-	UplinkSnprintf ( shortstring, shortstringsize, "HW Install of %s, version %d", hwsale->title, version );
+	UplinkSnprintf ( shortstring, shortstringsize, "HW Install of %s, version %d", hwsale->title.c_str (), version );
 	return shortstring;
 
 }

@@ -97,7 +97,7 @@ public:
 	LList <const char *> *GetSecurity ();
 
 	void GiveStartingHardware ();
-	void GiveHardware  ( char *newhardware );
+	void GiveHardware  ( const char *newhardware );
 	bool IsHWInstalled ( const char *name );
 
 	void GiveStartingSoftware ();

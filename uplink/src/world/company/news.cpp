@@ -15,9 +15,9 @@ News::News ()
 	details = NULL;
 	NEWSTYPE = NEWS_TYPE_NONE;
 
-    UplinkStrncpy ( headline, " ", sizeof ( headline ) );
-    UplinkStrncpy ( data1, " ", sizeof ( data1 ) );
-    UplinkStrncpy ( data2, " ", sizeof ( data2 ) );
+    headline = " ";
+    data1 = " ";
+    data2 = " ";
 
 }
 
@@ -39,7 +39,7 @@ void News::SetHeadline ( const char *newheadline )
 {
 
 	UplinkAssert ( strlen ( newheadline ) < SIZE_NEWS_HEADLINE );
-	UplinkStrncpy ( headline, newheadline, sizeof ( headline ) );
+	headline = newheadline;
 
 }
 
@@ -67,17 +67,17 @@ void News::SetData ( int newNEWSTYPE, const char *newdata1, const char *newdata2
 
 	if ( newdata1 ) {
 		UplinkAssert (strlen(newdata1) < SIZE_NEWS_DATA);
-		UplinkStrncpy ( data1, newdata1, sizeof ( data1 ) );
+		data1 = newdata1;
 	}
 	else
-		UplinkStrncpy ( data1, " ", sizeof ( data1 ) );
+		data1 = " ";
 
 	if ( newdata2 ) {
 		UplinkAssert (strlen(newdata2) < SIZE_NEWS_DATA);
-		UplinkStrncpy ( data2, newdata2, sizeof ( data2 ) );
+		data2 = newdata2;
 	}
 	else
-		UplinkStrncpy ( data2, " ", sizeof ( data2 ) );
+		data2 = " ";
 
 }
 
@@ -122,13 +122,13 @@ void News::Save  ( FILE *file )
 void News::Print ()
 {
 
-	printf ( "News: %s\n", headline );
+	printf ( "News: %s\n", headline.c_str () );
 	date.Print ();
 	printf ( "%s\n", details );
 	
 	printf ( "NEWSTYPE:%d\n", NEWSTYPE );
-	printf ( "data1 = %s\n", data1 );
-	printf ( "data2 = %s\n", data2 );
+	printf ( "data1 = %s\n", data1.c_str () );
+	printf ( "data2 = %s\n", data2.c_str () );
 		
 }
 	

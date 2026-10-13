@@ -126,7 +126,7 @@ void SWSalesScreenInterface::DrawSWButton ( Button *button, bool highlighted, bo
 		char version [8];
 		char cost [32];
 		char size [32];
-		UplinkStrncpy ( name, sale->title, sizeof ( name ) );
+		UplinkStrncpy ( name, sale->title.c_str (), sizeof ( name ) );
 		UplinkSnprintf ( version, sizeof ( version ), "v%d.0", sv->data );
 		UplinkSnprintf ( cost, sizeof ( cost ), "%dc", sv->cost );
 		if ( sale->swhwTYPE != SOFTWARETYPE_HUDUPGRADE ) {
@@ -224,7 +224,7 @@ void SWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 		SaleVersion *sv = sale->GetVersion ( currentversion );
 
 		Data *newsw = new Data ();
-		newsw->SetTitle ( sale->title );		
+		newsw->SetTitle ( sale->title.c_str () );		
 		newsw->SetDetails ( DATATYPE_PROGRAM, sv->size, 0, 0, (float) sv->data, sale->swhwTYPE );
 
 		// Check the player has space and money
@@ -239,16 +239,16 @@ void SWSalesScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 			    // Special case - HUD upgrades
 			    //
 	
-				if ( strcmp ( sale->title, "HUD_MapShowTrace" ) == 0 )
+				if ( strcmp ( sale->title.c_str (), "HUD_MapShowTrace" ) == 0 )
 					game->GetWorld ()->GetPlayer ()->gateway.GiveHUDUpgrade ( HUDUPGRADE_MAPSHOWSTRACE );
 
-				else if ( strcmp ( sale->title, "HUD_ConnectionAnalysis" ) == 0 )
+				else if ( strcmp ( sale->title.c_str (), "HUD_ConnectionAnalysis" ) == 0 )
 					game->GetWorld ()->GetPlayer ()->gateway.GiveHUDUpgrade ( HUDUPGRADE_CONNECTIONANALYSIS );
 
-                else if ( strcmp ( sale->title, "HUD_IRC-Client" ) == 0 )
+                else if ( strcmp ( sale->title.c_str (), "HUD_IRC-Client" ) == 0 )
                     game->GetWorld ()->GetPlayer ()->gateway.GiveHUDUpgrade ( HUDUPGRADE_IRCCLIENT );
 
-                else if ( strcmp ( sale->title, "HUD_LANView" ) == 0 )
+                else if ( strcmp ( sale->title.c_str (), "HUD_LANView" ) == 0 )
                     game->GetWorld ()->GetPlayer ()->gateway.GiveHUDUpgrade ( HUDUPGRADE_LANVIEW );
 
 				else

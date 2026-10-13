@@ -50,7 +50,7 @@ void Message::SetTo	( const char *newto )
 {
 
 	UplinkAssert ( strlen (newto) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( to, newto, sizeof ( to ) );
+	to = newto;
 
 }
 
@@ -58,7 +58,7 @@ void Message::SetFrom ( const char *newfrom )
 {
 
 	UplinkAssert ( strlen (newfrom) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( from, newfrom, sizeof ( from ) );
+	from = newfrom;
 
 }
 
@@ -145,7 +145,7 @@ void Message::Send ()
 
 	SetDate ( &(game->GetWorld ()->date) );
 
-	Person *person = game->GetWorld ()->GetPerson ( to );
+	Person *person = game->GetWorld ()->GetPerson ( to.c_str () );
 
 	if ( person ) {
 
@@ -156,7 +156,7 @@ void Message::Send ()
 
 		// Send an error message to the sender
 		Message *msg = new Message ();
-		msg->SetTo ( from );
+		msg->SetTo ( from.c_str () );
 		msg->SetFrom ( "MAIL SERVER" );
 		msg->SetSubject ( "Failed to deliver this email - unknown recipient" );
 		msg->SetBody ( body );
@@ -220,8 +220,8 @@ void Message::Print ()
 {
 
 	printf ( "Message : \n" );
-	printf ( "\tTo   = %s\n", to );
-	printf ( "\tFrom = %s\n", from );
+	printf ( "\tTo   = %s\n", to.c_str () );
+	printf ( "\tFrom = %s\n", from.c_str () );
 	printf ( "\tSubject = %s\n", subject );
 	printf ( "\tbody = %s\n", body );
 

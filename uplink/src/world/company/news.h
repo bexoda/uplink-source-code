@@ -12,6 +12,8 @@
 #ifndef _included_news_h
 #define _included_news_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -42,11 +44,11 @@ protected:
 public:
 
 	Date date;
-	char headline [SIZE_NEWS_HEADLINE];
+	std::string headline;
 	
 	int NEWSTYPE;
-	char data1 [SIZE_NEWS_DATA];
-	char data2 [SIZE_NEWS_DATA];
+	std::string data1;
+	std::string data2;
 
 public:
 

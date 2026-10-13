@@ -527,7 +527,7 @@ void Gateway::GiveStartingHardware ()
 
 }
 
-void Gateway::GiveHardware ( char *newhardware )
+void Gateway::GiveHardware ( const char *newhardware )
 {
 
 	char *hwtitle = new char [strlen(newhardware)+1];

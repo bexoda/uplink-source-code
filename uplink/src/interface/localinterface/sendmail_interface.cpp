@@ -417,7 +417,7 @@ void SendMailInterface::Update ()
 		
 		UplinkAssert (m);
 
-		EclGetButton ( "sendmail_to" )->SetCaption ( m->to );
+		EclGetButton ( "sendmail_to" )->SetCaption ( m->to.c_str () );
 		EclGetButton ( "sendmail_subject" )->SetCaption ( m->GetSubject () );
 		EclGetButton ( "sendmail_body box" )->SetCaption ( m->GetBody () );
 

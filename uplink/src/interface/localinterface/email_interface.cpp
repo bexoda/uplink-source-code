@@ -64,7 +64,7 @@ void EmailInterface::EmailReply ( Button * /*button*/ )
 
 
 	char contact [SIZE_PERSON_NAME];
-	UplinkStrncpy ( contact, em->message->from, sizeof ( contact ) );
+	UplinkStrncpy ( contact, em->message->from.c_str (), sizeof ( contact ) );
 
 	std::ostringstream body;
 	body << "RE your email\n"
@@ -159,7 +159,7 @@ void EmailInterface::Create ()
 		char *subject = new char [subjectsize];
 		std::ostringstream body;
 
-		UplinkSnprintf ( from, sizeof ( from ), "From : %s", message->from );
+		UplinkSnprintf ( from, sizeof ( from ), "From : %s", message->from.c_str () );
 		UplinkSnprintf ( date, sizeof ( date ), "Date : %s", message->date.GetShortString () );
 		UplinkSnprintf ( subject, subjectsize, "Subject : %s", message->GetSubject () );
 

@@ -11,6 +11,8 @@
 #ifndef _included_sale_h
 #define _included_sale_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -31,7 +33,7 @@ class Sale : public UplinkObject
 
 public:
 
-	char title [SIZE_SALE_TITLE];
+	std::string title;
 	int saleTYPE;
 	int swhwTYPE;
 

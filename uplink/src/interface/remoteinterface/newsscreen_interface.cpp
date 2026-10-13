@@ -160,7 +160,7 @@ void NewsScreenInterface::DrawNewsButton ( Button *button, bool highlighted, boo
 
 		char date [64];
         char subject [256];        
-		UplinkStrncpy ( subject, news->headline, sizeof ( subject ) );
+		UplinkStrncpy ( subject, news->headline.c_str (), sizeof ( subject ) );
 		UplinkStrncpy ( date, news->date.GetShortString (), sizeof ( date ) );
 
         // Get the first line of the news story

@@ -11,6 +11,8 @@
 #ifndef _included_message_h
 #define _included_message_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -35,8 +37,8 @@ protected:
 
 public:
 
-	char to		 [SIZE_PERSON_NAME];
-	char from    [SIZE_PERSON_NAME];
+	std::string to;
+	std::string from;
 
 	LList <char *> links;				// All useful ip addresses (to be added to links)
 	BTree <char *> codes;				// Access codes, indexed on ip

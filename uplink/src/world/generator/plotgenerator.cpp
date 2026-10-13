@@ -4222,9 +4222,9 @@ bool PlotGenerator::IsMissionComplete_SaveItForTheJury ()
 			News *news = uplink->news.GetData (i);
 			UplinkAssert (news);
 
-			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1, poorsod->name.c_str () ) == 0 ) {
+			if ( news->NEWSTYPE == NEWS_TYPE_ARREST && strcmp ( news->data1.c_str (), poorsod->name.c_str () ) == 0 ) {
 
-				if ( strcmp ( news->data2, comp->ip.c_str () ) == 0 ) {
+				if ( strcmp ( news->data2.c_str (), comp->ip.c_str () ) == 0 ) {
 
 					success = 2;
 					break;

@@ -244,7 +244,7 @@ void HUDInterface::EmailHighlight ( Button *button )
 	if ( message ) {
 
 		char tooltip [512];
-		UplinkSnprintf ( tooltip, sizeof ( tooltip ), "'%s', From '%s'", message->GetSubject (), message->from );
+		UplinkSnprintf ( tooltip, sizeof ( tooltip ), "'%s', From '%s'", message->GetSubject (), message->from.c_str () );
 
 		button->SetTooltip ( tooltip );
 		button_highlight ( button );

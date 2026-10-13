@@ -552,7 +552,7 @@ void WorldGenerator::GenerateCompanyUplink ()
 
 	for ( int is = 0; is < NUM_STARTINGSOFTWAREUPGRADES; ++is ) {
 
-		if ( previoussale && strcmp ( previoussale->title, SOFTWARE_UPGRADES [is].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), SOFTWARE_UPGRADES [is].name ) == 0 ) {
 
 			// New version of an existing item
 
@@ -589,7 +589,7 @@ void WorldGenerator::GenerateCompanyUplink ()
 
 	for ( int ih = 0; ih < NUM_STARTINGHARDWAREUPGRADES; ++ih ) {
 
-		if ( previoussale && strcmp ( previoussale->title, HARDWARE_UPGRADES [ih].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), HARDWARE_UPGRADES [ih].name ) == 0 ) {
 
 			// New version of an existing item
 
@@ -3782,7 +3782,7 @@ void WorldGenerator::UpdateSoftwareUpgrades ( )
 
 	for ( int is = 0; is < NUM_STARTINGSOFTWAREUPGRADES; ++is ) {
 
-		if ( previoussale && strcmp ( previoussale->title, SOFTWARE_UPGRADES [is].name ) == 0 ) {
+		if ( previoussale && strcmp ( previoussale->title.c_str (), SOFTWARE_UPGRADES [is].name ) == 0 ) {
 
 			// New version of an existing item
 
