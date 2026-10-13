@@ -1,0 +1,12 @@
+# How a computer's defences react to recent break-ins it has noticed.
+# A break-in is noticed when the intruder leaves suspicious logs behind; the count decays
+# by about a quarter of last month's each week. The highest row whose recent_hacks the
+# count reaches applies.
+# trace: multiplies the time per hop of the trace on the player (lower is faster).
+# security_bonus: added to each security system's level (capped at 5) when a tool tests it.
+# new_codes_on_connect: 1 = the computer changes its passwords whenever the player connects.
+# alert	name	recent_hacks	trace	security_bonus	new_codes_on_connect
+0	Calm	0	1.00	0	0
+1	Wary	1	0.85	0	0
+2	Alarmed	3	0.70	1	0
+3	Lockdown	6	0.55	1	1

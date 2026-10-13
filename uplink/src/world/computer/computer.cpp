@@ -2,12 +2,15 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
+
 #include "app/app.h"
 #include "app/globals.h"
 #include "app/serialise.h"
 
 #include "game/game.h"
 #include "game/data/data.h"
+#include "game/data/securityalert.h"
 
 #include "world/world.h"
 #include "world/vlocation.h"
@@ -514,6 +517,18 @@ void Computer::UpdateRecentHacks ()
 	if ( numrecenthacks < 0 ) numrecenthacks = 0;
 	if ( numhackslastmonth < 0 ) numhackslastmonth = 0;
 	
+}
+
+const SecurityAlert &Computer::Alert ()
+{
+	return SecurityAlertFor ( numrecenthacks );
+}
+
+int Computer::EffectiveSecurityLevel ( const SecuritySystem *ss )
+{
+	UplinkAssert ( ss );
+	if ( ss->level >= MAX_SECURITY_LEVEL ) return ss->level;
+	return std::min ( ss->level + Alert ().securitybonus, MAX_SECURITY_LEVEL );
 }
 
 int Computer::NumRecentHacks ()

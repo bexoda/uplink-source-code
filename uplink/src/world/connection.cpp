@@ -4,6 +4,7 @@
 
 
 #include "game/game.h"
+#include "game/data/securityalert.h"
 
 #include "app/app.h"
 #include "app/globals.h"
@@ -211,6 +212,10 @@ void Connection::Connect ()
 
 		SecurityMonitor::BeginAttack ();
         LanMonitor::BeginAttack ();
+
+        // A computer in lockdown changes its passwords whenever the player connects
+        if ( comp->Alert ().newcodesonconnect )
+            comp->ChangeSecurityCodes ();
 
         if ( strcmp ( comp->companyname.c_str (), "ARC" ) == 0 ) 
             game->GetWorld ()->plotgenerator.PlayerVisitsPlotSites ();

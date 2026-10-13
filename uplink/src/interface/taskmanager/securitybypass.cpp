@@ -14,6 +14,8 @@
 #include "world/player.h"
 #include "world/computer/security.h"
 #include "world/computer/securitysystem.h"
+#include "world/vlocation.h"
+#include "world/computer/computer.h"
 
 
 #include "interface/interface.h"
@@ -270,7 +272,12 @@ void SecurityBypass::SetTarget ( UplinkObject *uo, const char *uos, int uoi )
 			// Start it running
 			//
 
-			if ( version >= ((Security *) targetobject)->GetSystem (targetint)->level ) {
+			// The level to beat rises when the computer is alarmed by recent break-ins
+			SecuritySystem *ss = ((Security *) targetobject)->GetSystem (targetint);
+			VLocation *vl = game->GetWorld ()->GetVLocation ( ip.c_str () );
+			int level = ( vl && vl->GetComputer () ) ? vl->GetComputer ()->EffectiveSecurityLevel ( ss ) : ss->level;
+
+			if ( version >= level ) {
 
 				((Security *) targetobject)->GetSystem (targetint)->Bypass ();
 				status = 1;

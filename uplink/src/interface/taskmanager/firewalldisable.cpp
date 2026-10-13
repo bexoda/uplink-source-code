@@ -252,7 +252,7 @@ void FirewallDisable::Tick ( int /*n*/ )
 
 					SecuritySystem *ss = comp->security.GetSystem (i);
 					if ( ss && ss->TYPE == SECURITY_TYPE_FIREWALL && ss->enabled && !ss->bypassed ) {
-						if ( version >= ss->level ) {
+						if ( version >= comp->EffectiveSecurityLevel ( ss ) ) {
 							ss->Disable ();
 							if ( comp->security.IsRunning_Monitor () ) 	
 								game->GetWorld ()->GetPlayer ()->connection.BeginTrace ();

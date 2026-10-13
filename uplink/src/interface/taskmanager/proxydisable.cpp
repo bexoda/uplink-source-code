@@ -255,7 +255,7 @@ void ProxyDisable::Tick ( int /*n*/ )
 
 					SecuritySystem *ss = comp->security.GetSystem (i);
 					if ( ss && ss->TYPE == SECURITY_TYPE_PROXY && ss->enabled && !ss->bypassed ) {
-						if ( version >= ss->level )
+						if ( version >= comp->EffectiveSecurityLevel ( ss ) )
 							ss->Disable ();
 
                         else

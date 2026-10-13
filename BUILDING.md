@@ -131,6 +131,10 @@ build links it into `build/data/`, and a packaged game needs it in `data/` next 
 executable (or inside a .dat archive). The format is described at the top of the file and
 in `game/data/upgrades.h`; a malformed row stops the game with the line number.
 
+`uplink/data/security.tsv` holds the adaptive security alert levels: how much faster a
+computer traces and how much higher its security systems count after break-ins it has
+noticed, and when it starts changing passwords on every connection. See the file's header.
+
 ## Simulation and UI
 
 Code under `uplink/src/world` (the simulation) does not include UI headers or call the

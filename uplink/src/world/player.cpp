@@ -8,6 +8,7 @@
 
 #include "game/game.h"
 #include "game/data/data.h"
+#include "game/data/securityalert.h"
 
 
 #include "world/world.h"
@@ -297,6 +298,9 @@ int Player::TimeToTrace ( const char *tracerIP, char *routerIP )
     if ( playeraccesslevel == 1 && tracer->GetComputer ()->TYPE == COMPUTER_TYPE_PUBLICBANKSERVER ) {
         timetonexttrace = (int) ( timetonexttrace * TRACESPEED_MODIFIER_PUBLICBANKSERVERADMIN );
     }
+
+    // A computer alarmed by recent break-ins traces faster
+    timetonexttrace = (int) ( timetonexttrace * comp->Alert ().trace );
 
     if ( timetonexttrace < 2 ) timetonexttrace = 2;
 

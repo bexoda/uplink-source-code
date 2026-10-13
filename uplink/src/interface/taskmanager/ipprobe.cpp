@@ -19,6 +19,7 @@
 #include "app/miscutils.h"
 
 #include "game/game.h"
+#include "game/data/securityalert.h"
 
 #include "interface/taskmanager/ipprobe.h"
 
@@ -142,9 +143,9 @@ void IPProbe::Tick ( [[maybe_unused]] int n )
 						if ( ss ) {
 
 							if		( version == 1.0 ) body << ss->GetName () << "\n";
-							else if ( version == 2.0 ) body << ss->GetName () << " level " << ss->level << "\n";
+							else if ( version == 2.0 ) body << ss->GetName () << " level " << comp->EffectiveSecurityLevel ( ss ) << "\n";
 							else if ( version == 3.0 ) {
-								body << ss->GetName () << " level " << ss->level << "\n";
+								body << ss->GetName () << " level " << comp->EffectiveSecurityLevel ( ss ) << "\n";
 								if ( ss->bypassed ) body << "bypassed\n";
 								if ( ss->enabled  ) body << "enabled\n";
 								if ( !ss->enabled ) body << "disabled\n";
@@ -154,6 +155,9 @@ void IPProbe::Tick ( [[maybe_unused]] int n )
 
 					}
 
+
+					if ( comp->Alert ().level > 0 )
+						body << "\nSecurity alert: " << comp->Alert ().name << "\n";
 
 					// Found - send a message to the player with the details
 					Message *msg = new Message ();

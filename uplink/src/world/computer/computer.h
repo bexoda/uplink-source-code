@@ -26,6 +26,9 @@
 #include "world/company/company.h"
 #include "world/vlocation.h"
 
+struct SecurityAlert;
+class SecuritySystem;
+
 #define SIZE_COMPUTER_NAME   64
 
 // Computer types
@@ -128,6 +131,10 @@ public:
 	void AddToRecentHacks ( int n );				// Call when this is hacked
 	void UpdateRecentHacks ();						// Call me 4 times a month
 	int  NumRecentHacks ();
+
+	// Adaptive security: break-ins this computer has noticed recently tighten its defences
+	const SecurityAlert &Alert ();								// From data/security.tsv
+	int EffectiveSecurityLevel ( const SecuritySystem *ss );	// The level a tool must reach
 
     static void GenerateAccessCode( const char *code, char *result, size_t resultsize );
     static void GenerateAccessCode( const char *name, const char *code, char *result, size_t resultsize );
