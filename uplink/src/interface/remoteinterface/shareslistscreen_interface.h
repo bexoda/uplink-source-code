@@ -21,8 +21,8 @@ protected:
 
 	static int baseoffset;
 
-	LList <char *> fulllist;												// These are lists of company names
-	LList <char *> filteredlist;
+	LList <const char *> fulllist;												// These are lists of company names
+	LList <const char *> filteredlist;
 
 protected:
 
@@ -42,6 +42,7 @@ protected:
 public:
 
 	void SetFullList ( LList <char *> *newfulllist );						// The list is copied
+	void SetFullList ( LList <const char *> *newfulllist );
 	void SetFullList ();													// Uses current filtered list
 	void ApplyFilter ( char *filter );
 

@@ -129,7 +129,7 @@ void MissionInterface::ReplyClick ( Button * /*button*/ )
 	}
 
 	char contact [SIZE_PERSON_NAME];
-	UplinkStrncpy ( contact, mi->mission->contact, sizeof ( contact ) );
+	UplinkStrncpy ( contact, mi->mission->contact.c_str (), sizeof ( contact ) );
 
 	std::ostringstream body;
 	body << "I have completed the following mission:\n"
@@ -181,9 +181,9 @@ void MissionInterface::Create ()
 		char description [SIZE_MISSION_DESCRIPTION + 16];		
 		std::ostringstream details;
 
-		UplinkSnprintf ( employer, sizeof ( employer ), "Employer : %s", mission->employer );
+		UplinkSnprintf ( employer, sizeof ( employer ), "Employer : %s", mission->employer.c_str () );
 		UplinkSnprintf ( payment, sizeof ( payment ), "Payment : %d credits", mission->payment );
-		UplinkStrncpy ( description, mission->description, sizeof ( description ) );
+		UplinkStrncpy ( description, mission->description.c_str (), sizeof ( description ) );
 		details << mission->GetFullDetails ();
 
 		// Concatenate any links onto the end of the mission

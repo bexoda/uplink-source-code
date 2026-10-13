@@ -76,7 +76,7 @@ void VoiceAnalysisScreenInterface::FinishVoicePlayback ( char *voicename )
 	Company *company = game->GetWorld ()->GetCompany (GetComputerScreen ()->GetComputer ()->companyname.c_str ());
 	UplinkAssert (company);
 	
-	if ( strcmp ( voicename, company->administrator ) == 0 ) {
+	if ( strcmp ( voicename, company->administrator.c_str () ) == 0 ) {
 
 		STATUS = VOICEANALYSISSCREEN_PASSED;
 		button_assignbitmap ( "voicescreen_access", "accessgranted.tif" );

@@ -465,7 +465,7 @@ void NotificationEvent::GiveMissionToNPC ()
 		UplinkAssert (mission);
 
 		if ( agent->rating.uplinkrating >= mission->minuplinkrating && mission->TYPE != MISSION_SPECIAL &&
-			 !( mission->TYPE == MISSION_TRACEUSER && strcmp ( mission->completionA, agent->name.c_str () ) == 0 ) ) {
+			 !( mission->TYPE == MISSION_TRACEUSER && strcmp ( mission->completionA.c_str (), agent->name.c_str () ) == 0 ) ) {
 
 			if ( mission->npcpriority ) {
 				// This is a priority mission - accept it!

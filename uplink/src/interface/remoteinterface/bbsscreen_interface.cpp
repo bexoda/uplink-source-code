@@ -125,7 +125,7 @@ void BBSScreenInterface::DrawBBSButton ( Button *button, bool highlighted, bool 
 			float ratingdif = (float)(game->GetWorld ()->GetPlayer ()->rating.uplinkrating - mission->minuplinkrating);
 			if ( ratingdif > 5.0f ) ratingdif = 5.0f;
 			
-			UplinkStrncpy ( subject, mission->description, sizeof ( subject ) );
+			UplinkStrncpy ( subject, mission->description.c_str (), sizeof ( subject ) );
 			UplinkStrncpy ( date, mission->createdate.GetShortString (), sizeof ( date ) );
 
 #ifdef DEMOGAME
@@ -235,7 +235,7 @@ void BBSScreenInterface::AcceptClick ( [[maybe_unused]] Button *button )
 		// This should be duplicated in the contact button code
 
 		if ( mission->TYPE == MISSION_TRACEUSER &&
-			 strcmp ( mission->completionA, "PLAYER" ) == 0 ) {
+			 strcmp ( mission->completionA.c_str (), "PLAYER" ) == 0 ) {
 
 			EclRegisterCaptionChange ( "bbs_details", "We cannot allow you to accept this mission, on the specific "
 													  "instructions of the employer." );
@@ -287,7 +287,7 @@ void BBSScreenInterface::ContactClick ( [[maybe_unused]] Button *button )
 		// This code is repeated in the accept button code
 
 		if ( mission->TYPE == MISSION_TRACEUSER &&
-			 strcmp ( mission->completionA, "PLAYER" ) == 0 ) {
+			 strcmp ( mission->completionA.c_str (), "PLAYER" ) == 0 ) {
 
 			EclRegisterCaptionChange ( "bbs_details", "We cannot allow you to contact this employer, "
 													  "on their specific instructions." );

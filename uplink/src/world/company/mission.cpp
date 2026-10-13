@@ -28,15 +28,15 @@ Mission::Mission ()
 	whoisthetarget = NULL;
 	
 	TYPE = MISSION_NONE;
-	UplinkStrncpy ( description, "", sizeof ( description ) );
-	UplinkStrncpy ( employer, "", sizeof ( employer ) );
-	UplinkStrncpy ( contact, "", sizeof ( contact ) );
+	description = "";
+	employer = "";
+	contact = "";
 
-	UplinkStrncpy ( completionA, "", sizeof ( completionA ) );
-	UplinkStrncpy ( completionB, "", sizeof ( completionB ) );
-	UplinkStrncpy ( completionC, "", sizeof ( completionC ) );
-	UplinkStrncpy ( completionD, "", sizeof ( completionD ) );
-	UplinkStrncpy ( completionE, "", sizeof ( completionE ) );
+	completionA = "";
+	completionB = "";
+	completionC = "";
+	completionD = "";
+	completionE = "";
 
 	payment = 0;
 	maxpayment = 0;
@@ -79,27 +79,27 @@ void Mission::SetCompletion ( const char *newA, const char *newB, char *newC, ch
 
 	if ( newA ) {
 		UplinkAssert ( strlen(newA) < SIZE_MISSION_COMPLETION );
-		UplinkStrncpy ( completionA, newA, sizeof ( completionA ) );
+		completionA = newA;
 	}
 
 	if ( newB ) {
 		UplinkAssert ( strlen(newB) < SIZE_MISSION_COMPLETION );
-		UplinkStrncpy ( completionB, newB, sizeof ( completionB ) );
+		completionB = newB;
 	}
 
 	if ( newC ) {
 		UplinkAssert ( strlen(newC) < SIZE_MISSION_COMPLETION );
-		UplinkStrncpy ( completionC, newC, sizeof ( completionC ) );
+		completionC = newC;
 	}
 
 	if ( newD ) {
 		UplinkAssert ( strlen(newD) < SIZE_MISSION_COMPLETION );
-		UplinkStrncpy ( completionD, newD, sizeof ( completionD ) );
+		completionD = newD;
 	}
 
 	if ( newE ) {
 		UplinkAssert ( strlen(newE) < SIZE_MISSION_COMPLETION );
-		UplinkStrncpy ( completionE, newE, sizeof ( completionE ) );
+		completionE = newE;
 	}
 
 }
@@ -123,7 +123,7 @@ void Mission::SetDescription ( const char *newdescription )
 {
 
 	UplinkAssert ( strlen ( newdescription ) < SIZE_MISSION_DESCRIPTION );
-	UplinkStrncpy ( description, newdescription, sizeof ( description ) );
+	description = newdescription;
 
 }
 
@@ -198,7 +198,7 @@ void Mission::SetEmployer ( const char *newemployer )
 	UplinkAssert ( strlen (newemployer) < 64 );
 	UplinkAssert ( game->GetWorld ()->GetCompany (newemployer) );
 
-	UplinkStrncpy ( employer, newemployer, sizeof ( employer ) );
+	employer = newemployer;
 
 }
 
@@ -208,7 +208,7 @@ void Mission::SetContact ( const char *newcontact )
 	UplinkAssert ( strlen (newcontact) < SIZE_PERSON_NAME );
 	UplinkAssert ( game->GetWorld ()->GetPerson ( newcontact ) );
 
-	UplinkStrncpy ( contact, newcontact, sizeof ( contact ) );
+	contact = newcontact;
 
 }
 
@@ -432,15 +432,15 @@ void Mission::Print ()
 
 	printf ( "Mission : TYPE=%d\n", TYPE );
 	printf ( "Employer=%s, Payment=%d, Difficulty=%d, MinRating=%d, AcceptRating=%d, Description=%s\n",
-			 employer, payment, difficulty, minuplinkrating, acceptrating, description );
+			 employer.c_str (), payment, difficulty, minuplinkrating, acceptrating, description.c_str () );
 	printf ( "NPC priority = %d\n", npcpriority );
 	createdate.Print ();
-	printf ( "\tCompletionA = %s\n", completionA );
-	printf ( "\tCompletionB = %s\n", completionB );
-	printf ( "\tCompletionC = %s\n", completionC );
-	printf ( "\tCompletionD = %s\n", completionD );
-	printf ( "\tCompletionE = %s\n", completionE );
-	printf ( "\tContact = %s\n", contact );
+	printf ( "\tCompletionA = %s\n", completionA.c_str () );
+	printf ( "\tCompletionB = %s\n", completionB.c_str () );
+	printf ( "\tCompletionC = %s\n", completionC.c_str () );
+	printf ( "\tCompletionD = %s\n", completionD.c_str () );
+	printf ( "\tCompletionE = %s\n", completionE.c_str () );
+	printf ( "\tContact = %s\n", contact.c_str () );
 	printf ( "\tDetails=%s\n", details );
 	printf ( "\tFullDetails=%s\n", fulldetails );
 	printf ( "\tWhySoMuchMoney=%s\n", whysomuchmoney );

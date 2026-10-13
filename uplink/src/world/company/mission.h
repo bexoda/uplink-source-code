@@ -12,6 +12,8 @@
 #ifndef _included_mission_h
 #define _included_mission_h
 
+#include <string>
+
 // ============================================================================
 
 #include "app/uplinkobject.h"
@@ -46,17 +48,17 @@ protected:
 public:
 
 	int TYPE;												// Defined in MissionGenerator
-	char employer    [SIZE_MISSION_EMPLOYER];
-	char contact     [SIZE_PERSON_NAME];
-	char description [SIZE_MISSION_DESCRIPTION];
+	std::string employer;
+	std::string contact;
+	std::string description;
 
 	Date createdate;
 
-	char completionA [SIZE_MISSION_COMPLETION];				// String used to determine if this mission is done
-	char completionB [SIZE_MISSION_COMPLETION];				// String used to determine if this mission is done
-	char completionC [SIZE_MISSION_COMPLETION];				// String used to determine if this mission is done
-	char completionD [SIZE_MISSION_COMPLETION];				// String used to determine if this mission is done
-	char completionE [SIZE_MISSION_COMPLETION];				// String used to determine if this mission is done
+	std::string completionA;				// String used to determine if this mission is done
+	std::string completionB;				// String used to determine if this mission is done
+	std::string completionC;				// String used to determine if this mission is done
+	std::string completionD;				// String used to determine if this mission is done
+	std::string completionE;				// String used to determine if this mission is done
 
 	int payment;
 	int maxpayment;						// You can negotiate this if your rating is high enough

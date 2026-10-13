@@ -228,9 +228,9 @@ void World::CreateCompany ( Company *company )
 {
 
 	UplinkAssert ( company );
-	UplinkAssert ( company->name );
+	UplinkAssert ( company->name.c_str () );
 
-	companies.PutData ( company->name, company );
+	companies.PutData ( company->name.c_str (), company );
 
 }
 

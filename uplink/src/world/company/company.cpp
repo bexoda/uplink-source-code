@@ -19,9 +19,9 @@
 Company::Company()
 {
 
-	UplinkStrncpy ( name, " ", sizeof ( name ) );
-	UplinkStrncpy ( boss, "Unlisted", sizeof ( boss ) );
-	UplinkStrncpy ( administrator, "Unlisted", sizeof ( administrator ) );
+	name = " ";
+	boss = "Unlisted";
+	administrator = "Unlisted";
 	size=0;
 	TYPE=0;
 	growth=0;
@@ -43,7 +43,7 @@ void Company::SetName ( const char *newname )
 {
 
 	UplinkAssert ( strlen (newname) < SIZE_COMPANY_NAME );
-	UplinkStrncpy ( name, newname, sizeof ( name ) );
+	name = newname;
 
 }
 
@@ -51,7 +51,7 @@ void Company::SetBoss ( const char *bossname )
 {
 
 	UplinkAssert ( strlen (bossname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( boss, bossname, sizeof ( boss ) );
+	boss = bossname;
 
 }
 
@@ -59,7 +59,7 @@ void Company::SetAdmin ( const char *adminname )
 {
 
 	UplinkAssert ( strlen(adminname) < SIZE_PERSON_NAME );
-	UplinkStrncpy ( administrator, adminname, sizeof ( administrator ) );
+	administrator = adminname;
 
 }
 
@@ -218,10 +218,10 @@ void Company::Save  ( FILE *file )
 void Company::Print ()
 {
 
-	printf ( "Company : %s\n", name );	
+	printf ( "Company : %s\n", name.c_str () );	
 	printf ( "\tSize=%d, type=%d, Growth=%d, Alignment=%d\n", size, TYPE, growth, alignment );
-	printf ( "Boss    : %s\n", boss );
-	printf ( "Admin   : %s\n", administrator );
+	printf ( "Boss    : %s\n", boss.c_str () );
+	printf ( "Admin   : %s\n", administrator.c_str () );
 
 	printf ( "Share history\n" );
 	for ( int i = 0; i < 12; ++i ) 

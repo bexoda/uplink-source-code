@@ -363,7 +363,7 @@ void ConsequenceGenerator::DidntPayFine ( Person *person, Mission *fine )
 	warningdate.AdvanceMinute ( TIME_LEGALACTION_WARNING * -1 );
 
 	int finesize;
-	sscanf ( fine->completionC, "%d", &finesize );
+	sscanf ( fine->completionC.c_str (), "%d", &finesize );
 
 	if ( strcmp ( person->name.c_str (), "PLAYER" ) != 0 ) {
 
@@ -458,7 +458,7 @@ void ConsequenceGenerator::ComputerHacked ( Computer *comp, AccessLog *al )
 				UplinkAssert (m);
 
 				if ( m->TYPE == MISSION_TRACEUSER &&
-					 strcmp ( m->completionA, hacker->name.c_str () ) == 0 &&
+					 strcmp ( m->completionA.c_str (), hacker->name.c_str () ) == 0 &&
 					 strcmp ( m->links.GetData (0), comp->ip.c_str () ) == 0 ) {
 
 					alreadynoticed = true;
@@ -503,13 +503,13 @@ void ConsequenceGenerator::MissionCompleted_StealFile	( Mission *mission, Person
 	UplinkAssert ( mission );
 	UplinkAssert ( person );
 
-	char *ip = mission->completionA;
-	char *filename = mission->completionB;
-	char *filetype = mission->completionE;
+	const char *ip = mission->completionA.c_str ();
+	const char *filename = mission->completionB.c_str ();
+	const char *filetype = mission->completionE.c_str ();
 
     int numfiles;
     int totalfilesize;
-    sscanf ( mission->completionD, "%d %d", &numfiles, &totalfilesize );
+    sscanf ( mission->completionD.c_str (), "%d %d", &numfiles, &totalfilesize );
 
 	if ( strcmp (filename, "ALL") == 0 ) {
 
@@ -537,7 +537,7 @@ void ConsequenceGenerator::MissionCompleted_DestroyFile ( Mission *mission, Pers
 	UplinkAssert (mission);
 	UplinkAssert (person);
 
-	char *filename = mission->completionB;
+	const char *filename = mission->completionB.c_str ();
 
 	if ( strcmp (filename, "ALL") == 0 ) {
 
@@ -571,9 +571,9 @@ void ConsequenceGenerator::MissionCompleted_ChangeAccount ( Mission *mission, Pe
 
 		UplinkAssert (mission);
 
-		sscanf ( mission->completionA, "%s %s", source_ip, source_accs );
-		sscanf ( mission->completionB, "%s %s", target_ip, target_accs );
-		sscanf ( mission->completionC, "%d", &amount );
+		sscanf ( mission->completionA.c_str (), "%s %s", source_ip, source_accs );
+		sscanf ( mission->completionB.c_str (), "%s %s", target_ip, target_accs );
+		sscanf ( mission->completionC.c_str (), "%d", &amount );
 
 		// Get the source and target computers
 
@@ -625,7 +625,7 @@ void ConsequenceGenerator::MissionCompleted_TraceUser ( Mission *mission, Person
 	// Look up the guilty person
 	//
 
-	char *personname = mission->completionA;
+	const char *personname = mission->completionA.c_str ();
 	Person *guiltyperson = game->GetWorld ()->GetPerson ( personname );
 	UplinkAssert ( guiltyperson );
 

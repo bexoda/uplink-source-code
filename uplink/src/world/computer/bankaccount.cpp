@@ -274,7 +274,7 @@ bool BankAccount::HasTransferOccured ( char *s_ip, char *t_ip, int t_accno, int 
 
 }
 
-bool BankAccount::HasTransferOccured ( char *person, int amount )
+bool BankAccount::HasTransferOccured ( const char *person, int amount )
 {
 
 	char amount_s [16];

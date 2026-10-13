@@ -82,7 +82,7 @@ bool Player::IsPlayerAccount ( const char *bankip, char *accno )
 
 }
 
-int Player::NumSharesOwned	( char *companyname )
+int Player::NumSharesOwned	( const char *companyname )
 {
 
 	char *stringdata = shares.GetData ( companyname );

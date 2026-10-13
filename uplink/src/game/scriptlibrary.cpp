@@ -1633,7 +1633,7 @@ void ScriptLibrary::Script71 ()
         Mission *m = game->GetWorld ()->GetPlayer ()->missions.GetData(i);
         UplinkAssert (m);
 
-        if ( strcmp ( m->description, PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE ) ) == 0 ) 
+        if ( strcmp ( m->description.c_str (), PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE ) ) == 0 ) 
             return;       
 
     }
@@ -1646,13 +1646,13 @@ void ScriptLibrary::Script71 ()
 	// Infer the internal services contact address
 
 	char personname [SIZE_PERSON_NAME];
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );	
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );	
 
 	// 
 	// Generate a new computer to dump the files to
 	//
 
-	Computer *ourcomp = WorldGenerator::GenerateEmptyFileServer ( employer->name );
+	Computer *ourcomp = WorldGenerator::GenerateEmptyFileServer ( employer->name.c_str () );
 	UplinkAssert (ourcomp);
 
 	//
@@ -1711,7 +1711,7 @@ void ScriptLibrary::Script71 ()
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_SPECIAL );
 	mission->SetCompletion   ( ourcomp->ip.c_str (), NULL, NULL, NULL, NULL );    
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, payment );
 	mission->SetDescription  ( description );	

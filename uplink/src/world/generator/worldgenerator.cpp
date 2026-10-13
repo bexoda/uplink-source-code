@@ -195,9 +195,9 @@ void WorldGenerator::GenerateRandomWorld ()
 			Company *company = companies->GetData (i);
 			UplinkAssert (company);
 
-			if ( strcmp ( company->name, "Government" ) != 0 &&
-				 strcmp ( company->name, "Uplink" ) != 0 &&
-				 strcmp ( company->name, "Player" ) != 0 ) {
+			if ( strcmp ( company->name.c_str (), "Government" ) != 0 &&
+				 strcmp ( company->name.c_str (), "Uplink" ) != 0 &&
+				 strcmp ( company->name.c_str (), "Player" ) != 0 ) {
 
 				Person *ceo = GetRandomPerson ();
 				Person *admin = GetRandomPerson ();
@@ -228,7 +228,7 @@ void WorldGenerator::GenerateSimpleStartingMissionA ()
 	Computer *target1 = NULL;
 
 	while ( !employer1 || !target1 ||
-		strcmp ( employer1->name, target1->companyname.c_str () ) == 0 ) {
+		strcmp ( employer1->name.c_str (), target1->companyname.c_str () ) == 0 ) {
 
 		employer1 = WorldGenerator::GetRandomCompany ();
 		UplinkAssert (employer1);
@@ -254,7 +254,7 @@ void WorldGenerator::GenerateSimpleStartingMissionB ()
 	Computer *target2 = NULL;
 
 	while ( !employer2 || !target2 ||
-		strcmp ( employer2->name, target2->companyname.c_str () ) == 0 ) {
+		strcmp ( employer2->name.c_str (), target2->companyname.c_str () ) == 0 ) {
 
 		employer2 = WorldGenerator::GetRandomCompany ();
 		UplinkAssert (employer2);
@@ -2810,7 +2810,7 @@ Company *WorldGenerator::GenerateCompany_Bank ()
 
 	Company *company = GenerateCompany ( companyname, size, COMPANYTYPE_FINANCIAL, growth, alignment );
 
-	GeneratePublicBankServer ( company->name );
+	GeneratePublicBankServer ( company->name.c_str () );
 
 	return company;
 
@@ -3852,11 +3852,11 @@ Company *WorldGenerator::GetRandomCompany ()
         // Or an Uplink computer
 		// Or a plot company (because it cause problems when the plot as begun)
 
-		if ( strcmp ( comp->name, "Player" ) != 0 &&
-			 strcmp ( comp->name, "Government" ) != 0 &&
-			 strcmp ( comp->name, "Uplink" ) != 0 &&
-             strcmp ( comp->name, "Sample Company" ) != 0 &&
-			 !game->GetWorld()->plotgenerator.IsPlotCompany( comp->name ) &&
+		if ( strcmp ( comp->name.c_str (), "Player" ) != 0 &&
+			 strcmp ( comp->name.c_str (), "Government" ) != 0 &&
+			 strcmp ( comp->name.c_str (), "Uplink" ) != 0 &&
+             strcmp ( comp->name.c_str (), "Sample Company" ) != 0 &&
+			 !game->GetWorld()->plotgenerator.IsPlotCompany( comp->name.c_str () ) &&
 			 comp->TYPE != COMPANYTYPE_UNKNOWN ) {
 			delete comps;
 			return comp;
@@ -3930,7 +3930,7 @@ Computer *WorldGenerator::GetRandomComputer ( int TYPE )
 
         Company *company = GetRandomCompany();
         UplinkAssert (company);
-        return GenerateComputer ( company->name, TYPE );
+        return GenerateComputer ( company->name.c_str (), TYPE );
 
     }
     else {
@@ -4140,7 +4140,7 @@ void WorldGenerator::ReplaceAdminCompanies ( Person *person )
 	
 			Company *cp = comps->GetData ( i );
 
-			if ( strcmp( person->name.c_str (), cp->administrator ) == 0 ) {
+			if ( strcmp( person->name.c_str (), cp->administrator.c_str () ) == 0 ) {
 
 				Person *newadmin = WorldGenerator::GetRandomPerson ();
 	            UplinkAssert ( newadmin );
@@ -4170,7 +4170,7 @@ void WorldGenerator::ReplaceInvalidCompanyAdmins ( )
 			
 			{										// was "if ( cp->administrator )": an array, so always true
 			
-				Person *admin = world->GetPerson ( cp->administrator );
+				Person *admin = world->GetPerson ( cp->administrator.c_str () );
 
 				// Some administrator ( like Unlisted ) are valid but not a person
 				

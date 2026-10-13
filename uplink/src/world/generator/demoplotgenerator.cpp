@@ -119,7 +119,7 @@ Mission *DemoPlotGenerator::Generate_FileCopyMission ()
     while ( !mission ) {
 
 	    while ( !employer1 || !target1 ||
-		    strcmp ( employer1->name, target1->companyname.c_str () ) == 0 ) {
+		    strcmp ( employer1->name.c_str (), target1->companyname.c_str () ) == 0 ) {
 
 		    employer1 = WorldGenerator::GetRandomCompany ();
 		    UplinkAssert (employer1);
@@ -147,7 +147,7 @@ Mission *DemoPlotGenerator::Generate_FileDeleteMission ()
     while ( !mission ) {
 
 	    while ( !employer2 || !target2 ||
-		    strcmp ( employer2->name, target2->companyname.c_str () ) == 0 ) {
+		    strcmp ( employer2->name.c_str (), target2->companyname.c_str () ) == 0 ) {
 
 		    employer2 = WorldGenerator::GetRandomCompany ();
 		    UplinkAssert (employer2);
@@ -349,7 +349,7 @@ void DemoPlotGenerator::PlayerCompletedMission ( Mission *mission )
     UplinkAssert (mission);
 
     if ( mission->TYPE == MISSION_CHANGEDATA &&
-         strcmp ( mission->completionA, IP_ACADEMICDATABASE ) == 0 &&
+         strcmp ( mission->completionA.c_str (), IP_ACADEMICDATABASE ) == 0 &&
          scene == 0 ) {
 
         //
@@ -368,8 +368,8 @@ void DemoPlotGenerator::PlayerCompletedMission ( Mission *mission )
 
     }
     else if ( mission->TYPE == MISSION_CHANGEDATA &&
-              strcmp ( mission->completionA, IP_SOCIALSECURITYDATABASE ) == 0 &&
-              strcmp ( mission->contact, "internal@ARC.net" ) == 0 ) {
+              strcmp ( mission->completionA.c_str (), IP_SOCIALSECURITYDATABASE ) == 0 &&
+              strcmp ( mission->contact.c_str (), "internal@ARC.net" ) == 0 ) {
 
         //
         // Just finished the special social security mission from ARC

@@ -501,7 +501,7 @@ void NewsGenerator::ComputerDestroyed ( Computer *comp, bool filesdeleted )
 
 }
 
-void NewsGenerator::AllFilesStolen ( Computer *comp, char *filetype, int totalfilesize )
+void NewsGenerator::AllFilesStolen ( Computer *comp, const char *filetype, int totalfilesize )
 {
 
 	UplinkAssert (comp);

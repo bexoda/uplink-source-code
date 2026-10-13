@@ -13,6 +13,8 @@
 #ifndef _included_company_h
 #define _included_company_h
 
+#include <string>
+
 // ============================================================================
 
 #include "tosser.h"
@@ -45,9 +47,9 @@ protected:
 
 public:
 
-	char name [SIZE_COMPANY_NAME];
-	char boss [SIZE_PERSON_NAME];
-	char administrator [SIZE_PERSON_NAME];
+	std::string name;
+	std::string boss;
+	std::string administrator;
 
 	int size;
 	int TYPE;

@@ -212,7 +212,7 @@ Mission *MissionGenerator::Generate_StealFile ( Company *employer )
 		{
 			Computer *target = WorldGenerator::GetRandomLowSecurityComputer ( COMPUTER_TYPE_INTERNALSERVICESMACHINE );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
+			if ( strcmp ( employer->name.c_str (), target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_StealSingleFile ( employer, target );
 			break;
 		}
@@ -223,7 +223,7 @@ Mission *MissionGenerator::Generate_StealFile ( Company *employer )
                                                                    COMPUTER_TYPE_CENTRALMAINFRAME |
                                                                    COMPUTER_TYPE_LAN );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
+			if ( strcmp ( employer->name.c_str (), target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_StealAllFiles   ( employer, target );
 			break;
 		}
@@ -241,7 +241,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	UplinkAssert (target);
 
 
-	if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
+	if ( strcmp ( employer->name.c_str (), target->companyname.c_str () ) == 0 ) return NULL;
 
 	int difficulty = (int) NumberGenerator::RandomNormalNumber ( MINDIFFICULTY_MISSION_STEALFILE, DIFFICULTY_MISSION_VARIANCE );
 	if ( difficulty < MINDIFFICULTY_MISSION_STEALFILE ) difficulty = MINDIFFICULTY_MISSION_STEALFILE;
@@ -287,7 +287,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	// Infer the internal services contact address
 
 	char personname [SIZE_PERSON_NAME];
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 
 	// Generate the fields of the mission
@@ -340,7 +340,7 @@ Mission *MissionGenerator::Generate_StealSingleFile ( Company *employer, Compute
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_STEALFILE );
 	mission->SetCompletion   ( target->ip.c_str (), datatitle, NULL, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -393,13 +393,13 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	// Infer the internal services contact address
 
 	char personname [SIZE_PERSON_NAME];
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	//
 	// Generate a new computer to dump the files to
 	//
 
-	Computer *ourcomp = WorldGenerator::GenerateEmptyFileServer ( employer->name );
+	Computer *ourcomp = WorldGenerator::GenerateEmptyFileServer ( employer->name.c_str () );
 	UplinkAssert (ourcomp);
 
 	//
@@ -588,7 +588,7 @@ Mission *MissionGenerator::Generate_StealAllFiles ( Company *employer, Computer 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_STEALFILE );
 	mission->SetCompletion   ( completionA, completionB, completionC, completionD, completionE );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -628,7 +628,7 @@ Mission *MissionGenerator::Generate_DestroyFile ( Company *employer )
 		{
 			Computer *target = WorldGenerator::GetRandomLowSecurityComputer ( COMPUTER_TYPE_INTERNALSERVICESMACHINE );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
+			if ( strcmp ( employer->name.c_str (), target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_DestroySingleFile ( employer, target );
 			break;
 		}
@@ -639,7 +639,7 @@ Mission *MissionGenerator::Generate_DestroyFile ( Company *employer )
                                                                    COMPUTER_TYPE_CENTRALMAINFRAME |
                                                                    COMPUTER_TYPE_LAN );
 			UplinkAssert (target);
-			if ( strcmp ( employer->name, target->companyname.c_str () ) == 0 ) return NULL;
+			if ( strcmp ( employer->name.c_str (), target->companyname.c_str () ) == 0 ) return NULL;
 			m = Generate_DestroyAllFiles ( employer, target );
 			break;
 		}
@@ -698,7 +698,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 	// Infer the internal services contact address
 
 	char personname [SIZE_PERSON_NAME];
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 
 	// Generate the fields of the mission
@@ -749,7 +749,7 @@ Mission *MissionGenerator::Generate_DestroySingleFile ( Company *employer, Compu
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_DESTROYFILE );
 	mission->SetCompletion   ( completionA, completionB, NULL, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -802,7 +802,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	// Infer the internal services contact address
 
 	char personname [SIZE_PERSON_NAME];
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 
 	// Generate the fields of the mission
@@ -949,7 +949,7 @@ Mission *MissionGenerator::Generate_DestroyAllFiles ( Company *employer, Compute
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_DESTROYFILE );
 	mission->SetCompletion   ( completionA, completionB, completionC, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1020,7 +1020,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	//
 	// Get the account of a person at this bank computer
@@ -1167,7 +1167,7 @@ Mission *MissionGenerator::Generate_FindData_FinancialRecord ( Company *employer
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_FINDDATA );
 	mission->SetCompletion   ( completionA, completionB, completionC, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1238,7 +1238,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	char description [SIZE_MISSION_DESCRIPTION];
 	std::ostringstream details;
@@ -1452,7 +1452,7 @@ Mission *MissionGenerator::Generate_ChangeData_AcademicRecord ( Company *employe
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_CHANGEDATA );
 	mission->SetCompletion   ( completionA, completionB, completionC, completionD, completionE );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1504,7 +1504,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	char description [SIZE_MISSION_DESCRIPTION];
 	std::ostringstream details;
@@ -1612,7 +1612,7 @@ Mission *MissionGenerator::Generate_ChangeData_SocialSecurity ( Company *employe
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_CHANGEDATA );
 	mission->SetCompletion   ( completionA, completionB, completionC, completionD, completionE );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1666,7 +1666,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	char description [SIZE_MISSION_DESCRIPTION];
 	std::ostringstream details;
@@ -1810,7 +1810,7 @@ Mission *MissionGenerator::Generate_ChangeData_CriminalRecord ( Company *employe
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_CHANGEDATA );
 	mission->SetCompletion   ( completionA, completionB, completionC, completionD, completionE );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1896,7 +1896,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 
 	char description [SIZE_MISSION_DESCRIPTION];
@@ -1945,7 +1945,7 @@ Mission *MissionGenerator::Generate_TraceUser_MoneyTransfer ( Company *employer,
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_TRACEUSER );
 	mission->SetCompletion   ( hacker->name.c_str (), source->ip.c_str (), tacc->name, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -1993,7 +1993,7 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	//
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", company->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", company->name.c_str () );
 
 	//
 	// Fill in the fields of the mission
@@ -2049,7 +2049,7 @@ Mission *MissionGenerator::Generate_PayFine ( Person *person, Company *company, 
 	mission->SetTYPE		 ( MISSION_PAYFINE );
 	mission->SetCompletion   ( completionA, completionB, completionC, NULL, NULL );
 	mission->SetDueDate		 ( duedate );
-	mission->SetEmployer     ( company->name );
+	mission->SetEmployer     ( company->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( 0 );
 	mission->SetDifficulty   ( 0 );
@@ -2096,7 +2096,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 
 	char description [SIZE_MISSION_DESCRIPTION];
@@ -2209,7 +2209,7 @@ Mission *MissionGenerator::Generate_FrameUser ( Company *employer, Person *perso
 	Mission *m = new Mission ();
 	m->SetTYPE		   ( MISSION_FRAMEUSER );
 	m->SetCompletion   ( completionA, completionB, missiontype == 1 ? NULL : completionC, NULL, NULL );
-	m->SetEmployer     ( employer->name );
+	m->SetEmployer     ( employer->name.c_str () );
 	m->SetContact      ( personname );
 	m->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	m->SetDifficulty   ( difficulty );
@@ -2423,7 +2423,7 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	//
 	// Choose random bank accounts on the
@@ -2508,7 +2508,7 @@ Mission *MissionGenerator::Generate_ChangeAccount ( Company *employer, Computer 
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_CHANGEACCOUNT );
 	mission->SetCompletion   ( completionA, completionB, completionC, completionD, completionE );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -2559,7 +2559,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	//
 	// Fill in the fields
@@ -2607,7 +2607,7 @@ Mission *MissionGenerator::Generate_RemoveComputer ( Company *employer, Computer
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_REMOVECOMPUTER );
 	mission->SetCompletion   ( completionA, NULL, NULL, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -2663,7 +2663,7 @@ Mission *MissionGenerator::Generate_RemoveUser ( Company *employer )
 
 
 	char personname [SIZE_PERSON_NAME];					// Person to send completion email to
-	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name );
+	UplinkSnprintf ( personname, sizeof ( personname ), "internal@%s.net", employer->name.c_str () );
 
 	//
 	// Find the target person
@@ -2715,7 +2715,7 @@ Mission *MissionGenerator::Generate_RemoveUser ( Company *employer )
 	Mission *mission = new Mission ();
 	mission->SetTYPE		 ( MISSION_REMOVEUSER );
 	mission->SetCompletion   ( completionA, NULL, NULL, NULL, NULL );
-	mission->SetEmployer     ( employer->name );
+	mission->SetEmployer     ( employer->name.c_str () );
 	mission->SetContact      ( personname );
 	mission->SetPayment      ( payment, (int) ( payment * 1.1 ) );
 	mission->SetDifficulty   ( difficulty );
@@ -2771,7 +2771,7 @@ bool MissionGenerator::IsMissionComplete_StealFile ( Mission *mission, Person *p
 
 	UplinkAssert (mission);
 
-	char *datatitle = mission->completionB;					// Required data title
+	const char *datatitle = mission->completionB.c_str ();					// Required data title
 
 	if ( strcmp ( datatitle, "ALL" ) == 0 )
 		return IsMissionComplete_StealAllFiles ( mission, person, message );
@@ -2843,11 +2843,11 @@ bool MissionGenerator::IsMissionComplete_StealAllFiles ( Mission *mission, Perso
 	UplinkAssert (person);
 	UplinkAssert (message);
 
-	char *ip		= mission->completionA;
-	char *ourcompip = mission->completionC;
+	const char *ip		= mission->completionA.c_str ();
+	const char *ourcompip = mission->completionC.c_str ();
 	int numfiles, datasize;
-	sscanf ( mission->completionD, "%d %d", &numfiles, &datasize );
-	char *datatype	= mission->completionE;
+	sscanf ( mission->completionD.c_str (), "%d %d", &numfiles, &datasize );
+	const char *datatype	= mission->completionE.c_str ();
 
 	//
 	// Look up the target computer
@@ -3015,8 +3015,8 @@ bool MissionGenerator::IsMissionComplete_DestroyFile ( Mission *mission, Person 
 
 	UplinkAssert (mission);
 
-	char *ip = mission->completionA;
-	char *filename = mission->completionB;
+	const char *ip = mission->completionA.c_str ();
+	const char *filename = mission->completionB.c_str ();
 
 	VLocation *vl = game->GetWorld ()->GetVLocation (ip);
 	UplinkAssert (vl);
@@ -3081,11 +3081,11 @@ bool MissionGenerator::IsMissionComplete_FindData ( Mission *mission, Person *pe
 
 	UplinkAssert (mission);
 
-	char *value1 = LowerCaseString ( mission->completionA );
-	char *value2 = LowerCaseString ( mission->completionB );
-	char *value3 = LowerCaseString ( mission->completionC );
-	char *value4 = LowerCaseString ( mission->completionD );
-	char *value5 = LowerCaseString ( mission->completionE );
+	char *value1 = LowerCaseString ( mission->completionA.c_str () );
+	char *value2 = LowerCaseString ( mission->completionB.c_str () );
+	char *value3 = LowerCaseString ( mission->completionC.c_str () );
+	char *value4 = LowerCaseString ( mission->completionD.c_str () );
+	char *value5 = LowerCaseString ( mission->completionE.c_str () );
 
 	// All 5 values need to be in the message
 	// (Unless they are NULL)
@@ -3133,11 +3133,11 @@ bool MissionGenerator::IsMissionComplete_FindFinancial  ( Mission *mission, Pers
 
 	char source_ip [SIZE_VLOCATION_IP];
 	int source_acc;
-	sscanf ( mission->completionA, "%s %d", source_ip, &source_acc );
+	sscanf ( mission->completionA.c_str (), "%s %d", source_ip, &source_acc );
 	char source_acc_s [16];
 	UplinkSnprintf ( source_acc_s, sizeof ( source_acc_s ), "%d", source_acc );
 
-    char *field = mission->completionB;
+    const char *field = mission->completionB.c_str ();
 
 	BankAccount *source_account = BankAccount::GetAccount ( source_ip, source_acc_s );
 	UplinkAssert (source_account);
@@ -3182,7 +3182,7 @@ bool MissionGenerator::IsMissionComplete_FindFinancial  ( Mission *mission, Pers
     }
     else if ( strcmp ( field, "TraceTransfer" ) == 0 ) {
 
-        char *personresponsible = LowerCaseString (mission->completionC);
+        char *personresponsible = LowerCaseString (mission->completionC.c_str ());
         UplinkAssert (personresponsible);
 
 		char *messagebody = LowerCaseString(message->GetBody ());
@@ -3220,9 +3220,9 @@ bool MissionGenerator::IsMissionComplete_ChangeData	( Mission *mission, Person *
 
 	UplinkAssert (mission);
 
-	char *ip			= mission->completionA;
-	char *personname	= mission->completionB;
-	char *fieldname		= mission->completionC;
+	const char *ip			= mission->completionA.c_str ();
+	const char *personname	= mission->completionB.c_str ();
+	const char *fieldname		= mission->completionC.c_str ();
 
 	VLocation *vl = game->GetWorld ()->GetVLocation (ip);
 	UplinkAssert (vl);
@@ -3239,8 +3239,8 @@ bool MissionGenerator::IsMissionComplete_ChangeData	( Mission *mission, Person *
 
 		if ( fieldvalue ) {
 
-			char *string1 = LowerCaseString ( mission->completionD );      
-			char *string2 = LowerCaseString ( mission->completionE );
+			char *string1 = LowerCaseString ( mission->completionD.c_str () );      
+			char *string2 = LowerCaseString ( mission->completionE.c_str () );
 
 			char *fieldvaluelower = LowerCaseString ( fieldvalue );
 			foundStrings = ( strstr ( fieldvaluelower, string1 ) && strstr ( fieldvaluelower, string2 ) );
@@ -3283,9 +3283,9 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 	UplinkAssert (person);
 	UplinkAssert (message);
 
-	char *personname = mission->completionA;
-	char *framedfor  = mission->completionB;
-	char *ip		 = mission->completionC;
+	const char *personname = mission->completionA.c_str ();
+	const char *framedfor  = mission->completionB.c_str ();
+	const char *ip		 = mission->completionC.c_str ();
 
 	//
 	// Has the person been arrested?
@@ -3397,8 +3397,8 @@ bool MissionGenerator::IsMissionComplete_FrameUser ( Mission *mission, Person *p
 bool MissionGenerator::IsMissionComplete_TraceUser ( Mission *mission, Person *person, Message *message )
 {
 
-	char *personname    = LowerCaseString (mission->completionA);
-	char *targetaccount = LowerCaseString (mission->completionC);	// completionC is an array, so this was never NULL (even when not a TraceUser_MoneyTransfer)
+	char *personname    = LowerCaseString (mission->completionA.c_str ());
+	char *targetaccount = LowerCaseString (mission->completionC.c_str ());	// completionC is an array, so this was never NULL (even when not a TraceUser_MoneyTransfer)
     char *msgbody       = LowerCaseString ( message->GetBody () );
 
 	// Check the person's name is in the mail
@@ -3452,11 +3452,11 @@ bool MissionGenerator::IsMissionComplete_ChangeAccount ( Mission *mission, Perso
 
 	UplinkAssert (mission);
 
-	sscanf ( mission->completionA, "%s %d", source_ip, &source_acc );
-	sscanf ( mission->completionB, "%s %d", target_ip, &target_acc );
-	sscanf ( mission->completionC, "%d", &amount );
-	sscanf ( mission->completionD, "%d", &source_balance );
-	sscanf ( mission->completionE, "%d", &target_balance );
+	sscanf ( mission->completionA.c_str (), "%s %d", source_ip, &source_acc );
+	sscanf ( mission->completionB.c_str (), "%s %d", target_ip, &target_acc );
+	sscanf ( mission->completionC.c_str (), "%d", &amount );
+	sscanf ( mission->completionD.c_str (), "%d", &source_balance );
+	sscanf ( mission->completionE.c_str (), "%d", &target_balance );
 
 	char source_acc_s [16];
 	char target_acc_s [16];
@@ -3501,7 +3501,7 @@ bool MissionGenerator::IsMissionComplete_RemoveComputer ( Mission *mission, Pers
 	UplinkAssert (person);
 	UplinkAssert (message);
 
-	char *sourceip = mission->completionA;
+	const char *sourceip = mission->completionA.c_str ();
 	VLocation *vl = game->GetWorld ()->GetVLocation ( sourceip );
 	UplinkAssert (vl);
 	Computer *comp = vl->GetComputer ();
@@ -3574,7 +3574,7 @@ bool MissionGenerator::IsMissionComplete_RemoveUser	( Mission *mission, Person *
 	UplinkAssert (person);
 	UplinkAssert (message);
 
-	char *personname = mission->completionA;
+	const char *personname = mission->completionA.c_str ();
 
 	//
 	// Look through recent news articles
@@ -3612,14 +3612,14 @@ bool MissionGenerator::IsMissionComplete_PayFine ( Mission *mission, Person *per
 	UplinkAssert (person);
 	UplinkAssert (message);
 
-	char *finedperson = mission->completionA;
+	const char *finedperson = mission->completionA.c_str ();
 
 	char target_ip [SIZE_VLOCATION_IP];
 	char target_accno [16];
-	sscanf ( mission->completionB, "%s %s", target_ip, target_accno );
+	sscanf ( mission->completionB.c_str (), "%s %s", target_ip, target_accno );
 
 	int amount;
-	sscanf ( mission->completionC, "%d", &amount );
+	sscanf ( mission->completionC.c_str (), "%d", &amount );
 
 	//
 	// Get the target account that should have the money in
@@ -3696,7 +3696,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 
     UplinkAssert (mission);
 
-    if ( strcmp ( mission->description, PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE ) ) == 0 ) {
+    if ( strcmp ( mission->description.c_str (), PlotGenerator::SpecialMissionDescription ( SPECIALMISSION_MOLE ) ) == 0 ) {
 
         // First - has the player already done this?
 
@@ -3714,7 +3714,7 @@ bool MissionGenerator::IsMissionComplete_Special ( Mission *mission, Person *per
 
         }
 
-        char *ourcompip = mission->completionA;
+        const char *ourcompip = mission->completionA.c_str ();
 
 	    //
 	    // Lookup the dump computer
@@ -3955,7 +3955,7 @@ void MissionGenerator::MissionFailed ( Mission *mission, Person *person, const c
 
         Message *m = new Message ();
         m->SetTo ( "PLAYER" );
-        m->SetFrom ( mission->employer );
+        m->SetFrom ( mission->employer.c_str () );
         m->SetSubject ( "Failure to pay fine" );
         m->SetBody ( "You have chosen not to pay a fine. As such, "
                      "legal proceedings will begin against you shortly.\n\n"
@@ -3977,7 +3977,7 @@ void MissionGenerator::MissionFailed ( Mission *mission, Person *person, const c
 	    // Send a mail to the person
 	    Message *m = new Message ();
 	    m->SetTo ( "PLAYER" );
-	    m->SetFrom ( mission->employer );
+	    m->SetFrom ( mission->employer.c_str () );
 	    m->SetSubject ( "Mission FAILED" );
 	    m->SetBody ( body.str ().c_str () );
 	    m->Send ();

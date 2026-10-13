@@ -254,7 +254,7 @@ void Computer::CheckForSecurityBreaches ()
 						Mission *m = game->GetWorld ()->GetPlayer ()->missions.GetData (l);
 						UplinkAssert (m);
 
-						if ( m->TYPE == MISSION_TRACEUSER && strcmp ( m->completionB, ip.c_str () ) == 0 ) 
+						if ( m->TYPE == MISSION_TRACEUSER && strcmp ( m->completionB.c_str (), ip.c_str () ) == 0 ) 
 							ignoreme = true;
 
 					}

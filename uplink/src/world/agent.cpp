@@ -546,8 +546,8 @@ void Agent::AttemptMission_StealFile ()
 	if ( !(missions.GetData (0)) ) return;
 	Mission *m = missions.GetData (0);
 
-	char *targetip = m->completionA;
-	char *filename = m->completionB;
+	const char *targetip = m->completionA.c_str ();
+	const char *filename = m->completionB.c_str ();
 
 	if ( strcmp ( filename, "ALL" ) == 0 ) {
 
@@ -577,8 +577,8 @@ void Agent::AttemptMission_DeleteFile ()
 	if ( !(missions.GetData (0)) ) return;
 	Mission *m = missions.GetData (0);
 
-	char *targetip = m->completionA;
-	char *filename = m->completionB;
+	const char *targetip = m->completionA.c_str ();
+	const char *filename = m->completionB.c_str ();
 
 	if ( strcmp ( filename, "ALL" ) == 0 ) {
 
@@ -616,9 +616,9 @@ void Agent::AttemptMission_ChangeAccount ()
 
 	int amount;
 
-	sscanf ( m->completionA, "%s %s", sourceip, sourceaccno );
-	sscanf ( m->completionB, "%s %s", targetip, targetaccno );
-	sscanf ( m->completionC, "%d", &amount );
+	sscanf ( m->completionA.c_str (), "%s %s", sourceip, sourceaccno );
+	sscanf ( m->completionB.c_str (), "%s %s", targetip, targetaccno );
+	sscanf ( m->completionC.c_str (), "%d", &amount );
 
 	EstablishConnection ( sourceip );
 
@@ -640,7 +640,7 @@ void Agent::AttemptMission_TraceUser ()
 	if ( !(missions.GetData (0)) ) return;
 	Mission *m = missions.GetData (0);
 
-	char *hackername = m->completionA;
+	const char *hackername = m->completionA.c_str ();
 	Person *hacker = game->GetWorld ()->GetPerson ( hackername );
 	UplinkAssert (hacker);
 
@@ -782,7 +782,7 @@ void Agent::AttemptMission_TraceUser ()
 								printf ( "Agent %s traced %s (probably framed)\n", name, framed->name );
 	#endif
 
-								UplinkStrncpy ( m->completionA, framed->name.c_str (), sizeof ( m->completionA ) );
+								m->completionA = framed->name;
 
 								ConsequenceGenerator::MissionCompleted ( m, this );
 								return;
@@ -826,7 +826,7 @@ void Agent::AttemptMission_RemoveComputer ()
 	if ( !(missions.GetData (0)) ) return;
 	Mission *m = missions.GetData (0);
 
-	char *targetip = m->completionA;
+	const char *targetip = m->completionA.c_str ();
 
 	VLocation *vl = game->GetWorld ()->GetVLocation ( targetip );
 	UplinkAssert (targetip);

@@ -899,7 +899,7 @@ void Tutorial::RunTutorial1 ( int part )
 	}
 	else if ( part == 25 ) {				// Tut 1 Part 25
 
-		if ( game->GetWorld ()->GetPlayer ()->missions.Size () == 0 || strcmp ( game->GetWorld ()->GetPlayer ()->missions.GetData ( 0 )->employer, "Uplink" ) != 0 ) {
+		if ( game->GetWorld ()->GetPlayer ()->missions.Size () == 0 || strcmp ( game->GetWorld ()->GetPlayer ()->missions.GetData ( 0 )->employer.c_str (), "Uplink" ) != 0 ) {
 
 			current_part = 28;
 			RunTutorial1 ( 28 );

@@ -44,7 +44,7 @@ void CompanyInfoScreenInterface::MdAddClick ( Button *button )
 	Company *company = game->GetWorld ()->GetCompany ( companyname );
 	UplinkAssert (company);
 
-	Person *boss = game->GetWorld ()->GetPerson ( company->boss );
+	Person *boss = game->GetWorld ()->GetPerson ( company->boss.c_str () );
 	
 	if ( boss && strcmp ( boss->phonenumber.c_str (), " " ) != 0 )
 		game->GetWorld ()->GetPlayer ()->GiveLink ( boss->phonenumber.c_str () );
@@ -64,7 +64,7 @@ void CompanyInfoScreenInterface::AdminAddClick ( Button *button )
 	Company *company = game->GetWorld ()->GetCompany ( companyname );
 	UplinkAssert (company);
 
-	Person *admin = game->GetWorld ()->GetPerson ( company->administrator );
+	Person *admin = game->GetWorld ()->GetPerson ( company->administrator.c_str () );
 	
 	if ( admin && strcmp ( admin->phonenumber.c_str (), " " ) != 0 )
 		game->GetWorld ()->GetPlayer ()->GiveLink ( admin->phonenumber.c_str () );
@@ -129,14 +129,14 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		char mdtel [32];
 		char admintel [32];
 
-		Person *boss = game->GetWorld ()->GetPerson ( company->boss );
-		Person *admin = game->GetWorld ()->GetPerson ( company->administrator );
+		Person *boss = game->GetWorld ()->GetPerson ( company->boss.c_str () );
+		Person *admin = game->GetWorld ()->GetPerson ( company->administrator.c_str () );
 		
 		if ( boss && admin ) {
 
 			char *companynameEmail = getNameEmail ( companyname );
-			char *bossnameEmail = getNameEmail ( company->boss );
-			char *administratornameEmail = getNameEmail ( company->administrator );
+			char *bossnameEmail = getNameEmail ( company->boss.c_str () );
+			char *administratornameEmail = getNameEmail ( company->administrator.c_str () );
 
 			UplinkSnprintf ( mdemail, sizeof ( mdemail ), "%s@%s.net", bossnameEmail, companynameEmail );
 			UplinkSnprintf ( adminemail, sizeof ( adminemail ), "%s@%s.net", administratornameEmail, companynameEmail );
@@ -161,7 +161,7 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		EclRegisterButtonCallbacks ( "companyscreen_contactdetails", DrawMainTitle, NULL, NULL, NULL );
 
 		EclRegisterButton ( 50, 150, 150, 15, "MANAGING DIRECTOR", " ", "companyscreen_mdtitle" );
-		EclRegisterButton ( 50, 170, 150, 15, company->boss, " ", "companyscreen_md" );
+		EclRegisterButton ( 50, 170, 150, 15, company->boss.c_str (), " ", "companyscreen_md" );
 		EclRegisterButton ( 50, 190, 250, 15, mdemail, " ", "companyscreen_mdemail" );
 		EclRegisterButton ( 50, 210, 150, 15, mdtel, " ", "companyscreen_mdtel" );
 
@@ -172,7 +172,7 @@ void CompanyInfoScreenInterface::Create ( ComputerScreen *newcs )
 		}
 
 		EclRegisterButton ( 300, 150, 150, 15, "ADMINISTRATOR", " ", "companyscreen_admintitle" );
-		EclRegisterButton ( 300, 170, 150, 15, company->administrator, " ", "companyscreen_admin" );
+		EclRegisterButton ( 300, 170, 150, 15, company->administrator.c_str (), " ", "companyscreen_admin" );
 		EclRegisterButton ( 300, 190, 250, 15, adminemail, " ", "companyscreen_adminemail" );
 		EclRegisterButton ( 300, 210, 150, 15, admintel, " ", "companyscreen_admintel" );
 

@@ -288,7 +288,7 @@ void HUDInterface::MissionHighlight ( Button *button )
 	if ( mission ) {
 
 		char tooltip [512];
-		UplinkStrncpy ( tooltip, mission->description, sizeof ( tooltip ) );
+		UplinkStrncpy ( tooltip, mission->description.c_str (), sizeof ( tooltip ) );
 
 		button->SetTooltip ( tooltip );
 		button_highlight ( button );

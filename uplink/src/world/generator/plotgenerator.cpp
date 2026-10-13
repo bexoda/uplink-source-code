@@ -514,7 +514,7 @@ void PlotGenerator::PlayerCompletesSpecialMission ( int missionID )
 		Mission *mis = game->GetWorld ()->GetPlayer ()->missions.GetData (i);
 		UplinkAssert (mis);
 
-		if ( strcmp ( mis->description, title ) == 0 ) {
+		if ( strcmp ( mis->description.c_str (), title ) == 0 ) {
 
 
 			game->GetWorld ()->GetPlayer ()->ChangeBalance ( mis->payment, "Anonymous donation" );
@@ -523,7 +523,7 @@ void PlotGenerator::PlayerCompletesSpecialMission ( int missionID )
 
 			specialmissionscompleted |= (1 << missionID);
 
-            if ( strcmp ( mis->contact, "internal@ARC.net" ) == 0 )
+            if ( strcmp ( mis->contact.c_str (), "internal@ARC.net" ) == 0 )
        			game->GetWorld ()->GetPlayer ()->rating.ChangeNeuromancerScore ( mis->difficulty * -1 );
 
             else
@@ -550,7 +550,7 @@ void PlotGenerator::PlayerFailsSpecialMission ( int missionID )
 		Mission *mis = game->GetWorld ()->GetPlayer ()->missions.GetData (i);
 		UplinkAssert (mis);
 
-		if ( strcmp ( mis->description, title ) == 0 ) {
+		if ( strcmp ( mis->description.c_str (), title ) == 0 ) {
 
 			game->GetWorld ()->GetPlayer ()->missions.RemoveData (i);
             delete mis;
@@ -575,7 +575,7 @@ bool PlotGenerator::RemoveSpecialMission ( int missionID )
         Mission *m = cu->missions.GetData (i);
         UplinkAssert (m);
 
-        if ( strcmp ( m->description, title ) == 0 ) {
+        if ( strcmp ( m->description.c_str (), title ) == 0 ) {
 
             cu->missions.RemoveData ( i );
             delete m;

@@ -44,7 +44,7 @@ public:
 	void GiveAllLinks ();
 	void GiveMessage ( Message *message );
 
-	int NumSharesOwned	( char *companyname );
+	int NumSharesOwned	( const char *companyname );
 	int SharesPricePaid ( char *companyname );
 	void TradeShares	( char *companyname, int howmany );
 

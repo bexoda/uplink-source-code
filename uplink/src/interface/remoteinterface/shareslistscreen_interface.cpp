@@ -48,7 +48,7 @@ void SharesListScreenInterface::ShareClick ( Button *button )
 
 	if ( thisint->filteredlist.ValidIndex (fileindex) ) {
 
-		char *companyname = thisint->filteredlist.GetData (fileindex);
+		const char *companyname = thisint->filteredlist.GetData (fileindex);
 
 		game->GetInterface ()->GetRemoteInterface ()->RunScreen ( thisint->GetComputerScreen ()->viewpage, thisint->GetComputerScreen ()->GetComputer () );
 		SharesViewScreenInterface *newint = (SharesViewScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ();
@@ -70,8 +70,8 @@ void SharesListScreenInterface::ShareDraw ( Button *button, bool highlighted, bo
 	sscanf ( button->name, "shareslistscreen_share %d", &shareindex );
 	shareindex += baseoffset;
 
-	LList <char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
-	char *companyname = filteredlist->GetData (shareindex);
+	LList <const char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
+	const char *companyname = filteredlist->GetData (shareindex);
 
 	/*
 		Re above line
@@ -131,7 +131,7 @@ void SharesListScreenInterface::ShareDraw ( Button *button, bool highlighted, bo
 
 		// Draw the text
 
-		GciDrawText ( button->x + 20, button->y + 10, company->name );
+		GciDrawText ( button->x + 20, button->y + 10, company->name.c_str () );
 		GciDrawText ( button->x + 200, button->y + 10, currentprice );
 
 		if ( company->GetShareChange () < 0 ) glColor4f ( 1.0f, 0.0f, 0.0f, 1.0f );
@@ -159,7 +159,7 @@ void SharesListScreenInterface::ShareMouseDown ( Button *button )
 	sscanf ( button->name, "shareslistscreen_share %d", &shareindex );
 	shareindex += baseoffset;
 
-	LList <char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
+	LList <const char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
 
 	if ( filteredlist->ValidIndex (shareindex) ) {
 
@@ -178,7 +178,7 @@ void SharesListScreenInterface::ShareMouseMove ( Button *button )
 	sscanf ( button->name, "shareslistscreen_share %d", &shareindex );
 	shareindex += baseoffset;
 
-	LList <char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
+	LList <const char *> *filteredlist = &((SharesListScreenInterface *) game->GetInterface ()->GetRemoteInterface ()->GetInterfaceScreen ())->filteredlist;
 
 	if ( filteredlist->ValidIndex (shareindex) ) {
  
@@ -260,6 +260,17 @@ void SharesListScreenInterface::CloseClick ( Button * /*button*/ )
 }
 
 void SharesListScreenInterface::SetFullList ( LList <char *> *newfulllist )
+{
+
+	UplinkAssert (newfulllist);
+	LList <const char *> view;
+	for ( int i = 0; i < newfulllist->Size (); ++i )
+		view.PutData ( newfulllist->GetData (i) );
+	SetFullList ( &view );
+
+}
+
+void SharesListScreenInterface::SetFullList ( LList <const char *> *newfulllist )
 {
 
 	UplinkAssert (newfulllist);
@@ -401,7 +412,7 @@ void SharesListScreenInterface::Create ( ComputerScreen *newcs )
 		}
 		else if ( GetComputerScreen ()->SCREENTYPE == SHARESLISTSCREENTYPE_ALLSHARES ) {
 
-			LList <char *> allshares;
+			LList <const char *> allshares;
 			
 			DArray <Company *> *allcompanies = game->GetWorld ()->companies.ConvertToDArray ();
 
@@ -412,7 +423,7 @@ void SharesListScreenInterface::Create ( ComputerScreen *newcs )
 					if ( company->TYPE == COMPANYTYPE_INDUSTRIAL || 
 						 company->TYPE == COMPANYTYPE_COMMERCIAL ||
 						 company->TYPE == COMPANYTYPE_FINANCIAL )
-						 allshares.PutData ( company->name );
+						 allshares.PutData ( company->name.c_str () );
 				}
 			}
 

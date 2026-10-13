@@ -213,7 +213,7 @@ void SendMailInterface::ToggleAddressBook ( int x, int y )
 				char name [64];
 				UplinkSnprintf ( name, sizeof ( name ), "sendmail_addressbook %d", i );
 
-				char *contact = game->GetWorld ()->GetPlayer ()->missions.GetData (i)->contact;
+				const char *contact = game->GetWorld ()->GetPlayer ()->missions.GetData (i)->contact.c_str ();
 
 				EclRegisterButton ( x, y, 140, 15, contact, "Send to this recipient", name );
 				EclRegisterButtonCallbacks ( name, button_draw, AddressClick, button_click, button_highlight );
