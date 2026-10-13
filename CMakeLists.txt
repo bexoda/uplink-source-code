@@ -117,7 +117,8 @@ add_library(vanbakel STATIC
 target_include_directories(vanbakel PUBLIC ${LIB}/vanbakel)
 target_link_libraries(vanbakel PUBLIC tosser mmgr eclipse PRIVATE uplink_flags)
 
-add_library(gucci STATIC ${LIB}/gucci/gucci.cpp ${LIB}/gucci/image.cpp ${LIB}/gucci/gucci_sdl.cpp)
+add_library(gucci STATIC
+  ${LIB}/gucci/gucci.cpp ${LIB}/gucci/image.cpp ${LIB}/gucci/scale.cpp ${LIB}/gucci/gucci_sdl.cpp)
 target_include_directories(gucci PUBLIC ${LIB}/gucci)
 target_link_libraries(gucci
   PUBLIC tosser mmgr redshirt PkgConfig::SDL ftgl_uplink Freetype::Freetype OpenGL::GL OpenGL::GLU
@@ -135,15 +136,19 @@ target_link_libraries(soundgarden PUBLIC tosser mmgr redshirt eclipse PkgConfig:
 
 file(GLOB_RECURSE GAME_SOURCES CONFIGURE_DEPENDS ${SRC}/*.cpp)
 list(FILTER GAME_SOURCES EXCLUDE REGEX
-  "/(ExceptionHandler|GetWinVer|MiniVersion|stdafx|version|resizex|template_interface)\\.cpp$")
+  "/(ExceptionHandler|GetWinVer|MiniVersion|stdafx|version|resizex|template_interface|main)\\.cpp$")
 
-add_executable(uplink ${GAME_SOURCES})
-target_include_directories(uplink PRIVATE ${SRC} ${LIB})
-target_link_libraries(uplink PRIVATE
+# Everything but main(), so the tests link the same code the game runs.
+add_library(uplink_game OBJECT ${GAME_SOURCES})
+target_include_directories(uplink_game PUBLIC ${SRC} ${LIB})
+target_link_libraries(uplink_game PUBLIC
   uplink_flags gucci soundgarden eclipse vanbakel redshirt bungle mmgr tosser
   tcp4u irclib unrar_sha1
   PkgConfig::SDL PkgConfig::SDL_MIXER ftgl_uplink Freetype::Freetype
   OpenGL::GL OpenGL::GLU TIFF::TIFF JPEG::JPEG ZLIB::ZLIB Threads::Threads ${CMAKE_DL_LIBS})
+
+add_executable(uplink ${SRC}/main.cpp)
+target_link_libraries(uplink PRIVATE uplink_game)
 
 # The game reads its .dat archives from the directory holding the executable. Link them in so
 # ./build/uplink runs straight from the build tree.
@@ -152,3 +157,23 @@ foreach(dat ${UPLINK_DATA_FILES})
   get_filename_component(name ${dat} NAME)
   file(CREATE_LINK ${dat} ${CMAKE_BINARY_DIR}/${name} SYMBOLIC)
 endforeach()
+
+# ---------------------------------------------------------------- tests
+
+option(UPLINK_TESTS "Build the test suite (needs Catch2 3)" ON)
+if(UPLINK_TESTS)
+  find_package(Catch2 3 REQUIRED)
+  enable_testing()
+  file(GLOB TEST_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/uplink/tests/*.cpp)
+  add_executable(uplink_tests ${TEST_SOURCES})
+  target_link_libraries(uplink_tests PRIVATE uplink_game Catch2::Catch2 ZLIB::ZLIB)
+  target_compile_definitions(uplink_tests PRIVATE
+    UPLINK_TEST_FIXTURES="${CMAKE_SOURCE_DIR}/uplink/tests/fixtures")
+  file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/test-home)
+  include(Catch)
+  # Tests boot the real game from the build dir (where the .dat files are linked) and keep
+  # their agent files in a scratch HOME, never the developer's ~/.uplink.
+  catch_discover_tests(uplink_tests
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    PROPERTIES ENVIRONMENT "HOME=${CMAKE_BINARY_DIR}/test-home;SDL_AUDIODRIVER=dummy")
+endif()

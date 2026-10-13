@@ -118,6 +118,7 @@ void Company::Grow ( int dayspast )
 
 	while ( sharehistory [index] == 0 ) {
 		sharehistory [index] = NumberGenerator::RandomNumber ( size );
+		if ( sharehistory [index] < 0 ) sharehistory [index] = 1;	// RandomNumber(0) is -1 for a company of size 0
 		index--;
 		if ( index < 0 ) index = 11;
 	}

@@ -231,7 +231,7 @@ int GciFallbackTextWidth ( char *text, int STYLE )
     inside = true;
     int result = GciTextWidth(text, gci_defaultfont);
     inside = false;
-	return inside;
+    return result;
   }
   else {
     // We recursed back here, not even the 
